@@ -34,6 +34,5 @@ public class MockNetwork extends Network{
 		public MockRequest getLastRequestMade() {
 			return lastRequestMade;
 		}
-	}
-
 }
+
