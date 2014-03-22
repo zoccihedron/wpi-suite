@@ -56,7 +56,7 @@ public class PlanningPoker implements IJanewayModule {
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
 		// Create a tab model that contains the toolbar panel and the main content panel
-		JanewayTabModel tab1 = new JanewayTabModel(
+		final JanewayTabModel tab1 = new JanewayTabModel(
 				getName(), 
 				new ImageIcon(), 
 				toolbarPanel, 

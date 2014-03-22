@@ -160,7 +160,10 @@ public class RequirementEntityManager implements EntityManager<Requirement> {
 	
 	
 	
-	 * @return number of requirements stored * @throws WPISuiteException * @throws WPISuiteException * @throws WPISuiteException
+	 * @return number of requirements stored 
+	 * @throws WPISuiteException 
+	 * @throws WPISuiteException 
+	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#Count() */
 	@Override
 	public int Count() throws WPISuiteException {
@@ -174,7 +177,10 @@ public class RequirementEntityManager implements EntityManager<Requirement> {
 	
 	
 	
-	 * @return Requirement * @throws WPISuiteException * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String) * @throws WPISuiteException
+	 * @return Requirement
+	 * @throws WPISuiteException 
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String) 
+	 * @throws WPISuiteException
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(Session, String)
 	 */
 	@Override
