@@ -1,81 +1,67 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Team Codon Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
+import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.Permission;
-import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.Model;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-
-public class PlanningPokerModel extends AbstractModel {
+/**
+ * This is a model for the planning poker module. This model
+ * contains a list of games. It extends AbstractListModel so that
+ * it can provide the model data to the JList component in the BoardPanel.
+ *
+ * @author Robert
+ * @version Mar 22, 2014
+ */
+public class PlanningPokerModel extends AbstractListModel<Game>{
 	
 	private List<Game> games;
 	
 	public PlanningPokerModel() {
-		this.games = new ArrayList<Game>();
+		games = new ArrayList<Game>();
 	}
 	
+	/**
+	 * Adds a game to the list
+	 *
+	 * @param newGame the new game to be added to the list
+	 */
 	public void AddGame(Game newGame) {
 		games.add(newGame);
 	}
 
+	/**
+	 * Returns the length of the list of games
+	 * 
+	 * @return length of games list
+	 * @see javax.swing.ListModel#getSize()
+	 */
 	@Override
-	public void save() {
-		// TODO Auto-generated method stub
-
+	public int getSize() {
+		return games.size();
 	}
 
+	/**
+	 * Returns the game at the index. This
+	 * implementation indexes in the reverse
+	 * order.
+	 * @param index the index in the list
+	 * 
+	 * @return the desired game
+	 * @see javax.swing.ListModel#getElementAt(int)
+	 */
 	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String toJSON() {
-		String json;
-		Gson gson = new Gson();
-		json = gson.toJson(this, PlanningPokerModel.class);
-		return json;
-	}
-	
-	
-	public String fromJSON() {
-		return null;
-	}
-
-	@Override
-	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Permission getPermission(User u) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setPermission(Permission p, User u) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Project getProject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setProject(Project p) {
-		// TODO Auto-generated method stub
-
+	public Game getElementAt(int index) {
+		return games.get(games.size() - 1 - index);
 	}
 
 }
