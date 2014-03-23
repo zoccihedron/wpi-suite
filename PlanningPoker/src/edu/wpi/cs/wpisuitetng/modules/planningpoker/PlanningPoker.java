@@ -10,18 +10,24 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+
+//import org.jdesktop.swingx.JXDatePicker;
 
 /**
  * This is a module for WPISuiteTNG that provides a support for planning poker.
@@ -52,8 +58,22 @@ public class PlanningPoker implements IJanewayModule {
 		
 		// Constructs and adds the MainPanel
 		JPanel mainPanel = new JPanel();
-		mainPanel.add(new JLabel("PlanningPoker placeholder"));
+		//mainPanel.add(new JLabel("PlanningPoker placeholder"));
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+		mainPanel.add(new JTextField("Name"));
+		mainPanel.add(new JTextField("Username"));
+		mainPanel.add(new JButton("Invite User"));
+		JRadioButton realTime = new  JRadioButton("Real-time");
+		JRadioButton distributed = new  JRadioButton("Distributed");
+		ButtonGroup gameTypeSelection = new ButtonGroup();
+		gameTypeSelection.add(realTime);
+		gameTypeSelection.add(distributed);
+		mainPanel.add(realTime);
+		mainPanel.add(distributed);
+		mainPanel.add(new JTextField("MM/DD/YY"));
+		mainPanel.add(new JButton("Create Game"));
+		//JXDatePicker picker = new JXDatePicker();
+		
 		
 		// Create a tab model that contains the toolbar panel and the main content panel
 		final JanewayTabModel tab1 = new JanewayTabModel(
