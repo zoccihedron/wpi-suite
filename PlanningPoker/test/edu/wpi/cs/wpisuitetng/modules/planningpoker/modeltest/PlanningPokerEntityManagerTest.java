@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Codon Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.model;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
 /**
  * Entity Manager testing class for Planning Poker

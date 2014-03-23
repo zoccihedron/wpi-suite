@@ -9,6 +9,11 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
@@ -29,10 +34,16 @@ public class Game extends AbstractModel{
 	
 	public Game() {
 		id = 0;
-		name = "";
+		name = generateName();
 		numRequirements = 0;
 	}
 	
+	private String generateName() {
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date now = Calendar.getInstance().getTime();
+		return df.format(now);
+	}
+
 	/**
 	 * Returns a game from JSON encoded string
 	 *
