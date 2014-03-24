@@ -10,7 +10,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,8 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 
 //import org.jdesktop.swingx.JXDatePicker;
 
@@ -46,6 +47,7 @@ public class PlanningPoker implements IJanewayModule {
 	 * Constructs the main views for this module. Namely one tab.
 	 */
 	public PlanningPoker() {
+	
 
 		// Initialize the list of tabs (however, this module has only one tab)
 		tabs = new ArrayList<JanewayTabModel>();
@@ -57,33 +59,11 @@ public class PlanningPoker implements IJanewayModule {
 		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
 		// Constructs and adds the MainPanel
-		JPanel mainPanel = new JPanel();
+		Game game = new Game();
 		
-		//Creates the different features/fields for the mainPanel
-		JTextField gameNameText = new JTextField("Name");
-		JTextField usernameText = new JTextField("Username");
-		JButton inviteUserButton = new JButton("Invite User");
-		JRadioButton realTime = new  JRadioButton("Real-time");
-		JRadioButton distributed = new  JRadioButton("Distributed");
-		ButtonGroup gameTypeSelection = new ButtonGroup();
-		JTextField DateText = new JTextField("MM/DD/YY");
-		JButton createGameButton = new JButton("Create Game");
+		MainView mainView = new MainView(game);
 		
-		//Customizes the mainPanel
-		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
-		//Adds the fields and button to the main panel.
-		mainPanel.add(gameNameText);
-		mainPanel.add(usernameText);
-		mainPanel.add(inviteUserButton);
-		mainPanel.add(realTime);
-		mainPanel.add(distributed);
-		mainPanel.add(DateText);
-		mainPanel.add(createGameButton);
-		
-		//Groups the JRadioButtons together so they act like actual radio buttons
-		gameTypeSelection.add(realTime);
-		gameTypeSelection.add(distributed);
 		
 		
 		// Create a tab model that contains the toolbar panel and the main content panel
@@ -91,7 +71,7 @@ public class PlanningPoker implements IJanewayModule {
 				getName(), 
 				new ImageIcon(), 
 				toolbarPanel, 
-				mainPanel);
+				mainView);
 			
 			// Add the tab to the list of tabs owned by this module
 			tabs.add(tab1);
