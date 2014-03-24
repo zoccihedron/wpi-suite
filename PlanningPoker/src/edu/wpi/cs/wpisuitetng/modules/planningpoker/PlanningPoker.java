@@ -58,21 +58,32 @@ public class PlanningPoker implements IJanewayModule {
 		
 		// Constructs and adds the MainPanel
 		JPanel mainPanel = new JPanel();
-		//mainPanel.add(new JLabel("PlanningPoker placeholder"));
-		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
-		mainPanel.add(new JTextField("Name"));
-		mainPanel.add(new JTextField("Username"));
-		mainPanel.add(new JButton("Invite User"));
+		
+		//Creates the different features/fields for the mainPanel
+		JTextField gameNameText = new JTextField("Name");
+		JTextField usernameText = new JTextField("Username");
+		JButton inviteUserButton = new JButton("Invite User");
 		JRadioButton realTime = new  JRadioButton("Real-time");
 		JRadioButton distributed = new  JRadioButton("Distributed");
 		ButtonGroup gameTypeSelection = new ButtonGroup();
-		gameTypeSelection.add(realTime);
-		gameTypeSelection.add(distributed);
+		JTextField DateText = new JTextField("MM/DD/YY");
+		JButton createGameButton = new JButton("Create Game");
+		
+		//Customizes the mainPanel
+		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+		
+		//Adds the fields and button to the main panel.
+		mainPanel.add(gameNameText);
+		mainPanel.add(usernameText);
+		mainPanel.add(inviteUserButton);
 		mainPanel.add(realTime);
 		mainPanel.add(distributed);
-		mainPanel.add(new JTextField("MM/DD/YY"));
-		mainPanel.add(new JButton("Create Game"));
-		//JXDatePicker picker = new JXDatePicker();
+		mainPanel.add(DateText);
+		mainPanel.add(createGameButton);
+		
+		//Groups the JRadioButtons together so they act like actual radio buttons
+		gameTypeSelection.add(realTime);
+		gameTypeSelection.add(distributed);
 		
 		
 		// Create a tab model that contains the toolbar panel and the main content panel
@@ -81,25 +92,25 @@ public class PlanningPoker implements IJanewayModule {
 				new ImageIcon(), 
 				toolbarPanel, 
 				mainPanel);
+			
+			// Add the tab to the list of tabs owned by this module
+			tabs.add(tab1);
+		}
 		
-		// Add the tab to the list of tabs owned by this module
-		tabs.add(tab1);
-	}
+		/*
+		 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
+		 */
+		@Override
+		public String getName() {
+			return "PlanningPoker";
+		}
 	
-	/*
-	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
-	 */
-	@Override
-	public String getName() {
-		return "PlanningPoker";
-	}
-
-	/*
-	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getTabs()
-	 */
-	@Override
-	public List<JanewayTabModel> getTabs() {
-		return tabs;
+		/*
+		 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getTabs()
+		 */
+		@Override
+		public List<JanewayTabModel> getTabs() {
+			return tabs;
 	}
 
 }
