@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.util.List;
 

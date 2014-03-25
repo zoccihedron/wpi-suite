@@ -9,8 +9,8 @@ import java.awt.Color;
 
 import javax.swing.border.BevelBorder;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GamesToTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.controller.GamesToTable;
 
 public class OverviewPanel extends JPanel {
 	private JTable table;
