@@ -22,6 +22,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
 
@@ -36,15 +37,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
 @SuppressWarnings({"serial"})
 public class NewGamePanel extends JPanel {
 	
-	JTextField gameNameText;
-	JTextField gameIdText;
-	JTextField usernameText;
+	JPlaceholderTextField gameNameText;
+	JPlaceholderTextField gameIdText;
+	JPlaceholderTextField usernameText;
 	JButton inviteUserButton;
 	JRadioButton realTime;
 	JRadioButton distributed;
 	ButtonGroup gameTypeSelection;
-	JTextField dateText;
-	JTextField numReqsText;
+	JPlaceholderTextField dateText;
+	JPlaceholderTextField numReqsText;
 	JButton createGameButton;
 	
 	JTextField resultName;
@@ -53,15 +54,15 @@ public class NewGamePanel extends JPanel {
 
 	
 	public NewGamePanel(PlanningPokerModel gamesModel) {
-		gameNameText = new JTextField("Name");
-		gameIdText = new JTextField("ID");
-		usernameText = new JTextField("Username");
+		gameNameText = new JPlaceholderTextField("Name");
+		gameIdText = new JPlaceholderTextField("ID");
+		usernameText = new JPlaceholderTextField("Username");
 		inviteUserButton = new JButton("Invite User");
 		realTime = new  JRadioButton("Real-time");
 		distributed = new  JRadioButton("Distributed");
 		gameTypeSelection = new ButtonGroup();
-		dateText = new JTextField("MM/DD/YY");
-		numReqsText = new JTextField("Number of Requirements");
+		dateText = new JPlaceholderTextField("MM/DD/YY");
+		numReqsText = new JPlaceholderTextField("Number of Requirements");
 		createGameButton = new JButton("Create Game");
 		
 		resultName = new JTextField("Name goes here");
