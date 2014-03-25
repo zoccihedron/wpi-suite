@@ -14,8 +14,6 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
-
 /**
  * This is a model for the planning poker module. This model
  * contains a list of games. It extends AbstractListModel so that

@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,6 +25,7 @@ public class OverviewPanel extends JPanel {
 		
 		table = new JTable(data, colNames);
 		add(new JScrollPane(table));
+		add(new JButton("Create a new game"));
 
 	}
 
