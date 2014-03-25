@@ -21,7 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
 
 
 /**
@@ -35,40 +37,62 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
 public class NewGamePanel extends JPanel {
 	
 	JTextField gameNameText;
+	JTextField gameIdText;
 	JTextField usernameText;
 	JButton inviteUserButton;
 	JRadioButton realTime;
 	JRadioButton distributed;
 	ButtonGroup gameTypeSelection;
-	JTextField DateText;
+	JTextField dateText;
+	JTextField numReqsText;
 	JButton createGameButton;
+	
+	JTextField resultName;
+	JTextField resultId;
+	JTextField resultNumReqs;
 
 	
-	public NewGamePanel(Game gameModel) {
+	public NewGamePanel(PlanningPokerModel gamesModel) {
 		gameNameText = new JTextField("Name");
+		gameIdText = new JTextField("ID");
 		usernameText = new JTextField("Username");
 		inviteUserButton = new JButton("Invite User");
 		realTime = new  JRadioButton("Real-time");
 		distributed = new  JRadioButton("Distributed");
 		gameTypeSelection = new ButtonGroup();
-		DateText = new JTextField("MM/DD/YY");
+		dateText = new JTextField("MM/DD/YY");
+		numReqsText = new JTextField("Number of Requirements");
 		createGameButton = new JButton("Create Game");
+		
+		resultName = new JTextField("Name goes here");
+		resultId = new JTextField("ID goes here");
+		resultNumReqs = new JTextField("Num Reqs go here");
+		
 		
 		setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
 		
 		//Adds the fields and button to the main panel.
 		add(gameNameText);
+		add(gameIdText);
 		add(usernameText);
 		add(inviteUserButton);
 		add(realTime);
 		add(distributed);
-		add(DateText);
+		add(dateText);
+		add(numReqsText);
 		add(createGameButton);
+		
+		add(resultName);
+		add(resultId);
+		add(resultNumReqs);
 		
 		//Groups the JRadioButtons together so they act like actual radio buttons
 		gameTypeSelection.add(realTime);
 		gameTypeSelection.add(distributed);
+		
+		// Maps Create Game button to AddGameController class
+		createGameButton.addActionListener(new AddGameController(gamesModel, this));
 
 	}
 	
@@ -76,4 +100,24 @@ public class NewGamePanel extends JPanel {
 	 * @return the txtNewMessage JTextField
 	 */
 
+	// creates a new game object to be sent to the database
+	public Game getGameObject() {
+		Game newGame = new Game();
+		newGame.setName(gameNameText.getText());
+		newGame.setId(Integer.parseInt(gameIdText.getText()));
+		newGame.setNumRequirements(Integer.parseInt(numReqsText.getText()));
+		return newGame;
+	}
+	
+	public void setResultName(String newName) {
+		resultName.setText(newName);
+	}
+
+	public void setResultId(String newId) {
+		resultId.setText(newId);	
+	}
+
+	public void setResultNumReqs(String newNumReqs) {
+		resultNumReqs.setText(newNumReqs);
+	}
 }

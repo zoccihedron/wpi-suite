@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
 
 /**
  * This panel fills the main content area of the tab for this module. It
@@ -36,11 +37,11 @@ public class MainView extends JPanel {
 	 * Construct the panel.
 	 * @param boardModel 
 	 */
-	public MainView(Game gameModel) {
+	public MainView(PlanningPokerModel gamesModel) {
 		// Add the board panel to this view
 		setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
-		newGamePanel = new NewGamePanel(gameModel);
+		newGamePanel = new NewGamePanel(gamesModel);
 		add(newGamePanel);
 	}
 }
