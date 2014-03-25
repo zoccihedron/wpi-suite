@@ -129,4 +129,9 @@ public class Game extends AbstractModel{
 	public int getNumRequirements() {
 		return numRequirements;
 	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 }

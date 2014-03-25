@@ -102,7 +102,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 */
 	@Override
 	public Game[] getAll(Session s) throws WPISuiteException {
-		Game[] allGames =  db.retrieveAll(new Game(s), s.getProject()).toArray(new Game[0]);
+		Game[] allGames =  db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
 		ArrayList<Game> gameForThisUser = new ArrayList<Game>();
 		User thisUser = s.getUser();
 		
@@ -185,7 +185,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
 		// TODO Implement role check for authorization of deleteAll
-		db.deleteAll(new Game(s), s.getProject());
+		db.deleteAll(new Game(), s.getProject());
 	}
 
 	@Override
