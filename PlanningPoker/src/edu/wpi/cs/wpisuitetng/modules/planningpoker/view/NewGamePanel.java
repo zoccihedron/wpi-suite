@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
 
 
@@ -34,24 +35,24 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
 @SuppressWarnings({"serial"})
 public class NewGamePanel extends JPanel {
 	
-	JTextField gameNameText;
-	JTextField usernameText;
+	JPlaceholderTextField gameNameText;
+	JPlaceholderTextField usernameText;
 	JButton inviteUserButton;
 	JRadioButton realTime;
 	JRadioButton distributed;
 	ButtonGroup gameTypeSelection;
-	JTextField DateText;
+	JPlaceholderTextField DateText;
 	JButton createGameButton;
 
 	
 	public NewGamePanel(Game gameModel) {
-		gameNameText = new JTextField("Name");
-		usernameText = new JTextField("Username");
+		gameNameText = new JPlaceholderTextField("Name");
+		usernameText = new JPlaceholderTextField("Username");
 		inviteUserButton = new JButton("Invite User");
 		realTime = new  JRadioButton("Real-time");
 		distributed = new  JRadioButton("Distributed");
 		gameTypeSelection = new ButtonGroup();
-		DateText = new JTextField("MM/DD/YY");
+		DateText = new JPlaceholderTextField("MM/DD/YY");
 		createGameButton = new JButton("Create Game");
 		
 		setBorder(BorderFactory.createLineBorder(Color.green, 2));
