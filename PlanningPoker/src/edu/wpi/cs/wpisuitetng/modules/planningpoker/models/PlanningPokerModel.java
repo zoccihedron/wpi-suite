@@ -24,10 +24,31 @@ import javax.swing.AbstractListModel;
  */
 public class PlanningPokerModel extends AbstractListModel<Game>{
 	
+	// the list of all games this user could access
 	private List<Game> games;
+	//the next available ID number for the game to be added
+	private int nextID;
 	
-	public PlanningPokerModel() {
+	//the static object allow the planning poker model to become a singleton
+	private static PlanningPokerModel instance;
+
+	
+	private PlanningPokerModel() {
 		games = new ArrayList<Game>();
+		nextID = 0;
+	}
+	
+	
+	/**
+	 * 
+	 * @return the instance of the planning poker model singleton.
+	 */
+	public static PlanningPokerModel getInstance(){
+		if(instance == null){
+			instance = new PlanningPokerModel();
+		}
+		
+		return instance;
 	}
 	
 	/**
@@ -36,9 +57,33 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	 * @param newGame the new game to be added to the list
 	 */
 	public void AddGame(Game newGame) {
+		newGame.setId(nextID++);
 		games.add(newGame);
+		// TODO: controller.getInstance().refreshTable()/addRequirement
+	}
+	
+	
+	/**
+	 * Return the game with the given id
+	 * 
+	 * @param id of the game wanted
+	 * 
+	 * @return Game which has the given id, or null if no game matches this id
+	 * 
+	 */
+	public Game getGame(int id){
+		Game temp = null;
+		for(int i = 0;i < games.size();i++){
+			temp = games.get(i);
+			if(temp.getID()==id){
+				break;
+			}
+		}
+		return temp;
 	}
 
+	
+	
 	/**
 	 * Returns the length of the list of games
 	 * 
