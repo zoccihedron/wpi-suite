@@ -14,6 +14,8 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
+
 /**
  * This is a model for the planning poker module. This model
  * contains a list of games. It extends AbstractListModel so that
@@ -25,6 +27,8 @@ import javax.swing.AbstractListModel;
 public class PlanningPokerModel extends AbstractListModel<Game>{
 	
 	private List<Game> games;
+	
+	private static PlanningPokerModel instance;
 	
 	public PlanningPokerModel() {
 		games = new ArrayList<Game>();
@@ -49,6 +53,11 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	public int getSize() {
 		return games.size();
 	}
+	
+	public List<Game> getGames()
+	{
+		return games;
+	}
 
 	/**
 	 * Returns the game at the index. This
@@ -62,6 +71,15 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	@Override
 	public Game getElementAt(int index) {
 		return games.get(games.size() - 1 - index);
+	}
+
+	public static PlanningPokerModel getInstance() {
+		if(instance == null)
+		{
+			instance = new PlanningPokerModel();
+		}
+		
+		return instance;
 	}
 
 }

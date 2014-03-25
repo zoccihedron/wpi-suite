@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.OverviewPanel;
 
 /**
  * This is a module for WPISuiteTNG that provides a support for planning poker.
@@ -55,12 +56,14 @@ public class PlanningPoker implements IJanewayModule {
 		mainPanel.add(new JLabel("PlanningPoker placeholder"));
 		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
+		OverviewPanel overviewPanel = new OverviewPanel();
+		
 		// Create a tab model that contains the toolbar panel and the main content panel
 		final JanewayTabModel tab1 = new JanewayTabModel(
 				getName(), 
 				new ImageIcon(), 
 				toolbarPanel, 
-				mainPanel);
+				overviewPanel);
 		
 		// Add the tab to the list of tabs owned by this module
 		tabs.add(tab1);
