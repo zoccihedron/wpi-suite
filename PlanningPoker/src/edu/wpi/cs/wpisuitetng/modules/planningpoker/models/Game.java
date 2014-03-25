@@ -30,7 +30,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 public class Game extends AbstractModel{
 	private int id;
 	private String name;
-	
+
+
 	private List<User> participants;
 	private User gameCreator;
 	
@@ -55,6 +56,7 @@ public class Game extends AbstractModel{
 		estimates = new ArrayList<Estimate>();
 		participants = new ArrayList<User>();
 		gameCreator = s.getUser();
+		
 	}
 	
 	/**
@@ -156,6 +158,7 @@ public class Game extends AbstractModel{
 	
 	/**
 	 * Check if a given user is the creator of this game
+	 *  (has authorization to change participants/users)
 	 * @param user given
 	 * @return true if this user is the creator
 	 */
@@ -198,8 +201,10 @@ public class Game extends AbstractModel{
 	 * (by adding this user to the user list and also every estimate in estimate list)
 	 * @param user the new user to be added to this game
 	 * @return true if the user is successfully added, false if not or the user is already in the list
+	 * @throws exception if this user has no 
 	 */
 	public boolean addUser(User user){
+		
 		if(hasUser(user)) return false;
 		participants.add(user);
 		
@@ -220,6 +225,10 @@ public class Game extends AbstractModel{
 		for(User u: participants){
 			estimate.addUser(u);
 		}
+		//TODO: make sure that creator of the game also participate in game; 
+		//if not, changeCreator will have more things to do
+		estimate.addUser(gameCreator);
+		
 		estimates.add(estimate);
 		
 	}
@@ -235,6 +244,10 @@ public class Game extends AbstractModel{
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public int getNumRequirements() {
