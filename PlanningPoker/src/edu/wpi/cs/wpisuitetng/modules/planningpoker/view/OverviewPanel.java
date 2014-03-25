@@ -25,7 +25,7 @@ public class OverviewPanel extends JPanel {
 		
 		table = new JTable(data, colNames);
 		add(new JScrollPane(table));
-		add(new JButton("Create a new game"));
+		add(new JButton("Refresh"));
 
 	}
 

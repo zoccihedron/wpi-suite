@@ -27,7 +27,7 @@ public class GamesToTable {
 			{
 				if(j % 3 == 0) // get id
 				{
-					str[i][j] = "" + games.get(i).getID();
+					str[i][j] = "" + games.get(i).getId();
 				}
 				
 				if(j % 3 == 1) // get name

@@ -120,7 +120,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		 * We have to get the original game from db4o, copy properties from updatedGame,
 		 * then save the original Game again.
 		 */
-		final List<Model> oldGames = db.retrieve(Game.class, "id", updatedGame.getID(), s.getProject());
+		final List<Model> oldGames = db.retrieve(Game.class, "id", updatedGame.getId(), s.getProject());
 		if(oldGames.size() < 1 || oldGames.get(0) == null) {
 			throw new BadRequestException("Game with ID does not exist.");
 		}

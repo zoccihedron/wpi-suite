@@ -28,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  * @version Mar 22, 2014
  */
 public class Game extends AbstractModel{
+
 	private int id;
 	private String name;
 	private int numRequirements;
@@ -38,6 +39,11 @@ public class Game extends AbstractModel{
 		numRequirements = 0;
 	}
 	
+	/**
+	 * Returns string which is the date in string format
+	 *
+	 * @return date as string
+	 */
 	private String generateName() {
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Date now = Calendar.getInstance().getTime();
@@ -97,12 +103,12 @@ public class Game extends AbstractModel{
 	 *            the game to copy from.
 	 */
 	public void copyFrom(Game updatedGame) {
-		id = updatedGame.getID();
+		id = updatedGame.getId();
 		name = updatedGame.getName();
 		numRequirements = updatedGame.getNumRequirements();
 	}
 	
-	public int getID() {
+	public int getId() {
 		return id;
 	}
 	
@@ -112,5 +118,17 @@ public class Game extends AbstractModel{
 	
 	public int getNumRequirements() {
 		return numRequirements;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setNumRequirements(int numRequirements) {
+		this.numRequirements = numRequirements;
 	}
 }
