@@ -27,7 +27,7 @@ public class Tag extends AbstractModel {
 	private final String name;
 	
 	/**
-	 * Construct a new Tag with the given name.
+	 * Construct a new Tag with the given name.3
 	 * 
 	 *  @param name the name of the tag, must be neither null nor empty
 	 */

@@ -29,9 +29,9 @@ public class GameTest {
 	@Test
 	public void generateNameTest()
 	{
-		Game g = new Game();
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Date now = Calendar.getInstance().getTime();
+		Game g = new Game();
 		assertEquals(g.getName(), df.format(now));
 	}
 }
