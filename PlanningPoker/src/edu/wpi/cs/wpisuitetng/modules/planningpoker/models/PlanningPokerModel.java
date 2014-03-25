@@ -19,8 +19,8 @@ import javax.swing.AbstractListModel;
  * contains a list of games. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
  *
- * @author Robert
- * @version Mar 22, 2014
+ * @author Robert, yyan
+ * @version Mar 25, 2014
  */
 public class PlanningPokerModel extends AbstractListModel<Game>{
 	
@@ -35,7 +35,7 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	
 	private PlanningPokerModel() {
 		games = new ArrayList<Game>();
-		nextID = 0;
+		nextID = 1;
 	}
 	
 	
@@ -80,6 +80,15 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 			}
 		}
 		return temp;
+	}
+	
+	
+	/**
+	 * Return all games stored in this model
+	 * @return all games in list
+	 */
+	public List<Game> getAllGames(){
+		return games;
 	}
 
 	

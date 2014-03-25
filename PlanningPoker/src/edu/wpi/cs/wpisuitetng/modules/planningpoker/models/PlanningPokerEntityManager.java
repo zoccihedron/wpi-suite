@@ -29,8 +29,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * This is the entity manager for the game sessions 
  * in the PlanningPoker module
  *
- * @author Robert Edwards
- * @version Mar 22, 2014
+ * @author Robert Edwards, yyan
+ * @version Mar 24, 2014
  */
 public class PlanningPokerEntityManager implements EntityManager<Game> {
 	

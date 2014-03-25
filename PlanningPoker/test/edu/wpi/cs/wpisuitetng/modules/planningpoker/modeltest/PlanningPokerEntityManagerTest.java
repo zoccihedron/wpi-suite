@@ -46,8 +46,8 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Before
 	public void setUp(){
-		game = new Game(1, "Game", 4);
-		game2 = new Game(2, "Game2", 5);
+		game = new Game();
+		game2 = new Game();
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
 		dummyUser.setRole(Role.ADMIN);
 		testProject = new Project("test", "1");
@@ -66,7 +66,6 @@ public class PlanningPokerEntityManagerTest {
 		Game newGame = manager.makeEntity(s1, game.toJSON());
 		assertEquals(1, newGame.getID());
 		assertEquals("Game", newGame.getName());
-		assertEquals(4, newGame.getNumRequirements());
 		assertSame(db.retrieve(Game.class,  "id", 1).get(0), newGame);
 	}
 	
