@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Codon Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.model;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
 import java.util.List;
