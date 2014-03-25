@@ -1,4 +1,4 @@
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.entitymanagers;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
@@ -6,7 +6,6 @@ import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 
 public class EstimateEntityManager  implements EntityManager<Estimate>{
 
