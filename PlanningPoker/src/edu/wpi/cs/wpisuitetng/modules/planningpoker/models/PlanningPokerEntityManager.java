@@ -7,8 +7,9 @@
  * 
  * Contributors: Team Codon Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.model;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -66,7 +67,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	/**
 	 * Retrieves a game session from the database
 	 * @param s the session
-	 * @param id the ID number of the desired session
+	 * @param id the ID number of the game
 	 * 
 	 * @return the game matching the given ID 
 	 * @throws NotFoundException * @throws NotFoundException 
@@ -96,12 +97,22 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * 
 	 * @param s the session
 	 * 
-	 * @return the list of games
+	 * @return the list of games this user participates in
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
 	public Game[] getAll(Session s) throws WPISuiteException {
-		return db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+		Game[] allGames =  db.retrieveAll(new Game(s), s.getProject()).toArray(new Game[0]);
+		ArrayList<Game> gameForThisUser = new ArrayList<Game>();
+		User thisUser = s.getUser();
+		
+		for(Game temp: allGames){
+			if(temp.hasUser(thisUser)){
+				gameForThisUser.add(temp);
+			}
+		}
+		return gameForThisUser.toArray(new Game[0]);
+		
 	}
 
 	/**
@@ -174,7 +185,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
 		// TODO Implement role check for authorization of deleteAll
-		db.deleteAll(new Game(), s.getProject());
+		db.deleteAll(new Game(s), s.getProject());
 	}
 
 	@Override

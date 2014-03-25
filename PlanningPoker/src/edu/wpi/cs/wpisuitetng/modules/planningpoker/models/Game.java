@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Codon Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.model;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +27,10 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  * @author Robert
  * @version Mar 22, 2014
  */
+/**
+ * @author Bootlegger
+ *
+ */
 public class Game extends AbstractModel{
 	private int id;
 	private String name;
@@ -36,6 +40,18 @@ public class Game extends AbstractModel{
 		id = 0;
 		name = generateName();
 		numRequirements = 0;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @param numRequirements
+	 */
+	public Game(int id, String name, int numRequirements){
+		this.id = id;
+		this.name = name;
+		this.numRequirements = numRequirements;
 	}
 	
 	private String generateName() {
