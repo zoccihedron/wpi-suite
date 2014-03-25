@@ -60,6 +60,11 @@ public class Game extends AbstractModel{
 		final Gson parser = new Gson();
 		return parser.fromJson(json, Game.class);
 	}
+	
+	public static Game[] fromJsonArray(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, Game[].class);
+	}
 
 	/**
 	 * Saves the game

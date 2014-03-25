@@ -45,7 +45,7 @@ public class MainView extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.green, 2));
 		
 		newGamePanel = new NewGamePanel(gamesModel);
-		overviewPanel = new OverviewPanel();
+		overviewPanel = new OverviewPanel(gamesModel);
 		add(newGamePanel);
 		add(overviewPanel);
 	}
