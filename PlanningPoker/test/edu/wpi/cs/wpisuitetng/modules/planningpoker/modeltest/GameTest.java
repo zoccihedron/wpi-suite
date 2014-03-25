@@ -11,7 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
 import org.junit.*;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import static org.junit.Assert.*;
 
 import java.text.DateFormat;
