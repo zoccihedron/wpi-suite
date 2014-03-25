@@ -24,16 +24,16 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * The game will keep track of any estimates for a session,
  * which will be used in the module.
  *
- * @author Robert
- * @version Mar 22, 2014
+ * @author Robert Edwards, yyan
+ * @version Mar 25, 2014
  */
 public class Game extends AbstractModel{
 	private int id;
 	private String name;
 
 
-	private List<User> participants;
-	private User gameCreator;
+	private List<UserInfo> participants;
+	private UserInfo gameCreator;
 	
 	
 	private List<Estimate> estimates;
@@ -49,25 +49,25 @@ public class Game extends AbstractModel{
 	 * @param s is the session of the user creating the game is in
 	 * 
 	 */
-	public Game(Session s) {
+	public Game(UserInfo user) {
 		//TODO: whether a session could be add to the parameter of game's constructor
 		id = 0;
 		name = "";
 		estimates = new ArrayList<Estimate>();
-		participants = new ArrayList<User>();
-		gameCreator = s.getUser();
+		participants = new ArrayList<UserInfo>();
+		gameCreator = user;
 		
 	}
 	
 	/**
-	 * this constructor is only for Count() method in PlanningPokerEntityManager,
+	 * this constructor is only for Count() and retrieve method in PlanningPokerEntityManager,
 	 * and should not be called when a real game is created
 	 */
 	public Game(){
 		id = 0;
 		name = "";
 		estimates = new ArrayList<Estimate>();
-		participants = new ArrayList<User>();
+		participants = new ArrayList<UserInfo>();
 		gameCreator = null;
 	}
 	
@@ -111,10 +111,28 @@ public class Game extends AbstractModel{
 		return new Gson().toJson(this, Game.class);
 	}
 
+	
+	/**
+	 * Check if Object o provided is equal to this game by checking id
+	 * number of the game (id number should be unique)
+	 * 
+	 * @param o given Object for checking
+	 * @return true if same
+	 * 
+	 */
 	@Override
 	public Boolean identify(Object o) {
-		// TODO Auto-generated method stub
-		return null;
+		if(o instanceof Integer){		
+			return (getID() == (Integer)(o));	
+			
+		} else if (o instanceof Game){
+			return (getID() == ((Game)(o)).getID());
+			
+		} else if (o instanceof String){			
+			return (Integer.toString(getID()).equals((String)o));
+			
+		}
+		return false;
 	}
 	
 	/**
@@ -126,6 +144,7 @@ public class Game extends AbstractModel{
 	public void copyFrom(Game updatedGame) {
 		id = updatedGame.getID();
 		name = updatedGame.getName();
+		//TODO: not finished
 	}
 	
 	
@@ -142,20 +161,53 @@ public class Game extends AbstractModel{
 	 * @return new creator of the game
 	 * 
 	 */
-	public User changeCreator(User user){
-		if(gameCreator.equals(user)) return user;
-		if(hasUser(user)){
-			participants.remove(user);
+	public UserInfo changeCreator(User user){ //need test
+		UserInfo newCreator = null;
+		
+		if(isCreator(user)) return getGameCreator();
+		else if(isParticipant(user)){
+			for(UserInfo u: participants){
+				if(u.getUser().equals(user)){
+					newCreator = u;
+					participants.remove(u);
+				}
+			}
+			
+		} else {
+			newCreator = new UserInfo(user);
 		}
-		User oldCreator = gameCreator;
+		UserInfo oldCreator = gameCreator;
 		participants.add(oldCreator);
-		gameCreator = user;
+		gameCreator = newCreator;
 		
 		return gameCreator;
+	}
+	public UserInfo changeCreator(UserInfo user){
+		UserInfo newCreator = null;
+		if(isCreator(user)) return user;
+		else if (isParticipant(user)){
+			for(UserInfo u: participants){
+				if(u.equals(user)){
+					newCreator = u;
+					participants.remove(u);
+				}
+			}
+			
+		} else {
+			newCreator = user;
+		}
+		UserInfo oldCreator = gameCreator;
+		participants.add(oldCreator);
+		gameCreator = newCreator;
+		
+		return gameCreator;
+		
 	}
 	
 	
 	
+	
+
 	/**
 	 * Check if a given user is the creator of this game
 	 *  (has authorization to change participants/users)
@@ -163,6 +215,10 @@ public class Game extends AbstractModel{
 	 * @return true if this user is the creator
 	 */
 	public boolean isCreator(User user){
+		if(gameCreator.getUser().equals(user)) return true;
+		return false;
+	}
+	public boolean isCreator(UserInfo user){
 		if(gameCreator.equals(user)) return true;
 		return false;
 	}
@@ -178,13 +234,28 @@ public class Game extends AbstractModel{
 	public boolean isParticipant(User user){
 		if(participants==null) return false;
 		
-		for(User temp: participants){
-			if(user.equals(temp))
+		for(UserInfo temp: participants){
+			if(temp.getUser().equals(temp))
 				return true;
 		}
 		
 		return false;
 	}
+	
+	public boolean isParticipant(UserInfo user){
+		if(participants==null) return false;
+		
+		for(UserInfo temp: participants){
+			if(temp.equals(temp))
+				return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
+	
 	/**
 	 * Check if the given user is in this game (either creator or participant)
 	 * 
@@ -196,6 +267,10 @@ public class Game extends AbstractModel{
 		
 	}
 	
+	public boolean hasUser(UserInfo user){
+		return isParticipant(user) || isCreator(user);
+	}
+	
 	/**
 	 * Add a new user to this game 
 	 * (by adding this user to the user list and also every estimate in estimate list)
@@ -203,9 +278,9 @@ public class Game extends AbstractModel{
 	 * @return true if the user is successfully added, false if not or the user is already in the list
 	 * @throws exception if this user has no 
 	 */
-	public boolean addUser(User user){
+	public boolean addUser(UserInfo user){
 		
-		if(hasUser(user)) return false;
+		if(hasUser(user.getUser())) return false;
 		participants.add(user);
 		
 		for(Estimate e: estimates){
@@ -222,7 +297,7 @@ public class Game extends AbstractModel{
 	 * @param estimate
 	 */
 	public void addEstimate(Estimate estimate){
-		for(User u: participants){
+		for(UserInfo u: participants){
 			estimate.addUser(u);
 		}
 		//TODO: make sure that creator of the game also participate in game; 
@@ -233,6 +308,13 @@ public class Game extends AbstractModel{
 		
 	}
 
+	
+	/**
+	 * @return the gameCreator
+	 */
+	public UserInfo getGameCreator() {
+		return gameCreator;
+	}
 	
 	public void setId(int id) {
 		this.id = id;
