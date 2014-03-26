@@ -24,10 +24,12 @@ public class UserInfo {
 	private Boolean allowEmail = false;
 
 
-	public UserInfo(User u, String im, String e){
+	public UserInfo(User u, String im, String e, boolean allowim, boolean allowemail){
 		user = u;
 		IM = im;
 		email = e;
+		allowIM = allowim;
+		allowEmail = allowemail;
 				
 	}
 	

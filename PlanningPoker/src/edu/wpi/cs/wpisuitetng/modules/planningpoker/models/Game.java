@@ -33,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  *
  */
 public class Game extends AbstractModel{
-	private int id;
+	private int id; //final?
 	private String name = "";
 	private List<UserInfo> participants = new ArrayList<UserInfo>();
 	private UserInfo gameCreator;
@@ -335,6 +335,7 @@ public class Game extends AbstractModel{
 		name = n;
 	}
 
+	//should not be set?
 	public void setId(int id) {
 		this.id = id;
 	}
