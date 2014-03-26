@@ -69,8 +69,14 @@ public class NewGamePanel extends JPanel {
 		resultId = new JTextField("ID goes here");
 		resultNumReqs = new JTextField("Num Reqs go here");
 		
+		usernameText.setEnabled(false);
+		inviteUserButton.setEnabled(false);
+		distributed.setEnabled(false);
+		realTime.setEnabled(false);
+		dateText.setEnabled(false);
 		
-		setBorder(BorderFactory.createLineBorder(Color.green, 2));
+		
+		setBorder(BorderFactory.createLineBorder(Color.orange, 2));
 		
 		
 		//Adds the fields and button to the main panel.

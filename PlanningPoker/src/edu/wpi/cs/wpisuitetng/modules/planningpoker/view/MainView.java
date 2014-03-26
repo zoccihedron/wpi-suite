@@ -42,7 +42,7 @@ public class MainView extends JPanel {
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
 		// Add the board panel to this view
-		setBorder(BorderFactory.createLineBorder(Color.green, 2));
+		setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		newGamePanel = new NewGamePanel(gamesModel);
 		overviewPanel = new OverviewPanel(gamesModel);

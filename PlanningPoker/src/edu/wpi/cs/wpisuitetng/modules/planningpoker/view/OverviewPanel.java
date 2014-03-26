@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
 public class OverviewPanel extends JPanel {
 	private JTable table;
 	private JButton refreshBtn;
-	private final String[] colNames = {"ID", "Name", "Deadline"};
+	private final String[] colNames = {"ID", "Name", "Number of Requirements"};
 	private JScrollPane scrollPane;
 
 	/**
@@ -25,6 +26,8 @@ public class OverviewPanel extends JPanel {
 	 */
 	public OverviewPanel(PlanningPokerModel gamesModel) {
 		
+		setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
+
 		String[][] data = {};
 		refreshBtn = new JButton("Refresh");
 		
