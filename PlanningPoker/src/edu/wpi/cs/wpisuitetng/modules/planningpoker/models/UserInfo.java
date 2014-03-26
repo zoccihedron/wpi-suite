@@ -9,15 +9,18 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import com.google.gson.Gson;
+
+import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 /**
- * @author yyan
+ * @author yyan, Robert
  *
  */
 
-public class UserInfo {
-	private final User user;//name , id
+public class UserInfo extends AbstractModel{
+	private final User user;
 	private String IM;
 	private String email;
 	private Boolean allowIM = false;
@@ -121,6 +124,56 @@ public class UserInfo {
 		this.allowEmail = allowEmail;
 	}
 
+	/** Saves the game (to be implemented)
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
+	 */
+	@Override
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/** Deletes the game (to be implemented)
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
+	 */
+	@Override
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * Encodes the user info as a  JSON-encoded string
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
+	 */
+	@Override
+	public String toJSON() {
+		return new Gson().toJson(this, UserInfo.class);
+	}
 	
+	public static UserInfo fromJson(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, UserInfo.class);
+	}
+
+	/**
+	 * Checks if Object o is equal to the game by checking 
+	 * the id of the user, which should be unique 
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#identify(java.lang.Object)
+	 */
+	@Override
+	public Boolean identify(Object o) {
+		if(o instanceof Integer){		
+			return (getUser().getIdNum() == (Integer)(o));	
+			
+		} else if (o instanceof User){
+			return (getUser().getIdNum() == ((User)(o)).getIdNum());
+			
+		} else if (o instanceof String){			
+			return (Integer.toString(getUser().getIdNum()).equals((String)o));
+			
+		}
+		return false;
+	}
 	
 }
