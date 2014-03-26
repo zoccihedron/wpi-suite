@@ -73,14 +73,27 @@ public class Estimate {
 		return false;
 	}
 	
+	
+	
 	/**
-	 * Check if an user has made an estimation for this requirement
+	 * Check if this user is included in this estimate. This method must be called before
+	 * the method hasMadeAnEstimation is called
+	 * @param user given for checking
+	 * @return true if the user is in
+	 */
+	public boolean hasUser(UserInfo user){
+		return userWithEstimate.containsKey(user);
+	}
+	
+	
+	
+	/**
+	 * Check if an user has made an estimation for this requirement. This method should be
+	 * called after hasUser() is called
 	 * @param user the user given for check
 	 * @return true if the user has made a valid estimation, false if not
-	 * @throws Exception if this user does not exist in the list of users for this estimate
 	 */
-	public boolean hasMadeAnEstimation(UserInfo user) throws Exception{
-		if(!userWithEstimate.containsKey(user)) throw new Exception("This user is not in this game");
+	public boolean hasMadeAnEstimation(UserInfo user){
 		if(userWithEstimate.get(user)==0)	return false; 
 		return true;
 		
@@ -88,7 +101,7 @@ public class Estimate {
 	}
 	
 	
-	
+		
 	/**
 	 * Check if all users have made estimations for this requirement
 	 * @return true if every user has made a valid estimation
@@ -98,6 +111,28 @@ public class Estimate {
 			if(e.getValue()==0)	return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Let an user to make an estimation
+	 * @param user the user
+	 * @param est the value of estimation set by user in Integer
+	 * @return true if the data is successfully updated, false if user does not exist in this game
+	 */
+	public boolean makeEstimate(UserInfo user, int est){
+		if(hasUser(user)==false)	return false;
+		userWithEstimate.put(user,est);
+		return true;
+		
+	}
+	
+	/**
+	 * Get estimate value of a user. This method should be called after hasUser() is called
+	 * @param user the given user
+	 * @return the estimate of the given user
+	 */
+	public int getEstimate(UserInfo user){
+		return userWithEstimate.get(user);
 	}
 	
 	

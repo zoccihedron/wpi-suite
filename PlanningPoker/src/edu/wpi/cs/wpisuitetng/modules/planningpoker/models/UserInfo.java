@@ -17,9 +17,12 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  */
 
 public class UserInfo {
-	private final User user;
+	private final User user;//name , id
 	private String IM;
 	private String email;
+	private Boolean allowIM = false;
+	private Boolean allowEmail = false;
+
 
 	public UserInfo(User u, String im, String e){
 		user = u;
@@ -44,7 +47,7 @@ public class UserInfo {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((user == null) ? 0 : user.getIdNum()%31);//not sure what user IdNum range is
+		result = prime * result + ((user == null) ? 0 : user.getIdNum());//not sure what user IdNum range is
 		return result;
 	}
 
@@ -88,7 +91,34 @@ public class UserInfo {
 		this.email = email;
 	}
 	
-	
+	/**
+	 * @return the allowIM
+	 */
+	public Boolean getAllowIM() {
+		return allowIM;
+	}
+
+	/**
+	 * @param allowIM the allowIM to set
+	 */
+	public void setAllowIM(Boolean allowIM) {
+		this.allowIM = allowIM;
+	}
+
+	/**
+	 * @return the allowEmail
+	 */
+	public Boolean getAllowEmail() {
+		return allowEmail;
+	}
+
+	/**
+	 * @param allowEmail the allowEmail to set
+	 */
+	public void setAllowEmail(Boolean allowEmail) {
+		this.allowEmail = allowEmail;
+	}
+
 	
 	
 }

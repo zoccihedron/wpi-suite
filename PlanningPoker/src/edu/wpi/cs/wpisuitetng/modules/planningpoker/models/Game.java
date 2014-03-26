@@ -9,8 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,15 +34,18 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  */
 public class Game extends AbstractModel{
 	private int id;
-	private String name;
-	private List<UserInfo> participants;
+	private String name = "";
+	private List<UserInfo> participants = new ArrayList<UserInfo>();
 	private UserInfo gameCreator;
 	
+	private Date start;
+	private Date end;
+	private Boolean isTerminated = false;
 	
-	private List<Estimate> estimates;
+	private List<Estimate> estimates = new ArrayList<Estimate>();;
 	
 	
-	//TODO: timestamp, countdown or time for deadline, estimate
+	//TODO: timestamp, countdown or time for deadline, estimate, boolean for termination
 
 	
 	/**
@@ -52,15 +53,17 @@ public class Game extends AbstractModel{
 	 * of this game will be filled when the game is created
 	 * 
 	 * @param user is the user that created the session
+	 * @param startTime start time of the game
+	 * @param endTime end time of the game
 	 * 
 	 */
-	public Game(UserInfo user) {
+	public Game(UserInfo user, String n, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
 		id = 0;
-		name = "";
-		estimates = new ArrayList<Estimate>();
-		participants = new ArrayList<UserInfo>();
+		name = n;
 		gameCreator = user;
+		start = startTime;
+		end = endTime;
 		
 	}
 	
@@ -70,17 +73,9 @@ public class Game extends AbstractModel{
 	 */
 	public Game(){
 		id = 0;
-		name = "";
-		estimates = new ArrayList<Estimate>();
-		participants = new ArrayList<UserInfo>();
 		gameCreator = null;
 	}
 	
-	private String generateName() {
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		Date now = Calendar.getInstance().getTime();
-		return df.format(now);
-	}
 
 	/**
 	 * Returns a game from JSON encoded string
@@ -193,6 +188,7 @@ public class Game extends AbstractModel{
 		
 		return gameCreator;
 	}
+	
 	public UserInfo changeCreator(UserInfo user){
 		UserInfo newCreator = null;
 		if(isCreator(user)) return user;
@@ -334,9 +330,74 @@ public class Game extends AbstractModel{
 	public String getName() {
 		return name;
 	}
+	
+	public void setName(String n){
+		name = n;
+	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	
+	/**
+	 * Check if this game is terminated. Game can be terminated 
+	 * automatically (end time has been reached) or manually
+	 * @return true if game is terminated
+	 */
+	public Boolean getIsTerminated() {
+		if(isTerminated==true) return true;
+		Date now = Calendar.getInstance().getTime();
+		if(now.compareTo(end) >= 0){
+			isTerminated = true;
+			return isTerminated;
+		}
+		return false;
+	}
+
+	/**
+	 * @param isTerminated the isTerminated to set
+	 */
+	public void setIsTerminated(Boolean isTerminated) {
+		this.isTerminated = isTerminated;
+	}
+
+	/**
+	 * @return the start
+	 */
+	public Date getStart() {
+		return start;
+	}
+
+	/**
+	 * reset start time of the game
+	 * @param start the start to set
+	 * @return false if the start time is later than end time
+	 */
+	public boolean setStart(Date s) {
+		if(s.compareTo(end) >= 0) return false;
+		this.start = s;
+		return true;
+	}
+
+	/**
+	 * @return the end
+	 */
+	public Date getEnd() {
+		return end;
+	}
+
+	/**
+	 * Reset end time of the game
+	 * @param end the end to set
+	 * @return false if the end time is earlier than current time or the start time
+	 */
+	public boolean setEnd(Date e) {
+		Date now = Calendar.getInstance().getTime();
+		if(e.compareTo(now) <= 0 || e.compareTo(start) <= 0) return false;
+		end = e;
+		return true;
+	}
+	
 	
 }
