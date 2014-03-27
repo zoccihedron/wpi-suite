@@ -78,7 +78,7 @@ public class Estimate {
 	 * @param user the user given for check
 	 * @return true if the user has made a valid estimation, false if not
 	 */
-	public boolean hasMadeAnEstimation(UserInfo user){
+	public boolean hasMadeAnEstimation(String user){
 		if(userWithEstimate.get(user)==0)	return false; 
 		return true;	
 	}
@@ -111,7 +111,7 @@ public class Estimate {
 	 * @param user the given user
 	 * @return the estimate of the given user
 	 */
-	public int getEstimate(UserInfo user){
+	public int getEstimate(String user){
 		return userWithEstimate.get(user);
 	}
 	
