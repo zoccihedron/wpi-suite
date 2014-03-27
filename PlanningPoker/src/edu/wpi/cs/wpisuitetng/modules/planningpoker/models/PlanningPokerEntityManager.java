@@ -107,7 +107,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		User thisUser = s.getUser();
 		
 		for(Game temp: allGames){
-			if(temp.hasUser(thisUser)){
+			if(temp.hasUser(thisUser.getName())){
 				gameForThisUser.add(temp);
 			}
 		}

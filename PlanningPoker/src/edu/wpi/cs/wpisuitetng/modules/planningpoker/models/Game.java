@@ -33,15 +33,13 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  *
  */
 public class Game extends AbstractModel{
-	private int id; //final?
+	private int id;
 	private String name = "";
-	private List<UserInfo> participants = new ArrayList<UserInfo>();
-	private UserInfo gameCreator;
-	
+	private List<String> participants = new ArrayList<String>();
+	private String gameCreator;
 	private Date start;
 	private Date end;
 	private Boolean isTerminated = false;
-	
 	private List<Estimate> estimates = new ArrayList<Estimate>();;
 	
 	
@@ -57,11 +55,11 @@ public class Game extends AbstractModel{
 	 * @param endTime end time of the game
 	 * 
 	 */
-	public Game(UserInfo user, String n, Date startTime, Date endTime) {
+	public Game(User user, String n, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
 		id = 0;
 		name = n;
-		gameCreator = user;
+		gameCreator = user.getName();
 		start = startTime;
 		end = endTime;
 		
@@ -148,9 +146,13 @@ public class Game extends AbstractModel{
 	 *            the game to copy from.
 	 */
 	public void copyFrom(Game updatedGame) {
-		id = updatedGame.getID();
 		name = updatedGame.getName();
-		//TODO: not finished
+		participants = updatedGame.getParticipants();
+		gameCreator = updatedGame.getGameCreator();
+		start = updatedGame.getStart();
+		end = updatedGame.getEnd();
+		isTerminated = updatedGame.getIsTerminated();
+		estimates = updatedGame.getEstimates();
 	}
 	
 	
@@ -167,33 +169,11 @@ public class Game extends AbstractModel{
 	 * @return new creator of the game
 	 * 
 	 */
-	public UserInfo changeCreator(User user){ //need test
-		UserInfo newCreator = null;
-		
+	public String changeCreator(String user){ //need test
+		String newCreator = "";
 		if(isCreator(user)) return getGameCreator();
 		else if(isParticipant(user)){
-			for(UserInfo u: participants){
-				if(u.getUser().equals(user)){
-					newCreator = u;
-					participants.remove(u);
-				}
-			}
-			
-		} else {
-			newCreator = new UserInfo(user);
-		}
-		UserInfo oldCreator = gameCreator;
-		participants.add(oldCreator);
-		gameCreator = newCreator;
-		
-		return gameCreator;
-	}
-	
-	public UserInfo changeCreator(UserInfo user){
-		UserInfo newCreator = null;
-		if(isCreator(user)) return user;
-		else if (isParticipant(user)){
-			for(UserInfo u: participants){
+			for(String u: participants){
 				if(u.equals(user)){
 					newCreator = u;
 					participants.remove(u);
@@ -203,34 +183,23 @@ public class Game extends AbstractModel{
 		} else {
 			newCreator = user;
 		}
-		UserInfo oldCreator = gameCreator;
+		String oldCreator = gameCreator;
 		participants.add(oldCreator);
 		gameCreator = newCreator;
 		
 		return gameCreator;
-		
 	}
 	
-	
-	
-	
-
 	/**
 	 * Check if a given user is the creator of this game
 	 *  (has authorization to change participants/users)
 	 * @param user given
 	 * @return true if this user is the creator
 	 */
-	public boolean isCreator(User user){
-		if(gameCreator.getUser().equals(user)) return true;
-		return false;
-	}
-	public boolean isCreator(UserInfo user){
+	public boolean isCreator(String user){
 		if(gameCreator.equals(user)) return true;
 		return false;
 	}
-	
-
 	
 	/**
 	 * Check if the given user is a participant of this game (not the creator)
@@ -238,44 +207,26 @@ public class Game extends AbstractModel{
 	 * @param user given for checking
 	 * @return true if the given user is a participant of this game
 	 */
-	public boolean isParticipant(User user){
+	public boolean isParticipant(String user){
 		if(participants==null) return false;
 		
-		for(UserInfo temp: participants){
-			if(temp.getUser().equals(temp))
+		for(String temp: participants){
+			if(temp.equals(user))
 				return true;
 		}
 		
 		return false;
 	}
-	
-	public boolean isParticipant(UserInfo user){
-		if(participants==null) return false;
 		
-		for(UserInfo temp: participants){
-			if(temp.equals(temp))
-				return true;
-		}
-		
-		return false;
-	}
-	
-	
-	
-	
 	/**
 	 * Check if the given user is in this game (either creator or participant)
 	 * 
 	 * @param user given for checking
 	 * @return true if the given user is in this game
 	 */
-	public boolean hasUser(User user){
+	public boolean hasUser(String user){
 		return isParticipant(user) || isCreator(user);
 		
-	}
-	
-	public boolean hasUser(UserInfo user){
-		return isParticipant(user) || isCreator(user);
 	}
 	
 	/**
@@ -285,9 +236,9 @@ public class Game extends AbstractModel{
 	 * @return true if the user is successfully added, false if not or the user is already in the list
 	 * @throws exception if this user has no 
 	 */
-	public boolean addUser(UserInfo user){
+	public boolean addUser(String user){
 		
-		if(hasUser(user.getUser())) return false;
+		if(hasUser(user)) return false;
 		participants.add(user);
 		
 		for(Estimate e: estimates){
@@ -304,7 +255,7 @@ public class Game extends AbstractModel{
 	 * @param estimate
 	 */
 	public void addEstimate(Estimate estimate){
-		for(UserInfo u: participants){
+		for(String u: participants){
 			estimate.addUser(u);
 		}
 		//TODO: make sure that creator of the game also participate in game; 
@@ -319,7 +270,7 @@ public class Game extends AbstractModel{
 	/**
 	 * @return the gameCreator
 	 */
-	public UserInfo getGameCreator() {
+	public String getGameCreator() {
 		return gameCreator;
 	}
 	
@@ -334,12 +285,6 @@ public class Game extends AbstractModel{
 	public void setName(String n){
 		name = n;
 	}
-
-	//should not be set?
-	public void setId(int id) {
-		this.id = id;
-	}
-	
 	
 	/**
 	 * Check if this game is terminated. Game can be terminated 
@@ -398,6 +343,34 @@ public class Game extends AbstractModel{
 		if(e.compareTo(now) <= 0 || e.compareTo(start) <= 0) return false;
 		end = e;
 		return true;
+	}
+	
+	public List<String> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(List<String> participants) {
+		this.participants = participants;
+	}
+
+	public List<Estimate> getEstimates() {
+		return estimates;
+	}
+
+	public void setEstimates(List<Estimate> estimates) {
+		this.estimates = estimates;
+	}
+
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public void setGameCreator(String gameCreator) {
+		this.gameCreator = gameCreator;
 	}
 	
 	

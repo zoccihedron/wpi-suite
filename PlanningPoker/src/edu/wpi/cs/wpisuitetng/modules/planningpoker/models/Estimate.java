@@ -9,6 +9,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -22,33 +24,22 @@ import java.util.Map.Entry;
  * @author yyan
  * @version Mar 25, 2014
  */
-
-
 public class Estimate {
 	
-	private String requirement;
-	private HashMap<UserInfo,Integer> userWithEstimate;
+	private int reqID;
+	private HashMap<String,Integer> userWithEstimate;
 	
-	
-	public Estimate(){
-		requirement = null;
-		userWithEstimate = new HashMap<UserInfo,Integer>();
+	public Estimate(int r){
+		reqID = r;
+		userWithEstimate = new HashMap<String,Integer>();	
 	}
-	
-	public Estimate(String r){
-		requirement = r;
-		userWithEstimate = new HashMap<UserInfo,Integer>();
-		
-	}
-	
-	
 	
 	/**
 	 * Get requirement of this estimate
 	 * @return requirement of this estimate
 	 */
-	public String getRequirement() {
-		return requirement;
+	public int getReqID() {
+		return reqID;
 	}
 
 	/**
@@ -56,24 +47,20 @@ public class Estimate {
 	 * @param requirement the new requirement given
 	 */
 	public void setRequirement(String requirement) {
-		this.requirement = requirement;
+		this.reqID= reqID;
 	}
-
 	
 	/**
-	 * 
 	 * Add user to the hashMap of this estimate by creating a new
 	 * pair of user and integer; default integer value will be -1
 	 * 
 	 * @param user UserInfo of the new user given
 	 * @return true if the user has been correctly added into
 	 */
-	public boolean addUser(UserInfo user){
+	public boolean addUser(String user){
 		if(userWithEstimate.put(user,0)!= null) return true;
 		return false;
 	}
-	
-	
 	
 	/**
 	 * Check if this user is included in this estimate. This method must be called before
@@ -81,11 +68,9 @@ public class Estimate {
 	 * @param user given for checking
 	 * @return true if the user is in
 	 */
-	public boolean hasUser(UserInfo user){
+	public boolean hasUser(String user){
 		return userWithEstimate.containsKey(user);
 	}
-	
-	
 	
 	/**
 	 * Check if an user has made an estimation for this requirement. This method should be
@@ -95,19 +80,15 @@ public class Estimate {
 	 */
 	public boolean hasMadeAnEstimation(UserInfo user){
 		if(userWithEstimate.get(user)==0)	return false; 
-		return true;
-		
-		
+		return true;	
 	}
-	
-	
 		
 	/**
 	 * Check if all users have made estimations for this requirement
 	 * @return true if every user has made a valid estimation
 	 */
 	public boolean allEstimationsMade(){
-		for(Entry<UserInfo,Integer> e: userWithEstimate.entrySet()){
+		for(Entry<String,Integer> e: userWithEstimate.entrySet()){
 			if(e.getValue()==0)	return false;
 		}
 		return true;
@@ -119,11 +100,10 @@ public class Estimate {
 	 * @param est the value of estimation set by user in Integer
 	 * @return true if the data is successfully updated, false if user does not exist in this game
 	 */
-	public boolean makeEstimate(UserInfo user, int est){
+	public boolean makeEstimate(String user, int est){
 		if(hasUser(user)==false)	return false;
 		userWithEstimate.put(user,est);
 		return true;
-		
 	}
 	
 	/**
@@ -135,6 +115,41 @@ public class Estimate {
 		return userWithEstimate.get(user);
 	}
 	
+	/**
+	 * Generates the mean of the estimates for a requirement, and
+	 * ignores any invalid estimates (0).
+	 *
+	 * @return the mean of the estimate.
+	 */
+	public double getMean() {
+		int sum = 0;
+		int count = 0;
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			if(temp.getValue() != 0) {
+				count++;
+				sum += temp.getValue();
+			}
+		}
+		double mean = (double)sum/(double)count;
+		return mean;
+	}
 	
-
+	public double getMedian() {
+		ArrayList<Integer> estimates = new ArrayList<Integer>();
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			if(temp.getValue() != 0) {
+				estimates.add(temp.getValue());
+			}
+		}
+		Collections.sort(estimates);
+		int length = estimates.size();
+		double median = 0;
+		if(length % 2 == 0){
+			median = ((double) estimates.get(length / 2) + (double)estimates.get((length/2) - 1)) / 2.0;
+		}
+		else {
+			median = (double)estimates.get(length / 2);
+		}
+		return median;
+	}
 }
