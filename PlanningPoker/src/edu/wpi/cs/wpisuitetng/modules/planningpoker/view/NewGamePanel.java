@@ -23,8 +23,8 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 
 /**
@@ -112,7 +112,6 @@ public class NewGamePanel extends JPanel {
 		Game newGame = new Game();
 		newGame.setName(gameNameText.getText());
 		newGame.setId(Integer.parseInt(gameIdText.getText()));
-		newGame.setNumRequirements(Integer.parseInt(numReqsText.getText()));
 		return newGame;
 	}
 	

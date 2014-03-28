@@ -15,8 +15,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -78,6 +78,6 @@ public class AddGameController implements ActionListener {
 	public void addGameToView(Game returnGame) {
 		view.setResultName(returnGame.getName());
 		view.setResultId(Integer.toString(returnGame.getId()));
-		view.setResultNumReqs(Integer.toString(returnGame.getNumRequirements()));
+		view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));
 	}
 }

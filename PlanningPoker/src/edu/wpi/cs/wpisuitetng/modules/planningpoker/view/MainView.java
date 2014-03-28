@@ -17,8 +17,8 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 /**
  * This panel fills the main content area of the tab for this module. It

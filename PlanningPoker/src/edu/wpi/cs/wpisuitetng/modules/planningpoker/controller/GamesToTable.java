@@ -2,8 +2,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.util.List;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 
 
@@ -37,7 +37,7 @@ public class GamesToTable {
 				
 				if(j % 3 == 2) // get num of requirements
 				{
-					str[i][j] = "" + games[i].getNumRequirements();
+					str[i][j] = "" + games[i].getEstimates().size();
 				}	
 			}
 		}

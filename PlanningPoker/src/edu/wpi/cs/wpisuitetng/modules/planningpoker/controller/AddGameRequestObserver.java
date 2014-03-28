@@ -12,7 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;

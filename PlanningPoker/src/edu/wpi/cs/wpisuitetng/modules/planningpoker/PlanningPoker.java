@@ -26,8 +26,8 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 
 //import org.jdesktop.swingx.JXDatePicker;
@@ -60,7 +60,7 @@ public class PlanningPoker implements IJanewayModule {
 		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		// Constructs and adds the MainPanel
-		PlanningPokerModel games = new PlanningPokerModel();
+		PlanningPokerModel games = PlanningPokerModel.getInstance();
 		
 		MainView mainView = new MainView(games);
 		

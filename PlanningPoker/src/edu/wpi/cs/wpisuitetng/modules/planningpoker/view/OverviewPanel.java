@@ -12,8 +12,8 @@ import javax.swing.border.BevelBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GamesToTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 public class OverviewPanel extends JPanel {
 	private JTable table;
