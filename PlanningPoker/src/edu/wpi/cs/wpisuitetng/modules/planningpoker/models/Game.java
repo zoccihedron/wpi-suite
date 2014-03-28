@@ -33,12 +33,13 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  *
  */
 public class Game extends AbstractModel{
-	private int id;
+	private int id = 0;
 	private String name = "";
+	private String description = "";
 	private List<String> participants = new ArrayList<String>();
-	private String gameCreator;
-	private Date start;
-	private Date end;
+	private String gameCreator = "";
+	private Date start = new Date();
+	private Date end = new Date();
 	private Boolean isTerminated = false;
 	private List<Estimate> estimates = new ArrayList<Estimate>();;
 	
@@ -71,7 +72,6 @@ public class Game extends AbstractModel{
 	 */
 	public Game(){
 		id = 0;
-		gameCreator = null;
 	}
 	
 
@@ -383,6 +383,20 @@ public class Game extends AbstractModel{
 	
 	public void setGameCreator(String gameCreator) {
 		this.gameCreator = gameCreator;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	
