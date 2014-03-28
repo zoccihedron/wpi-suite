@@ -11,7 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
 import org.junit.*;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.model.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import static org.junit.Assert.*;
 
 import java.text.DateFormat;
@@ -29,9 +29,9 @@ public class GameTest {
 	@Test
 	public void generateNameTest()
 	{
-		Game g = new Game();
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 		Date now = Calendar.getInstance().getTime();
+		Game g = new Game();
 		assertEquals(g.getName(), df.format(now));
 	}
 }

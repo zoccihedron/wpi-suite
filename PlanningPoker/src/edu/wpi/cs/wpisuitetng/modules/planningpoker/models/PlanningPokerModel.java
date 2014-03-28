@@ -7,7 +7,7 @@
  * 
  * Contributors: Team Codon Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.model;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +19,22 @@ import javax.swing.AbstractListModel;
  * contains a list of games. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
  *
- * @author Robert
- * @version Mar 22, 2014
+ * @author Robert, yyan
+ * @version Mar 25, 2014
  */
 public class PlanningPokerModel extends AbstractListModel<Game>{
 	
+	// the list of all games this user could access
 	private List<Game> games;
+	//the next available ID number for the game to be added
+	private int nextID;
 	
-	public PlanningPokerModel() {
+	//the static object allow the planning poker model to become a singleton
+	private static PlanningPokerModel instance;
+
+	private PlanningPokerModel() {
 		games = new ArrayList<Game>();
+		nextID = 1;
 	}
 	
 	/**
@@ -36,9 +43,42 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	 * @param newGame the new game to be added to the list
 	 */
 	public void AddGame(Game newGame) {
+		newGame.setId(nextID++);
 		games.add(newGame);
+		// TODO: controller.getInstance().refreshTable()/addRequirement
+	}
+	
+	
+	/**
+	 * Return the game with the given id
+	 * 
+	 * @param id of the game wanted
+	 * 
+	 * @return Game which has the given id, or null if no game matches this id
+	 * 
+	 */
+	public Game getGame(int id){
+		Game temp = null;
+		for(int i = 0;i < games.size();i++){
+			temp = games.get(i);
+			if(temp.getID()==id){
+				break;
+			}
+		}
+		return temp;
+	}
+	
+	
+	/**
+	 * Return all games stored in this model
+	 * @return all games in list
+	 */
+	public List<Game> getAllGames(){
+		return games;
 	}
 
+	
+	
 	/**
 	 * Returns the length of the list of games
 	 * 
@@ -48,6 +88,11 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	@Override
 	public int getSize() {
 		return games.size();
+	}
+	
+	public List<Game> getGames()
+	{
+		return games;
 	}
 
 	/**
@@ -62,6 +107,15 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	@Override
 	public Game getElementAt(int index) {
 		return games.get(games.size() - 1 - index);
+	}
+
+	public static PlanningPokerModel getInstance() {
+		if(instance == null)
+		{
+			instance = new PlanningPokerModel();
+		}
+		
+		return instance;
 	}
 
 }

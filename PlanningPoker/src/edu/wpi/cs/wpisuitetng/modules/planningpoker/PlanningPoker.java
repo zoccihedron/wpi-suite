@@ -15,13 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+
+//import org.jdesktop.swingx.JXDatePicker;
 
 /**
  * This is a module for WPISuiteTNG that provides a support for planning poker.
@@ -40,6 +49,7 @@ public class PlanningPoker implements IJanewayModule {
 	 * Constructs the main views for this module. Namely one tab.
 	 */
 	public PlanningPoker() {
+	
 
 		// Initialize the list of tabs (however, this module has only one tab)
 		tabs = new ArrayList<JanewayTabModel>();
@@ -47,39 +57,39 @@ public class PlanningPoker implements IJanewayModule {
 		// Create a JPanel to hold the toolbar for the tab
 		JPanel toolbarPanel = new JPanel();
 		toolbarPanel.add(new JLabel("PlanningPoker placeholder toolbar"));
-		toolbarPanel.add(new JButton("Create Session"), BorderLayout.WEST);
-		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		// Constructs and adds the MainPanel
-		JPanel mainPanel = new JPanel();
-		mainPanel.add(new JLabel("PlanningPoker placeholder"));
-		mainPanel.setBorder(BorderFactory.createLineBorder(Color.green, 2));
+		PlanningPokerModel games = PlanningPokerModel.getInstance();
 		
+		MainView mainView = new MainView(games);
+		
+				
 		// Create a tab model that contains the toolbar panel and the main content panel
 		final JanewayTabModel tab1 = new JanewayTabModel(
 				getName(), 
 				new ImageIcon(), 
-				toolbarPanel, 
-				mainPanel);
+				toolbarPanel,
+				mainView);
+			
+			// Add the tab to the list of tabs owned by this module
+			tabs.add(tab1);
+		}
 		
-		// Add the tab to the list of tabs owned by this module
-		tabs.add(tab1);
-	}
+		/*
+		 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
+		 */
+		@Override
+		public String getName() {
+			return "PlanningPoker";
+		}
 	
-	/*
-	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getName()
-	 */
-	@Override
-	public String getName() {
-		return "PlanningPoker";
-	}
-
-	/*
-	 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getTabs()
-	 */
-	@Override
-	public List<JanewayTabModel> getTabs() {
-		return tabs;
+		/*
+		 * @see edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule#getTabs()
+		 */
+		@Override
+		public List<JanewayTabModel> getTabs() {
+			return tabs;
 	}
 
 }
