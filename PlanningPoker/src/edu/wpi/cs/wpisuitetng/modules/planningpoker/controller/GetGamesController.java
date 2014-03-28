@@ -76,6 +76,17 @@ public class GetGamesController implements ActionListener {
 			request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response
 			request.send(); // send the request
 	}
+	
+	public void receivedGames(Game[] games)
+	{
+		PlanningPokerModel.getInstance().emptyModel();
+		if(games != null)
+		{
+			PlanningPokerModel.getInstance().addAllGames(games);
+		}
+		view.getTable().refresh();
+	}
+	
 
 
 }

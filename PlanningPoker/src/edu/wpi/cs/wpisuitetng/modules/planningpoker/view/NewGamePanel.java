@@ -74,10 +74,7 @@ public class NewGamePanel extends JPanel {
 		distributed.setEnabled(false);
 		realTime.setEnabled(false);
 		dateText.setEnabled(false);
-		
-		
-		setBorder(BorderFactory.createLineBorder(Color.orange, 2));
-		
+				
 		
 		//Adds the fields and button to the main panel.
 		add(gameNameText);

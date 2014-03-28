@@ -10,9 +10,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+
 
 /**
  * This is a model for the planning poker module. This model
@@ -32,7 +34,7 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 	//the static object allow the planning poker model to become a singleton
 	private static PlanningPokerModel instance;
 
-	private PlanningPokerModel() {
+	public PlanningPokerModel() {
 		games = new ArrayList<Game>();
 		nextID = 1;
 	}
@@ -116,6 +118,28 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 		}
 		
 		return instance;
+	}
+
+	public void addAllGames(Game[] games) {
+		for(Game game: games)
+		{
+			this.AddGame(game);
+		}
+	}
+
+	public void emptyModel() {
+		int oldSize = getSize();
+		Iterator<Game> iterator = games.iterator();
+		while (iterator.hasNext()) {
+			iterator.next();
+			iterator.remove();
+		}
+		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));		
+		this.setId(0);
+	}
+
+	private void setId(int i) {
+		nextID = i;
 	}
 
 }

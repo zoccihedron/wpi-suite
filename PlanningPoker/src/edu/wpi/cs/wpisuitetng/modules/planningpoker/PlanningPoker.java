@@ -57,7 +57,6 @@ public class PlanningPoker implements IJanewayModule {
 		// Create a JPanel to hold the toolbar for the tab
 		JPanel toolbarPanel = new JPanel();
 		toolbarPanel.add(new JLabel("PlanningPoker placeholder toolbar"));
-		toolbarPanel.setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		// Constructs and adds the MainPanel
 		PlanningPokerModel games = PlanningPokerModel.getInstance();
