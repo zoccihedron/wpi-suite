@@ -19,13 +19,16 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+
 import javax.swing.JFormattedTextField;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.factories.FormFactory;
@@ -53,7 +56,9 @@ public class CreateGameInfoPanel extends JPanel {
 	JButton createGameButton;
 
 	
+	
 	public CreateGameInfoPanel(PlanningPokerModel gamesModel) {
+		setBounds(5,5,300,500);
 		gameNameText = new JPlaceholderTextField("Name");
 		gameNameText.setBounds(13, 9, 86, 20);
 		gameTypeSelection = new ButtonGroup();

@@ -13,12 +13,14 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
+import java.awt.Panel;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
@@ -50,7 +52,7 @@ public class NewGamePanel extends JSplitPane {
 		createGameInfoPanel = new CreateGameInfoPanel(model);
 		
 		this.setLeftComponent(createGameInfoPanel);
-		this.setRightComponent(createGameInfoPanel);
+		this.setRightComponent(new JScrollPane());
 		this.setDividerLocation(180);
 	}
 }
