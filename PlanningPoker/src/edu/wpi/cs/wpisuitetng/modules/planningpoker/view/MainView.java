@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import javax.swing.Box;
 
 /**
  * This panel fills the main content area of the tab for this module. It
@@ -34,7 +35,7 @@ public class MainView extends JPanel {
 	private final NewGamePanel newGamePanel;
 	
 	/** The overview panel */
-	private final OverviewPanel overviewPanel;
+	//private final OverviewPanel overviewPanel;
 	
 	/**
 	 * Construct the panel.
@@ -45,8 +46,9 @@ public class MainView extends JPanel {
 		setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		newGamePanel = new NewGamePanel(gamesModel);
-		overviewPanel = new OverviewPanel(gamesModel);
+		newGamePanel.setBounds(10, 10, 100, 300);
+		//overviewPanel = new OverviewPanel(gamesModel);
 		add(newGamePanel);
-		add(overviewPanel);
+		//add(overviewPanel);
 	}
 }
