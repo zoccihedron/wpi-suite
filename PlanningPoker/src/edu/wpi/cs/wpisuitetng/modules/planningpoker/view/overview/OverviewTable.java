@@ -31,14 +31,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 /**
- * @author 
+ * @author irshusdock, acchaulk, bobby9002
  * @version $Revision: 1.0 $
  */
 public class OverviewTable extends JTable
 {
 	private DefaultTableModel tableModel = null;
-	private boolean initialized;
-	private boolean isInEditMode;
 	private boolean changedByRefresh = false;	
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 4, 0, 0);
 	
@@ -50,19 +48,23 @@ public class OverviewTable extends JTable
 	 */
 	public OverviewTable(Object[][] data, String[] columnNames)
 	{
-		this.tableModel = new DefaultTableModel(data, columnNames);
+		this.tableModel = new DefaultTableModel(data, columnNames)
+		{
+			@Override
+            public boolean isCellEditable(int row, int column) {
+               //all cells false
+               return false;
+            }
+		};
 		this.setModel(tableModel);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.setDragEnabled(true);
         this.setDropMode(DropMode.ON);
-
+        
 		this.getTableHeader().setReorderingAllowed(false);
 		this.setAutoCreateRowSorter(true);
 		setFillsViewportHeight(true);
-		isInEditMode = false;
-
-		initialized = false;
-
+	
 		/* Create double-click event listener */
 		this.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e){
@@ -100,7 +102,6 @@ public class OverviewTable extends JTable
 		
 		for (int i = 0; i < games.size(); i++) {
 			Game game = games.get(i);			
-			System.out.println(game.getId());
 					
 			tableModel.addRow(new Object[]{ game.getId(), 
 					game.getName(),
@@ -115,21 +116,10 @@ public class OverviewTable extends JTable
 		
 		System.out.println("finished refreshing the table");		
 	}
-	
-
-	
+		
 	/**
-	 * Used to toggle the isInEditMode to indicate whether the requirements in the Overview table are 
-	 * being edited or not 
-	 * 
-	 * @param beingEdited
+	 * @return the state of being changed by refresh
 	 */
-	public void setEditFlag(boolean beingEdited) {
-		isInEditMode = beingEdited;
-	}
-	
-	
-	
 	public boolean wasChangedByRefresh() {
 		return changedByRefresh;
 	}

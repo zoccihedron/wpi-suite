@@ -120,6 +120,11 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 		return instance;
 	}
 
+	
+	/**
+	 * Adds each game in the database to the PlanningPokerModel
+	 * @param games is the array of games that the database currently holds
+	 */
 	public void addAllGames(Game[] games) {
 		for(Game game: games)
 		{
@@ -127,6 +132,9 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 		}
 	}
 
+	/**
+	 * Removes all elements from the PlanningPokerModel
+	 */
 	public void emptyModel() {
 		int oldSize = getSize();
 		Iterator<Game> iterator = games.iterator();
@@ -138,6 +146,10 @@ public class PlanningPokerModel extends AbstractListModel<Game>{
 		this.setId(0);
 	}
 
+	/**
+	 * Set nextID to the passed value
+	 * @param i the value to set nextID to
+	 */
 	private void setId(int i) {
 		nextID = i;
 	}

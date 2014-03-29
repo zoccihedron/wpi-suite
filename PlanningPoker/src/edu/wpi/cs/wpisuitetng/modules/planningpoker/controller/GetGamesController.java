@@ -60,13 +60,6 @@ public class GetGamesController implements ActionListener {
 			request.send(); // send the request
 	}
 	
-	public void convertGameToTable(Game[] games)
-	{
-		String[][] tableString;
-		tableString = new GamesToTable(games).getTable(); 
-		
-		view.updateTable(tableString);
-	}
 	
 	public void initializeTable() {
 		// Get the text that was entered
@@ -77,6 +70,13 @@ public class GetGamesController implements ActionListener {
 			request.send(); // send the request
 	}
 	
+	
+	
+	/**
+	 * Removes all data from the PlanningPokerModel and then adds the games from the database to the model. It then 
+	 * refreshes the OverviewTable
+	 * @param games is the array of games currently in the database
+	 */
 	public void receivedGames(Game[] games)
 	{
 		PlanningPokerModel.getInstance().emptyModel();
@@ -84,7 +84,7 @@ public class GetGamesController implements ActionListener {
 		{
 			PlanningPokerModel.getInstance().addAllGames(games);
 		}
-		view.getTable().refresh();
+		view.updateTable();
 	}
 	
 

@@ -7,10 +7,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.swing.border.BevelBorder;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GamesToTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
@@ -30,28 +32,48 @@ public class OverviewPanel extends JPanel {
 		String[][] data = {};
 		refreshBtn = new JButton("Refresh");
 		
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 0;
+		
 		table = new OverviewTable(data, colNames);
 		scrollPane = new JScrollPane(table);
+		
+		// ID
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
+		
+		// Game Name
+		table.getColumnModel().getColumn(1).setMinWidth(240);
+		// Status
+		table.getColumnModel().getColumn(2).setMinWidth(85);
+		table.getColumnModel().getColumn(2).setMaxWidth(85);
+		
+		// Deadline
+		table.getColumnModel().getColumn(3).setMinWidth(200);
+		table.getColumnModel().getColumn(3).setMaxWidth(200);
+
+		// Num of Requirements
+		table.getColumnModel().getColumn(4).setMinWidth(40);
+		table.getColumnModel().getColumn(4).setMaxWidth(120);
+		
+		// Game Creator
+		table.getColumnModel().getColumn(5).setMaxWidth(85);
+		table.getColumnModel().getColumn(5).setMaxWidth(200);
+
+		scrollPane.setPreferredSize(new Dimension(1000,500));
+		add(scrollPane, c);
 		add(refreshBtn);
-		add(scrollPane);
 		
 		refreshBtn.addActionListener(new GetGamesController(gamesModel, this));
 	}
 	
-	public void updateTable(String[][] data)
+	public void updateTable()
 	{
-		remove(scrollPane);
-		table = new OverviewTable(data,colNames);
-		scrollPane = new JScrollPane(table);
-		add(scrollPane);
-		this.revalidate();
+		table.refresh();
 	
 	}
 	
-	public OverviewTable getTable()
-	{
-		return table;
-	}
 	
 	
 
