@@ -12,29 +12,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
 import java.awt.Panel;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import javax.swing.JTabbedPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
-import javax.swing.JFormattedTextField;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
 
 
 /**
@@ -47,12 +30,22 @@ import com.jgoodies.forms.layout.RowSpec;
 @SuppressWarnings({"serial"})
 public class NewGamePanel extends JSplitPane {
 	public CreateGameInfoPanel createGameInfoPanel;
+	public JTabbedPane tabPane;
 	
 	public NewGamePanel(PlanningPokerModel model) {
 		createGameInfoPanel = new CreateGameInfoPanel(model);
+		tabPane = new JTabbedPane();
+		tabPane.addTab("Requirements", new Panel());
+		tabPane.addTab("Create new requirement", new Panel());
+		tabPane.addTab("Create new deck", new Panel());
+
+		
+		
+		
+		
 		
 		this.setLeftComponent(createGameInfoPanel);
-		this.setRightComponent(new JScrollPane());
-		this.setDividerLocation(180);
+		this.setRightComponent(tabPane);
+		this.setDividerLocation(200);
 	}
 }

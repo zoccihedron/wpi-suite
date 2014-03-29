@@ -19,20 +19,16 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
-import javax.swing.JFormattedTextField;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JComboBox;
 
 
 /**
@@ -46,22 +42,36 @@ import com.jgoodies.forms.layout.RowSpec;
 public class CreateGameInfoPanel extends JPanel {
 	
 	JPlaceholderTextField gameNameText;
-	JButton inviteUserButton;
+	//JButton inviteUserButton;
 	
 	JRadioButton realTime;
 	JRadioButton distributed;
 	ButtonGroup gameTypeSelection;
 	
+	JRadioButton rdbtnAm;
+	JRadioButton rdbtnPm;
+	ButtonGroup AMPMSelection;
+	
 	JPlaceholderTextField dateText;
 	JButton createGameButton;
+	private JLabel lblName;
+	private JLabel lblDeadline;
+	private JComboBox Minutes;
+	private JLabel label;
+	private JLabel lblTime;
+	private JLabel lblDeck;
+	private JComboBox deck;
+	private JButton btnNewButton;
 
 	
 	
 	public CreateGameInfoPanel(PlanningPokerModel gamesModel) {
 		setBounds(5,5,300,500);
 		gameNameText = new JPlaceholderTextField("Name");
-		gameNameText.setBounds(13, 9, 86, 20);
+		gameNameText.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		gameNameText.setBounds(119, 55, 130, 20);
 		gameTypeSelection = new ButtonGroup();
+		AMPMSelection = new ButtonGroup();
 		
 		
 		setBorder(BorderFactory.createLineBorder(Color.orange, 2));
@@ -70,33 +80,118 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		//Adds the fields and button to the main panel.
 		add(gameNameText);
+		/*
 		inviteUserButton = new JButton("Invite User");
-		inviteUserButton.setBounds(13, 36, 85, 23);
+		inviteUserButton.setBounds(10, 82, 85, 23);
 		
 				inviteUserButton.setEnabled(false);
-				add(inviteUserButton);
+				add(inviteUserButton);*/
 		realTime = new  JRadioButton("Real-time");
-		realTime.setBounds(13, 65, 71, 23);
+		realTime.setBounds(10, 395, 71, 23);
 		realTime.setEnabled(false);
 		add(realTime);
 		
 		//Groups the JRadioButtons together so they act like actual radio buttons
 		gameTypeSelection.add(realTime);
 		distributed = new  JRadioButton("Distributed");
-		distributed.setBounds(13, 94, 77, 23);
+		distributed.setBounds(10, 424, 77, 23);
 		distributed.setEnabled(false);
 		add(distributed);
 		gameTypeSelection.add(distributed);
 		dateText = new JPlaceholderTextField("MM/DD/YY");
-		dateText.setBounds(13, 123, 86, 20);
+		dateText.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		dateText.setBounds(119, 84, 130, 20);
 		dateText.setEnabled(false);
 		add(dateText);
-		createGameButton = new JButton("Create Game");
-		createGameButton.setBounds(13, 149, 86, 23);
+		createGameButton = new JButton("Start Game");
+		createGameButton.setBounds(204, 466, 86, 23);
 		add(createGameButton);
 		
 		// Maps Create Game button to AddGameController class
 		createGameButton.addActionListener(new AddGameController(gamesModel, this));
+		
+		JLabel lblNewLabel = new JLabel("Game Information");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblNewLabel.setBounds(46, 11, 210, 33);
+		add(lblNewLabel);
+		
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(109, 466, 89, 23);
+		add(btnSave);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(10, 466, 89, 23);
+		add(btnCancel);
+		
+		lblName = new JLabel("Name:");
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblName.setBounds(35, 58, 46, 14);
+		add(lblName);
+		
+		lblDeadline = new JLabel("Deadline:");
+		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblDeadline.setBounds(35, 84, 86, 20);
+		add(lblDeadline);
+		
+		
+		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
+		JComboBox Hour = new JComboBox(hours);
+		Hour.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		Hour.setBounds(119, 117, 52, 20);
+	
+		add(Hour);
+		
+		String[] minutes = {"00","15","30","45"};
+
+		Minutes = new JComboBox(minutes);
+		Minutes.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		Minutes.setBounds(196, 117, 53, 20);
+		add(Minutes);
+		
+		label = new JLabel(":");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		label.setBounds(181, 118, 12, 14);
+		add(label);
+		
+		lblTime = new JLabel("Time:");
+		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblTime.setBounds(35, 115, 86, 20);
+		add(lblTime);
+		
+		
+		
+		rdbtnAm = new JRadioButton("AM");
+		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		rdbtnAm.setBounds(119, 144, 46, 23);
+		rdbtnAm.setSelected(true);
+		
+		rdbtnPm = new JRadioButton("PM");
+		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		rdbtnPm.setBounds(163, 144, 46, 23);
+
+		
+		AMPMSelection.add(rdbtnAm);
+		AMPMSelection.add(rdbtnPm);
+		
+		add(rdbtnAm);
+		add(rdbtnPm);
+		
+		lblDeck = new JLabel("Deck:");
+		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblDeck.setBounds(35, 176, 86, 20);
+		add(lblDeck);
+		
+		String[] decks = {"default"};
+		deck = new JComboBox(decks);
+		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deck.setBounds(119, 178, 130, 20);
+		add(deck);
+		
+		btnNewButton = new JButton("Add new deck");
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnNewButton.setBounds(119, 211, 130, 23);
+		add(btnNewButton);
 
 	}
 	
