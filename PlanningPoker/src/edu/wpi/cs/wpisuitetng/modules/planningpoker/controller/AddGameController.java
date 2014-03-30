@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -32,16 +32,16 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class AddGameController implements ActionListener {
 	
 	private final PlanningPokerModel model;
-	private final NewGamePanel view;
+	private final CreateGameInfoPanel view;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param model the model containing the messages
-	 * @param view the view where the user enters new messages
+	 * @param createGameInfoPanel the view where the user enters new messages
 	 */
-	public AddGameController(PlanningPokerModel model, NewGamePanel view) {
+	public AddGameController(PlanningPokerModel model, CreateGameInfoPanel createGameInfoPanel) {
 		this.model = model;
-		this.view = view;
+		this.view = createGameInfoPanel;
 	}
 
 	/* 
@@ -76,8 +76,8 @@ public class AddGameController implements ActionListener {
 	}
 
 	public void addGameToView(Game returnGame) {
-		view.setResultName(returnGame.getName());
-		view.setResultId(Integer.toString(returnGame.getId()));
-		view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));
+		//view.setResultName(returnGame.getName());
+		//view.setResultId(Integer.toString(returnGame.getId()));
+		//view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));
 	}
 }

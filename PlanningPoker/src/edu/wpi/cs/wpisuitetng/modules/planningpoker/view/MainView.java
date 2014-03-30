@@ -16,9 +16,12 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+
+import javax.swing.Box;
 
 /**
  * This panel fills the main content area of the tab for this module. It
@@ -28,25 +31,29 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  *
  */
 @SuppressWarnings("serial")
-public class MainView extends JPanel {
+public class MainView extends JTabbedPane {
 
 	/** The panel containing the new game creator */
 	private final NewGamePanel newGamePanel;
 	
 	/** The overview panel */
-	private final OverviewPanel overviewPanel;
+	//private final OverviewPanel overviewPanel;
 	
 	/**
 	 * Construct the panel.
 	 * @param boardModel 
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
+		
+		
+		//setBounds(0,0,500,500);
 		// Add the board panel to this view
 		setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		newGamePanel = new NewGamePanel(gamesModel);
-		overviewPanel = new OverviewPanel(gamesModel);
-		add(newGamePanel);
-		add(overviewPanel);
+		newGamePanel.setBounds(0,0,500,500);
+		//overviewPanel = new OverviewPanel(gamesModel);
+		addTab("New Game",newGamePanel);
+		//add(overviewPanel);
 	}
 }
