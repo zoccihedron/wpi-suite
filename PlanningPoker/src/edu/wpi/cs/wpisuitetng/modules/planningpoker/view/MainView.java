@@ -37,7 +37,7 @@ public class MainView extends JTabbedPane {
 	private final NewGamePanel newGamePanel;
 	
 	/** The overview panel */
-	//private final OverviewPanel overviewPanel;
+	private final OverviewPanel overviewPanel;
 	
 	/**
 	 * Construct the panel.
@@ -50,10 +50,17 @@ public class MainView extends JTabbedPane {
 		// Add the board panel to this view
 		setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
-		newGamePanel = new NewGamePanel(gamesModel);
+		newGamePanel = new NewGamePanel(gamesModel, this);
 		newGamePanel.setBounds(0,0,500,500);
-		//overviewPanel = new OverviewPanel(gamesModel);
+		overviewPanel = new OverviewPanel(gamesModel);
+		addTab("Overview", overviewPanel);
 		addTab("New Game",newGamePanel);
+
 		//add(overviewPanel);
+	}
+
+	public void CloseNewGameTabFromMain() {
+		// TODO Auto-generated method stub
+		remove(newGamePanel);
 	}
 }

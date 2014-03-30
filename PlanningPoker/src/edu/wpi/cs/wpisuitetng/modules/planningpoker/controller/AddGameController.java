@@ -52,6 +52,8 @@ public class AddGameController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
+		if (!view.checkFields()) return;
+		
 		Game currentGame = view.getGameObject();
 		
 		// Make sure there is text
