@@ -42,10 +42,6 @@ import javax.swing.JComboBox;
 public class CreateGameInfoPanel extends JPanel {
 	
 	JPlaceholderTextField gameNameText;
-	//JButton inviteUserButton;
-	
-	JRadioButton realTime;
-	JRadioButton distributed;
 	ButtonGroup gameTypeSelection;
 	
 	JRadioButton rdbtnAm;
@@ -66,7 +62,7 @@ public class CreateGameInfoPanel extends JPanel {
 	
 	
 	public CreateGameInfoPanel(PlanningPokerModel gamesModel) {
-		setBounds(5,5,300,500);
+		setBounds(5,5,307,365);
 		gameNameText = new JPlaceholderTextField("Name");
 		gameNameText.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		gameNameText.setBounds(119, 55, 130, 20);
@@ -80,31 +76,13 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		//Adds the fields and button to the main panel.
 		add(gameNameText);
-		/*
-		inviteUserButton = new JButton("Invite User");
-		inviteUserButton.setBounds(10, 82, 85, 23);
-		
-				inviteUserButton.setEnabled(false);
-				add(inviteUserButton);*/
-		realTime = new  JRadioButton("Real-time");
-		realTime.setBounds(10, 395, 71, 23);
-		realTime.setEnabled(false);
-		add(realTime);
-		
-		//Groups the JRadioButtons together so they act like actual radio buttons
-		gameTypeSelection.add(realTime);
-		distributed = new  JRadioButton("Distributed");
-		distributed.setBounds(10, 424, 77, 23);
-		distributed.setEnabled(false);
-		add(distributed);
-		gameTypeSelection.add(distributed);
 		dateText = new JPlaceholderTextField("MM/DD/YY");
 		dateText.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		dateText.setBounds(119, 84, 130, 20);
-		dateText.setEnabled(false);
+		//dateText.setEnabled(false);
 		add(dateText);
-		createGameButton = new JButton("Start Game");
-		createGameButton.setBounds(204, 466, 86, 23);
+		createGameButton = new JButton("Start");
+		createGameButton.setBounds(206, 294, 86, 23);
 		add(createGameButton);
 		
 		// Maps Create Game button to AddGameController class
@@ -117,16 +95,16 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblNewLabel);
 		
 		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(109, 466, 89, 23);
+		btnSave.setBounds(111, 294, 89, 23);
 		add(btnSave);
 		
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(10, 466, 89, 23);
+		btnCancel.setBounds(12, 294, 89, 23);
 		add(btnCancel);
 		
 		lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblName.setBounds(35, 58, 46, 14);
+		lblName.setBounds(35, 58, 86, 14);
 		add(lblName);
 		
 		lblDeadline = new JLabel("Deadline:");

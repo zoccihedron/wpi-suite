@@ -12,10 +12,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Dimension;
 import java.awt.Panel;
 
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 
@@ -34,18 +36,15 @@ public class NewGamePanel extends JSplitPane {
 	
 	public NewGamePanel(PlanningPokerModel model) {
 		createGameInfoPanel = new CreateGameInfoPanel(model);
+		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
+		
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Requirements", new Panel());
 		tabPane.addTab("Create new requirement", new Panel());
 		tabPane.addTab("Create new deck", new Panel());
-
-		
-		
-		
-		
 		
 		this.setLeftComponent(createGameInfoPanel);
 		this.setRightComponent(tabPane);
-		this.setDividerLocation(200);
+		this.setDividerLocation(300);
 	}
 }
