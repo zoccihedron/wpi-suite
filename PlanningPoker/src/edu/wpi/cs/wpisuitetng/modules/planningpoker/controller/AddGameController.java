@@ -18,7 +18,6 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -77,8 +76,8 @@ public class AddGameController implements ActionListener {
 	}
 
 	public void addGameToView(Game returnGame) {
-		view.setResultName(returnGame.getName());
-		view.setResultId(Integer.toString(returnGame.getId()));
-		view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));
+		//view.setResultName(returnGame.getName());
+		//view.setResultId(Integer.toString(returnGame.getId()));
+		//view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));
 	}
 }

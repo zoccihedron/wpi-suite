@@ -29,13 +29,18 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
 
-import net.sourceforge.jdatepicker.JDatePicker;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+
+
 
 
 /**
@@ -48,21 +53,17 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 @SuppressWarnings({"serial"})
 public class CreateGameInfoPanel extends JPanel {
 	
-	JPlaceholderTextField gameNameText;
-	ButtonGroup gameTypeSelection;
-	
-	JRadioButton rdbtnAm;
-	JRadioButton rdbtnPm;
-	ButtonGroup AMPMSelection;
-	
-	
-	JButton createGameButton;
+	private JButton createGameButton;
 	private JLabel lblName;
+	private JPlaceholderTextField gameNameText;
 	private JLabel lblDeadline;
 	private JDatePickerImpl datePicker;
-	private JComboBox Minutes;
-	private JLabel label;
 	private JLabel lblTime;
+	private JComboBox hourSelector;
+	private JComboBox minuteSelector;
+	private JRadioButton rdbtnAm;
+	private JRadioButton rdbtnPm;
+	private ButtonGroup AMPMSelection;
 	private JLabel lblDeck;
 	private JComboBox deck;
 	private JButton btnNewButton;
@@ -70,11 +71,9 @@ public class CreateGameInfoPanel extends JPanel {
 	
 	public CreateGameInfoPanel(PlanningPokerModel gamesModel) {
 		setBounds(5,5,307,345);
-		gameNameText = new JPlaceholderTextField("Name");
-		gameNameText.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		gameNameText.setBounds(119, 55, 130, 20);
-		gameTypeSelection = new ButtonGroup();
-		AMPMSelection = new ButtonGroup();
+		
+
+		
 		
 
 		setBorder(BorderFactory.createLineBorder(Color.orange, 2));
@@ -82,6 +81,7 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		
 		//Adds the fields and button to the main panel.
+		gameNameText = new JPlaceholderTextField("Name:");
 		add(gameNameText);
 
 		createGameButton = new JButton("Start");
@@ -98,23 +98,24 @@ public class CreateGameInfoPanel extends JPanel {
 		lblNewLabel.setBounds(46, 11, 210, 33);
 		add(lblNewLabel);
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(111, 294, 89, 23);
-		add(btnSave);
-		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(12, 294, 89, 23);
-		add(btnCancel);
+
 		
 		lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblName.setBounds(35, 58, 86, 14);
 		add(lblName);
 		
+		gameNameText = new JPlaceholderTextField("Name");
+		gameNameText.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		gameNameText.setBounds(119, 55, 130, 20);
+		
+		
 		lblDeadline = new JLabel("Deadline:");
 		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblDeadline.setBounds(35, 84, 86, 20);
 		add(lblDeadline);
+		
+		
 		
 		// creates a date picker and sets its position
 		UtilDateModel model = new UtilDateModel();
@@ -124,24 +125,20 @@ public class CreateGameInfoPanel extends JPanel {
 		add(datePicker);
 		
 		
+		
 		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
-		JComboBox Hour = new JComboBox(hours);
-		Hour.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		Hour.setBounds(119, 117, 52, 20);
+		hourSelector = new JComboBox(hours);
+		hourSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		hourSelector.setBounds(119, 117, 52, 20);
 	
-		add(Hour);
+		add(hourSelector);
 		
 		String[] minutes = {"00","15","30","45"};
 
-		Minutes = new JComboBox(minutes);
-		Minutes.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		Minutes.setBounds(196, 117, 53, 20);
-		add(Minutes);
-		
-		label = new JLabel(":");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		label.setBounds(181, 118, 12, 14);
-		add(label);
+		minuteSelector = new JComboBox(minutes);
+		minuteSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		minuteSelector.setBounds(196, 117, 53, 20);
+		add(minuteSelector);
 		
 		lblTime = new JLabel("Time:");
 		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -149,6 +146,8 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblTime);
 		
 		
+		
+		AMPMSelection = new ButtonGroup();
 		
 		rdbtnAm = new JRadioButton("AM");
 		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -159,12 +158,13 @@ public class CreateGameInfoPanel extends JPanel {
 		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnPm.setBounds(163, 144, 46, 23);
 
-		
 		AMPMSelection.add(rdbtnAm);
 		AMPMSelection.add(rdbtnPm);
 		
 		add(rdbtnAm);
 		add(rdbtnPm);
+		
+		
 		
 		lblDeck = new JLabel("Deck:");
 		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -181,6 +181,14 @@ public class CreateGameInfoPanel extends JPanel {
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnNewButton.setBounds(119, 211, 130, 23);
 		add(btnNewButton);
+		
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(111, 294, 89, 23);
+		add(btnSave);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(12, 294, 89, 23);
+		add(btnCancel); 
 
 	}
 	
@@ -196,15 +204,44 @@ public class CreateGameInfoPanel extends JPanel {
 		return newGame;
 	}
 	
-	public void setResultName(String newName) {
-		//resultName.setText(newName);
+	/**
+	 * returns deadline value including calendar date and time
+	 * @return Date
+	 */
+	public Date getDeadline() {
+		Date selectedDate = (Date) datePicker.getModel().getValue();
+		Calendar tempCalendar = new GregorianCalendar();
+		tempCalendar.setTime(selectedDate);
+		tempCalendar.set(tempCalendar.get(Calendar.YEAR),
+							tempCalendar.get(Calendar.MONTH),
+							tempCalendar.get(Calendar.DATE),
+							getHour(),
+							getMinute(),
+							0);
+		return tempCalendar.getTime();
 	}
-
-	public void setResultId(String newId) {
-		//resultId.setText(newId);	
+	
+	/**
+	 * gets hour value from hour selector; converts to 24 hour format
+	 * @return hourInt
+	 */
+	public int getHour() {
+		String hourString = (String) hourSelector.getSelectedItem();
+		int hourInt = Integer.parseInt(hourString);
+		if (rdbtnPm.isSelected()) {
+			hourInt = hourInt + 12;
+		}
+		return hourInt;
 	}
-
-	public void setResultNumReqs(String newNumReqs) {
-	//	resultNumReqs.setText(newNumReqs);
+	
+	/**
+	 * gets minute value from minute selector
+	 * @return minuteInt
+	 */
+	public int getMinute() {
+		String minuteString = (String) minuteSelector.getSelectedItem();
+		int minuteInt = Integer.parseInt(minuteString);
+		return minuteInt;
 	}
+	
 }

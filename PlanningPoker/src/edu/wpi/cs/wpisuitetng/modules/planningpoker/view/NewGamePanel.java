@@ -22,6 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 
 
+
 /**
  * This class is a JPanel. It contains all the fields needed to 
  * create a new game
