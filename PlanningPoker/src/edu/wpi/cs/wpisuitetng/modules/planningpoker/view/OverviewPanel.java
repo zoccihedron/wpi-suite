@@ -11,9 +11,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
-
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -34,8 +31,6 @@ public class OverviewPanel extends JPanel {
 	 */
 	public OverviewPanel(PlanningPokerModel gamesModel) {
 		
-		setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
-
 		String[][] data = {};
 		refreshBtn = new JButton("Refresh");
 		
