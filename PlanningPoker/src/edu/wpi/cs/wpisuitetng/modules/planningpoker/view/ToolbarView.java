@@ -36,7 +36,7 @@ public class ToolbarView extends DefaultToolbarView{
 	 * Method getCreateButton.
 	
 	 * @return CreateButtonsPanel */
-	public CreateButtonsPanel getEditButton(){
+	public CreateButtonsPanel getCreateButton(){
 		return createButton;
 	}
 }

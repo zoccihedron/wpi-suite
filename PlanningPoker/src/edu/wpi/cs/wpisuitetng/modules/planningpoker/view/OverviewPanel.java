@@ -11,21 +11,18 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Color;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import java.awt.Color;
-
-import javax.swing.border.BevelBorder;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GamesToTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
+@SuppressWarnings("serial")
 public class OverviewPanel extends JPanel {
 	private JTable table;
 	private JButton refreshBtn;
