@@ -26,9 +26,16 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
 import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
+
+import net.sourceforge.jdatepicker.JDatePicker;
+import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
+import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
+import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 
 /**
@@ -48,42 +55,39 @@ public class CreateGameInfoPanel extends JPanel {
 	JRadioButton rdbtnPm;
 	ButtonGroup AMPMSelection;
 	
-	JPlaceholderTextField dateText;
+	
 	JButton createGameButton;
 	private JLabel lblName;
 	private JLabel lblDeadline;
+	private JDatePickerImpl datePicker;
 	private JComboBox Minutes;
 	private JLabel label;
 	private JLabel lblTime;
 	private JLabel lblDeck;
 	private JComboBox deck;
 	private JButton btnNewButton;
-
 	
 	
 	public CreateGameInfoPanel(PlanningPokerModel gamesModel) {
-		setBounds(5,5,307,365);
+		setBounds(5,5,307,345);
 		gameNameText = new JPlaceholderTextField("Name");
 		gameNameText.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		gameNameText.setBounds(119, 55, 130, 20);
 		gameTypeSelection = new ButtonGroup();
 		AMPMSelection = new ButtonGroup();
 		
-		
+
 		setBorder(BorderFactory.createLineBorder(Color.orange, 2));
 		setLayout(null);
 		
 		
 		//Adds the fields and button to the main panel.
 		add(gameNameText);
-		dateText = new JPlaceholderTextField("MM/DD/YY");
-		dateText.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		dateText.setBounds(119, 84, 130, 20);
-		//dateText.setEnabled(false);
-		add(dateText);
+
 		createGameButton = new JButton("Start");
 		createGameButton.setBounds(206, 294, 86, 23);
 		add(createGameButton);
+		
 		
 		// Maps Create Game button to AddGameController class
 		createGameButton.addActionListener(new AddGameController(gamesModel, this));
@@ -111,6 +115,13 @@ public class CreateGameInfoPanel extends JPanel {
 		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblDeadline.setBounds(35, 84, 86, 20);
 		add(lblDeadline);
+		
+		// creates a date picker and sets its position
+		UtilDateModel model = new UtilDateModel();
+		JDatePanelImpl datePanel = new JDatePanelImpl(model);
+		datePicker = new JDatePickerImpl(datePanel);
+		datePicker.setBounds(119, 84, 130, 30);
+		add(datePicker);
 		
 		
 		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
