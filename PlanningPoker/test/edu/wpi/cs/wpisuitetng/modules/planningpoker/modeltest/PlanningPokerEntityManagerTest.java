@@ -58,6 +58,9 @@ public class PlanningPokerEntityManagerTest {
 		game2 = new Game(dummyUser, "game2", start, end);
 		game3 = new Game(dummyUser, "game3", start, end);
 		
+		game3.setId(10);
+		game3.setDraftStatus(false);
+		
 		testProject = new Project("test", "1");
 		//otherProject = new Project("other", "2");
 		
@@ -71,6 +74,7 @@ public class PlanningPokerEntityManagerTest {
 		db.save(game, testProject);
 		db.save(dummyUser);
 		db.save(game2, testProject);
+		db.save(game3, testProject);
 		
 		manager = new PlanningPokerEntityManager(db);
 	}
@@ -103,10 +107,6 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void retrieveNonDraftGameTest() throws NotFoundException{
 		
-		game3.setId(10);
-		game3.setDraftStatus(false);
-		db.save(game3, testProject);
-		
 		boolean successfulRetrievalByOwner = true;
 		boolean successfulRetrievalByNotOwner = true;
 		
@@ -130,16 +130,15 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void AddGameEntityToDatabaseTest() throws WPISuiteException{
-		Game newGame = manager.makeEntity(s1, game.toJSON());
-		//assertEquals(1, newGame.getID());
-		assertEquals("game", newGame.getName());
-		//assertSame(db.retrieve(Game.class,  "id", 1).get(0), newGame);
+		Game newGame = manager.makeEntity(s1, game3.toJSON());
+		assertEquals("game3", newGame.getName());
+		//assertSame(db.retrieve(Game.class,  "id", 10).get(0), newGame);
 	}
 	
 	
-	/*@Test
+	@Test
 	public void GetGameEntityFromDatabase() throws NotFoundException, WPISuiteException{
-		Game[] retrived = manager.getEntity(s1, "1");
-		assertSame(game, retrived[0]);
-	}*/
+		Game[] retrieved = manager.getEntity(s1, "10");
+		assertSame(game3, retrieved[0]);
+	}
 }
