@@ -38,7 +38,7 @@ public class NewGamePanel extends JSplitPane {
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		
 		tabPane = new JTabbedPane();
-		tabPane.addTab("Requirements", new Panel());
+		tabPane.addTab("Requirements", new SelectRequirementsPanel());
 		tabPane.addTab("Create new requirement", new Panel());
 		tabPane.addTab("Create new deck", new Panel());
 		
