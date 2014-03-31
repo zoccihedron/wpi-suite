@@ -145,7 +145,7 @@ public class PlanningPokerEntityManagerTest {
 	}
 	
 	@Test
-	public void retrieveAllExcludingDraftsYouDidntCreateTestftete() throws WPISuiteException{
+	public void retrieveAllExcludingDraftsYouDidntCreateTest() throws WPISuiteException{
 		Game[] retrievedGames  = (Game[])manager.getAll(s2);
 		
 		boolean containedDraftNotOwnedByUser = false;
@@ -162,6 +162,27 @@ public class PlanningPokerEntityManagerTest {
 		}
 		
 		assertFalse(containedDraftNotOwnedByUser);
+		assertTrue(containedGames);
+	}
+	
+	@Test
+	public void retrieveAllIncludingDraftsYouDidCreateTest() throws WPISuiteException{
+		Game[] retrievedGames  = (Game[])manager.getAll(s1);
+		
+		boolean containedDraftsOwnedByUser = false;
+		boolean containedGames = false;
+		
+		for(Game g: retrievedGames){
+			if(g.getName().equals("game")||g.getName().equals("game2")){
+				containedDraftsOwnedByUser = true;
+			}
+			if(g.isDraft()&&(g.getGameCreator().equals(s2.getUser().getName()))){
+				containedDraftsOwnedByUser = true;
+			}
+			containedGames = true;
+		}
+		
+		assertTrue(containedDraftsOwnedByUser);
 		assertTrue(containedGames);
 	}
 }
