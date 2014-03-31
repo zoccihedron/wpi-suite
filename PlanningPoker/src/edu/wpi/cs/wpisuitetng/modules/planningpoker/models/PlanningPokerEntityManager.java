@@ -105,7 +105,20 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 */
 	@Override
 	public Game[] getAll(Session s) throws WPISuiteException {
-		return db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+		Game[] allGames = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+		ArrayList<Game> gamesViewableByUser = new ArrayList<Game>();
+		for(Game game : allGames){
+			if(game.isDraft()){
+				if(game.getGameCreator().equals(s.getUser().getName())){
+					gamesViewableByUser.add(game);
+				}
+			}
+			else{
+				gamesViewableByUser.add(game);
+			}
+		}
+
+		return (Game[]) gamesViewableByUser.toArray(new Game[gamesViewableByUser.size()]);
 			
 	}
 

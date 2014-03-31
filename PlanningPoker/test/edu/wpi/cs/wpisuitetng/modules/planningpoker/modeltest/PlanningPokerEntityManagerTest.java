@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.junit.Before;
@@ -24,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
+
 import java.util.Date;
 
 /**
@@ -140,5 +142,26 @@ public class PlanningPokerEntityManagerTest {
 	public void GetGameEntityFromDatabase() throws NotFoundException, WPISuiteException{
 		Game[] retrieved = manager.getEntity(s1, "10");
 		assertSame(game3, retrieved[0]);
+	}
+	
+	@Test
+	public void retrieveAllExcludingDraftsYouDidntCreateTestftete() throws WPISuiteException{
+		Game[] retrievedGames  = (Game[])manager.getAll(s2);
+		
+		boolean containedDraftNotOwnedByUser = false;
+		boolean containedGames = false;
+		
+		for(Game g: retrievedGames){
+			if(g.getName().equals("game")||g.getName().equals("game2")){
+				containedDraftNotOwnedByUser = true;
+			}
+			if(g.isDraft()&&(!g.getGameCreator().equals(s2.getUser().getName()))){
+				containedDraftNotOwnedByUser = true;
+			}
+			containedGames = true;
+		}
+		
+		assertFalse(containedDraftNotOwnedByUser);
+		assertTrue(containedGames);
 	}
 }
