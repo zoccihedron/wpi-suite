@@ -59,7 +59,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
 		if(!db.save(newGame, s.getProject())) {
-			throw new WPISuiteException("Save was no successful");
+			throw new WPISuiteException("Save was not successful");
 		}
 		return newGame;
 	}
@@ -89,6 +89,9 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if(games.length < 1 || games[0] == null) {
 			throw new NotFoundException("There are no games in the list");
 		}
+		if(games[0].isDraft()&&games[0].getGameCreator()!=s.getUser().getName()){
+			throw new NotFoundException("Permission denied.");
+		}
 		return games;
 	}
 
@@ -103,8 +106,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	@Override
 	public Game[] getAll(Session s) throws WPISuiteException {
 		return db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
-		
-		
+			
 	}
 
 	/**

@@ -33,7 +33,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  *
  */
 public class Game extends AbstractModel{
-	private int id = 0;
+	private int id;
+	private static int numberOfIDs = 0;
 	private String name = "";
 	private String description = "";
 	private List<String> participants = new ArrayList<String>();
@@ -41,8 +42,8 @@ public class Game extends AbstractModel{
 	private Date start = new Date();
 	private Date end = new Date();
 	private Boolean isTerminated = false;
-	private List<Estimate> estimates = new ArrayList<Estimate>();;
-	
+	private List<Estimate> estimates = new ArrayList<Estimate>();
+	private boolean isDraft = true;
 	
 	//TODO: timestamp, countdown or time for deadline, estimate, boolean for termination
 
@@ -58,7 +59,7 @@ public class Game extends AbstractModel{
 	 */
 	public Game(User user, String n, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
-		id = 0;
+		id = ++numberOfIDs;
 		name = n;
 		gameCreator = user.getName();
 		start = startTime;
@@ -71,7 +72,7 @@ public class Game extends AbstractModel{
 	 * and should not be called when a real game is created
 	 */
 	public Game(){
-		id = 0;
+		//id = 0;
 	}
 	
 
@@ -298,6 +299,15 @@ public class Game extends AbstractModel{
 		name = n;
 	}
 	
+	public boolean isDraft() {
+		return isDraft;
+	}
+	
+	public void setDraftStatus(boolean status){
+		isDraft = status;
+	}
+	
+
 	/**
 	 * Check if this game is terminated. Game can be terminated 
 	 * automatically (end time has been reached) or manually
