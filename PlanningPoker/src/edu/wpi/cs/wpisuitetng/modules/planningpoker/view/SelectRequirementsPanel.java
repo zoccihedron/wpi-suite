@@ -11,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
@@ -41,13 +42,18 @@ public class SelectRequirementsPanel extends JPanel {
 
 		JLabel existingRequirementsLabel = new JLabel("Existing Requirements");
 		existingRequirementsPanel.add(existingRequirementsLabel);
+		//existingRequirementsLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		//existingRequirementsLabel.setVerticalAlignment(SwingConstants.TOP);
 
 		JButton btnNewRequirement = new JButton("Create Requirement");
-
+		//btnNewRequirement.setHorizontalAlignment(SwingConstants.RIGHT);
+		//btnNewRequirement.setVerticalAlignment(SwingConstants.TOP);
 		existingRequirementsPanel.add(btnNewRequirement);
 
 		existingRequirementsTable = new JTable(new DefaultTableModel(data,
 				columnNames));
+		// Hide the column with IDs
+		existingRequirementsTable.removeColumn(existingRequirementsTable.getColumnModel().getColumn(0));
 
 		// Filling with some initial data for testing
 		final DefaultTableModel model = (DefaultTableModel) existingRequirementsTable
@@ -66,17 +72,10 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 
-		/*//Initially populates the existingReqs Table
-		ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
-				RequirementManagerFacade.getInstance().getRequirments());
-		for (Requirement req : existingRequirements) {
-			model.addRow(new Object[] { Integer.toString(req.getId()),
-					req.getName(), req.getDescription() });
-		}
-*/
 		JScrollPane existingRequirementsTablePanel = new JScrollPane(
 				existingRequirementsTable);
 		existingRequirementsPanel.add(existingRequirementsTablePanel);
+		//existingRequirementsTablePanel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Bottom Half of Split Pane
 		JPanel pendingRequirementsPanel = new JPanel();
@@ -114,6 +113,10 @@ public class SelectRequirementsPanel extends JPanel {
 
 		requirementsToAddTable = new JTable(new DefaultTableModel(addData,
 				addColumnNames));
+		
+		// Hide the column with IDs
+		requirementsToAddTable.removeColumn(requirementsToAddTable.getColumnModel().getColumn(0));
+		
 		JScrollPane requirementsToAddTablePanel = new JScrollPane(
 				requirementsToAddTable);
 		pendingRequirementsPanel.add(requirementsToAddTablePanel);
