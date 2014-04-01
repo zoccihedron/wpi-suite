@@ -72,7 +72,7 @@ public class Game extends AbstractModel{
 	 * and should not be called when a real game is created
 	 */
 	public Game(){
-		//id = 0;
+		id = 0;
 	}
 	
 
