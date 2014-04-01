@@ -43,7 +43,7 @@ public class MainView extends JTabbedPane {
 		newGamePanel.setBounds(0,0,500,500);
 		overviewPanel = new OverviewPanel(gamesModel);
 		overviewPanel.setBounds(0, 0, 500, 500);
-		this.addTab("Overview Tab", overviewPanel);
+		this.addTab("Overview", overviewPanel);
 	}
 	
 	/**
@@ -54,8 +54,11 @@ public class MainView extends JTabbedPane {
 	{
 		if(!newGamePanelVisible)
 		{
-			this.addTab("New Game Tab", newGamePanel);
+			this.addTab("New Game", newGamePanel);
 			this.newGamePanelVisible = true;
+			this.invalidate(); // force the tabbedpane to redraw
+			this.repaint();
+			this.setSelectedComponent(newGamePanel);
 		}
 	}
 
