@@ -49,7 +49,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 		final Game[] returnGames = Game.fromJsonArray(response.getBody());
 		
 		// Pass the messages back to the controller
-		controller.convertGameToTable(returnGames);
+		controller.receivedGames(returnGames);
 	}
 
 	@Override

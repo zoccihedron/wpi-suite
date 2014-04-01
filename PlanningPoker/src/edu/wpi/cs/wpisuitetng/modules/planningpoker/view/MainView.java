@@ -37,12 +37,13 @@ public class MainView extends JTabbedPane {
 	 * @param boardModel 
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
+		// Add the board panel to this view
 		
 		newGamePanel = new NewGamePanel(gamesModel);
 		newGamePanel.setBounds(0,0,500,500);
 		overviewPanel = new OverviewPanel(gamesModel);
 		overviewPanel.setBounds(0, 0, 500, 500);
-		addTab("Games Overview", overviewPanel);
-		addTab("New Game",newGamePanel);
+		this.addTab("Overview Tab", overviewPanel);
+		this.addTab("New Game Tab", newGamePanel);
 	}
 }
