@@ -84,7 +84,6 @@ public class OverviewTable extends JTable
 				
 			}
 		});
-		 System.out.println("finished constructing the table");
 	}
 	
 	/**
@@ -113,8 +112,6 @@ public class OverviewTable extends JTable
 		}
 		// indicate that refresh is no longer affecting the table
 		setChangedByRefresh(false);
-		
-		System.out.println("finished refreshing the table");		
 	}
 		
 	/**
