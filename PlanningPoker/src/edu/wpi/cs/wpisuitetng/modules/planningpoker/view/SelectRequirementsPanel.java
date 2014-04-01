@@ -13,8 +13,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -27,7 +25,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 	public SelectRequirementsPanel() {
 	
-		// Parent Container
+		// Parent Container 
 		JSplitPane requirementsSelectionPane = new JSplitPane();
 		requirementsSelectionPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		this.add(requirementsSelectionPane);
