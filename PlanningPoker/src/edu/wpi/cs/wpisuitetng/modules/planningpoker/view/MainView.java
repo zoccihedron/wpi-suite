@@ -85,10 +85,10 @@ public class MainView extends JTabbedPane {
 		{
 			this.addTab("New Game", newGamePanel);
 			this.newGamePanelVisible = true;
-			this.invalidate(); // force the tabbedpane to redraw
-			this.repaint();
-			this.setSelectedComponent(newGamePanel);
 		}
+		this.invalidate(); // force the tabbedpane to redraw
+		this.repaint();
+		this.setSelectedComponent(newGamePanel);
 	}
 
 	/**
