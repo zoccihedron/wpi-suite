@@ -28,6 +28,7 @@ public class MainView extends JTabbedPane {
 
 	/** The panel containing the new game creator */
 	private final NewGamePanel newGamePanel;
+	private Boolean newGamePanelVisible = false;
 	
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
@@ -38,12 +39,23 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
 		// Add the board panel to this view
-		
 		newGamePanel = new NewGamePanel(gamesModel);
 		newGamePanel.setBounds(0,0,500,500);
 		overviewPanel = new OverviewPanel(gamesModel);
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview Tab", overviewPanel);
-		this.addTab("New Game Tab", newGamePanel);
+	}
+	
+	/**
+	 * Adds a new game panel if it is not
+	 * already there
+	 */
+	public void createNewGameTab()
+	{
+		if(!newGamePanelVisible)
+		{
+			this.addTab("New Game Tab", newGamePanel);
+			this.newGamePanelVisible = true;
+		}
 	}
 }
