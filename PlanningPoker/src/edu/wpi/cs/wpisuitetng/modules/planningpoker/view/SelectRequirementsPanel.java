@@ -17,6 +17,7 @@ import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -25,7 +26,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JTable requirementsToAddTable;
 
 	public SelectRequirementsPanel() {
-
+	
 		// Parent Container
 		JSplitPane requirementsSelectionPane = new JSplitPane();
 		requirementsSelectionPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
@@ -53,22 +54,23 @@ public class SelectRequirementsPanel extends JPanel {
 		// Filling with some initial data for testing
 		final DefaultTableModel model = (DefaultTableModel) existingRequirementsTable
 				.getModel();
-		model.addRow(new Object[] { "0", "Riley Req", "Very Tuff" });
-		model.addRow(new Object[] { "1", "Chris Req", "Tuff" });
-		model.addRow(new Object[] { "2", "Carson Req", "Not So Tuff" });
-
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
-						RequirementManagerFacade.getInstance().getRequirments());
-				for (Requirement req : existingRequirements) {
-					model.addRow(new Object[] { Integer.toString(req.getId()),
-							req.getName(), req.getDescription() });
-				}
+				//TODO
+				//ADD a switch to the req manager add req pane
+				
 			}
 
 		});
+
+		//Initially populates the existingReqs Table
+		ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
+				RequirementManagerFacade.getInstance().getRequirments());
+		for (Requirement req : existingRequirements) {
+			model.addRow(new Object[] { Integer.toString(req.getId()),
+					req.getName(), req.getDescription() });
+		}
 
 		JScrollPane existingRequirementsTablePanel = new JScrollPane(
 				existingRequirementsTable);
@@ -147,5 +149,22 @@ public class SelectRequirementsPanel extends JPanel {
 					.addRow(new Object[] { values[0], values[1], values[2] });
 		}
 
+	}
+
+	/**
+	 * This function iterates through the pending requirements and returns the
+	 * currently selected ones
+	 * 
+	 * @return The requirements in the pending table
+	 */
+	public ArrayList<Integer> getSelectedRequirementIds() {
+		int countOfEntries = requirementsToAddTable.getRowCount();
+		int REQID = 0;
+		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
+		for (int i = 0; i < countOfEntries; i++) {
+			reqIDs.add(Integer.valueOf((String) (requirementsToAddTable
+					.getValueAt(i, REQID))));
+		}
+		return reqIDs;
 	}
 }
