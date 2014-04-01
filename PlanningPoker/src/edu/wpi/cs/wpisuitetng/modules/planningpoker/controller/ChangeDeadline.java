@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Chris Casola
+ *    Team Code On Bleu
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
