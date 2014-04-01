@@ -1,5 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -8,47 +10,42 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class SelectRequirementsPanel extends JPanel {
 	private JTable existingRequirementsTable;
 	private JTable requirementsToAddTable;
 
 	public SelectRequirementsPanel() {
-	
+		this.setLayout(new GridBagLayout());
 		// Parent Container 
-		JSplitPane requirementsSelectionPane = new JSplitPane();
-		requirementsSelectionPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		this.add(requirementsSelectionPane);
+		GridBagConstraints constraints = new GridBagConstraints();
 
-		JPanel existingRequirementsPanel = new JPanel();
-		requirementsSelectionPane.setLeftComponent(existingRequirementsPanel);
-
-		// Top Half of split pane
+		// Top section of panel
 
 		String[] columnNames = { "ID", "Name", "Description" };
 
 		Object[][] data = {};
 
 		JLabel existingRequirementsLabel = new JLabel("Existing Requirements");
-		existingRequirementsPanel.add(existingRequirementsLabel);
-		//existingRequirementsLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		//existingRequirementsLabel.setVerticalAlignment(SwingConstants.TOP);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weightx = 0.33;
+		constraints.weighty = 0.1;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(existingRequirementsLabel, constraints);
 
 		JButton btnNewRequirement = new JButton("Create Requirement");
-		//btnNewRequirement.setHorizontalAlignment(SwingConstants.RIGHT);
-		//btnNewRequirement.setVerticalAlignment(SwingConstants.TOP);
-		existingRequirementsPanel.add(btnNewRequirement);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weightx = 0.33;
+		constraints.weighty = 0.1;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		this.add(btnNewRequirement, constraints);
 
 		existingRequirementsTable = new JTable(new DefaultTableModel(data,
 				columnNames));
@@ -74,16 +71,24 @@ public class SelectRequirementsPanel extends JPanel {
 
 		JScrollPane existingRequirementsTablePanel = new JScrollPane(
 				existingRequirementsTable);
-		existingRequirementsPanel.add(existingRequirementsTablePanel);
-		//existingRequirementsTablePanel.setHorizontalAlignment(SwingConstants.CENTER);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1;
+		constraints.weighty = 0.4;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		this.add(existingRequirementsTablePanel, constraints);
 
-		// Bottom Half of Split Pane
-		JPanel pendingRequirementsPanel = new JPanel();
-		requirementsSelectionPane.setRightComponent(pendingRequirementsPanel);
-
+		// Bottom section of panel
 		JLabel lblRequirementsToEstimate = new JLabel(
 				"Requirements to Estimate");
-		pendingRequirementsPanel.add(lblRequirementsToEstimate);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.33;
+		constraints.weighty = 0.1;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		this.add(lblRequirementsToEstimate, constraints);
 
 		JButton btnAddSelectedReq = new JButton("Add");
 
@@ -94,8 +99,12 @@ public class SelectRequirementsPanel extends JPanel {
 						requirementsToAddTable);
 			}
 		});
-
-		pendingRequirementsPanel.add(btnAddSelectedReq);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weightx = 0.33;
+		constraints.weighty = 0.1;
+		constraints.gridx = 1;
+		constraints.gridy = 2;
+		this.add(btnAddSelectedReq, constraints);
 
 		JButton btnRemoveSelectedReq = new JButton("Remove");
 		btnRemoveSelectedReq.addMouseListener(new MouseAdapter() {
@@ -106,7 +115,12 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 
 		});
-		pendingRequirementsPanel.add(btnRemoveSelectedReq);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.weightx = 0.33;
+		constraints.weighty = 0.1;
+		constraints.gridx = 2;
+		constraints.gridy = 2;
+		this.add(btnRemoveSelectedReq, constraints);
 
 		String[] addColumnNames = { "ID", "Name", "Description" };
 		Object[][] addData = {};
@@ -119,7 +133,14 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		JScrollPane requirementsToAddTablePanel = new JScrollPane(
 				requirementsToAddTable);
-		pendingRequirementsPanel.add(requirementsToAddTablePanel);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1;
+		constraints.weighty = 0.4;
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		this.add(requirementsToAddTablePanel, constraints);
 
 	}
 
