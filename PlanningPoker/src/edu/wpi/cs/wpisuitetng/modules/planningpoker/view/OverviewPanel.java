@@ -1,20 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Team Codon Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import java.awt.Color;
-
-import javax.swing.border.BevelBorder;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GamesToTable;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
+@SuppressWarnings("serial")
 public class OverviewPanel extends JPanel {
 	private JTable table;
 	private JButton refreshBtn;
@@ -26,8 +31,6 @@ public class OverviewPanel extends JPanel {
 	 */
 	public OverviewPanel(PlanningPokerModel gamesModel) {
 		
-		setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
-
 		String[][] data = {};
 		refreshBtn = new JButton("Refresh");
 		

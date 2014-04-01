@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,17 +7,13 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Chris Casola
+ *    Team Codon Bleu
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
+import javax.swing.JTabbedPane;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 /**
@@ -28,7 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  *
  */
 @SuppressWarnings("serial")
-public class MainView extends JPanel {
+public class MainView extends JTabbedPane {
 
 	/** The panel containing the new game creator */
 	private final NewGamePanel newGamePanel;
@@ -41,12 +37,12 @@ public class MainView extends JPanel {
 	 * @param boardModel 
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
-		// Add the board panel to this view
-		setBorder(BorderFactory.createLineBorder(Color.blue, 2));
 		
 		newGamePanel = new NewGamePanel(gamesModel);
+		newGamePanel.setBounds(0,0,500,500);
 		overviewPanel = new OverviewPanel(gamesModel);
-		add(newGamePanel);
-		add(overviewPanel);
+		overviewPanel.setBounds(0, 0, 500, 500);
+		addTab("Games Overview", overviewPanel);
+		addTab("New Game",newGamePanel);
 	}
 }
