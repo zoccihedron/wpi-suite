@@ -20,8 +20,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Timer;
 
+import javax.swing.Timer;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -31,6 +31,7 @@ import javax.swing.event.ChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
  * This panel fills the main content area of the tab for this module. It
@@ -65,8 +66,15 @@ public class MainView extends JTabbedPane {
 		ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				overviewPanel.getGamesFromServer();
-				overviewPanel.updateTable();
+				try{
+					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
+						overviewPanel.getGamesFromServer();
+						overviewPanel.updateTable();
+					}
+				}
+				catch(RuntimeException exception){
+				}
+				
 			}
 		};
 
