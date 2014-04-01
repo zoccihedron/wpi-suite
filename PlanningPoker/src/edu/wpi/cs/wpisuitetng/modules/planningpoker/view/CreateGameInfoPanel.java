@@ -6,8 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Chris Casola
+ * Creator:
+ *    Code On Bleu
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
@@ -53,12 +53,12 @@ import javax.swing.JCheckBox;
  * This class is a JPanel. It contains all the fields needed to 
  * create a new game
  * 
- * @author Joshua Allard
+ * @author Code On Bleu
  *
  */
 @SuppressWarnings({"serial"})
 public class CreateGameInfoPanel extends JPanel {
-	private MainView parentWindow;
+	private MainView mainView;
 	
 	private JLabel lblName;
 	private JTextField gameNameText;
@@ -77,11 +77,12 @@ public class CreateGameInfoPanel extends JPanel {
 	private JButton btnCancel;
 	private JButton btnStart;
 	private JCheckBox chckbxDeadline;
+	private JLabel lblMessage;
 	
 	
-	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView parentWindow) {
-		this.parentWindow = parentWindow;
-		setBounds(5,5,307,345);
+	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView mainWindow) {
+		this.mainView = mainWindow;
+		setBounds(5,5,307,360);
 
 		setBorder(BorderFactory.createLineBorder(Color.orange, 2));
 		setLayout(null);
@@ -93,7 +94,7 @@ public class CreateGameInfoPanel extends JPanel {
 		add(gameNameText);
 
 		btnStart = new JButton("Start");
-		btnStart.setBounds(206, 294, 86, 23);
+		btnStart.setBounds(206, 325, 86, 23);
 		add(btnStart);
 		
 		JLabel lblNewLabel = new JLabel("Game Information");
@@ -181,14 +182,14 @@ public class CreateGameInfoPanel extends JPanel {
 		add(btnNewButton);
 		
 		btnSave = new JButton("Save");
-		btnSave.setBounds(111, 294, 89, 23);
+		btnSave.setBounds(111, 325, 89, 23);
 		add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
 		btnSave.addActionListener(new AddGameController(gamesModel, this));
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(12, 294, 89, 23);
+		btnCancel.setBounds(12, 325, 89, 23);
 		btnCancel.addActionListener(new CloseNewGameTabController(this));
 		add(btnCancel); 
 		
@@ -198,15 +199,95 @@ public class CreateGameInfoPanel extends JPanel {
 		chckbxDeadline.setSelected(true);
 		add(chckbxDeadline);
 		
+		lblMessage = new JLabel("*Error");
+		lblMessage.setForeground(Color.RED);
+		lblMessage.setVisible(false);
+		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
+		lblMessage.setBounds(26, 274, 266, 52);
+		add(lblMessage);
+		
 
 
 	}
 	
-	/**
-	 * @return the txtNewMessage JTextField
-	 */
 
-	// creates a new game object to be sent to the database
+	
+	/**
+	 * Checks to see if the fields for the game are selected properly
+	 * '<html>error</html>' format needed to allow word wrap in the error label
+	 * @return check  - true if the fields are selected properly, otherwise false
+	 */
+	public boolean checkFields() {
+		if (gameNameText.getText().trim().isEmpty()){
+				reportError("<html>Error: Please choose a name!</html>");
+				return false;
+		}
+		if(chckbxDeadline.isSelected()){
+			if(datePicker.getModel().getValue() == null){
+				reportError("<html>Error: Please choose a date or turn off the deadline.</html>");
+				return false;
+			}
+			if(getDeadline().compareTo(new Date()) <= 0){
+				reportError("<html>Error: The deadline must not be in the past.</html>");
+				return false;
+			}
+		}
+		lblMessage.setVisible(false);
+		return true;
+	}
+	
+	/**Fills the text box with a red warning based on the error Message
+	 * 
+	 * @param error the message to be printed, should be in <html>text</html> format
+	 */
+	public void reportError(String error) {
+		lblMessage.setForeground(Color.RED);
+		lblMessage.setText(error);
+		lblMessage.setVisible(true);
+	}
+	
+	/**Fills the text box with a green message based on the input
+	 * 
+	 * @param message the message to be printed, should be in <html>text</html> format
+	 */
+	public void reportMessage(String message) {
+		lblMessage.setForeground(Color.BLUE);
+		lblMessage.setText(message);
+		lblMessage.setVisible(true);
+	}
+
+	/**
+	 * Will switch the deadline fields to enabled or disabled based on the Deadline checkbox
+	 */
+	public void EnableOrDisableDeadline() {
+		if (chckbxDeadline.isSelected()){
+			datePicker.setEnabled(true);
+			hourSelector.setEnabled(true);
+			minuteSelector.setEnabled(true);
+			rdbtnPm.setEnabled(true);
+			rdbtnAm.setEnabled(true);
+		}
+		else {
+			datePicker.setEnabled(false);
+			hourSelector.setEnabled(false);
+			minuteSelector.setEnabled(false);
+			rdbtnPm.setEnabled(false);
+			rdbtnAm.setEnabled(false);
+		}
+		
+	}
+
+	/**
+	 * Sends the signal to Mainview to close the NewgameTab
+	 */
+	public void closeNewGameTab() {
+		mainView.CloseNewGameTabFromMain();
+	}
+
+	/**
+	 * Fills in the game object with the necessary data
+	 * @return newGame
+	 */
 	public Game getGameObject() {
 		if(chckbxDeadline.isSelected()){
 			Game newGame = new Game(getGameName(), new Date(), getDeadline());
@@ -260,37 +341,5 @@ public class CreateGameInfoPanel extends JPanel {
 		String minuteString = (String) minuteSelector.getSelectedItem();
 		int minuteInt = Integer.parseInt(minuteString);
 		return minuteInt;
-	}
-
-	public boolean checkFields() {
-		if (gameNameText.getText() == "") return false;
-		if(chckbxDeadline.isSelected()){
-			if(datePicker.getModel().getValue() == null) return false;
-			if(hourSelector.getSelectedItem() == null) return false;
-			if(minuteSelector.getSelectedItem() == null) return false;
-		}
-		return true;
-	}
-
-	public void EnableOrDisableDeadline() {
-		if (chckbxDeadline.isSelected()){
-			datePicker.setEnabled(true);
-			hourSelector.setEnabled(true);
-			minuteSelector.setEnabled(true);
-			rdbtnPm.setEnabled(true);
-			rdbtnAm.setEnabled(true);
-		}
-		else {
-			datePicker.setEnabled(false);
-			hourSelector.setEnabled(false);
-			minuteSelector.setEnabled(false);
-			rdbtnPm.setEnabled(false);
-			rdbtnAm.setEnabled(false);
-		}
-		
-	}
-
-	public void closeNewGameTab() {
-		parentWindow.CloseNewGameTabFromMain();
 	}
 }
