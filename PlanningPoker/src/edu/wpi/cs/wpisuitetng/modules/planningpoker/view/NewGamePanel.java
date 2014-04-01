@@ -26,17 +26,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 /**
  * This class is a JPanel. It contains all the fields needed to 
  * create a new game
- * 
- * @author Joshua Allard
- *
+ * @author Code On Bleu
  */
 @SuppressWarnings({"serial"})
 public class NewGamePanel extends JSplitPane {
 	public CreateGameInfoPanel createGameInfoPanel;
 	public JTabbedPane tabPane;
 	
-	public NewGamePanel(PlanningPokerModel model) {
-		createGameInfoPanel = new CreateGameInfoPanel(model);
+	public NewGamePanel(PlanningPokerModel model, MainView ParentWindow) {
+		createGameInfoPanel = new CreateGameInfoPanel(model, ParentWindow);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		
 		tabPane = new JTabbedPane();

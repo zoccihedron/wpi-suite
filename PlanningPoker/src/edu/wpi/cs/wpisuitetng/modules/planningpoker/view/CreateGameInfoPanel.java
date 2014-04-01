@@ -23,6 +23,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
@@ -30,8 +31,12 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CloseNewGameTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+
+import javax.swing.JCheckBox;
 
 
 
@@ -45,10 +50,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  */
 @SuppressWarnings({"serial"})
 public class CreateGameInfoPanel extends JPanel {
+	private MainView parentWindow;
 	
-	private JButton createGameButton;
 	private JLabel lblName;
-	private JPlaceholderTextField gameNameText;
+	private JTextField gameNameText;
 	private JLabel lblDeadline;
 	private JDatePickerImpl datePicker;
 	private JLabel lblTime;
@@ -60,24 +65,26 @@ public class CreateGameInfoPanel extends JPanel {
 	private JLabel lblDeck;
 	private JComboBox deck;
 	private JButton btnNewButton;
+	private JButton btnSave;
+	private JButton btnCancel;
+	private JButton btnStart;
+	private JCheckBox chckbxDeadline;
 	
 	
-	public CreateGameInfoPanel(PlanningPokerModel gamesModel) {
+	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView parentWindow) {
+		this.parentWindow = parentWindow;
 		setBounds(5,5,307,345);
 		setLayout(null);
 		
 		
 		//Adds the fields and button to the main panel.
-		gameNameText = new JPlaceholderTextField("Name:");
+		gameNameText = new JTextField();
+		gameNameText.setBounds(119, 56, 130, 23);
 		add(gameNameText);
 
-		createGameButton = new JButton("Start");
-		createGameButton.setBounds(206, 294, 86, 23);
-		add(createGameButton);
-		
-		
-		// Maps Create Game button to AddGameController class
-		createGameButton.addActionListener(new AddGameController(gamesModel, this));
+		btnStart = new JButton("Start");
+		btnStart.setBounds(206, 294, 86, 23);
+		add(btnStart);
 		
 		JLabel lblNewLabel = new JLabel("Game Information");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -92,14 +99,10 @@ public class CreateGameInfoPanel extends JPanel {
 		lblName.setBounds(35, 58, 86, 14);
 		add(lblName);
 		
-		gameNameText = new JPlaceholderTextField("Name");
-		gameNameText.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		gameNameText.setBounds(119, 55, 130, 20);
-		
 		
 		lblDeadline = new JLabel("Deadline:");
 		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblDeadline.setBounds(35, 84, 86, 20);
+		lblDeadline.setBounds(35, 126, 86, 20);
 		add(lblDeadline);
 		
 		
@@ -108,7 +111,7 @@ public class CreateGameInfoPanel extends JPanel {
 		UtilDateModel model = new UtilDateModel();
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
-		datePicker.setBounds(119, 84, 130, 30);
+		datePicker.setBounds(119, 126, 130, 30);
 		add(datePicker);
 		
 		
@@ -116,7 +119,7 @@ public class CreateGameInfoPanel extends JPanel {
 		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 		hourSelector = new JComboBox(hours);
 		hourSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		hourSelector.setBounds(119, 117, 52, 20);
+		hourSelector.setBounds(119, 157, 52, 20);
 	
 		add(hourSelector);
 		
@@ -124,12 +127,12 @@ public class CreateGameInfoPanel extends JPanel {
 
 		minuteSelector = new JComboBox(minutes);
 		minuteSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		minuteSelector.setBounds(196, 117, 53, 20);
+		minuteSelector.setBounds(196, 157, 53, 20);
 		add(minuteSelector);
 		
 		lblTime = new JLabel("Time:");
 		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblTime.setBounds(35, 115, 86, 20);
+		lblTime.setBounds(35, 157, 86, 20);
 		add(lblTime);
 		
 		
@@ -138,12 +141,12 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		rdbtnAm = new JRadioButton("AM");
 		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		rdbtnAm.setBounds(119, 144, 46, 23);
+		rdbtnAm.setBounds(119, 188, 46, 23);
 		rdbtnAm.setSelected(true);
 		
 		rdbtnPm = new JRadioButton("PM");
 		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		rdbtnPm.setBounds(163, 144, 46, 23);
+		rdbtnPm.setBounds(163, 188, 46, 23);
 
 		AMPMSelection.add(rdbtnAm);
 		AMPMSelection.add(rdbtnPm);
@@ -151,31 +154,41 @@ public class CreateGameInfoPanel extends JPanel {
 		add(rdbtnAm);
 		add(rdbtnPm);
 		
-		
-		
 		lblDeck = new JLabel("Deck:");
 		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblDeck.setBounds(35, 176, 86, 20);
+		lblDeck.setBounds(35, 189, 86, 20);
 		add(lblDeck);
 		
 		String[] decks = {"default"};
 		deck = new JComboBox(decks);
 		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		deck.setBounds(119, 178, 130, 20);
+		deck.setBounds(119, 222, 130, 20);
 		add(deck);
 		
 		btnNewButton = new JButton("Add new deck");
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnNewButton.setBounds(119, 211, 130, 23);
+		btnNewButton.setBounds(119, 250, 130, 23);
 		add(btnNewButton);
 		
-		JButton btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		btnSave.setBounds(111, 294, 89, 23);
 		add(btnSave);
 		
-		JButton btnCancel = new JButton("Cancel");
+		// Maps Create Game button to AddGameController class
+		btnSave.addActionListener(new AddGameController(gamesModel, this));
+		
+		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(12, 294, 89, 23);
+		btnCancel.addActionListener(new CloseNewGameTabController(this));
 		add(btnCancel); 
+		
+		chckbxDeadline = new JCheckBox("Deadline?");
+		chckbxDeadline.setBounds(36, 95, 129, 23);
+		chckbxDeadline.addActionListener(new ChangeDeadline(this));
+		chckbxDeadline.setSelected(true);
+		add(chckbxDeadline);
+		
+
 
 	}
 	
@@ -185,12 +198,20 @@ public class CreateGameInfoPanel extends JPanel {
 
 	// creates a new game object to be sent to the database
 	public Game getGameObject() {
-		Game newGame = new Game();
-		newGame.setName(gameNameText.getText());
-		//newGame.setId(Integer.parseInt(gameIdText.getText()));
-		return newGame;
+		if(chckbxDeadline.isSelected()){
+			Game newGame = new Game(getGameName(), new Date(), getDeadline());
+			return newGame;
+		}
+		else{
+			Game newGame = new Game(getGameName(), new Date(), new Date());
+			return newGame;
+		}
 	}
 	
+	private String getGameName() {
+		return gameNameText.getText();
+	}
+
 	/**
 	 * returns deadline value including calendar date and time
 	 * @return Date
@@ -230,5 +251,36 @@ public class CreateGameInfoPanel extends JPanel {
 		int minuteInt = Integer.parseInt(minuteString);
 		return minuteInt;
 	}
-	
+
+	public boolean checkFields() {
+		if (gameNameText.getText() == "") return false;
+		if(chckbxDeadline.isSelected()){
+			if(datePicker.getModel().getValue() == null) return false;
+			if(hourSelector.getSelectedItem() == null) return false;
+			if(minuteSelector.getSelectedItem() == null) return false;
+		}
+		return true;
+	}
+
+	public void EnableOrDisableDeadline() {
+		if (chckbxDeadline.isSelected()){
+			datePicker.setEnabled(true);
+			hourSelector.setEnabled(true);
+			minuteSelector.setEnabled(true);
+			rdbtnPm.setEnabled(true);
+			rdbtnAm.setEnabled(true);
+		}
+		else {
+			datePicker.setEnabled(false);
+			hourSelector.setEnabled(false);
+			minuteSelector.setEnabled(false);
+			rdbtnPm.setEnabled(false);
+			rdbtnAm.setEnabled(false);
+		}
+		
+	}
+
+	public void closeNewGameTab() {
+		parentWindow.CloseNewGameTabFromMain();
+	}
 }
