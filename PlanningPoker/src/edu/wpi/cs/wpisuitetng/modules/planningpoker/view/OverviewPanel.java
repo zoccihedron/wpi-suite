@@ -94,19 +94,23 @@ public class OverviewPanel extends JPanel {
 	{
 		table.refresh();
 		table.revalidate();
-	
 	}
 	
 	/**
-	 * Sends an HTTP request to the server to
-	 * pull the Game data from the database
+	 * Sends an HTTP request to the server to pull games from the database, 
+	 * but will not be sent if the network configuration is null (no user sign in)
 	 *
 	 */
 	public void getGamesFromServer(){
-		final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET); // PUT == create
-		request.addObserver(new GetGamesRequestObserver(new GetGamesController(gamesModel, this, mainView))); // add an observer to process the response
-		request.send();
+		try{
+			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
+				final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET); // PUT == create
+				request.addObserver(new GetGamesRequestObserver(new GetGamesController(gamesModel, this, mainView))); // add an observer to process the response
+				request.send();
+			}
+		} 
+		catch (RuntimeException runtimeException){
+		}
 	}
-	
-
 }
+
