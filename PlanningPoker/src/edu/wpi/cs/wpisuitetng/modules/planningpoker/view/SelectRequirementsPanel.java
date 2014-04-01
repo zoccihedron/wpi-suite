@@ -55,21 +55,25 @@ public class SelectRequirementsPanel extends JPanel {
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//TODO
-				//ADD a switch to the req manager add req pane
-				
+				//Initially populates the existingReqs Table
+				ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
+						RequirementManagerFacade.getInstance().getRequirments());
+				for (Requirement req : existingRequirements) {
+					model.addRow(new Object[] { Integer.toString(req.getId()),
+							req.getName(), req.getDescription() });
+				}
 			}
 
 		});
 
-		//Initially populates the existingReqs Table
+		/*//Initially populates the existingReqs Table
 		ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
 				RequirementManagerFacade.getInstance().getRequirments());
 		for (Requirement req : existingRequirements) {
 			model.addRow(new Object[] { Integer.toString(req.getId()),
 					req.getName(), req.getDescription() });
 		}
-
+*/
 		JScrollPane existingRequirementsTablePanel = new JScrollPane(
 				existingRequirementsTable);
 		existingRequirementsPanel.add(existingRequirementsTablePanel);
