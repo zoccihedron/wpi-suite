@@ -32,7 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController
 public class CreateButtonsPanel extends ToolbarGroupView{
 	
 	private JButton crtGameBtn = new JButton("<html>Create<BR />Game</html>");
-	private JButton crtDeckBtn = new JButton("<html>Create<BR />Deck</html>");
+	private JButton crtDeckBtn = new JButton("<html>Manage<BR />Decks</html>");
 	private final JPanel buttonPanel = new JPanel();
 	private final ToolbarView parentPanel;
 	

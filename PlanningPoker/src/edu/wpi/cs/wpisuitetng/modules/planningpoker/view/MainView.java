@@ -6,8 +6,13 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
+<<<<<<< HEAD
  * Contributors:
  *    Team Codon Bleu
+=======
+ * Creator:
+ *    Code On Bleu
+>>>>>>> feature-newGameFunctionality
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
@@ -31,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  * This panel fills the main content area of the tab for this module. It
  * contains one inner JPanel, the BoardPanel.
  * 
- * @author Joshua Allard
+ * @author Code On Bleu
  *
  */
 @SuppressWarnings("serial")
@@ -50,13 +55,12 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
 		// Add the board panel to this view
-		newGamePanel = new NewGamePanel(gamesModel);
+		newGamePanel = new NewGamePanel(gamesModel, this);
 		newGamePanel.setBounds(0,0,500,500);
 		overviewPanel = new OverviewPanel(gamesModel, this);
 		overviewPanel.setBounds(0, 0, 500, 500);
-		this.addTab("Overview Tab", overviewPanel);
-		this.addTab("New Game Tab", newGamePanel);
-
+		this.addTab("Overview", overviewPanel);
+		
 		// Creates an ActionListener to be used by the timer
 		ActionListener actionListener = new ActionListener() {
 			@Override
@@ -69,7 +73,6 @@ public class MainView extends JTabbedPane {
 		// Timer will update the table every 5 seconds
 		Timer timer = new Timer(5000, actionListener);
 		timer.start();
-
 	}
 
 	/**
@@ -80,8 +83,22 @@ public class MainView extends JTabbedPane {
 	{
 		if(!newGamePanelVisible)
 		{
-			this.addTab("New Game Tab", newGamePanel);
+			this.addTab("New Game", newGamePanel);
 			this.newGamePanelVisible = true;
+			this.invalidate(); // force the tabbedpane to redraw
+			this.repaint();
+			this.setSelectedComponent(newGamePanel);
+		}
+	}
+
+	/**
+	 * Closes a new game tab if there is one
+	 */
+	public void CloseNewGameTabFromMain() {
+		if(this.newGamePanelVisible)
+		{
+			remove(newGamePanel);
+			this.newGamePanelVisible = false;
 		}
 	}
 	public OverviewPanel getOverviewPanel(){

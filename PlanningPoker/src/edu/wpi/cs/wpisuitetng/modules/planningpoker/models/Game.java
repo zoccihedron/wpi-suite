@@ -4,8 +4,8 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Codon Bleu
+ * Creator:
+ *    Code On Bleu
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
@@ -56,11 +56,10 @@ public class Game extends AbstractModel{
 	 * @param endTime end time of the game
 	 * 
 	 */
-	public Game(User user, String n, Date startTime, Date endTime) {
+	public Game(String name, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
 		id = 0;
-		name = n;
-		gameCreator = user.getName();
+		this.name = name;
 		start = startTime;
 		end = endTime;
 		

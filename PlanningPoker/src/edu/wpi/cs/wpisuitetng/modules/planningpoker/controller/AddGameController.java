@@ -6,8 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Chris Casola
+ * Creator:
+ *    Code On Bleu
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
@@ -52,6 +52,8 @@ public class AddGameController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
+		if (!view.checkFields()) return;
+		
 		Game currentGame = view.getGameObject();
 		
 		// Make sure there is text
@@ -76,6 +78,7 @@ public class AddGameController implements ActionListener {
 	}
 
 	public void addGameToView(Game returnGame) {
+		view.reportMessage("<html>Success: Game Saved!</html>");
 		//view.setResultName(returnGame.getName());
 		//view.setResultId(Integer.toString(returnGame.getId()));
 		//view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));

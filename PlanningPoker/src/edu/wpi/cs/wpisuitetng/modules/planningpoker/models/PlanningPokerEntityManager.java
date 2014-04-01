@@ -58,8 +58,9 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	public Game makeEntity(Session s, String content)
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
+		newGame.setGameCreator(s.getUsername());
 		if(!db.save(newGame, s.getProject())) {
-			throw new WPISuiteException("Save was no successful");
+			throw new WPISuiteException("Save was not successful");
 		}
 		return newGame;
 	}
