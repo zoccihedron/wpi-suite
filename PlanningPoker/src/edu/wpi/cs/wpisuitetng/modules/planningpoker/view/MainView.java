@@ -6,8 +6,13 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
+<<<<<<< HEAD
  * Contributors:
  *    Team Codon Bleu
+=======
+ * Creator:
+ *    Code On Bleu
+>>>>>>> feature-newGameFunctionality
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
@@ -20,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  * This panel fills the main content area of the tab for this module. It
  * contains one inner JPanel, the BoardPanel.
  * 
- * @author Joshua Allard
+ * @author Code On Bleu
  *
  */
 @SuppressWarnings("serial")

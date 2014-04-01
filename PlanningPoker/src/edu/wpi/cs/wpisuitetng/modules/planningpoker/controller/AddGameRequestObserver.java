@@ -6,13 +6,14 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Josh and Corey
+ * Creator:
+ *    Code On Bleu
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -21,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * This observer is called when a response is received from a request
  * to the server to add a message.
  * 
- * @author Josh and Corey
+ * @author Code On Bleu
  *
  */
 public class AddGameRequestObserver implements RequestObserver {
@@ -50,6 +51,7 @@ public class AddGameRequestObserver implements RequestObserver {
 		
 		// Pass the messages back to the controller
 		controller.addGameToView(returnGame);
+		
 	}
 
 	@Override
