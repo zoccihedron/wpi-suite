@@ -10,8 +10,11 @@
 		<pathelement path="../Network/build"/>
 		<pathelement path="../Core/WPISuite-Interfaces/build"/>
 		<fileset dir="${core-lib}">
-			<include name="gson-*.jar"/>
+			<include name="*.jar"/>
 		</fileset>
+		<fileset dir="../PlanningPoker/lib">
+			<include name="*.jar"/>
+	  	</fileset>
 		<pathelement path="build"/>
 	</path>
 
@@ -44,7 +47,15 @@
 		</jar>
 	</target>
 
-	<target name="compile" depends="janeway-jar, core-jar"/>
+	<target name="compile" depends="janeway-jar, core-jar">
+		<!--hackaround to adding jars... -->
+		<!-- Causing issues... need to fix later... -->
+		<unzip dest="../Janeway/bin">
+			<fileset dir="../PlanningPoker/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</unzip> 
+	</target>
 
 	<target name="compile-test" depends="compile-base">
 		<mkdir dir="build-test"/>

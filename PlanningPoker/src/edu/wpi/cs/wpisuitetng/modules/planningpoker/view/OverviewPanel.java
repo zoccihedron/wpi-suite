@@ -11,22 +11,21 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
+import java.awt.Dimension;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 
 @SuppressWarnings("serial")
 public class OverviewPanel extends JPanel {
-	private JTable table;
+	private OverviewTable table;
 	private JButton refreshBtn;
-	private final String[] colNames = {"ID", "Name", "Number of Requirements"};
+	private final String[] colNames = {"ID", "Name", "Status", "Deadline", "Number of Requirements", "Owner"};
 	private JScrollPane scrollPane;
 
 	/**
@@ -34,28 +33,46 @@ public class OverviewPanel extends JPanel {
 	 */
 	public OverviewPanel(PlanningPokerModel gamesModel) {
 		
-		setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
-
 		String[][] data = {};
 		refreshBtn = new JButton("Refresh");
 		
-		table = new JTable(data, colNames);
+		table = new OverviewTable(data, colNames);
 		scrollPane = new JScrollPane(table);
-		add(refreshBtn);
+		
+		// ID
+		table.getColumnModel().getColumn(0).setMaxWidth(40);
+		
+		// Game Name
+		table.getColumnModel().getColumn(1).setMinWidth(240);
+		// Status
+		table.getColumnModel().getColumn(2).setMinWidth(85);
+		table.getColumnModel().getColumn(2).setMaxWidth(85);
+		
+		// Deadline
+		table.getColumnModel().getColumn(3).setMinWidth(200);
+		table.getColumnModel().getColumn(3).setMaxWidth(200);
+
+		// Num of Requirements
+		table.getColumnModel().getColumn(4).setMinWidth(40);
+		table.getColumnModel().getColumn(4).setMaxWidth(120);
+		
+		// Game Creator
+		table.getColumnModel().getColumn(5).setMaxWidth(85);
+		table.getColumnModel().getColumn(5).setMaxWidth(200);
+
+		scrollPane.setPreferredSize(new Dimension(1000,500));
 		add(scrollPane);
+		add(refreshBtn);
 		
 		refreshBtn.addActionListener(new GetGamesController(gamesModel, this));
 	}
 	
-	public void updateTable(String[][] data)
+	public void updateTable()
 	{
-		remove(scrollPane);
-		table = new JTable(data,colNames);
-		scrollPane = new JScrollPane(table);
-		add(scrollPane);
-		this.revalidate();
+		table.refresh();
 	
 	}
+	
 	
 	
 

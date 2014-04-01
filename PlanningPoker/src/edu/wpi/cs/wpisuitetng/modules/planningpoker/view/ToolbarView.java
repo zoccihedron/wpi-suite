@@ -22,14 +22,17 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 @SuppressWarnings({"serial"})
 public class ToolbarView extends DefaultToolbarView{
 	
-	private CreateButtonsPanel createButton = new CreateButtonsPanel();
+	private CreateButtonsPanel createButton = new CreateButtonsPanel(this);
+	private final MainView mainview;
 	
 	/**
 	 * Sets up and positions the toolbar buttons
+	 * @param mainView 
 	 */
-	public ToolbarView()
+	public ToolbarView(MainView mainView)
 	{
 		this.addGroup(createButton);
+		this.mainview = mainView;
 	}
 	
 	/**
@@ -38,5 +41,12 @@ public class ToolbarView extends DefaultToolbarView{
 	 * @return CreateButtonsPanel */
 	public CreateButtonsPanel getCreateButton(){
 		return createButton;
+	}
+
+	/**
+	 * Creates a CreateNewGame tab in the main view
+	 */
+	public void crtGamePressed() {
+		mainview.createNewGameTab();
 	}
 }

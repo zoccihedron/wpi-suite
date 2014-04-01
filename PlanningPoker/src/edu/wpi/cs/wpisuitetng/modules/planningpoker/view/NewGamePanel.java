@@ -12,19 +12,15 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Panel;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+
+
 
 
 /**
@@ -35,95 +31,21 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  *
  */
 @SuppressWarnings({"serial"})
-public class NewGamePanel extends JPanel {
+public class NewGamePanel extends JSplitPane {
+	public CreateGameInfoPanel createGameInfoPanel;
+	public JTabbedPane tabPane;
 	
-	JPlaceholderTextField gameNameText;
-	JPlaceholderTextField gameIdText;
-	JPlaceholderTextField usernameText;
-	JButton inviteUserButton;
-	JRadioButton realTime;
-	JRadioButton distributed;
-	ButtonGroup gameTypeSelection;
-	JPlaceholderTextField dateText;
-	JPlaceholderTextField numReqsText;
-	JButton createGameButton;
-	
-	JTextField resultName;
-	JTextField resultId;
-	JTextField resultNumReqs;
-
-	
-	public NewGamePanel(PlanningPokerModel gamesModel) {
-		gameNameText = new JPlaceholderTextField("Name");
-		gameIdText = new JPlaceholderTextField("ID");
-		usernameText = new JPlaceholderTextField("Username");
-		inviteUserButton = new JButton("Invite User");
-		realTime = new  JRadioButton("Real-time");
-		distributed = new  JRadioButton("Distributed");
-		gameTypeSelection = new ButtonGroup();
-		dateText = new JPlaceholderTextField("MM/DD/YY");
-		numReqsText = new JPlaceholderTextField("Number of Requirements");
-		createGameButton = new JButton("Create Game");
+	public NewGamePanel(PlanningPokerModel model) {
+		createGameInfoPanel = new CreateGameInfoPanel(model);
+		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		
-		resultName = new JTextField("Name goes here");
-		resultId = new JTextField("ID goes here");
-		resultNumReqs = new JTextField("Num Reqs go here");
+		tabPane = new JTabbedPane();
+		tabPane.addTab("Requirements", new Panel());
+		tabPane.addTab("Create new requirement", new Panel());
+		tabPane.addTab("Create new deck", new Panel());
 		
-		usernameText.setEnabled(false);
-		inviteUserButton.setEnabled(false);
-		distributed.setEnabled(false);
-		realTime.setEnabled(false);
-		dateText.setEnabled(false);
-		
-		
-		setBorder(BorderFactory.createLineBorder(Color.orange, 2));
-		
-		
-		//Adds the fields and button to the main panel.
-		add(gameNameText);
-		add(gameIdText);
-		add(usernameText);
-		add(inviteUserButton);
-		add(realTime);
-		add(distributed);
-		add(dateText);
-		add(numReqsText);
-		add(createGameButton);
-		
-		add(resultName);
-		add(resultId);
-		add(resultNumReqs);
-		
-		//Groups the JRadioButtons together so they act like actual radio buttons
-		gameTypeSelection.add(realTime);
-		gameTypeSelection.add(distributed);
-		
-		// Maps Create Game button to AddGameController class
-		createGameButton.addActionListener(new AddGameController(gamesModel, this));
-
-	}
-	
-	/**
-	 * @return the txtNewMessage JTextField
-	 */
-
-	// creates a new game object to be sent to the database
-	public Game getGameObject() {
-		Game newGame = new Game();
-		newGame.setName(gameNameText.getText());
-		newGame.setId(Integer.parseInt(gameIdText.getText()));
-		return newGame;
-	}
-	
-	public void setResultName(String newName) {
-		resultName.setText(newName);
-	}
-
-	public void setResultId(String newId) {
-		resultId.setText(newId);	
-	}
-
-	public void setResultNumReqs(String newNumReqs) {
-		resultNumReqs.setText(newNumReqs);
+		this.setLeftComponent(createGameInfoPanel);
+		this.setRightComponent(tabPane);
+		this.setDividerLocation(300);
 	}
 }

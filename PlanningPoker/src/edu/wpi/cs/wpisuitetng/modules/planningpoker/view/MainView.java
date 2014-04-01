@@ -12,12 +12,8 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
+import javax.swing.JTabbedPane;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 /**
@@ -28,10 +24,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  *
  */
 @SuppressWarnings("serial")
-public class MainView extends JPanel {
+public class MainView extends JTabbedPane {
 
 	/** The panel containing the new game creator */
 	private final NewGamePanel newGamePanel;
+	private Boolean newGamePanelVisible = false;
 	
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
@@ -42,11 +39,23 @@ public class MainView extends JPanel {
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
 		// Add the board panel to this view
-		setBorder(BorderFactory.createLineBorder(Color.blue, 2));
-		
 		newGamePanel = new NewGamePanel(gamesModel);
+		newGamePanel.setBounds(0,0,500,500);
 		overviewPanel = new OverviewPanel(gamesModel);
-		add(newGamePanel);
-		add(overviewPanel);
+		overviewPanel.setBounds(0, 0, 500, 500);
+		this.addTab("Overview Tab", overviewPanel);
+	}
+	
+	/**
+	 * Adds a new game panel if it is not
+	 * already there
+	 */
+	public void createNewGameTab()
+	{
+		if(!newGamePanelVisible)
+		{
+			this.addTab("New Game Tab", newGamePanel);
+			this.newGamePanelVisible = true;
+		}
 	}
 }
