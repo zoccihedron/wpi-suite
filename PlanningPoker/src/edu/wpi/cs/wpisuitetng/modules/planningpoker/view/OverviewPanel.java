@@ -42,31 +42,31 @@ public class OverviewPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public OverviewPanel(PlanningPokerModel gamesModel, MainView mainView) {
-		
+
 		this.mainView = mainView;
 		this.gamesModel = gamesModel;
-		
+
 		String[][] data = {};
 		refreshBtn = new JButton("Refresh");
-		
-		
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 0;
-		
+
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.weighty = 0;
+
 		table = new OverviewTable(data, colNames);
 		scrollPane = new JScrollPane(table);
-		
+
 		// ID
 		table.getColumnModel().getColumn(0).setMaxWidth(40);
-		
+
 		// Game Name
 		table.getColumnModel().getColumn(1).setMinWidth(240);
 		// Status
 		table.getColumnModel().getColumn(2).setMinWidth(85);
 		table.getColumnModel().getColumn(2).setMaxWidth(85);
-		
+
 		// Deadline
 		table.getColumnModel().getColumn(3).setMinWidth(200);
 		table.getColumnModel().getColumn(3).setMaxWidth(200);
@@ -74,7 +74,7 @@ public class OverviewPanel extends JPanel {
 		// Num of Requirements
 		table.getColumnModel().getColumn(4).setMinWidth(40);
 		table.getColumnModel().getColumn(4).setMaxWidth(120);
-		
+
 		// Game Creator
 		table.getColumnModel().getColumn(5).setMaxWidth(85);
 		table.getColumnModel().getColumn(5).setMaxWidth(200);
@@ -82,10 +82,10 @@ public class OverviewPanel extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(1000,500));
 		add(scrollPane, c);
 		add(refreshBtn);
-		
+
 		refreshBtn.addActionListener(new GetGamesController(gamesModel, this, mainView));
 	}
-	
+
 	/**
 	 * Updates the table and revalidates to print it to the table
 	 *
@@ -95,22 +95,15 @@ public class OverviewPanel extends JPanel {
 		table.refresh();
 		table.revalidate();
 	}
-	
+
 	/**
-	 * Sends an HTTP request to the server to pull games from the database, 
-	 * but will not be sent if the network configuration is null (no user sign in)
+	 * Sends an HTTP request to the server to pull games from the database
 	 *
 	 */
 	public void getGamesFromServer(){
-		try{
-			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
-				final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET); // PUT == create
-				request.addObserver(new GetGamesRequestObserver(new GetGamesController(gamesModel, this, mainView))); // add an observer to process the response
-				request.send();
-			}
-		} 
-		catch (RuntimeException runtimeException){
-		}
+		final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET); // PUT == create
+		request.addObserver(new GetGamesRequestObserver(new GetGamesController(gamesModel, this, mainView))); // add an observer to process the response
+		request.send();
 	}
 }
 
