@@ -158,7 +158,7 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		lblDeck = new JLabel("Deck:");
 		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblDeck.setBounds(35, 189, 86, 20);
+		lblDeck.setBounds(35, 222, 86, 20);
 		add(lblDeck);
 		
 		String[] decks = {"default"};
