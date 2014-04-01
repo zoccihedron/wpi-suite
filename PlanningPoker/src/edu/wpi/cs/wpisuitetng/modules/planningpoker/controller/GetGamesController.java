@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -34,15 +35,18 @@ public class GetGamesController implements ActionListener {
 	
 	private final PlanningPokerModel model;
 	private final OverviewPanel view;
+	private final MainView mainView;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param model the model containing the messages
 	 * @param view the view where the user enters new messages
+	 * @param mainView the main view
 	 */
-	public GetGamesController(PlanningPokerModel model, OverviewPanel view) {
+	public GetGamesController(PlanningPokerModel model, OverviewPanel view, MainView mainView) {
 		this.model = model;
 		this.view = view;
+		this.mainView = mainView;
 	}
 
 	/* 
@@ -53,7 +57,7 @@ public class GetGamesController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
-					
+		
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET); // PUT == create
 			request.addObserver(new GetGamesRequestObserver(this)); // add an observer to process the response

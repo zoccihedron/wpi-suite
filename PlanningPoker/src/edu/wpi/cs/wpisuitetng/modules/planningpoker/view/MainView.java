@@ -13,11 +13,17 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
@@ -45,9 +51,26 @@ public class MainView extends JTabbedPane {
 		// Add the board panel to this view
 		
 		newGamePanel = new NewGamePanel(gamesModel);
-		overviewPanel = new OverviewPanel(gamesModel);
+		overviewPanel = new OverviewPanel(gamesModel, this);
 		this.addTab("Overview Tab", overviewPanel);
 		this.addTab("New Game Tab", newGamePanel);
 		
+		// Creates an ActionListener to be used by the timer
+		ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				overviewPanel.getGamesFromServer();
+                overviewPanel.updateTable();
+            }
+		};
+		 
+		// Timer will update the table every 5 seconds
+		Timer timer = new Timer(5000, actionListener);
+		timer.start();
+		
+	}
+	
+	public OverviewPanel getOverviewPanel(){
+		return overviewPanel;
 	}
 }
