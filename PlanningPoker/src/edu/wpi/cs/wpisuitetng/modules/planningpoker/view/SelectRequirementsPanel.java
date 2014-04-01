@@ -39,7 +39,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 0;
 		this.add(existingRequirementsLabel, constraints);
 
-		JButton btnNewRequirement = new JButton("Create Requirement");
+		JButton btnNewRequirement = new JButton("Refresh");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 0.33;
 		constraints.weighty = 0.1;
@@ -58,12 +58,16 @@ public class SelectRequirementsPanel extends JPanel {
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				model.setRowCount(0);
 				//Initially populates the existingReqs Table
 				ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
 						RequirementManagerFacade.getInstance().getRequirments());
+				ArrayList<Integer> pendingReqs = getSelectedRequirementIds();
 				for (Requirement req : existingRequirements) {
-					model.addRow(new Object[] { Integer.toString(req.getId()),
+					if(!pendingReqs.contains(req.getId())){
+						model.addRow(new Object[] { Integer.toString(req.getId()),
 							req.getName(), req.getDescription() });
+					}
 				}
 			}
 
@@ -188,7 +192,7 @@ public class SelectRequirementsPanel extends JPanel {
 		int REQID = 0;
 		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
 		for (int i = 0; i < countOfEntries; i++) {
-			reqIDs.add(Integer.valueOf((String) (requirementsToAddTable
+			reqIDs.add(Integer.valueOf((String) (requirementsToAddTable.getModel()
 					.getValueAt(i, REQID))));
 		}
 		return reqIDs;
