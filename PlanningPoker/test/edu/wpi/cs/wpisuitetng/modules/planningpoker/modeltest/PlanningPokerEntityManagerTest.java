@@ -31,7 +31,7 @@ import java.util.Date;
 /**
  * Entity Manager testing class for Planning Poker
  *
- * @author Chris
+ * @author  Code On Bleu
  * @version Mar 22, 2014
  */
 public class PlanningPokerEntityManagerTest {
@@ -134,7 +134,8 @@ public class PlanningPokerEntityManagerTest {
 	public void AddGameEntityToDatabaseTest() throws WPISuiteException{
 		Game newGame = manager.makeEntity(s1, game3.toJSON());
 		assertEquals("game3", newGame.getName());
-		//assertSame(db.retrieve(Game.class,  "id", 10).get(0), newGame);
+		Game newGameRetrieved = (Game) db.retrieve(Game.class, "id", 10).get(0);
+		assertTrue(game3.getName().equals(newGameRetrieved.getName()));
 	}
 	
 	

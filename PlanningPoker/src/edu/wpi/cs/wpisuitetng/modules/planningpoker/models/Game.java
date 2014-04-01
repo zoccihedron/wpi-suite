@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * The game will keep track of any estimates for a session,
  * which will be used in the module.
  *
- * @author Robert Edwards, yyan
+ * @author  Code On Bleu
  * @version Mar 25, 2014
  */
 /**

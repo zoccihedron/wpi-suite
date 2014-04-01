@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * Game testing class for Planning Poker
  *
- * @author Ryan
+ * @author  Code On Bleu
  * @version Mar 23, 2014
  */
 public class GameTest {
