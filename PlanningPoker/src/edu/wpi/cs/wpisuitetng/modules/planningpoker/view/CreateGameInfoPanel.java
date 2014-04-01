@@ -170,7 +170,7 @@ public class CreateGameInfoPanel extends JPanel {
 		btnNewButton = new JButton("Add new deck");
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnNewButton.setBounds(119, 250, 130, 23);
-		add(btnNewButton);
+		//add(btnNewButton);
 		
 		btnSave = new JButton("Save");
 		btnSave.setBounds(111, 325, 89, 23);
