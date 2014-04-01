@@ -102,7 +102,7 @@ public class OverviewTable extends JTable
 		for (int i = 0; i < games.size(); i++) {
 			Game game = games.get(i);			
 					
-			tableModel.addRow(new Object[]{ game.getId(), 
+			tableModel.addRow(new Object[]{ 
 					game.getName(),
 					game.getIsTerminated() ? "Ended" : "Active",
 					game.getEnd(),
