@@ -11,47 +11,97 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 @SuppressWarnings("serial")
+/**
+ * Creates the overview panel, which includes
+ * a button for refreshing and the table that
+ * displays the game data.
+ *
+ * @author Robert, Ian, Adam
+ * @version Mar 31, 2014
+ */
 public class OverviewPanel extends JPanel {
-	private JTable table;
-	private JButton refreshBtn;
-	private final String[] colNames = {"ID", "Name", "Number of Requirements"};
+	private OverviewTable table;
+	private final String[] colNames = {"Name", "Status", "Deadline", "Number of Requirements", "Owner"};
 	private JScrollPane scrollPane;
+	private PlanningPokerModel gamesModel;
+	private MainView mainView;
 
 	/**
 	 * Create the panel.
 	 */
-	public OverviewPanel(PlanningPokerModel gamesModel) {
+	public OverviewPanel(PlanningPokerModel gamesModel, MainView mainView) {
+		
+		this.mainView = mainView;
+		this.gamesModel = gamesModel;
 		
 		String[][] data = {};
-		refreshBtn = new JButton("Refresh");
-		
-		table = new JTable(data, colNames);
+		setLayout(new BorderLayout());
+	
+
+		table = new OverviewTable(data, colNames);
 		scrollPane = new JScrollPane(table);
-		add(refreshBtn);
-		add(scrollPane);
 		
-		refreshBtn.addActionListener(new GetGamesController(gamesModel, this));
+		
+		// Game Name
+		table.getColumnModel().getColumn(0).setMinWidth(240);
+		// Status
+		table.getColumnModel().getColumn(1).setMinWidth(85);
+		table.getColumnModel().getColumn(1).setMaxWidth(85);
+		
+		// Deadline
+		table.getColumnModel().getColumn(2).setMinWidth(200);
+		table.getColumnModel().getColumn(2).setMaxWidth(200);
+
+		// Num of Requirements
+		table.getColumnModel().getColumn(3).setMinWidth(40);
+		table.getColumnModel().getColumn(3).setMaxWidth(120);
+		
+		// Game Creator
+		table.getColumnModel().getColumn(4).setMinWidth(85);
+		table.getColumnModel().getColumn(4).setMaxWidth(200);
+
+		add(scrollPane, BorderLayout.CENTER);
 	}
 	
-	public void updateTable(String[][] data)
+	/**
+	 * Updates the table and revalidates to print it to the table
+	 *
+	 */
+	public void updateTable()
 	{
-		remove(scrollPane);
-		table = new JTable(data,colNames);
-		scrollPane = new JScrollPane(table);
-		add(scrollPane);
-		this.revalidate();
+		table.refresh();
+		table.revalidate();
 	
 	}
 	
+	/**
+	 * Sends an HTTP request to the server to
+	 * pull the Game data from the database
+	 *
+	 */
+	public void getGamesFromServer(){
+		final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET); // PUT == create
+		request.addObserver(new GetGamesRequestObserver(new GetGamesController(gamesModel, this, mainView))); // add an observer to process the response
+		request.send();
+	}
 	
 
 }

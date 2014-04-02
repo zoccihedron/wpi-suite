@@ -9,19 +9,18 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
@@ -51,17 +50,16 @@ public class PlanningPoker implements IJanewayModule {
 	 */
 	public PlanningPoker() {
 	
+		// Constructs and adds the MainPanel
+		PlanningPokerModel games = PlanningPokerModel.getInstance();
+				
+		MainView mainView = new MainView(games);
 
 		// Initialize the list of tabs (however, this module has only one tab)
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		// Create a toolbar for the tab
-		DefaultToolbarView toolbarView = new ToolbarView();
-		
-		// Constructs and adds the MainPanel
-		PlanningPokerModel games = PlanningPokerModel.getInstance();
-		
-		MainView mainView = new MainView(games);
+		DefaultToolbarView toolbarView = new ToolbarView(mainView);
 		
 				
 		// Create a tab model that contains the toolbar panel and the main content panel

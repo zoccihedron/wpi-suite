@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -49,7 +49,7 @@ public class GetGamesRequestObserver implements RequestObserver {
 		final Game[] returnGames = Game.fromJsonArray(response.getBody());
 		
 		// Pass the messages back to the controller
-		controller.convertGameToTable(returnGames);
+		controller.receivedGames(returnGames);
 	}
 
 	@Override
