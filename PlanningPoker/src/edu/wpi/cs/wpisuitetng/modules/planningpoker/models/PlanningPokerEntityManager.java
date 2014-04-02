@@ -90,7 +90,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if(games.length < 1 || games[0] == null) {
 			throw new NotFoundException("There are no games in the list");
 		}
-		if(games[0].isDraft()&&games[0].getGameCreator()!=s.getUsername()){
+		if((games[0].getStatus()==Game.GameStatus.DRAFT)&&games[0].getGameCreator()!=s.getUsername()){
 			throw new NotFoundException("Permission denied.");
 		}
 		return games;
@@ -109,7 +109,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		Game[] allGames = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
 		ArrayList<Game> gamesViewableByUser = new ArrayList<Game>();
 		for(Game game : allGames){
-			if(game.isDraft()){
+			if(game.getStatus()==Game.GameStatus.DRAFT){
 				if(game.getGameCreator().equals(s.getUsername())){
 					gamesViewableByUser.add(game);
 				}
