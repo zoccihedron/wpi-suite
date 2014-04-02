@@ -93,6 +93,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if((games[0].getStatus()==Game.GameStatus.DRAFT)&&games[0].getGameCreator()!=s.getUsername()){
 			throw new NotFoundException("Permission denied.");
 		}
+
 		return games;
 	}
 

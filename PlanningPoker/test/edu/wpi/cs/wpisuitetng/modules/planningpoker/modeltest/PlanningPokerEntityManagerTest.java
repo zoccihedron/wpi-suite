@@ -10,6 +10,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import org.junit.Before;
@@ -53,7 +55,10 @@ public class PlanningPokerEntityManagerTest {
 		
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
 		Date start = new Date();
-		Date end = new Date();
+		Calendar endTime = new GregorianCalendar();
+		endTime.set(2015, 1,1);
+		Date end = endTime.getTime();
+		
 		dummyUser.setRole(Role.ADMIN);
 		
 		game = new Game("game", start, end);
@@ -102,8 +107,8 @@ public class PlanningPokerEntityManagerTest {
 			exceptionMessage=e.getMessage();
 			PermissionDenied = true;
 		}
-		//assertTrue(PermissionDenied);
-		//assertEquals(exceptionMessage,"Permission denied.");
+		assertTrue(PermissionDenied);
+		assertEquals(exceptionMessage,"Permission denied.");
 		
 		boolean PermissionAllowed = true;
 		try{
