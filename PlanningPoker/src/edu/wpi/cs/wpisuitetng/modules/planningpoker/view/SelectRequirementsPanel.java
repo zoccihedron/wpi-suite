@@ -22,7 +22,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 	public SelectRequirementsPanel() {
 		this.setLayout(new GridBagLayout());
-		// Parent Container 
+		// Parent Container
 		GridBagConstraints constraints = new GridBagConstraints();
 
 		// Top section of panel
@@ -50,7 +50,8 @@ public class SelectRequirementsPanel extends JPanel {
 		existingRequirementsTable = new JTable(new DefaultTableModel(data,
 				columnNames));
 		// Hide the column with IDs
-		existingRequirementsTable.removeColumn(existingRequirementsTable.getColumnModel().getColumn(0));
+		existingRequirementsTable.removeColumn(existingRequirementsTable
+				.getColumnModel().getColumn(0));
 
 		// Filling with some initial data for testing
 		final DefaultTableModel model = (DefaultTableModel) existingRequirementsTable
@@ -59,14 +60,15 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				model.setRowCount(0);
-				//Initially populates the existingReqs Table
+				// Initially populates the existingReqs Table
 				ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
 						RequirementManagerFacade.getInstance().getRequirments());
 				ArrayList<Integer> pendingReqs = getSelectedRequirementIds();
 				for (Requirement req : existingRequirements) {
-					if(!pendingReqs.contains(req.getId())){
-						model.addRow(new Object[] { Integer.toString(req.getId()),
-							req.getName(), req.getDescription() });
+					if (!pendingReqs.contains(req.getId())) {
+						model.addRow(new Object[] {
+								Integer.toString(req.getId()), req.getName(),
+								req.getDescription() });
 					}
 				}
 			}
@@ -131,10 +133,11 @@ public class SelectRequirementsPanel extends JPanel {
 
 		requirementsToAddTable = new JTable(new DefaultTableModel(addData,
 				addColumnNames));
-		
+
 		// Hide the column with IDs
-		requirementsToAddTable.removeColumn(requirementsToAddTable.getColumnModel().getColumn(0));
-		
+		requirementsToAddTable.removeColumn(requirementsToAddTable
+				.getColumnModel().getColumn(0));
+
 		JScrollPane requirementsToAddTablePanel = new JScrollPane(
 				requirementsToAddTable);
 		constraints.fill = GridBagConstraints.BOTH;
@@ -158,27 +161,29 @@ public class SelectRequirementsPanel extends JPanel {
 	 *            the table to copy to
 	 */
 	private void moveRequirementsBetweenTables(JTable src, JTable dest) {
+		//Pull all the information we need to make this decision
 		int selection = src.getSelectedRow();
-
-		if (selection != -1) {
-			DefaultTableModel model = (DefaultTableModel) src.getModel();
-
-			int columnCount = model.getColumnCount();
+		DefaultTableModel modelDest = (DefaultTableModel) dest.getModel();
+		DefaultTableModel modelSrc = (DefaultTableModel) src.getModel();
+		
+		
+		while (selection != -1) {
+			int columnCount = modelSrc.getColumnCount();
 			String[] values = new String[columnCount];
-
-			for (int i = 0; i < columnCount; i++) {
-				values[i] = (String) model.getValueAt(selection, i);
+				
+			//Pull All the column values
+			for (int j = 0; j < columnCount; j++) {
+				values[j] = (String) modelSrc.getValueAt(selection, j);
 			}
 
-			model.removeRow(selection);
+			//Remove the entry we are moving
+			modelSrc.removeRow(selection);
 
-			// Add the values to that other table
-			DefaultTableModel modelToAddTo = (DefaultTableModel) dest
-					.getModel();
-			modelToAddTo
-					.addRow(new Object[] { values[0], values[1], values[2] });
+			//Insert the entry into the new table
+			modelDest.addRow(new Object[] { values[0], values[1], values[2] });
+			
+			selection = src.getSelectedRow();
 		}
-
 	}
 
 	/**
@@ -192,8 +197,8 @@ public class SelectRequirementsPanel extends JPanel {
 		int REQID = 0;
 		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
 		for (int i = 0; i < countOfEntries; i++) {
-			reqIDs.add(Integer.valueOf((String) (requirementsToAddTable.getModel()
-					.getValueAt(i, REQID))));
+			reqIDs.add(Integer.valueOf((String) (requirementsToAddTable
+					.getModel().getValueAt(i, REQID))));
 		}
 		return reqIDs;
 	}
