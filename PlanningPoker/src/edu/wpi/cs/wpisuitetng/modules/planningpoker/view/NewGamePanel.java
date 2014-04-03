@@ -23,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CloseNewGameTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 
@@ -38,6 +40,9 @@ public class NewGamePanel extends JSplitPane {
 	public CreateGameInfoPanel createGameInfoPanel;
 	public JTabbedPane tabPane;
 	private SelectRequirementsPanel selectRequirementsPanel;
+	private JButton btnSave;
+	private JButton btnCancel;
+	private JButton btnStart;
 	
 	public NewGamePanel(PlanningPokerModel model, MainView ParentWindow) {
 		super(JSplitPane.VERTICAL_SPLIT);
@@ -58,7 +63,27 @@ public class NewGamePanel extends JSplitPane {
 		topPanel.setDividerLocation(300);
 		this.setTopComponent(topPanel);
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.add(new JButton("Test"));
+		bottomPanel.setLayout(null);
+		
+		
+		btnSave = new JButton("Save");
+		btnSave.setBounds(12, 5, 68, 25);
+		bottomPanel.add(btnSave);
+		
+		// Maps Create Game button to AddGameController class
+		btnSave.addActionListener(new AddGameController(model, createGameInfoPanel));
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.setLocation(91, 5);
+		btnCancel.setSize(81, 25);
+		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
+		bottomPanel.add(btnCancel); 
+		JButton button = new JButton("Start");
+		button.setBounds(184, 5, 70, 25);
+		bottomPanel.add(button);
+		
+		
+		
 		this.setBottomComponent(bottomPanel); 
 		this.setDividerSize(0);
 		this.setEnabled(false);
@@ -80,7 +105,7 @@ public class NewGamePanel extends JSplitPane {
 	}
 	
 	public void resetDividerLocation(){
-		setDividerLocation(this.getHeight() - 50);
+		setDividerLocation(this.getHeight() - 35);
 	}
 	
 	
