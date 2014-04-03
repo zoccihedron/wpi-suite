@@ -4,8 +4,8 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: Team Codon Bleu
+ * Creator:
+ *    Code On Bleu
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * The game will keep track of any estimates for a session,
  * which will be used in the module.
  *
- * @author Robert Edwards, yyan
+ * @author  Code On Bleu
  * @version Mar 25, 2014
  */
 /**
@@ -33,7 +33,8 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  *
  */
 public class Game extends AbstractModel{
-	private int id = 0;
+	private int id;
+	private static int numberOfIDs = 0;
 	private String name = "";
 	private String description = "";
 	private List<String> participants = new ArrayList<String>();
@@ -41,8 +42,8 @@ public class Game extends AbstractModel{
 	private Date start = new Date();
 	private Date end = new Date();
 	private Boolean isTerminated = false;
-	private List<Estimate> estimates = new ArrayList<Estimate>();;
-	
+	private List<Estimate> estimates = new ArrayList<Estimate>();
+	private boolean isDraft = true;
 	
 	//TODO: timestamp, countdown or time for deadline, estimate, boolean for termination
 
@@ -56,11 +57,10 @@ public class Game extends AbstractModel{
 	 * @param endTime end time of the game
 	 * 
 	 */
-	public Game(User user, String n, Date startTime, Date endTime) {
+	public Game(String name, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
-		id = 0;
-		name = n;
-		gameCreator = user.getName();
+		id = ++numberOfIDs;
+		this.name = name;
 		start = startTime;
 		end = endTime;
 		
@@ -298,6 +298,15 @@ public class Game extends AbstractModel{
 		name = n;
 	}
 	
+	public boolean isDraft() {
+		return isDraft;
+	}
+	
+	public void setDraftStatus(boolean status){
+		isDraft = status;
+	}
+	
+
 	/**
 	 * Check if this game is terminated. Game can be terminated 
 	 * automatically (end time has been reached) or manually

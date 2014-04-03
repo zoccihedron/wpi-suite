@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 WPI-Suite
+ * Copyright (c) 2014 WPI-Suite
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,13 +9,9 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,11 +22,13 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 
 //import org.jdesktop.swingx.JXDatePicker;
 
@@ -52,25 +50,23 @@ public class PlanningPoker implements IJanewayModule {
 	 */
 	public PlanningPoker() {
 	
+		// Constructs and adds the MainPanel
+		PlanningPokerModel games = PlanningPokerModel.getInstance();
+				
+		MainView mainView = new MainView(games);
 
 		// Initialize the list of tabs (however, this module has only one tab)
 		tabs = new ArrayList<JanewayTabModel>();
 		
-		// Create a JPanel to hold the toolbar for the tab
-		JPanel toolbarPanel = new JPanel();
-		toolbarPanel.add(new JLabel("PlanningPoker placeholder toolbar"));
-		
-		// Constructs and adds the MainPanel
-		PlanningPokerModel games = PlanningPokerModel.getInstance();
-		
-		MainView mainView = new MainView(games);
+		// Create a toolbar for the tab
+		DefaultToolbarView toolbarView = new ToolbarView(mainView);
 		
 				
 		// Create a tab model that contains the toolbar panel and the main content panel
 		final JanewayTabModel tab1 = new JanewayTabModel(
 				getName(), 
 				new ImageIcon(), 
-				toolbarPanel,
+				toolbarView,
 				mainView);
 			
 			// Add the tab to the list of tabs owned by this module
