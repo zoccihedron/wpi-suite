@@ -93,6 +93,7 @@ public class MainView extends JTabbedPane {
 		}
 		this.invalidate(); // force the tabbedpane to redraw
 		this.repaint();
+		newGamePanel.resetDividerLocation();
 		this.setSelectedComponent(newGamePanel);
 	}
 
