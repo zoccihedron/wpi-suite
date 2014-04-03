@@ -104,7 +104,7 @@ public class OverviewTable extends JTable
 					
 			tableModel.addRow(new Object[]{ 
 					game.getName(),
-					game.getIsTerminated() ? "Ended" : "Active",
+					game.getStatus().toString(),
 					game.getEnd(),
 					game.getEstimates().size(),
 					game.getGameCreator()

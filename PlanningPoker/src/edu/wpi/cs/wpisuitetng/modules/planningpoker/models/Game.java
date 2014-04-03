@@ -41,9 +41,23 @@ public class Game extends AbstractModel{
 	private String gameCreator = "";
 	private Date start = new Date();
 	private Date end = new Date();
-	private Boolean isTerminated = false;
 	private List<Estimate> estimates = new ArrayList<Estimate>();
-	private boolean isDraft = true;
+	public enum GameStatus{
+		DRAFT("Draft"),
+		IN_PROGRESS("In Progress"),
+		ENDED("Ended");
+		
+		private String text; 
+        private GameStatus(String text) { 
+            this.text = text; 
+        } 
+        
+        @Override 
+        public String toString(){ 
+            return text; 
+        }
+	}
+	private GameStatus status = GameStatus.DRAFT;
 	
 	//TODO: timestamp, countdown or time for deadline, estimate, boolean for termination
 
@@ -62,8 +76,7 @@ public class Game extends AbstractModel{
 		id = ++numberOfIDs;
 		this.name = name;
 		start = startTime;
-		end = endTime;
-		
+		end = endTime;	
 	}
 	
 	/**
@@ -163,7 +176,7 @@ public class Game extends AbstractModel{
 		gameCreator = updatedGame.getGameCreator();
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
-		isTerminated = updatedGame.getIsTerminated();
+		status = updatedGame.getStatus();
 		estimates = updatedGame.getEstimates();
 	}
 	
@@ -298,35 +311,24 @@ public class Game extends AbstractModel{
 		name = n;
 	}
 	
-	public boolean isDraft() {
-		return isDraft;
-	}
 	
-	public void setDraftStatus(boolean status){
-		isDraft = status;
-	}
-	
-
 	/**
-	 * Check if this game is terminated. Game can be terminated 
-	 * automatically (end time has been reached) or manually
-	 * @return true if game is terminated
+	 * Checks if the game end time has been reached
+	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
-	public Boolean getIsTerminated() {
-		if(isTerminated==true) return true;
+	public GameStatus getStatus(){
 		Date now = Calendar.getInstance().getTime();
 		if(now.compareTo(end) >= 0){
-			isTerminated = true;
-			return isTerminated;
+			status = GameStatus.ENDED;
 		}
-		return false;
+		return status;
 	}
-
+	
 	/**
-	 * @param isTerminated the isTerminated to set
+	 * @param newStatus GameStatus set Game.status to
 	 */
-	public void setIsTerminated(Boolean isTerminated) {
-		this.isTerminated = isTerminated;
+	public void setStatus(GameStatus newStatus){
+		status = newStatus;
 	}
 
 	/**
@@ -407,6 +409,7 @@ public class Game extends AbstractModel{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	
 	
 }
