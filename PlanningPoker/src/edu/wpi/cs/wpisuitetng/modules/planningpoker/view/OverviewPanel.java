@@ -77,7 +77,8 @@ public class OverviewPanel extends JPanel {
 		table.getColumnModel().getColumn(4).setMinWidth(85);
 		table.getColumnModel().getColumn(4).setMaxWidth(200);
 
-		add(scrollPane, BorderLayout.CENTER);
+		//add(scrollPane, BorderLayout.CENTER);
+		add(new EstimationPane());
 	}
 
 	/**
