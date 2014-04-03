@@ -71,10 +71,12 @@ public class CreateGameInfoPanel extends JPanel {
 	private JButton btnStart;
 	private JCheckBox chckbxDeadline;
 	private JLabel lblMessage;
+	private NewGamePanel parentWindow;
 	
 
-	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView mainWindow) {
+	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView mainWindow, NewGamePanel parentWindow) {
 		this.mainView = mainWindow;
+		this.parentWindow = parentWindow;
 		setBounds(5,5,307,360);
 		setLayout(null);
 		
@@ -282,6 +284,7 @@ public class CreateGameInfoPanel extends JPanel {
 	public Game getGameObject() {
 		if(chckbxDeadline.isSelected()){
 			Game newGame = new Game(getGameName(), new Date(), getDeadline());
+			newGame.setRequirements(parentWindow.getGameRequirements());
 			return newGame;
 		}
 		else{

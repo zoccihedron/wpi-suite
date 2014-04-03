@@ -36,7 +36,7 @@ public class NewGamePanel extends JSplitPane {
 	private SelectRequirementsPanel selectRequirementsPanel;
 	
 	public NewGamePanel(PlanningPokerModel model, MainView ParentWindow) {
-		createGameInfoPanel = new CreateGameInfoPanel(model, ParentWindow);
+		createGameInfoPanel = new CreateGameInfoPanel(model, ParentWindow, this);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		

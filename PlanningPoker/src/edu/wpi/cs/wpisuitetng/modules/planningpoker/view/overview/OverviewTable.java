@@ -106,7 +106,7 @@ public class OverviewTable extends JTable
 					game.getName(),
 					game.getStatus().toString(),
 					game.getEnd(),
-					game.getEstimates().size(),
+					game.getRequirements().size(),
 					game.getGameCreator()
 			});	
 		}
