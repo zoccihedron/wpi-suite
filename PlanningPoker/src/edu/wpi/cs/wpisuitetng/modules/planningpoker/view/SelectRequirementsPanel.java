@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
@@ -53,9 +55,9 @@ public class SelectRequirementsPanel extends JPanel {
 		existingRequirementsTable = new JTable(new DefaultTableModel(data,
 				columnNames));
 		
-		existingRequirementsTable.addMouseListener(new MouseAdapter() {
+		existingRequirementsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void valueChanged(ListSelectionEvent arg0) {
 				if(existingRequirementsTable.getSelectedRow() == - 1){
 					btnAddSelectedReq.setEnabled(DISABLED);
 				}
@@ -163,10 +165,9 @@ public class SelectRequirementsPanel extends JPanel {
 		requirementsToAddTable = new JTable(new DefaultTableModel(addData,
 				addColumnNames));
 
-		requirementsToAddTable.addMouseListener(new MouseAdapter() {
+		requirementsToAddTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
+			public void valueChanged(ListSelectionEvent arg0) {
 				if(requirementsToAddTable.getSelectedRow() == - 1){
 					btnRemoveSelectedReq.setEnabled(DISABLED);
 				}
