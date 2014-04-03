@@ -272,7 +272,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * Sends the signal to Mainview to close the NewgameTab
 	 */
 	public void closeNewGameTab() {
-		mainView.CloseNewGameTabFromMain();
+		//TODO we broke this
 	}
 
 	/**

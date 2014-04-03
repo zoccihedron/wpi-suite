@@ -51,6 +51,10 @@ public class NewGamePanel extends JSplitPane {
 		this.setDividerLocation(300);
 	}
 	
+	public NewGamePanel() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public ArrayList<Integer> getGameRequirements() {
 		return selectRequirementsPanel.getSelectedRequirementIds();
 	}
