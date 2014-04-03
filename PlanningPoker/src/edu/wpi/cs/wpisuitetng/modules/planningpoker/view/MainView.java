@@ -40,6 +40,7 @@ public class MainView extends JTabbedPane {
 
 	/** The panel containing the new game creator */
 	private final NewGamePanel newGamePanel;
+
 	private Boolean newGamePanelVisible = false;
 
 	/** The overview panel */
@@ -67,15 +68,16 @@ public class MainView extends JTabbedPane {
 						overviewPanel.updateTable();
 					}
 				}
+
 				catch(RuntimeException exception){
 				}
-				
 			}
 		};
 
 		// Timer will update the table every 5 seconds
 		Timer timer = new Timer(5000, actionListener);
 		timer.start();
+
 	}
 
 	/**
