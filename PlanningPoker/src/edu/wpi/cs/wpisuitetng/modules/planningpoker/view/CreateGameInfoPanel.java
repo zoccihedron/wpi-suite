@@ -152,6 +152,7 @@ public class CreateGameInfoPanel extends JPanel {
 		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnPm.setBounds(163, 188, 46, 23);
 
+
 		AMPMSelection.add(rdbtnAm);
 		AMPMSelection.add(rdbtnPm);
 		
@@ -212,19 +213,23 @@ public class CreateGameInfoPanel extends JPanel {
 	 */
 	public boolean checkFields() {
 		if (gameNameText.getText().trim().isEmpty()){
-				reportError("<html>Error: Please choose a name!</html>");
+				reportError("<html>*Error: Please choose a name!</html>");
 				return false;
 		}
 		if(chckbxDeadline.isSelected()){
 			if(datePicker.getModel().getValue() == null){
-				reportError("<html>Error: Please choose a date or turn off the deadline.</html>");
+				reportError("<html>*Error: Please choose a date or turn off the deadline.</html>");
 				return false;
 			}
 			if(getDeadline().compareTo(new Date()) <= 0){
-				reportError("<html>Error: The deadline must not be in the past.</html>");
+				reportError("<html>*Error: The deadline must not be in the past.</html>");
 				return false;
 			}
 		}
+		if (parentWindow.getGameRequirements().size() == 0){
+			reportError("<html>*Error: Pick at least one requirement.</html>");
+			return false;
+	}
 		lblMessage.setVisible(false);
 		return true;
 	}
@@ -289,6 +294,7 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 		else{
 			Game newGame = new Game(getGameName(), new Date(), new Date());
+			newGame.setRequirements(parentWindow.getGameRequirements());
 			return newGame;
 		}
 	}
