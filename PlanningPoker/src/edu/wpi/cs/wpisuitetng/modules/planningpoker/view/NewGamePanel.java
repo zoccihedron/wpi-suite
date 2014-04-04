@@ -35,24 +35,30 @@ public class NewGamePanel extends JSplitPane {
 	public JTabbedPane tabPane;
 	private SelectRequirementsPanel selectRequirementsPanel;
 	
-	public NewGamePanel(PlanningPokerModel model, MainView ParentWindow) {
-		createGameInfoPanel = new CreateGameInfoPanel(model, ParentWindow);
+	public NewGamePanel(PlanningPokerModel model, MainView parentWindow) {
+		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Requirements", selectRequirementsPanel);
-		
-		//tabPane.addTab("Create new requirement", new Panel());
-		//tabPane.addTab("Create new deck", new Panel());
-		
+
 		this.setLeftComponent(createGameInfoPanel);
 		this.setRightComponent(tabPane);
 		this.setDividerLocation(300);
 	}
 	
 	public NewGamePanel() {
-		// TODO Auto-generated constructor stub
+		createGameInfoPanel = new CreateGameInfoPanel(this);
+		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
+		selectRequirementsPanel = new SelectRequirementsPanel();
+		
+		tabPane = new JTabbedPane();
+		tabPane.addTab("Requirements", selectRequirementsPanel);
+		
+		this.setLeftComponent(createGameInfoPanel);
+		this.setRightComponent(tabPane);
+		this.setDividerLocation(300);
 	}
 
 	public ArrayList<Integer> getGameRequirements() {

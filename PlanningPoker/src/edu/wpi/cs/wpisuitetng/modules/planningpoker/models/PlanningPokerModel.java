@@ -24,7 +24,7 @@ import javax.swing.AbstractListModel;
  * @author Robert, yyan
  * @version Mar 25, 2014
  */
-public class PlanningPokerModel extends AbstractListModel<Game>{
+public class PlanningPokerModel extends AbstractListModel<Game> {
 	
 	// the list of all games this user could access
 	private List<Game> games;

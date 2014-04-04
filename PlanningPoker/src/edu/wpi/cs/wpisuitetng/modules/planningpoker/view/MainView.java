@@ -24,6 +24,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -49,6 +50,8 @@ public class MainView extends JTabbedPane {
 	 * @param boardModel 
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
+		MainViewTabController.getInstance().setMainView(this);
+		
 		this.gamesModel = gamesModel;
 		// Add the board panel to this view
 		overviewPanel = new OverviewPanel(gamesModel, this);

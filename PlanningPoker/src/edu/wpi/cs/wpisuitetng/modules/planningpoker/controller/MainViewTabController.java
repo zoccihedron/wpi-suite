@@ -1,5 +1,9 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
+import java.awt.Component;
+
+import javax.swing.JPanel;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 
@@ -30,5 +34,9 @@ public class MainViewTabController {
 		mainView.invalidate();
 		mainView.repaint();
 		mainView.setSelectedComponent(newGamePanel);
+	}
+	
+	public void closeTab(Component tabToClose) {
+		mainView.remove(tabToClose);
 	}
 }
