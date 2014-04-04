@@ -34,6 +34,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CloseNewGameTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
@@ -51,7 +52,8 @@ import javax.swing.JCheckBox;
  */
 @SuppressWarnings({"serial"})
 public class CreateGameInfoPanel extends JPanel {
-	private MainView mainView;
+	private MainViewTabController mainViewTabController;
+	private NewGamePanel parent;
 	
 	private JLabel lblName;
 	private JTextField gameNameText;
@@ -73,8 +75,9 @@ public class CreateGameInfoPanel extends JPanel {
 	private JLabel lblMessage;
 	
 
-	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView mainWindow) {
-		this.mainView = mainWindow;
+	public CreateGameInfoPanel(NewGamePanel parent) {
+		this.mainViewTabController = MainViewTabController.getInstance();
+		this.parent = parent;
 		setBounds(5,5,307,360);
 		setLayout(null);
 		
@@ -177,7 +180,7 @@ public class CreateGameInfoPanel extends JPanel {
 		add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new AddGameController(gamesModel, this));
+		btnSave.addActionListener(new AddGameController(this));
 		
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(12, 325, 89, 23);
@@ -200,9 +203,9 @@ public class CreateGameInfoPanel extends JPanel {
 
 
 	}
-	
 
-	
+
+
 	/**
 	 * Checks to see if the fields for the game are selected properly
 	 * '<html>error</html>' format needed to allow word wrap in the error label
@@ -272,7 +275,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * Sends the signal to Mainview to close the NewgameTab
 	 */
 	public void closeNewGameTab() {
-		mainView.CloseNewGameTabFromMain();
+		this.mainViewTabController.closeTab(this.parent);
 	}
 
 	/**
