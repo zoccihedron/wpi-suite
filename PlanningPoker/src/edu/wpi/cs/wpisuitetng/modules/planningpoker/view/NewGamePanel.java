@@ -13,7 +13,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Dimension;
-import java.awt.Panel;
 import java.util.ArrayList;
 
 import javax.swing.JSplitPane;
@@ -35,7 +34,7 @@ public class NewGamePanel extends JSplitPane {
 	public JTabbedPane tabPane;
 	private SelectRequirementsPanel selectRequirementsPanel;
 	
-	public NewGamePanel(PlanningPokerModel model, MainView parentWindow) {
+	public NewGamePanel(PlanningPokerModel model) {
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel();

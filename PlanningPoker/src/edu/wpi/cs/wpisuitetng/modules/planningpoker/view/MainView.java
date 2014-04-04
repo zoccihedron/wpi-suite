@@ -54,30 +54,9 @@ public class MainView extends JTabbedPane {
 		
 		this.gamesModel = gamesModel;
 		// Add the board panel to this view
-		overviewPanel = new OverviewPanel(gamesModel, this);
+		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
-		
-		// Creates an ActionListener to be used by the timer
-		ActionListener actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try{
-					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
-						overviewPanel.getGamesFromServer();
-						overviewPanel.updateTable();
-					}
-				}
-
-				catch(RuntimeException exception){
-				}
-			}
-		};
-
-		// Timer will update the table every 5 seconds
-		Timer timer = new Timer(5000, actionListener);
-		timer.start();
-
 	}
 
 	/**
@@ -86,7 +65,7 @@ public class MainView extends JTabbedPane {
 	 */
 	public void createNewGameTab()
 	{
-		NewGamePanel newGamePanel = new NewGamePanel(gamesModel, this);
+		NewGamePanel newGamePanel = new NewGamePanel(gamesModel);
 		newGamePanel.setBounds(0,0,500,500);
 		this.addTab("New Game", newGamePanel);
 		this.invalidate(); // force the tabbedpane to redraw
