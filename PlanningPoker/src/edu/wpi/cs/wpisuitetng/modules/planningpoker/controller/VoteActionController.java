@@ -17,16 +17,14 @@ public class VoteActionController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		
-		//if(!view.checkField()) return;
+		if(!view.checkField()) return;
 		
-		/*
-		 * final Request request = Network.getInstance().makeRequest("planningpoker/???, HttpMethod.PUT);
-		 * request.setBody(???.toJSON());
-		 * request.addObserver(???
-		 * request.send();
-		 */
-		 
-
+/*		
+		  final Request request = Network.getInstance().makeRequest("planningpoker/???, HttpMethod.PUT);
+		  request.setBody(???.toJSON());
+		  request.addObserver(???
+		  request.send();
+*/
 	}
 
 }

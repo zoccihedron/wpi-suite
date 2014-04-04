@@ -20,6 +20,7 @@ public class EstimationPane extends JPanel {
 	private JTextField requirementName;
 	private JTextField descriptionText;
 	private Box blankBox;
+	private DeckPanel deckPanel;
 	
 //	public EstimationPane(Requirement req, Estimate/Game) {
 	public EstimationPane() {
@@ -82,8 +83,8 @@ public class EstimationPane extends JPanel {
 		JLabel temp = new JLabel();
 		temp.setText("temp");
 	
-		//DeckPanel panel = new DeckPanel();
-		DeckPanel deckPanel = new DeckPanel();
+
+		deckPanel = new DeckPanel();
 		JScrollPane scrollPane = new JScrollPane(new DeckPanel());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
@@ -115,7 +116,9 @@ public class EstimationPane extends JPanel {
 	}
 
 
-
+	public boolean checkField() {
+		return deckPanel.checkField();
+	}
 	
 
 
