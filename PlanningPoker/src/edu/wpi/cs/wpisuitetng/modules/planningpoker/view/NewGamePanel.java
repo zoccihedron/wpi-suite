@@ -12,13 +12,16 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Panel;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -43,6 +46,7 @@ public class NewGamePanel extends JSplitPane {
 	private JButton btnSave;
 	private JButton btnCancel;
 	private JButton btnStart;
+	private JLabel lblMessage;
 	
 	public NewGamePanel(PlanningPokerModel model, MainView ParentWindow) {
 		super(JSplitPane.VERTICAL_SPLIT);
@@ -67,19 +71,27 @@ public class NewGamePanel extends JSplitPane {
 		
 		
 		btnSave = new JButton("Save");
-		btnSave.setBounds(12, 5, 68, 25);
+		btnSave.setBounds(94, 5, 68, 25);
 		bottomPanel.add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
 		btnSave.addActionListener(new AddGameController(model, createGameInfoPanel));
 		
 		btnCancel = new JButton("Cancel");
-		btnCancel.setLocation(91, 5);
-		btnCancel.setSize(81, 25);
+		btnCancel.setBounds(174, 5, 81, 25);
 		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
 		bottomPanel.add(btnCancel); 
 		JButton button = new JButton("Start");
-		button.setBounds(184, 5, 70, 25);
+		button.setBounds(12, 5, 70, 25);
+		
+		lblMessage = new JLabel("*Error");
+		lblMessage.setBounds(260, 8, 457, 18);
+		//lblMessage.setBounds(26, 274, 266, 52);
+		lblMessage.setForeground(Color.RED);
+		lblMessage.setVisible(false);
+		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
+		bottomPanel.add(lblMessage);		
+		
 		bottomPanel.add(button);
 		
 		
@@ -108,8 +120,33 @@ public class NewGamePanel extends JSplitPane {
 		setDividerLocation(this.getHeight() - 35);
 	}
 	
+	/**Fills the text box with a red warning based on the error Message
+	 * 
+	 * @param error the message to be printed, should be in <html>text</html> format
+	 */
+	public void reportError(String error) {
+		lblMessage.setForeground(Color.RED);
+		lblMessage.setText(error);
+		lblMessage.setVisible(true);
+	}
+	
+	/**Fills the text box with a green message based on the input
+	 * 
+	 * @param message the message to be printed, should be in <html>text</html> format
+	 */
+	public void reportMessage(String message) {
+		lblMessage.setForeground(Color.BLUE);
+		lblMessage.setText(message);
+		lblMessage.setVisible(true);
+	}
+	
 	
 	public ArrayList<Integer> getGameRequirements() {
 		return selectRequirementsPanel.getSelectedRequirementIds();
 	}
+	
+	public JLabel getMessageField(){
+		return lblMessage;
+	}
 }
+

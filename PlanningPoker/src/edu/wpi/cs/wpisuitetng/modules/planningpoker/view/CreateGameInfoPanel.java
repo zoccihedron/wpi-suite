@@ -55,6 +55,7 @@ public class CreateGameInfoPanel extends JPanel {
 	
 	private JLabel lblName;
 	private JTextField gameNameText;
+	private JTextField description;
 	private JLabel lblDeadline;
 	private JDatePickerImpl datePicker;
 	private JLabel lblTime;
@@ -77,7 +78,7 @@ public class CreateGameInfoPanel extends JPanel {
 	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView mainWindow, NewGamePanel parentWindow) {
 		this.mainView = mainWindow;
 		this.parentWindow = parentWindow;
-		setBounds(5,5,307,360);
+		setBounds(5,5,307,393);
 		setLayout(null);
 		
 		
@@ -85,28 +86,29 @@ public class CreateGameInfoPanel extends JPanel {
 		gameNameText = new JTextField();
 		gameNameText.setBounds(119, 56, 130, 23);
 		add(gameNameText);
+		
+		description = new JTextField();
+		description.setBounds(35, 284, 233, 76);
+		add(description);
 
-		btnStart = new JButton("Start");
-		btnStart.setBounds(206, 325, 86, 23);
-		add(btnStart);
 		
 		JLabel lblNewLabel = new JLabel("Game Information");
+		lblNewLabel.setBounds(46, 11, 210, 33);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblNewLabel.setBounds(46, 11, 210, 33);
 		add(lblNewLabel);
 		
 
 		
 		lblName = new JLabel("Name:");
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblName.setBounds(35, 58, 86, 14);
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(lblName);
 		
 		
 		lblDeadline = new JLabel("Deadline:");
-		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblDeadline.setBounds(35, 126, 86, 20);
+		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(lblDeadline);
 		
 		
@@ -122,21 +124,21 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 		hourSelector = new JComboBox(hours);
-		hourSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		hourSelector.setBounds(119, 157, 52, 20);
+		hourSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	
 		add(hourSelector);
 		
 		String[] minutes = {"00","15","30","45"};
 
 		minuteSelector = new JComboBox(minutes);
-		minuteSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		minuteSelector.setBounds(196, 157, 53, 20);
+		minuteSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(minuteSelector);
 		
 		lblTime = new JLabel("Time:");
-		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblTime.setBounds(35, 157, 86, 20);
+		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(lblTime);
 		
 		
@@ -144,13 +146,13 @@ public class CreateGameInfoPanel extends JPanel {
 		AMPMSelection = new ButtonGroup();
 		
 		rdbtnAm = new JRadioButton("AM");
-		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnAm.setBounds(119, 188, 46, 23);
+		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnAm.setSelected(true);
 		
 		rdbtnPm = new JRadioButton("PM");
-		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		rdbtnPm.setBounds(163, 188, 46, 23);
+		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 
 
 		AMPMSelection.add(rdbtnAm);
@@ -160,14 +162,14 @@ public class CreateGameInfoPanel extends JPanel {
 		add(rdbtnPm);
 		
 		lblDeck = new JLabel("Deck:");
-		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblDeck.setBounds(35, 222, 86, 20);
+		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		add(lblDeck);
 		
 		String[] decks = {"default"};
 		deck = new JComboBox(decks);
-		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		deck.setBounds(119, 222, 130, 20);
+		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(deck);
 		
 		btnNewButton = new JButton("Add new deck");
@@ -175,17 +177,7 @@ public class CreateGameInfoPanel extends JPanel {
 		btnNewButton.setBounds(119, 250, 130, 23);
 		//add(btnNewButton);
 		
-		btnSave = new JButton("Save");
-		btnSave.setBounds(111, 325, 89, 23);
-		add(btnSave);
-		
-		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new AddGameController(gamesModel, this));
-		
-		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(12, 325, 89, 23);
-		btnCancel.addActionListener(new CloseNewGameTabController(this));
-		add(btnCancel); 
+
 		
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.setBounds(36, 95, 129, 23);
@@ -193,12 +185,12 @@ public class CreateGameInfoPanel extends JPanel {
 		chckbxDeadline.setSelected(true);
 		add(chckbxDeadline);
 		
-		lblMessage = new JLabel("*Error");
-		lblMessage.setForeground(Color.RED);
-		lblMessage.setVisible(false);
-		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		lblMessage.setBounds(26, 274, 266, 52);
-		add(lblMessage);
+		JLabel lblDescription = new JLabel("Description:");
+		lblDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblDescription.setBounds(35, 264, 136, 15);
+		add(lblDescription);
+		
+		lblMessage = parentWindow.getMessageField();
 		
 
 
@@ -234,25 +226,7 @@ public class CreateGameInfoPanel extends JPanel {
 		return true;
 	}
 	
-	/**Fills the text box with a red warning based on the error Message
-	 * 
-	 * @param error the message to be printed, should be in <html>text</html> format
-	 */
-	public void reportError(String error) {
-		lblMessage.setForeground(Color.RED);
-		lblMessage.setText(error);
-		lblMessage.setVisible(true);
-	}
-	
-	/**Fills the text box with a green message based on the input
-	 * 
-	 * @param message the message to be printed, should be in <html>text</html> format
-	 */
-	public void reportMessage(String message) {
-		lblMessage.setForeground(Color.BLUE);
-		lblMessage.setText(message);
-		lblMessage.setVisible(true);
-	}
+
 
 	/**
 	 * Will switch the deadline fields to enabled or disabled based on the Deadline checkbox
@@ -274,6 +248,23 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 		
 	}
+	
+	/**Fills the text box with a red warning based on the error Message
+	 * 
+	 * @param error the message to be printed, should be in <html>text</html> format
+	 */
+	public void reportError(String error) {
+		parentWindow.reportError(error);
+	}
+	
+	/**Fills the text box with a green message based on the input
+	 * 
+	 * @param message the message to be printed, should be in <html>text</html> format
+	 */
+	public void reportMessage(String message) {
+		parentWindow.reportMessage(message);
+	}
+	
 
 	/**
 	 * Sends the signal to Mainview to close the NewgameTab
@@ -290,11 +281,13 @@ public class CreateGameInfoPanel extends JPanel {
 		if(chckbxDeadline.isSelected()){
 			Game newGame = new Game(getGameName(), new Date(), getDeadline());
 			newGame.setRequirements(parentWindow.getGameRequirements());
+			newGame.setDescription(description.getText());
 			return newGame;
 		}
 		else{
 			Game newGame = new Game(getGameName(), new Date(), new Date());
 			newGame.setRequirements(parentWindow.getGameRequirements());
+			newGame.setDescription(description.getText());
 			return newGame;
 		}
 	}
