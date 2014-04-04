@@ -39,8 +39,8 @@ public class AddGameController implements ActionListener {
 	 * @param model the model containing the messages
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 */
-	public AddGameController(PlanningPokerModel model, CreateGameInfoPanel createGameInfoPanel) {
-		this.model = model;
+	public AddGameController(CreateGameInfoPanel createGameInfoPanel) {
+		this.model = PlanningPokerModel.getInstance();
 		this.view = createGameInfoPanel;
 	}
 

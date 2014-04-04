@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 
 /**
  * This class creates the buttons for creating
@@ -62,8 +63,9 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 	private void setupListeners()
 	{
 		crtGameBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				parentPanel.crtGamePressed();
+				MainViewTabController.getInstance().createGameTab();
 			}
 		});
 	}

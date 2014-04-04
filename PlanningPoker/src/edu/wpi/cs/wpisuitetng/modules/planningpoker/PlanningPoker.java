@@ -30,7 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 
-//import org.jdesktop.swingx.JXDatePicker;
+
 
 /**
  * This is a module for WPISuiteTNG that provides a support for planning poker.

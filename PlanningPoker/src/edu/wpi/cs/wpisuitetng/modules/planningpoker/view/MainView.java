@@ -24,6 +24,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -38,11 +39,9 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
 
-	/** The panel containing the new game creator */
-	private final NewGamePanel newGamePanel;
-
-	private Boolean newGamePanelVisible = false;
-
+	/* The Games Model */
+	PlanningPokerModel gamesModel;
+	
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
 
@@ -51,9 +50,10 @@ public class MainView extends JTabbedPane {
 	 * @param boardModel 
 	 */
 	public MainView(PlanningPokerModel gamesModel) {
+		MainViewTabController.getInstance().setMainView(this);
+		
+		this.gamesModel = gamesModel;
 		// Add the board panel to this view
-		newGamePanel = new NewGamePanel(gamesModel, this);
-		newGamePanel.setBounds(0,0,500,500);
 		overviewPanel = new OverviewPanel(gamesModel, this);
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
@@ -86,11 +86,9 @@ public class MainView extends JTabbedPane {
 	 */
 	public void createNewGameTab()
 	{
-		if(!newGamePanelVisible)
-		{
-			this.addTab("New Game", newGamePanel);
-			this.newGamePanelVisible = true;
-		}
+		NewGamePanel newGamePanel = new NewGamePanel(gamesModel, this);
+		newGamePanel.setBounds(0,0,500,500);
+		this.addTab("New Game", newGamePanel);
 		this.invalidate(); // force the tabbedpane to redraw
 		this.repaint();
 		newGamePanel.resetDividerLocation();
@@ -100,13 +98,13 @@ public class MainView extends JTabbedPane {
 	/**
 	 * Closes a new game tab if there is one
 	 */
-	public void CloseNewGameTabFromMain() {
+	/*public void CloseNewGameTabFromMain() {
 		if(this.newGamePanelVisible)
 		{
 			remove(newGamePanel);
 			this.newGamePanelVisible = false;
 		}
-	}
+	}*/
 	public OverviewPanel getOverviewPanel(){
 		return overviewPanel;
 	}

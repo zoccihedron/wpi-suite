@@ -48,18 +48,31 @@ public class NewGamePanel extends JSplitPane {
 	private JButton btnStart;
 	private JLabel lblMessage;
 	
-	public NewGamePanel(PlanningPokerModel model, MainView ParentWindow) {
-		super(JSplitPane.VERTICAL_SPLIT);
 
-		createGameInfoPanel = new CreateGameInfoPanel(model, ParentWindow, this);
+
+	public NewGamePanel(PlanningPokerModel model, MainView parentWindow) {
+		super(JSplitPane.VERTICAL_SPLIT);
+		createGameInfoPanel = new CreateGameInfoPanel(this);
+
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Requirements", selectRequirementsPanel);
+
+		this.setLeftComponent(createGameInfoPanel);
+		this.setRightComponent(tabPane);
+		this.setDividerLocation(300);
+	}
+	
+	public NewGamePanel() {
+		super(JSplitPane.VERTICAL_SPLIT);
+		createGameInfoPanel = new CreateGameInfoPanel(this);
+		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
+		selectRequirementsPanel = new SelectRequirementsPanel();
 		
-		//tabPane.addTab("Create new requirement", new Panel());
-		//tabPane.addTab("Create new deck", new Panel());
+		tabPane = new JTabbedPane();
+		tabPane.addTab("Requirements", selectRequirementsPanel);
 		
 		JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
@@ -75,7 +88,7 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new AddGameController(model, createGameInfoPanel));
+		btnSave.addActionListener(new AddGameController(createGameInfoPanel));
 		
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(174, 5, 81, 25);
@@ -115,6 +128,7 @@ public class NewGamePanel extends JSplitPane {
 			}
 		});
 	}
+
 	
 	public void resetDividerLocation(){
 		setDividerLocation(this.getHeight() - 35);
@@ -140,7 +154,10 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setVisible(true);
 	}
 	
-	
+	public void setErrorMessageVisible(boolean bool){
+		lblMessage.setVisible(bool);
+	}
+
 	public ArrayList<Integer> getGameRequirements() {
 		return selectRequirementsPanel.getSelectedRequirementIds();
 	}
@@ -148,5 +165,6 @@ public class NewGamePanel extends JSplitPane {
 	public JLabel getMessageField(){
 		return lblMessage;
 	}
+	
 }
 

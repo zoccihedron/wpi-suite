@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CloseNewGameTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
@@ -55,7 +56,8 @@ import javax.swing.border.Border;
  */
 @SuppressWarnings({"serial"})
 public class CreateGameInfoPanel extends JPanel {
-	private MainView mainView;
+	private MainViewTabController mainViewTabController;
+	private NewGamePanel parent;
 	
 	private JLabel lblName;
 	private JTextField gameNameText;
@@ -76,12 +78,12 @@ public class CreateGameInfoPanel extends JPanel {
 	private JButton btnStart;
 	private JCheckBox chckbxDeadline;
 	private JLabel lblMessage;
-	private NewGamePanel parentWindow;
 	
 
-	public CreateGameInfoPanel(PlanningPokerModel gamesModel, MainView mainWindow, NewGamePanel parentWindow) {
-		this.mainView = mainWindow;
-		this.parentWindow = parentWindow;
+
+	public CreateGameInfoPanel(NewGamePanel parent) {
+		this.mainViewTabController = MainViewTabController.getInstance();
+		this.parent = parent;
 		setBounds(5,5,307,393);
 		setLayout(null);
 		
@@ -209,20 +211,18 @@ public class CreateGameInfoPanel extends JPanel {
 				resizeDescription();
 			}
 		});
-		
-		
-		lblMessage = parentWindow.getMessageField();
+
 		
 
 
 	}
-	
 
 	
 	protected void resizeDescription() {
 		description.setSize(description.getWidth(), this.getHeight() - 300);
 		
 	}
+
 
 
 
@@ -246,11 +246,10 @@ public class CreateGameInfoPanel extends JPanel {
 				return false;
 			}
 		}
-		if (parentWindow.getGameRequirements().size() == 0){
+		if (parent.getGameRequirements().size() == 0){
 			reportError("<html>*Error: Pick at least one requirement.</html>");
 			return false;
-	}
-		lblMessage.setVisible(false);
+		}
 		return true;
 	}
 	
@@ -282,7 +281,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @param error the message to be printed, should be in <html>text</html> format
 	 */
 	public void reportError(String error) {
-		parentWindow.reportError(error);
+		parent.reportError(error);
 	}
 	
 	/**Fills the text box with a green message based on the input
@@ -290,7 +289,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @param message the message to be printed, should be in <html>text</html> format
 	 */
 	public void reportMessage(String message) {
-		parentWindow.reportMessage(message);
+		parent.reportMessage(message);
 	}
 	
 
@@ -298,7 +297,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * Sends the signal to Mainview to close the NewgameTab
 	 */
 	public void closeNewGameTab() {
-		mainView.CloseNewGameTabFromMain();
+		this.mainViewTabController.closeTab(this.parent);
 	}
 
 	/**
@@ -308,13 +307,13 @@ public class CreateGameInfoPanel extends JPanel {
 	public Game getGameObject() {
 		if(chckbxDeadline.isSelected()){
 			Game newGame = new Game(getGameName(), new Date(), getDeadline());
-			newGame.setRequirements(parentWindow.getGameRequirements());
+			newGame.setRequirements(parent.getGameRequirements());
 			newGame.setDescription(description.getText());
 			return newGame;
 		}
 		else{
 			Game newGame = new Game(getGameName(), new Date(), new Date());
-			newGame.setRequirements(parentWindow.getGameRequirements());
+			newGame.setRequirements(parent.getGameRequirements());
 			newGame.setDescription(description.getText());
 			return newGame;
 		}
