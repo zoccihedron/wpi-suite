@@ -14,6 +14,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -24,6 +26,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -38,6 +41,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 import javax.swing.JCheckBox;
+import javax.swing.border.Border;
 
 
 
@@ -55,7 +59,7 @@ public class CreateGameInfoPanel extends JPanel {
 	
 	private JLabel lblName;
 	private JTextField gameNameText;
-	private JTextField description;
+	private JTextArea description;
 	private JLabel lblDeadline;
 	private JDatePickerImpl datePicker;
 	private JLabel lblTime;
@@ -87,8 +91,10 @@ public class CreateGameInfoPanel extends JPanel {
 		gameNameText.setBounds(119, 56, 130, 23);
 		add(gameNameText);
 		
-		description = new JTextField();
+		description = new JTextArea();
+		description.setLineWrap(true);
 		description.setBounds(35, 284, 233, 76);
+		//description.
 		add(description);
 
 		
@@ -178,7 +184,6 @@ public class CreateGameInfoPanel extends JPanel {
 		//add(btnNewButton);
 		
 
-		
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.setBounds(36, 95, 129, 23);
 		chckbxDeadline.addActionListener(new ChangeDeadline(this));
@@ -190,6 +195,22 @@ public class CreateGameInfoPanel extends JPanel {
 		lblDescription.setBounds(35, 264, 136, 15);
 		add(lblDescription);
 		
+		this.addComponentListener(new ComponentListener() {
+			public void componentResized(ComponentEvent e){
+				resizeDescription();
+			}
+			public void componentHidden(ComponentEvent e){
+				resizeDescription();
+			}
+			public void componentShown(ComponentEvent e){
+				resizeDescription();
+			}
+			public void componentMoved(ComponentEvent e){
+				resizeDescription();
+			}
+		});
+		
+		
 		lblMessage = parentWindow.getMessageField();
 		
 
@@ -198,6 +219,13 @@ public class CreateGameInfoPanel extends JPanel {
 	
 
 	
+	protected void resizeDescription() {
+		description.setSize(description.getWidth(), this.getHeight() - 300);
+		
+	}
+
+
+
 	/**
 	 * Checks to see if the fields for the game are selected properly
 	 * '<html>error</html>' format needed to allow word wrap in the error label
