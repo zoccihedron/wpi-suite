@@ -7,13 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-public class DeckPanel extends JScrollPane{
+public class DeckPanel extends JPanel{
 	public JLabel errorMessage;
 	
 
 	
-	public DeckPanel(){
-		JPanel deckPanel = new JPanel();
+	public DeckPanel() {
 		
 		//create JLabel and JTextField within scrollPane:
 		JLabel estimateLabel = new JLabel();

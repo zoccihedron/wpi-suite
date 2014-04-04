@@ -84,14 +84,14 @@ public class EstimationPane extends JPanel {
 	
 		//DeckPanel panel = new DeckPanel();
 		DeckPanel deckPanel = new DeckPanel();
-		//JScrollPane scrollPane = new JScrollPane(new DeckPanel());
+		JScrollPane scrollPane = new JScrollPane(new DeckPanel());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 3;
 		constraints.weighty = 1.5;
-		add(deckPanel, constraints);
+		add(scrollPane, constraints);
 		
 		
 
