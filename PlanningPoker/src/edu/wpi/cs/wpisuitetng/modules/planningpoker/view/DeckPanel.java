@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -39,8 +40,9 @@ public class DeckPanel extends JPanel{
 		
 		
 		//error message
-		errorMessage = new JLabel("test");
-		errorMessage.setVisible(true);
+		errorMessage = new JLabel();
+		errorMessage.setText("Placeholder Text");
+		errorMessage.setVisible(false);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
@@ -57,23 +59,24 @@ public class DeckPanel extends JPanel{
 			estimate = Integer.parseInt(estimateField.getText());
 			
 		} catch (NumberFormatException e){
-			reportError("Error: Estimate must be an integer.");
+			reportError("<html>Error: Estimate must be an integer.</html>");
 			return false;
 		}
 		
 		if(estimate <= 0) {
-			reportError("Error: Estimate must be an integer greater than 0.");
+			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
 			return false;
 		}
+		errorMessage.setVisible(false);
 		return true;
 	}
 	
 	
 
 	private void reportError(String string) {
-		
 		errorMessage.setText(string);
-		errorMessage.setVisible(false);
+		errorMessage.setForeground(Color.RED);
+		errorMessage.setVisible(true);
 	}
 	
 

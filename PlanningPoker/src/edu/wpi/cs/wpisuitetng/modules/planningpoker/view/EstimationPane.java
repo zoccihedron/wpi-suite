@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.VoteActionController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -21,9 +23,10 @@ public class EstimationPane extends JPanel {
 	private JTextField descriptionText;
 	private Box blankBox;
 	private DeckPanel deckPanel;
+	private JScrollPane  scrollPane;
 	
 //	public EstimationPane(Requirement req, Estimate/Game) {
-	public EstimationPane() {
+	public EstimationPane(Requirement req) {
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -38,6 +41,8 @@ public class EstimationPane extends JPanel {
 
 		// Possibly add weights later
 		requirementName = new JTextField();
+		requirementName.setText(req.getName());
+		requirementName.setEditable(false);
 		//requirementName.setText(req.getName());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0,0,0,0);
@@ -69,6 +74,9 @@ public class EstimationPane extends JPanel {
 		constraints.insets = new Insets(0,0,0,0);
 
 		descriptionText = new JTextField();
+		descriptionText.setText(req.getDescription());
+		descriptionText.setHorizontalAlignment(JTextField.NORTH_WEST);
+		descriptionText.setEditable(false);
 		//descriptionText.setText(req.getDescription());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0,5,0,5);
@@ -85,14 +93,13 @@ public class EstimationPane extends JPanel {
 	
 
 		deckPanel = new DeckPanel();
-		JScrollPane scrollPane = new JScrollPane(new DeckPanel());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 3;
 		constraints.weighty = 1.5;
-		add(scrollPane, constraints);
+		add(deckPanel, constraints);
 		
 		
 
