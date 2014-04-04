@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.VoteActionController;
@@ -19,8 +20,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class EstimationPane extends JPanel {
-	private JTextField requirementName;
-	private JTextField descriptionText;
+	private JTextArea requirementName;
+	private JTextArea descriptionText;
 	private Box blankBox;
 	private DeckPanel deckPanel;
 	private JScrollPane  scrollPane;
@@ -40,7 +41,7 @@ public class EstimationPane extends JPanel {
 		add(nameLabel, constraints);
 
 		// Possibly add weights later
-		requirementName = new JTextField();
+		requirementName = new JTextArea();
 		requirementName.setText(req.getName());
 		requirementName.setEditable(false);
 		//requirementName.setText(req.getName());
@@ -73,9 +74,9 @@ public class EstimationPane extends JPanel {
 		
 		constraints.insets = new Insets(0,0,0,0);
 
-		descriptionText = new JTextField();
+		descriptionText = new JTextArea();
 		descriptionText.setText(req.getDescription());
-		descriptionText.setHorizontalAlignment(JTextField.NORTH_WEST);
+	
 		descriptionText.setEditable(false);
 		//descriptionText.setText(req.getDescription());
 		constraints.fill = GridBagConstraints.BOTH;
