@@ -1,21 +1,27 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.Box;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JScrollPane;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.VoteActionController;
+
+//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class EstimationPane extends JPanel {
 	private JTextField requirementName;
 	private JTextField descriptionText;
 	private Box blankBox;
 	
+//	public EstimationPane(Requirement req, Estimate/Game) {
 	public EstimationPane() {
 		
 		this.setLayout(new GridBagLayout());
@@ -31,6 +37,7 @@ public class EstimationPane extends JPanel {
 
 		// Possibly add weights later
 		requirementName = new JTextField();
+		//requirementName.setText(req.getName());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0,0,0,0);
 		constraints.gridx = 1;
@@ -40,7 +47,6 @@ public class EstimationPane extends JPanel {
 		add(requirementName, constraints);
 		//requirementName.setColumns(10);
 		
-		// Possibly add weights later
 		blankBox = new Box(1);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0,0,0,0);
@@ -62,6 +68,7 @@ public class EstimationPane extends JPanel {
 		constraints.insets = new Insets(0,0,0,0);
 
 		descriptionText = new JTextField();
+		//descriptionText.setText(req.getDescription());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0,5,0,5);
 		constraints.gridx = 0;
@@ -72,24 +79,49 @@ public class EstimationPane extends JPanel {
 		add(descriptionText, constraints);
 		//descriptionText.setColumns(10);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		JLabel temp = new JLabel();
+		temp.setText("temp");
+	
+		//DeckPanel panel = new DeckPanel();
+		DeckPanel deckPanel = new DeckPanel();
+		//JScrollPane scrollPane = new JScrollPane(new DeckPanel());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 3;
-		add(scrollPane, constraints);
+		constraints.weighty = 1.5;
+		add(deckPanel, constraints);
+		
+		
 
 		JButton voteButton = new JButton("Vote");
+		voteButton.setPreferredSize(new Dimension(140, 40));
+		//voteButton.setFont(new Font(null, 0, 16));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
+		constraints.weighty = 0.5;
 		constraints.gridwidth = 3;
 		constraints.insets = new Insets(0,0,20,0);
 		constraints.anchor = GridBagConstraints.PAGE_END;
 		add(voteButton, constraints);
+
+		voteButton.addActionListener(new VoteActionController(this));
+		
+		
+		
 	}
+
+
+
+	
+
+
+	
+	//public ??? get???Object(){ 
+	
+	//public get
 	
 }
