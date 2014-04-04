@@ -26,6 +26,7 @@ import javax.swing.event.ChangeListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
@@ -40,7 +41,9 @@ public class MainView extends JTabbedPane {
 
 	/** The panel containing the new game creator */
 	private final NewGamePanel newGamePanel;
-
+	
+	private final ListRequirementsPanel listRequirementsPanel;
+	
 	private Boolean newGamePanelVisible = false;
 
 	/** The overview panel */
@@ -57,6 +60,9 @@ public class MainView extends JTabbedPane {
 		overviewPanel = new OverviewPanel(gamesModel, this);
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
+		
+		listRequirementsPanel = new ListRequirementsPanel();
+		this.addTab("Requirments", listRequirementsPanel);
 		
 		// Creates an ActionListener to be used by the timer
 		ActionListener actionListener = new ActionListener() {
@@ -95,6 +101,7 @@ public class MainView extends JTabbedPane {
 		this.repaint();
 		this.setSelectedComponent(newGamePanel);
 	}
+	
 
 	/**
 	 * Closes a new game tab if there is one

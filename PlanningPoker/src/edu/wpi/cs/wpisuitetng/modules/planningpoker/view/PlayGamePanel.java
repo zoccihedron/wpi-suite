@@ -8,9 +8,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequiremen
 
 public class PlayGamePanel extends JPanel{
 
-	GameInfoPanel gameInfo;
+	GameInfoPanel GameInfoPanel;
 	ListRequirementsPanel listRequirements;
 	
+	
+	public PlayGamePanel(GameInfoPanel GameInfoPanel, ListRequirementsPanel listRequirements ) {
+		this.GameInfoPanel = GameInfoPanel;
+		this.listRequirements = listRequirements;
+	}
 	
 	
 	

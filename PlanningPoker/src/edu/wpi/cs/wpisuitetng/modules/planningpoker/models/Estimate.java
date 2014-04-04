@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+
 
 /**
  * This class acts as a record of each requirement. 
@@ -46,8 +48,8 @@ public class Estimate {
 	 * update new requirement
 	 * @param requirement the new requirement given
 	 */
-	public void setRequirement(String requirement) {
-		this.reqID= reqID;
+	public void setRequirement(Requirement requirement) {
+		this.reqID = requirement.getId();
 	}
 	
 	/**
