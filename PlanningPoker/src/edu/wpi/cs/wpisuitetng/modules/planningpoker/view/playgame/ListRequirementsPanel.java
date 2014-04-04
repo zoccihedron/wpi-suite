@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame;
 
+import javax.swing.DropMode;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +17,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFac
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.Iteration;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.iterations.IterationModel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ViewEventController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.IterationTransferHandler;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,139 +29,202 @@ import java.util.List;
 import java.io.IOException;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class ListRequirementsPanel extends JPanel
-                      implements TreeSelectionListener {
-    private JEditorPane htmlPane;
-    private JTree tree;
-    private URL helpURL;
-    private static boolean DEBUG = false;
+implements TreeSelectionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTree tree;
+	private static boolean DEBUG = false;
 
-    //Optionally play with line styles.  Possible values are
-    //"Angled" (the default), "Horizontal", and "None".
-    private static boolean playWithLineStyle = false;
-    private static String lineStyle = "Horizontal";
-    
-    //Optionally set the look and feel.
-    private static boolean useSystemLookAndFeel = false;
-    private Game game;
+	//Optionally play with line styles.  Possible values are
+	//"Angled" (the default), "Horizontal", and "None".
+	private static boolean playWithLineStyle = false;
+	private static String lineStyle = "Horizontal";
 
-    public ListRequirementsPanel(Game game) {
-        super(new GridLayout(1,0));
-        
-        this.game = game;
+	//Optionally set the look and feel.
+	private static boolean useSystemLookAndFeel = false;
+	private Game game;
+	
+	private boolean shownOnce = false;
 
-        //Create the nodes.
-        DefaultMutableTreeNode top =
-            new DefaultMutableTreeNode("Requirements");
-        createNodes(top, game);
+	public ListRequirementsPanel(final Game game) {
+		super(new GridLayout(1,0));
 
-        //Create a tree that allows one selection at a time.
-        tree = new JTree(top);
-        tree.getSelectionModel().setSelectionMode
-                (TreeSelectionModel.SINGLE_TREE_SELECTION);
+		this.game = game;
 
-        //Listen for when the selection changes.
-        tree.addTreeSelectionListener(this);
+		
 
-        if (playWithLineStyle) {
-            System.out.println("line style = " + lineStyle);
-            tree.putClientProperty("JTree.lineStyle", lineStyle);
-        }
+		//Create the nodes.
+		this.addComponentListener(new ComponentListener()
+		{
 
-        //Create the scroll pane and add the tree to it. 
-        JScrollPane treeView = new JScrollPane(tree);
-        
-        Dimension minimumSize = new Dimension(100, 50);
-        treeView.setMinimumSize(minimumSize);
+			@Override
+			public void componentResized(ComponentEvent e) {
 
-        //Add the scroll panes to a split pane.
-        JPanel reqPanel = new JPanel();
-        reqPanel.add(treeView);
+			}
 
-        
-        reqPanel.setPreferredSize(new Dimension(500, 300));
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
 
-        //Add the split pane to this panel.
-        add(reqPanel);
-    }
+			}
 
-    /** Required by TreeSelectionListener interface. */
-    public void valueChanged(TreeSelectionEvent e) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-                           tree.getLastSelectedPathComponent();
+			@Override
+			public void componentShown(ComponentEvent e) {
+				
+				if(shownOnce){
+					return;
+				}
+				shownOnce = true;
+				refresh();				
+			}
 
-        if (node == null) return;
-        //TODO: see about implementing DoublieClick to send data to estimate panel
-    }
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
 
-    private void createNodes(DefaultMutableTreeNode top, Game game) {
-    	
-    	List<Requirement> requirements = RequirementManagerFacade.getInstance().getRequirments();
-    	DefaultMutableTreeNode votedCategory = null;
-    	DefaultMutableTreeNode requirement = null;
-    	
-    	List<Requirement> notVotedOn = new ArrayList<Requirement>();
-    	List<Requirement> votedOn = new ArrayList<Requirement>();
-    	List<Estimate> estimates = game.getEstimates();
-    	
-    	for(Requirement req : requirements)
-    	{
-    		for(Estimate est: estimates)
-    		{
-    			if (req.getId() == est.getReqID())
-    			{
-    				notVotedOn.add(req);
-    				// TODO: Implement check against session user for sorting by if voted or not
-    			}
-    		}
-    	}
-    	
-    	votedCategory = new DefaultMutableTreeNode("Voted On");
-        top.add(votedCategory);
-    	
-        for(Requirement req : votedOn)
-        {
-        	requirement = new DefaultMutableTreeNode(req.getName());
-        	votedCategory.add(requirement);
-        }
-        
-        votedCategory = new DefaultMutableTreeNode("Not Voted On");
-        top.add(votedCategory);
-    	
-        for(Requirement req : notVotedOn)
-        {
-        	requirement = new DefaultMutableTreeNode(req.getName());
-        	votedCategory.add(requirement);
-        }
-    }
-        
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event dispatch thread.
-     */
-    
-    // TODO: Figure out how to implement texturing on the tree
-    /*private static void createAndShowGUI() {
-        if (useSystemLookAndFeel) {
-            try {
-                UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                System.err.println("Couldn't use system look and feel.");
-            }
-        }
+			}
+		});
 
-        //Create and set up the window.
-        JFrame frame = new JFrame("TreeDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//Create a tree that allows one selection at a time.
+		//		tree = new JTree(top);
+		//		tree.getSelectionModel().setSelectionMode
+		//		(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		//
+		//		//Listen for when the selection changes.
+		//		tree.addTreeSelectionListener(this);
+		//
+		//		if (playWithLineStyle) {
+		//			System.out.println("line style = " + lineStyle);
+		//			tree.putClientProperty("JTree.lineStyle", lineStyle);
+		//		}
+	}
 
-        //Add content to the window.
-        frame.add(new ListRequirementsPanel());
+	/** Required by TreeSelectionListener interface. */
+	public void valueChanged(TreeSelectionEvent e) {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+				tree.getLastSelectedPathComponent();
 
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }*/
+		if (node == null) return;
+		//TODO: see about implementing DoublieClick to send data to estimate panel
+	}
+
+	private void createNodes(DefaultMutableTreeNode top, Game game) {
+
+		List<Requirement> requirements = RequirementManagerFacade.getInstance().getRequirments();
+		System.out.println(requirements.size());
+		DefaultMutableTreeNode votedCategory = null;
+		DefaultMutableTreeNode requirement = null;
+
+		List<Requirement> notVotedOn = new ArrayList<Requirement>();
+		List<Requirement> votedOn = new ArrayList<Requirement>();
+		List<Estimate> estimates = game.getEstimates();
+
+		for(Requirement req : requirements)
+		{
+			for(Estimate est: estimates)
+			{
+				if (req.getId() == est.getReqID())
+				{
+					notVotedOn.add(req);
+					// TODO: Implement check against session user for sorting by if voted or not
+				}
+			}
+		}
+
+		votedCategory = new DefaultMutableTreeNode("Voted On");
+
+
+
+		for(Requirement req : votedOn)
+		{
+			requirement = new DefaultMutableTreeNode(req);
+			votedCategory.add(requirement);
+		}
+
+		top.add(votedCategory);
+
+		votedCategory = new DefaultMutableTreeNode("Not Voted On");
+
+
+		for(Requirement req : notVotedOn)
+		{
+			requirement = new DefaultMutableTreeNode(req);
+			votedCategory.add(requirement);
+		}
+
+		top.add(votedCategory);
+
+	}
+
+	/**
+	 * Create the GUI and show it.  For thread safety,
+	 * this method should be invoked from the
+	 * event dispatch thread.
+	 */
+
+	// TODO: Figure out how to implement texturing on the tree
+	public void createAndShowGUI() {
+		if (useSystemLookAndFeel) {
+			try {
+				UIManager.setLookAndFeel(
+						UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				System.err.println("Couldn't use system look and feel.");
+			}
+		}
+
+		//Create and set up the window.
+		JFrame frame = new JFrame("TreeDemo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//Add content to the window.
+		frame.add(new ListRequirementsPanel(game));
+
+		//Display the window.
+		frame.pack();
+		frame.setVisible(true);
+	}
+
+	public void refresh(){
+		
+
+		DefaultMutableTreeNode top = new DefaultMutableTreeNode("Requirements"); //makes a starting node
+		List<Requirement> requirements = RequirementManagerFacade.getInstance().getRequirments(); //retreive the list of all iterations
+		for(Requirement req: requirements){
+
+			DefaultMutableTreeNode newIterNode = new DefaultMutableTreeNode(req); //make a new iteration node to add
+			System.out.println(req.getName());
+
+			top.add(newIterNode); //add the iteration's node to the top node
+		}
+
+		tree = new JTree(top); //create the tree with the top node as the top
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
+		tree.setToggleClickCount(0);
+
+		tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
+		tree.addTreeSelectionListener(this);
+
+		tree.setDragEnabled(true);
+		tree.setDropMode(DropMode.ON);
+		
+		//Create the scroll pane and add the tree to it. 
+		final JScrollPane treeView = new JScrollPane(tree);
+
+		Dimension minimumSize = new Dimension(100, 50);
+		treeView.setMinimumSize(minimumSize);
+
+		//Add the split pane to this panel.
+		add(treeView);
+
+		System.out.println("finished refreshing the tree");
+	}
 }
