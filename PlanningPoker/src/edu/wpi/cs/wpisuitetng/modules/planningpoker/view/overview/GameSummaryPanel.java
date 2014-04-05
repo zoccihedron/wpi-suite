@@ -94,6 +94,7 @@ public class GameSummaryPanel extends JPanel{
 		requirementsList = new JTextArea("Requirements");
 		requirementsList.setBounds(6, 147, 438, 106);
 		add(requirementsList);
+		requirementsList.setEditable(false);
 	}
 	
 	/** Function which takes a game as a parameter and

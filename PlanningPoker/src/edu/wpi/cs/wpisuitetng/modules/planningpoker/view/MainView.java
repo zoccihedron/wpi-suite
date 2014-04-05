@@ -49,6 +49,7 @@ public class MainView extends JTabbedPane {
 		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
+
 	}
 
 	/**
@@ -57,11 +58,12 @@ public class MainView extends JTabbedPane {
 	 */
 	public void createNewGameTab()
 	{
-		NewGamePanel newGamePanel = new NewGamePanel(gamesModel);
+		NewGamePanel newGamePanel = new NewGamePanel();
 		newGamePanel.setBounds(0,0,500,500);
 		this.addTab("New Game", newGamePanel);
 		this.invalidate(); // force the tabbedpane to redraw
 		this.repaint();
+		newGamePanel.resetDividerLocation();
 		this.setSelectedComponent(newGamePanel);
 	}
 

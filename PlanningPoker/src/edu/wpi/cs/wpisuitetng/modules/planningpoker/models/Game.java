@@ -39,9 +39,12 @@ public class Game extends AbstractModel{
 	private String description = "";
 	private List<String> participants = new ArrayList<String>();
 	private String gameCreator = "";
+	private boolean hasDeadline = false;
 	private Date start = new Date();
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
+	private List<Integer> requirements = new ArrayList<Integer>();
+	
 	public enum GameStatus{
 		DRAFT("Draft"),
 		IN_PROGRESS("In Progress"),
@@ -408,6 +411,27 @@ public class Game extends AbstractModel{
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public List<Integer> getRequirements(){
+		return requirements;
+	}
+	public void setRequirements(List<Integer> requirements){
+		this.requirements = requirements;
+	}
+
+	/**
+	 * @return the hasDeadline
+	 */
+	public boolean isHasDeadline() {
+		return hasDeadline;
+	}
+
+	/**
+	 * @param hasDeadline the hasDeadline to set
+	 */
+	public void setHasDeadline(boolean hasDeadline) {
+		this.hasDeadline = hasDeadline;
 	}
 	
 	
