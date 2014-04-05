@@ -1,6 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.VoteActionController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -25,6 +24,7 @@ public class EstimationPane extends JPanel {
 	private Box blankBox;
 	private DeckPanel deckPanel;
 	private JScrollPane  scrollPane;
+	private JLabel errorMessage;
 	
 //	public EstimationPane(Requirement req, Estimate/Game) {
 	public EstimationPane(Requirement req) {
@@ -40,11 +40,9 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 1;
 		add(nameLabel, constraints);
 
-		// Possibly add weights later
 		requirementName = new JTextArea();
 		requirementName.setText(req.getName());
 		requirementName.setEditable(false);
-		//requirementName.setText(req.getName());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0,0,0,0);
 		constraints.gridx = 1;
@@ -95,6 +93,7 @@ public class EstimationPane extends JPanel {
 
 		deckPanel = new DeckPanel();
 		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(0, 0, 0, 0);
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		constraints.weightx = 1.0;
@@ -103,19 +102,42 @@ public class EstimationPane extends JPanel {
 		add(deckPanel, constraints);
 		
 		
+		JPanel voteButtonPanel = new JPanel();
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridwidth = 3;
+		constraints.gridheight = 2;
+		constraints.insets = new Insets(0,0,20,0);
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		add(voteButtonPanel, constraints);
+		
+		voteButtonPanel.setLayout(new GridBagLayout());
+		
+		//error message
+		errorMessage = new JLabel();
+		errorMessage.setText("  ");
+		errorMessage.setVisible(true);
+		constraints.fill = GridBagConstraints.CENTER;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.weightx = 1.0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0,0,50,0);
+		voteButtonPanel.add(errorMessage, constraints);
+		
 
 		JButton voteButton = new JButton("Vote");
 		voteButton.setPreferredSize(new Dimension(140, 40));
-		//voteButton.setFont(new Font(null, 0, 16));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 1;
 		constraints.weightx = 1.0;
-		constraints.weighty = 0.5;
-		constraints.gridwidth = 3;
-		constraints.insets = new Insets(0,0,20,0);
-		constraints.anchor = GridBagConstraints.PAGE_END;
-		add(voteButton, constraints);
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0,0,0,0);
+		voteButtonPanel.add(voteButton, constraints);
 
 		voteButton.addActionListener(new VoteActionController(this));
 		
@@ -123,11 +145,31 @@ public class EstimationPane extends JPanel {
 		
 	}
 
-
 	public boolean checkField() {
-		return deckPanel.checkField();
+		int estimate;
+		try{
+			estimate = Integer.parseInt(deckPanel.getEstimateField());
+			
+		} catch (NumberFormatException e){
+			reportError("<html>Error: Estimate must be an integer.</html>");
+			return false;
+		}
+		
+		if(estimate <= 0) {
+			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+			return false;
+		}
+		errorMessage.setVisible(false);
+		return true;
 	}
 	
+	
+
+	private void reportError(String string) {
+		errorMessage.setText(string);
+		errorMessage.setForeground(Color.RED);
+	//errorMessage.setVisible(true);
+	}
 
 
 	
