@@ -14,6 +14,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -26,6 +29,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -81,8 +85,16 @@ public class OverviewPanel extends JPanel {
 
 		
 		//add(scrollPane, BorderLayout.CENTER);
-		
-		Game game = gamesModel.getGame(1);
+		Requirement req = new Requirement();
+		req.setId(1);
+		req.setDescription("description");
+		req.setName("Name");
+		RequirementModel.getInstance().addRequirement(req);
+		Date start = new Date();
+		Calendar endTime = new GregorianCalendar();
+		endTime.set(2015, 1,1);
+		Date end = endTime.getTime();
+		Game game = new Game("new name", start, end);
 		game.addEstimate(new Estimate(1));
 		
 		add(new EstimationPane(1,game));

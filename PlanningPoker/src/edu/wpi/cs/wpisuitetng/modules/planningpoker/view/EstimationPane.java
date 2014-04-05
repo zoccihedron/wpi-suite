@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,7 +27,7 @@ public class EstimationPane extends JPanel {
 	private Box blankBox;
 	private DeckPanel deckPanel;
 	private JScrollPane  scrollPane;
-	private JLabel errorMessage;
+	private JLabel message;
 	public Game game;
 	public int reqid;
 	public Requirement req;
@@ -126,16 +127,17 @@ public class EstimationPane extends JPanel {
 		voteButtonPanel.setLayout(new GridBagLayout());
 		
 		//error message
-		errorMessage = new JLabel();
-		errorMessage.setText("  ");
-		errorMessage.setVisible(true);
+		message = new JLabel();
+		message.setText("    ");
+		message.setFont(new Font("Dialog", Font.ITALIC, 12));
+		message.setVisible(true);
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0,0,50,0);
-		voteButtonPanel.add(errorMessage, constraints);
+		voteButtonPanel.add(message, constraints);
 		
 
 		JButton voteButton = new JButton("Vote");
@@ -172,15 +174,14 @@ public class EstimationPane extends JPanel {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
 			return false;
 		}
-		errorMessage.setVisible(false);
 		return true;
 	}
 	
 	
 
 	private void reportError(String string) {
-		errorMessage.setText(string);
-		errorMessage.setForeground(Color.RED);
+		message.setText(string);
+		message.setForeground(Color.RED);
 	}
 	
 	public int getEstimate(){
@@ -202,18 +203,13 @@ public class EstimationPane extends JPanel {
 	}
 
 	public void reportSuccess() {
-		errorMessage.setText("Success: Vote Updated!");
-		errorMessage.setForeground(Color.GREEN);
-		// TODO Auto-generated method stub
+		message.setText("<html>Success: Vote Updated!</html>");
+		message.setForeground(Color.GREEN);
 		
 	}
 
 
 
 
-	
-	//public ??? get???Object(){ 
-	
-	//public get
 	
 }
