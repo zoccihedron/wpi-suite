@@ -14,7 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.VoteActionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 //import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -25,9 +27,16 @@ public class EstimationPane extends JPanel {
 	private DeckPanel deckPanel;
 	private JScrollPane  scrollPane;
 	private JLabel errorMessage;
-	
+	public Game game;
+	public int reqid;
+	public Requirement req;
 //	public EstimationPane(Requirement req, Estimate/Game) {
-	public EstimationPane(Requirement req) {
+	public EstimationPane(int reqid, Game game) {
+		
+		this.game = game;
+		this.reqid = reqid;
+		
+		req = getRequirementFromId();
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -139,10 +148,14 @@ public class EstimationPane extends JPanel {
 		constraints.insets = new Insets(0,0,0,0);
 		voteButtonPanel.add(voteButton, constraints);
 
-		voteButton.addActionListener(new VoteActionController(this));
+		voteButton.addActionListener(new VoteActionController(this, game));
 		
 		
 		
+	}
+
+	private Requirement getRequirementFromId() {
+		return RequirementModel.getInstance().getRequirement(reqid);
 	}
 
 	public boolean checkField() {
@@ -168,8 +181,27 @@ public class EstimationPane extends JPanel {
 	private void reportError(String string) {
 		errorMessage.setText(string);
 		errorMessage.setForeground(Color.RED);
-	//errorMessage.setVisible(true);
 	}
+	
+	public int getEstimate(){
+		int estimate;
+		try{
+			estimate = Integer.parseInt(deckPanel.getEstimateField());
+			return estimate;
+			
+		} catch (NumberFormatException e){
+			reportError("<html>Error: Estimate must be an integer.</html>");
+			
+		}
+		return 0;
+		
+	}
+	
+	public int getReqID(){
+		return reqid;
+	}
+
+
 
 
 	

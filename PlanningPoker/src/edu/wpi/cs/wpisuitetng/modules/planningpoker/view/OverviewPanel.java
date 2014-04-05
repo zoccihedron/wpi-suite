@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesRequestObserver;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
@@ -78,8 +79,11 @@ public class OverviewPanel extends JPanel {
 		table.getColumnModel().getColumn(4).setMinWidth(85);
 		table.getColumnModel().getColumn(4).setMaxWidth(200);
 
+		
 		//add(scrollPane, BorderLayout.CENTER);
-		add(new EstimationPane(new Requirement(7, "name", "description")));
+		Game game = gamesModel.getGame(1);
+		
+		add(new EstimationPane(1,game));
 	}
 
 	/**
