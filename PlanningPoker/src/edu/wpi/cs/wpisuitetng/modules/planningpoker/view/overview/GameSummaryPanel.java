@@ -11,6 +11,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -19,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -40,6 +43,7 @@ public class GameSummaryPanel extends JPanel{
 	JButton playGameBtn;
 	JButton editGameBtn;
 	JTextArea requirementsList;
+	Game game;
 	
 	public GameSummaryPanel() 
 	{
@@ -62,10 +66,30 @@ public class GameSummaryPanel extends JPanel{
 		add(playGameBtn);
 		playGameBtn.setEnabled(false);
 		
+		playGameBtn.addActionListener(new ActionListener () {
+		
+			public void actionPerformed(ActionEvent e)
+			{
+				MainViewTabController mvt = MainViewTabController.getInstance();
+				mvt.playGameTab(game);
+			}
+			
+		});
+		
 		editGameBtn = new JButton("Edit Game");
 		editGameBtn.setBounds(184, 265, 117, 29);
 		add(editGameBtn);
 		editGameBtn.setEnabled(false);
+		
+		editGameBtn.addActionListener(new ActionListener () {
+			
+			public void actionPerformed(ActionEvent e)
+			{
+				MainViewTabController mvt = MainViewTabController.getInstance();
+				mvt.createGameTab(game);
+			}
+			
+		});
 		
 		requirementsList = new JTextArea("Requirements");
 		requirementsList.setBounds(6, 147, 438, 106);
@@ -75,10 +99,11 @@ public class GameSummaryPanel extends JPanel{
 	/** Function which takes a game as a parameter and
 	 * updates the summary of the game that is displayed
 	 * 
-	 * @param game
+	 * @param gme the game to update the panel information with
 	 */
-	public void updateSummary(Game game)
+	public void updateSummary(Game gme)
 	{
+		game = gme;
 		this.titleLabel.setText(game.getName());
 		this.deadlineLabel.setText(game.getEnd().toString());
 		this.descriptionLabel.setText(game.getDescription());

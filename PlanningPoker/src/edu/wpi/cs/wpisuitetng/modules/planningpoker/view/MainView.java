@@ -12,22 +12,14 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.Timer;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
 
 /**
  * This panel fills the main content area of the tab for this module. It
@@ -85,5 +77,27 @@ public class MainView extends JTabbedPane {
 	}*/
 	public OverviewPanel getOverviewPanel(){
 		return overviewPanel;
+	}
+	
+	/**
+	 * Overridden insertTab function to add the closable tab element.
+	 * 
+	 * @param title	Title of the tab
+	 * @param component	The tab
+	 * @param index	Location of the tab
+	 */
+	public void insertTab(String title, Component component, int index) {
+		super.insertTab(title, null, component, null, index);
+		if (!(component instanceof OverviewPanel)) {
+			setTabComponentAt(index, new ClosableTabComponent(this)
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					final int index = tabbedPane.indexOfTabComponent(this);
+					MainViewTabController.getInstance().closeTab(index);
+				}
+			});
+		}
 	}
 }
