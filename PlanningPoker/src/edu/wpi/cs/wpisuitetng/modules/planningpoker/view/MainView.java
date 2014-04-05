@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.Timer;
 import javax.swing.BorderFactory;
@@ -57,6 +58,12 @@ public class MainView extends JTabbedPane {
 		overviewPanel = new OverviewPanel(gamesModel, this);
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
+		
+		Game testGame = new Game("TestGame", new Date(), new Date());
+		testGame.setDescription("This is a test Game");
+		testGame.setHasDeadline(true);
+		NewGamePanel testEditPanel = new NewGamePanel(testGame);
+		this.addTab("testEdit", testEditPanel);
 		
 		// Creates an ActionListener to be used by the timer
 		ActionListener actionListener = new ActionListener() {
