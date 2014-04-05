@@ -44,4 +44,10 @@ public class VoteActionController implements ActionListener {
 
 	}
 
+	public void reportSuccess() {
+		view.reportSuccess();
+		// TODO Auto-generated method stub
+		
+	}
+
 }

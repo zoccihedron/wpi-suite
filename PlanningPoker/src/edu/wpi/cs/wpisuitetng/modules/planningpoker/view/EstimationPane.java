@@ -201,6 +201,13 @@ public class EstimationPane extends JPanel {
 		return reqid;
 	}
 
+	public void reportSuccess() {
+		errorMessage.setText("Success: Vote Updated!");
+		errorMessage.setForeground(Color.GREEN);
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

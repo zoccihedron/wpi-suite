@@ -81,9 +81,12 @@ public class OverviewPanel extends JPanel {
 
 		
 		//add(scrollPane, BorderLayout.CENTER);
+		
 		Game game = gamesModel.getGame(1);
+		game.addEstimate(new Estimate(1));
 		
 		add(new EstimationPane(1,game));
+		
 	}
 
 	/**

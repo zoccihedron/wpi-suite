@@ -14,6 +14,7 @@ public class VoteActionObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// TODO Auto-generated method stub
+		controller.reportSuccess();
 		
 	}
 
