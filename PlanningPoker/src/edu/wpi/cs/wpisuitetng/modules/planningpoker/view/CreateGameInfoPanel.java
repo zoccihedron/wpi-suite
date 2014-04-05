@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -91,12 +92,13 @@ public class CreateGameInfoPanel extends JPanel {
 		//Adds the fields and button to the main panel.
 		gameNameText = new JTextField();
 		gameNameText.setBounds(119, 56, 130, 23);
+		Border textBorder = gameNameText.getBorder();
 		add(gameNameText);
 		
 		description = new JTextArea();
 		description.setLineWrap(true);
 		description.setBounds(35, 284, 233, 76);
-		//description.
+		description.setBorder(textBorder);
 		add(description);
 
 		
