@@ -213,6 +213,28 @@ public class CreateGameInfoPanel extends JPanel {
 		//DEFINE CONSTAINTS
 		GridBagConstraints constraints = new GridBagConstraints();
 		
+		//
+		JPanel fakePanel1 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.ipadx = 10;
+		constraints.ipady = 10;
+		add(fakePanel1, constraints);
+		JPanel fakePanel2 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 4;
+		constraints.gridy = 0;
+		constraints.ipadx = 10;
+		constraints.ipady = 10;
+		add(fakePanel2, constraints);
+		
 		
 		//GAME INFORMATION LABEL
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -221,7 +243,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.ipadx = 10;
 		constraints.ipady = 10;
@@ -233,7 +255,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 1;
 		add(lblName, constraints);
 		
@@ -242,7 +264,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 1;
 		add(gameNameText, constraints);
 		
@@ -252,7 +274,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 10;
 		add(lblDescription, constraints);
 		
@@ -262,7 +284,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.90;
 		constraints.weighty = 0.90;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 11;
 		add(description, constraints);
 		
@@ -272,7 +294,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 9;
 		add(lblDeck, constraints);
 		
@@ -282,7 +304,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 9;
 		add(deck, constraints);
 		
@@ -292,7 +314,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 5;
 		add(chckbxDeadline, constraints);
 
@@ -303,7 +325,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 6;
 		constraints.anchor = GridBagConstraints.WEST;
 		add(lblDeadline, constraints);
@@ -313,7 +335,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 6;
 		add(datePicker, constraints);
 		
@@ -323,7 +345,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 7;
 		add(lblTime, constraints);
 		
@@ -333,7 +355,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 7;
 		constraints.ipadx = 2;
 		constraints.ipady = 2;
@@ -345,7 +367,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 2;
+		constraints.gridx = 3;
 		constraints.gridy = 7;
 		constraints.ipadx = 2;
 		constraints.ipady = 2;
@@ -357,7 +379,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 8;
 		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(rdbtnAm, constraints);
@@ -367,7 +389,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 2;
+		constraints.gridx = 3;
 		constraints.gridy = 8;
 		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(rdbtnPm, constraints);
