@@ -6,6 +6,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 
 /**
  * This is a controller created for the purpose of interfacing with the main view.
@@ -66,7 +68,7 @@ public class MainViewTabController {
 	
 	public void playGameTab(Game game)
 	{
-		PlayGamePanel playGamePanel = new PlayGamePanel(game);
+		PlayGamePanel playGamePanel = new PlayGamePanel(new GameInfoPanel(), new ListRequirementsPanel(game));
 		mainView.insertTab(game.getName(), playGamePanel, mainView.getTabCount());
 		mainView.invalidate();
 		mainView.repaint();

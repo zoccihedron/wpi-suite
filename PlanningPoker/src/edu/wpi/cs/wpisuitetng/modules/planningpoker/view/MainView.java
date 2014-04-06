@@ -16,8 +16,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JTabbedPane;
 
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
+import edu.wpi.cs.wpisuitetng.network.Network;
+
 
 /**
  * This panel fills the main content area of the tab for this module. It
@@ -29,7 +37,8 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabCompone
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-	
+
+
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
 
@@ -44,6 +53,25 @@ public class MainView extends JTabbedPane {
 		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
+
+		
+		// Dummy game for testing tree layout
+		
+		Game dummyGame = new Game();
+		
+		
+		dummyGame.addEstimate(new Estimate(0));
+		dummyGame.addEstimate(new Estimate(1));
+		//dummyGame.addEstimate(new Estimate(2));
+		
+		
+		
+		
+		ListRequirementsPanel listRequirementsPanel = new ListRequirementsPanel(dummyGame);
+		//listRequirementsPanel.createAndShowGUI();
+		this.addTab("Requirments", listRequirementsPanel);
+		
+
 	}
 
 	/**
@@ -60,6 +88,7 @@ public class MainView extends JTabbedPane {
 		newGamePanel.resetDividerLocation();
 		this.setSelectedComponent(newGamePanel);
 	}
+	
 
 	/**
 	 * Get the overview panel from the mainView
