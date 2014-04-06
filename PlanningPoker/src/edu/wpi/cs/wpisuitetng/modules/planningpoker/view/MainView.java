@@ -69,7 +69,7 @@ public class MainView extends JTabbedPane {
 		
 		dummyGame.addEstimate(new Estimate(0));
 		dummyGame.addEstimate(new Estimate(1));
-		dummyGame.addEstimate(new Estimate(2));
+		//dummyGame.addEstimate(new Estimate(2));
 		
 		
 		
