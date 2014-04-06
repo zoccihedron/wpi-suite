@@ -13,7 +13,10 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.Calendar;
@@ -79,190 +82,92 @@ public class CreateGameInfoPanel extends JPanel {
 	private JCheckBox chckbxDeadline;
 	private JLabel lblMessage;
 	private Game editingGame;
-	
+	private JLabel lblTitle;
+	private JLabel lblDescription;
 
 
+	/**
+	 * This constructor is to be used when starting from a new game
+	 */
 	public CreateGameInfoPanel(NewGamePanel parent) {
 		this.mainViewTabController = MainViewTabController.getInstance();
 		this.parent = parent;
 		setBounds(5,5,307,393);
-		setLayout(null);
-		
+		this.setLayout(new GridBagLayout());
 		
 		//Adds the fields and button to the main panel.
 		gameNameText = new JTextField();
-		gameNameText.setBounds(119, 56, 130, 23);
-		add(gameNameText);
 		
 		description = new JTextArea();
-		description.setLineWrap(true);
-		description.setBounds(35, 284, 233, 76);
-		//description.
-		add(description);
 
-		
-		JLabel lblNewLabel = new JLabel("Game Information");
-		lblNewLabel.setBounds(46, 11, 210, 33);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
-		add(lblNewLabel);
-		
-
+		lblTitle = new JLabel("Game Information");
 		
 		lblName = new JLabel("Name:");
-		lblName.setBounds(35, 58, 86, 14);
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblName);
-		
 		
 		lblDeadline = new JLabel("Deadline:");
-		lblDeadline.setBounds(35, 126, 86, 20);
-		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblDeadline);
-		
-		
 		
 		// creates a date picker and sets its position
 		UtilDateModel model = new UtilDateModel();
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
-		datePicker.setBounds(119, 126, 130, 30);
-		add(datePicker);
-		
-		
 		
 		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 		hourSelector = new JComboBox(hours);
-		hourSelector.setBounds(119, 157, 52, 20);
-		hourSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	
-		add(hourSelector);
-		
 		String[] minutes = {"00","15","30","45"};
 
 		minuteSelector = new JComboBox(minutes);
-		minuteSelector.setBounds(196, 157, 53, 20);
-		minuteSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		add(minuteSelector);
 		
 		lblTime = new JLabel("Time:");
-		lblTime.setBounds(35, 157, 86, 20);
-		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblTime);
-		
-		
 		
 		AMPMSelection = new ButtonGroup();
-		
 		rdbtnAm = new JRadioButton("AM");
-		rdbtnAm.setBounds(119, 188, 46, 23);
-		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		rdbtnAm.setSelected(true);
-		
 		rdbtnPm = new JRadioButton("PM");
-		rdbtnPm.setBounds(163, 188, 46, 23);
-		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
-
-
+		rdbtnAm.setSelected(true);
 		AMPMSelection.add(rdbtnAm);
 		AMPMSelection.add(rdbtnPm);
-		
-		add(rdbtnAm);
-		add(rdbtnPm);
-		
+
 		lblDeck = new JLabel("Deck:");
-		lblDeck.setBounds(35, 222, 86, 20);
-		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblDeck);
 		
 		String[] decks = {"default"};
 		deck = new JComboBox(decks);
-		deck.setBounds(119, 222, 130, 20);
-		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		add(deck);
 		
-		btnNewButton = new JButton("Add new deck");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnNewButton.setBounds(119, 250, 130, 23);
-		//add(btnNewButton);
 		
-
 		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline.setBounds(36, 95, 129, 23);
 		chckbxDeadline.addActionListener(new ChangeDeadline(this));
-		chckbxDeadline.setSelected(true);
-		add(chckbxDeadline);
 		
-		JLabel lblDescription = new JLabel("Description:");
-		lblDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblDescription.setBounds(35, 264, 136, 15);
-		add(lblDescription);
-		
-		this.addComponentListener(new ComponentListener() {
-			public void componentResized(ComponentEvent e){
-				resizeDescription();
-			}
-			public void componentHidden(ComponentEvent e){
-				resizeDescription();
-			}
-			public void componentShown(ComponentEvent e){
-				resizeDescription();
-			}
-			public void componentMoved(ComponentEvent e){
-				resizeDescription();
-			}
-		});
-
-		
-
-
+		lblDescription = new JLabel("Description:");
+		panelSetup();
 	}
 
-	
-
+	/**
+	 * Constructor for Edit Game Panel
+	 */
 	public CreateGameInfoPanel(NewGamePanel parent, Game passedInGame) {
 		this.mainViewTabController = MainViewTabController.getInstance();
 		this.parent = parent;
 		this.editingGame = passedInGame;
-		setBounds(5,5,307,393);
-		setLayout(null);
+		setBounds(5,5,307,393); 
+		this.setLayout(new GridBagLayout());
+			
+		lblTitle = new JLabel("Game Information");
 		
-		
-		//Adds the fields and button to the main panel.
+		lblName = new JLabel("Name:       ");
 		gameNameText = new JTextField();
-		gameNameText.setBounds(119, 56, 130, 23);
-		gameNameText.setText(editingGame.getName());
-		add(gameNameText);
+		gameNameText.setText(editingGame.getName());	
 		
+		lblDescription = new JLabel("Description:");
 		description = new JTextArea();
-		description.setLineWrap(true);
-		description.setBounds(35, 284, 233, 76);
 		description.setText(editingGame.getDescription());
-		//description.
-		add(description);
+		
+		lblDeck = new JLabel("Deck:");
+		String[] decks = {"default"};
+		deck = new JComboBox(decks);
 
-		
-		JLabel lblNewLabel = new JLabel("Game Information");
-		lblNewLabel.setBounds(46, 11, 210, 33);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
-		add(lblNewLabel);
-		
-
-		
-		lblName = new JLabel("Name:");
-		lblName.setBounds(35, 58, 86, 14);
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblName);
-		
-		
+		chckbxDeadline = new JCheckBox("Deadline?");
+		chckbxDeadline.addActionListener(new ChangeDeadline(this));
 		lblDeadline = new JLabel("Deadline:");
-		lblDeadline.setBounds(35, 126, 86, 20);
-		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblDeadline);
-		
-		
-		
+			
 		// creates a date picker and sets its position
 		UtilDateModel model = new UtilDateModel();
 		Calendar tempCalendar = new GregorianCalendar();
@@ -270,46 +175,23 @@ public class CreateGameInfoPanel extends JPanel {
 		model.setDate(tempCalendar.get(Calendar.YEAR), tempCalendar.get(Calendar.MONTH), tempCalendar.get(Calendar.DATE));
 		model.setSelected(true);
 		JDatePanelImpl datePanel = new JDatePanelImpl(model);
-		datePicker = new JDatePickerImpl(datePanel);
-		datePicker.setBounds(119, 126, 130, 30);
-		add(datePicker);
-		
-		
-		
-		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
-		hourSelector = new JComboBox(hours);
-		hourSelector.setBounds(119, 157, 52, 20);
-		hourSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		hourSelector.setSelectedItem(getHourStringFromCalendar(tempCalendar.get(Calendar.HOUR)));
-	
-		add(hourSelector);
-		
-		String[] minutes = {"00","15","30","45"};
-
-		minuteSelector = new JComboBox(minutes);
-		minuteSelector.setBounds(196, 157, 53, 20);
-		minuteSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		minuteSelector.setSelectedItem(getMinuteStringFromCalendar(tempCalendar.get(Calendar.MINUTE)));
-		add(minuteSelector);
+		datePicker = new JDatePickerImpl(datePanel);	
 		
 		lblTime = new JLabel("Time:");
-		lblTime.setBounds(35, 157, 86, 20);
-		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblTime);
-		
-		
+		String[] hours = {"01","02","03","04","05","06","07","08","09","10","11","12"};
+		hourSelector = new JComboBox(hours);
+		hourSelector.setSelectedItem(getHourStringFromCalendar(tempCalendar.get(Calendar.HOUR)));		
+		String[] minutes = {"00","15","30","45"};
+		minuteSelector = new JComboBox(minutes);
+		minuteSelector.setSelectedItem(getMinuteStringFromCalendar(tempCalendar.get(Calendar.MINUTE)));
 		
 		AMPMSelection = new ButtonGroup();
-		
 		rdbtnAm = new JRadioButton("AM");
-		rdbtnAm.setBounds(119, 188, 46, 23);
-		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		
+		AMPMSelection.add(rdbtnAm);
 		rdbtnPm = new JRadioButton("PM");
-		rdbtnPm.setBounds(163, 188, 46, 23);
-		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		AMPMSelection.add(rdbtnPm);
 		
-		if(tempCalendar.get(Calendar.HOUR) >= 12){
+		if(tempCalendar.get(Calendar.AM_PM) == Calendar.PM){
 			rdbtnAm.setSelected(false);
 			rdbtnPm.setSelected(true);
 		}
@@ -318,68 +200,185 @@ public class CreateGameInfoPanel extends JPanel {
 			rdbtnPm.setSelected(false);
 		}
 
-
-		AMPMSelection.add(rdbtnAm);
-		AMPMSelection.add(rdbtnPm);
-		
-		add(rdbtnAm);
-		add(rdbtnPm);
-		
-		lblDeck = new JLabel("Deck:");
-		lblDeck.setBounds(35, 222, 86, 20);
-		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		add(lblDeck);
-		
-		String[] decks = {"default"};
-		deck = new JComboBox(decks);
-		deck.setBounds(119, 222, 130, 20);
-		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		add(deck);
-		
-		btnNewButton = new JButton("Add new deck");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnNewButton.setBounds(119, 250, 130, 23);
-		//add(btnNewButton);
-		
-
-		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline.setBounds(36, 95, 129, 23);
-		//chckbxDeadline.setSelected(editingGame.isHasDeadline());
-		add(chckbxDeadline);
 		ForceEnableOrDisableDeadline(editingGame.isHasDeadline());
 		
 		chckbxDeadline.addActionListener(new ChangeDeadline(this));
-		
-		
-		JLabel lblDescription = new JLabel("Description:");
-		lblDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
-		lblDescription.setBounds(35, 264, 136, 15);
-		add(lblDescription);
-		
-		this.addComponentListener(new ComponentListener() {
-			public void componentResized(ComponentEvent e){
-				resizeDescription();
-			}
-			public void componentHidden(ComponentEvent e){
-				resizeDescription();
-			}
-			public void componentShown(ComponentEvent e){
-				resizeDescription();
-			}
-			public void componentMoved(ComponentEvent e){
-				resizeDescription();
-			}
-		});
-
-		
-
-
+		panelSetup();
 	}
 	
+	/**
+	 * Sets all the grid components for either constructor
+	 */
+	public void panelSetup(){
+		//DEFINE CONSTAINTS
+		GridBagConstraints constraints = new GridBagConstraints();
+		
+		
+		//GAME INFORMATION LABEL
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.ipadx = 10;
+		constraints.ipady = 10;
+		add(lblTitle, constraints);
+		
+		//NAME LABEL
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		add(lblName, constraints);
+		
+		//NAME FIELD
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 2;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		add(gameNameText, constraints);
+		
+		//DESCRIPTION LABEL
+		lblDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 10;
+		add(lblDescription, constraints);
+		
+		//DESCRIPTION
+		description.setLineWrap(true);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0.90;
+		constraints.weighty = 0.90;
+		constraints.gridx = 0;
+		constraints.gridy = 11;
+		add(description, constraints);
+		
+		//DECK LABEL
+		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 9;
+		add(lblDeck, constraints);
+		
+		//DECK SELECTOR
+		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 2;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 9;
+		add(deck, constraints);
+		
+		//DEADLINE CHECKBOX
+		chckbxDeadline.setSelected(true);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 5;
+		add(chckbxDeadline, constraints);
+
+		
+		//DEADLINE LABEL
+		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		constraints.anchor = GridBagConstraints.WEST;
+		add(lblDeadline, constraints);
+		
+		//DATE PICKER
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 2;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 6;
+		add(datePicker, constraints);
+		
+		//TIME LABEL
+		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 7;
+		add(lblTime, constraints);
+		
+		//HOUR SELECTOR
+		hourSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 7;
+		constraints.ipadx = 2;
+		constraints.ipady = 2;
+		add(hourSelector, constraints);
+		
+		//MINUTE SELECTOR
+		minuteSelector.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 7;
+		constraints.ipadx = 2;
+		constraints.ipady = 2;
+		constraints.anchor = GridBagConstraints.WEST;
+		add(minuteSelector, constraints);
+		
+		//AM BUTTON
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 8;
+		rdbtnAm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		add(rdbtnAm, constraints);
+		
+		//PM Button
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 8;
+		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		add(rdbtnPm, constraints);
+	}
 
 
-
-
+	/**
+	 * A function to convert an int minute to a string minute (rounded to the nearest quarter-hour)
+	 * @param minute the int value from a calendar object
+	 * @return the string corresponding to the minuteSelector object
+	 */
 	private String getMinuteStringFromCalendar(int minute) {
 		System.out.println("Minute:" + minute);
 		if(minute < 15){
@@ -397,7 +396,11 @@ public class CreateGameInfoPanel extends JPanel {
 		return "00";
 	}
 
-
+	/**
+	 * A function to convert an int hour to a string minute
+	 * @param hour the int value from a calendar object
+	 * @return the string corresponding to the hourSelector object
+	 */
 	private String getHourStringFromCalendar(int hour) {
 		System.out.println("Hour:" + hour);
 		hour = hour % 12;
@@ -442,15 +445,6 @@ public class CreateGameInfoPanel extends JPanel {
 		return "12";
 	}
 
-
-	protected void resizeDescription() {
-		description.setSize(description.getWidth(), this.getHeight() - 300);
-		
-	}
-
-
-
-
 	/**
 	 * Checks to see if the fields for the game are selected properly
 	 * '<html>error</html>' format needed to allow word wrap in the error label
@@ -486,37 +480,70 @@ public class CreateGameInfoPanel extends JPanel {
 	public void EnableOrDisableDeadline() {
 		if (chckbxDeadline.isSelected()){
 			datePicker.setEnabled(true);
+			datePicker.setVisible(true);
 			hourSelector.setEnabled(true);
+			hourSelector.setVisible(true);
 			minuteSelector.setEnabled(true);
+			minuteSelector.setVisible(true);
 			rdbtnPm.setEnabled(true);
+			rdbtnPm.setVisible(true);
 			rdbtnAm.setEnabled(true);
+			rdbtnAm.setVisible(true);
+			lblDeadline.setVisible(true);
+			lblTime.setVisible(true);
 		}
 		else {
 			datePicker.setEnabled(false);
+			datePicker.setEnabled(false);
+			datePicker.setVisible(false);
 			hourSelector.setEnabled(false);
+			hourSelector.setVisible(false);
 			minuteSelector.setEnabled(false);
+			minuteSelector.setVisible(false);
 			rdbtnPm.setEnabled(false);
+			rdbtnPm.setVisible(false);
 			rdbtnAm.setEnabled(false);
+			rdbtnAm.setVisible(false);
+			lblDeadline.setVisible(false);
+			lblTime.setVisible(false);
 		}
 		
 	}
 	
+	/**
+	 * Will switch the deadline fields to enabled or disabled based on the value passed
+	 * @param hasDeadline variable from the game object that sets the condition for the setting
+	 */
 	private void ForceEnableOrDisableDeadline(boolean hasDeadline) {
 		if (hasDeadline){
 			chckbxDeadline.setSelected(true);
 			datePicker.setEnabled(true);
+			datePicker.setVisible(true);
 			hourSelector.setEnabled(true);
+			hourSelector.setVisible(true);
 			minuteSelector.setEnabled(true);
+			minuteSelector.setVisible(true);
 			rdbtnPm.setEnabled(true);
+			rdbtnPm.setVisible(true);
 			rdbtnAm.setEnabled(true);
+			rdbtnAm.setVisible(true);
+			lblDeadline.setVisible(true);
+			lblTime.setVisible(true);
 		}
 		else {
 			chckbxDeadline.setSelected(false);
 			datePicker.setEnabled(false);
+			datePicker.setVisible(false);
 			hourSelector.setEnabled(false);
+			hourSelector.setVisible(false);
 			minuteSelector.setEnabled(false);
+			minuteSelector.setVisible(false);
 			rdbtnPm.setEnabled(false);
+			rdbtnPm.setVisible(false);
 			rdbtnAm.setEnabled(false);
+			rdbtnAm.setVisible(false);
+			lblDeadline.setVisible(false);
+			lblTime.setVisible(false);
 		}
 	}
 	
@@ -549,11 +576,16 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return newGame
 	 */
 	public Game getGameObject() {
+		int id = 0;
+		if(editingGame != null){
+			id = editingGame.getId();
+		}
 		if(chckbxDeadline.isSelected()){
 			Game newGame = new Game(getGameName(), new Date(), getDeadline());
 			newGame.setRequirements(parent.getGameRequirements());
 			newGame.setDescription(description.getText());
 			newGame.setHasDeadline(true);
+			newGame.setId(id);
 			return newGame;
 		}
 		else{
@@ -561,10 +593,15 @@ public class CreateGameInfoPanel extends JPanel {
 			newGame.setRequirements(parent.getGameRequirements());
 			newGame.setDescription(description.getText());
 			newGame.setHasDeadline(false);
+			newGame.setId(id);
 			return newGame;
 		}
 	}
 	
+	/**
+	 * Returns the name from the Name Text Field
+	 * @return the name
+	 */
 	private String getGameName() {
 		return gameNameText.getText();
 	}

@@ -59,6 +59,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
 		newGame.setGameCreator(s.getUsername());
+		newGame.setId(getAllForEveryone(s).length);
 		if(!db.save(newGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
 		}
@@ -98,7 +99,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	}
 
 	/**
-	 * Returns all game sessions of a project
+	 * Returns all game sessions of a project, besides other users drafts
 	 * 
 	 * @param s the session
 	 * 
@@ -110,7 +111,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		Game[] allGames = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
 		ArrayList<Game> gamesViewableByUser = new ArrayList<Game>();
 		for(Game game : allGames){
-			if(game.getStatus()==Game.GameStatus.DRAFT){
+			if(game.getStatus() == Game.GameStatus.DRAFT){
 				if(game.getGameCreator().equals(s.getUsername())){
 					gamesViewableByUser.add(game);
 				}
@@ -124,6 +125,18 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			
 	}
 
+	/**
+	 * Returns all game sessions of a project
+	 * 
+	 * @param s the session
+	 * 
+	 * @return the list of games this user participates in
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
+	 */
+	public Game[] getAllForEveryone(Session s) throws WPISuiteException {
+		return db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+	}
+	
 	/**
 	 * Updates the current game in the project
 	 * @param s the session
@@ -142,16 +155,19 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		 */
 		final List<Model> oldGames = db.retrieve(Game.class, "id", updatedGame.getId(), s.getProject());
 		if(oldGames.size() < 1 || oldGames.get(0) == null) {
+			System.out.println("Game with ID does not exist:" + updatedGame.getId());
 			throw new BadRequestException("Game with ID does not exist.");
 		}
 		
 		Game existingGame = (Game)oldGames.get(0);	
-		
+		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);
 		
 		if(!db.save(existingGame, s.getProject())) {
-			throw new WPISuiteException("Save was no successful");
+
+			System.out.println("Save was not successful");
+			throw new WPISuiteException("Save was not successful");
 		}
 		
 		return existingGame;

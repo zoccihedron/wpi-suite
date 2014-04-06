@@ -62,6 +62,7 @@ public class MainView extends JTabbedPane {
 		Game testGame = new Game("TestGame", new Date(), new Date());
 		testGame.setDescription("This is a test Game");
 		testGame.setHasDeadline(true);
+		testGame.setId(1);
 		NewGamePanel testEditPanel = new NewGamePanel(testGame);
 		this.addTab("testEdit", testEditPanel);
 		
