@@ -16,13 +16,14 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 /**
  * This class is the view for the toolbar. It has button groups
  * 
- * @author Ryan Baker
+ * @author Team Code On Bleu
+ * @version 1.0
  *
  */
 @SuppressWarnings({"serial"})
 public class ToolbarView extends DefaultToolbarView{
 	
-	private CreateButtonsPanel createButton = new CreateButtonsPanel(this);
+	private final CreateButtonsPanel createButton = new CreateButtonsPanel(this);
 	private final MainView mainview;
 	
 	/**
@@ -32,7 +33,7 @@ public class ToolbarView extends DefaultToolbarView{
 	public ToolbarView(MainView mainView)
 	{
 		this.addGroup(createButton);
-		this.mainview = mainView;
+		mainview = mainView;
 	}
 	
 	/**

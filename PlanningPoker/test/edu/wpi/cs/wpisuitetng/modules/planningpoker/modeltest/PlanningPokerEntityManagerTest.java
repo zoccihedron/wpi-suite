@@ -200,4 +200,10 @@ public class PlanningPokerEntityManagerTest {
 		assertTrue(containedDraftsOwnedByUser);
 		assertTrue(containedGames);
 	}
+	
+	@Test
+	public void autoIncrementGameIdTest() throws WPISuiteException{
+		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		
+	}
 }
