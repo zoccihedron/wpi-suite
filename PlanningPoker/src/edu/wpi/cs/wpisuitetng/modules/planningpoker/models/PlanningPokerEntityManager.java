@@ -168,7 +168,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		 */
 		final List<Model> oldGames = db.retrieve(Game.class, "id", updatedGame.getId(), s.getProject());
 		if(oldGames.size() < 1 || oldGames.get(0) == null) {
-			System.out.println("Game with ID does not exist:" + updatedGame.getId());
 			throw new BadRequestException("Game with ID does not exist.");
 		}
 		
@@ -178,8 +177,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		existingGame.copyFrom(updatedGame);
 		
 		if(!db.save(existingGame, s.getProject())) {
-
-			System.out.println("Save was not successful");
 			throw new WPISuiteException("Save was not successful");
 		}
 		

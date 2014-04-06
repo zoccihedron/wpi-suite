@@ -56,19 +56,14 @@ public class AddGameController implements ActionListener {
 		
 		final Game currentGame = view.getGameObject();
 		
-		// Make sure there is text
-		if ("".equals(currentGame.getName())) {
-			// Clear the text field
-			// TODO - Reset default fields
-			
-			// Send a request to the core to save this game
-			final Request request = Network.getInstance().makeRequest(
-					"planningpoker/game", HttpMethod.PUT); // PUT = create
-			request.setBody(currentGame.toJSON()); // put the new message in the body of the request
-			// add an observer to process the response
-			request.addObserver(new AddGameRequestObserver(this));
-			request.send(); // send the request
-		}
+		// Send a request to the core to save this game
+		final Request request = Network.getInstance().makeRequest(
+				"planningpoker/game", HttpMethod.PUT); // PUT = create
+		request.setBody(currentGame.toJSON()); // put the new message in the body of the request
+		// add an observer to process the response
+		request.addObserver(new AddGameRequestObserver(this));
+		request.send(); // send the request
+	
 	}
 
 	/**
