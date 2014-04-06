@@ -115,15 +115,19 @@ public class NewGamePanel extends JSplitPane {
 		this.addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 			public void componentHidden(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 			public void componentShown(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 			public void componentMoved(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 		});
 	}
@@ -136,7 +140,7 @@ public class NewGamePanel extends JSplitPane {
 		super(JSplitPane.VERTICAL_SPLIT);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
-		selectRequirementsPanel = new SelectRequirementsPanel();
+		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Requirements", selectRequirementsPanel);
@@ -190,15 +194,19 @@ public class NewGamePanel extends JSplitPane {
 		this.addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 			public void componentHidden(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 			public void componentShown(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 			public void componentMoved(ComponentEvent e){
 				resetDividerLocation();
+				selectRequirementsPanel.fillTable();
 			}
 		});
 	}
@@ -233,7 +241,7 @@ public class NewGamePanel extends JSplitPane {
 	}
 
 	public List<Integer> getGameRequirements() {
-		return SelectRequirementsPanel.getSelectedRequirementIds();
+		return selectRequirementsPanel.getSelectedRequirementIds();
 	}
 	
 	public JLabel getMessageField(){

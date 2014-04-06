@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /** This class is the view from which the
@@ -40,10 +43,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 @SuppressWarnings("serial")
 public class SelectRequirementsPanel extends JPanel {
 	private final JTable existingRequirementsTable;
-	private static JTable requirementsToAddTable = null;
+	private JTable requirementsToAddTable = null;
 	private final boolean DISABLED = false;
 	private final boolean ENABLED = true;
 	private final JButton btnAddSelectedReq;
+	private DefaultTableModel model;
+	private Game game;
 	
 	public SelectRequirementsPanel() {
 		this.setLayout(new GridBagLayout());
@@ -93,38 +98,19 @@ public class SelectRequirementsPanel extends JPanel {
 				.getColumnModel().getColumn(0));
 
 		// Filling with some initial data for testing
-		final DefaultTableModel model = (DefaultTableModel) existingRequirementsTable
+		model = (DefaultTableModel) existingRequirementsTable
 				.getModel();
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				// Initially populates the existingReqs Table
-				final List<Requirement> existingRequirements = new ArrayList<Requirement>(
-						RequirementManagerFacade.getInstance().getRequirments());
-				final List<Integer> pendingReqs = 
-						getRequirementIdsFromTable(requirementsToAddTable);
-				final List<Integer> existingReqs = 
-						getRequirementIdsFromTable(existingRequirementsTable);
-				for (Requirement req : existingRequirements) {
-					if (!(req.getIteration().equals("Backlog"))) {
-						if (existingReqs.contains(req.getId())) {
-							removeRowByValue(req, existingRequirementsTable);
-						} else if (pendingReqs.contains(req.getId())) {
-							removeRowByValue(req, requirementsToAddTable);
-						}
-						
-					//Checks that the pulled requirements are
-					//Not in the pendingRequirementsTable already
-					//Not in the existingRequirementsTable already
-					} else if (!existingReqs.contains(req.getId()) && !pendingReqs.contains(req.getId())) {
-						model.addRow(new Object[] {
-								Integer.toString(req.getId()), req.getName(),
-								req.getDescription() });
-					}
-				}
+				
+				fillTable();
+				
 			}
 
 		});
+		
 
 		final JScrollPane existingRequirementsTablePanel = new JScrollPane(
 				existingRequirementsTable);
@@ -230,6 +216,201 @@ public class SelectRequirementsPanel extends JPanel {
 
 	}
 
+
+
+	public SelectRequirementsPanel(Game editingGame) {
+		this.game = editingGame;
+		this.setLayout(new GridBagLayout());
+		// Parent Container
+		final GridBagConstraints constraints = new GridBagConstraints();
+
+		// Top section of panel
+		final String[] columnNames = { "ID", "Name", "Description" };
+
+		final Object[][] data = {};
+
+		final JLabel existingRequirementsLabel = new JLabel("Existing Requirements");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(existingRequirementsLabel, constraints);
+
+		final JButton btnNewRequirement = new JButton("Refresh");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		this.add(btnNewRequirement, constraints);
+
+		existingRequirementsTable = new JTable(new DefaultTableModel(data,
+				columnNames));
+		
+		existingRequirementsTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				if(existingRequirementsTable.getSelectedRow() == - 1){
+					btnAddSelectedReq.setEnabled(DISABLED);
+				}
+				else {
+					btnAddSelectedReq.setEnabled(ENABLED);
+				}
+			}
+
+		});
+		
+		// Hide the column with IDs
+		existingRequirementsTable.removeColumn(existingRequirementsTable
+				.getColumnModel().getColumn(0));
+
+		// Filling with some initial data for testing
+		model = (DefaultTableModel) existingRequirementsTable
+				.getModel();
+		btnNewRequirement.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// Initially populates the existingReqs Table
+				fillTable();
+			}
+
+		});
+		
+
+
+		final JScrollPane existingRequirementsTablePanel = new JScrollPane(
+				existingRequirementsTable);
+		
+		
+		
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 4;
+		constraints.weightx = 1;
+		constraints.weighty = 0.5;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		this.add(existingRequirementsTablePanel, constraints);
+
+		// Bottom section of panel
+		final JLabel lblRequirementsToEstimate = new JLabel(
+				"Requirements to Estimate");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		this.add(lblRequirementsToEstimate, constraints);
+		
+		final JPanel emptyPanel = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 2;
+		this.add(emptyPanel, constraints);
+
+		btnAddSelectedReq = new JButton("Add");
+		btnAddSelectedReq.setEnabled(DISABLED);
+		btnAddSelectedReq.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				moveRequirementsBetweenTables(existingRequirementsTable,
+						requirementsToAddTable);
+				btnAddSelectedReq.setEnabled(DISABLED);
+			}
+		});
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 2;
+		this.add(btnAddSelectedReq, constraints);
+
+		final JButton btnRemoveSelectedReq = new JButton("Remove");
+		btnRemoveSelectedReq.setEnabled(DISABLED);
+		btnRemoveSelectedReq.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				moveRequirementsBetweenTables(requirementsToAddTable,
+						existingRequirementsTable);
+				btnRemoveSelectedReq.setEnabled(DISABLED);
+			}
+
+		});
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 2;
+		this.add(btnRemoveSelectedReq, constraints);
+
+		final String[] addColumnNames = { "ID", "Name", "Description" };
+		final Object[][] addData = {};
+
+		requirementsToAddTable = new JTable(new DefaultTableModel(addData,
+				addColumnNames));
+
+		requirementsToAddTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				if(requirementsToAddTable.getSelectedRow() == - 1){
+					btnRemoveSelectedReq.setEnabled(DISABLED);
+				}
+				else {
+					btnRemoveSelectedReq.setEnabled(ENABLED);
+				}
+			}
+
+		});
+		
+		// Hide the column with IDs
+		requirementsToAddTable.removeColumn(requirementsToAddTable
+				.getColumnModel().getColumn(0));
+
+		final JScrollPane requirementsToAddTablePanel = new JScrollPane(
+				requirementsToAddTable);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		constraints.gridwidth = 4;
+		constraints.weightx = 1;
+		constraints.weighty = 0.5;
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		this.add(requirementsToAddTablePanel, constraints);
+
+	}
+	
+	public void fillTable() {
+		// TODO Auto-generated method stub
+		final List<Requirement> existingRequirements = new ArrayList<Requirement>(
+				RequirementManagerFacade.getInstance().getPreStoredRequirements());
+		final List<Integer> pendingReqs = 
+				getRequirementIdsFromTable(requirementsToAddTable);
+		final List<Integer> existingReqs = 
+				getRequirementIdsFromTable(existingRequirementsTable);
+		for (Requirement req : existingRequirements) {
+			if (!(req.getIteration().equals("Backlog"))) {
+				if (existingReqs.contains(req.getId())) {
+					removeRowByValue(req, existingRequirementsTable);
+				} else if (pendingReqs.contains(req.getId())) {
+					removeRowByValue(req, requirementsToAddTable);
+				}
+				
+			//Checks that the pulled requirements are
+			//Not in the pendingRequirementsTable already
+			//Not in the existingRequirementsTable already
+			} else if (!existingReqs.contains(req.getId()) && !pendingReqs.contains(req.getId())) {
+				model.addRow(new Object[] {
+						Integer.toString(req.getId()), req.getName(),
+						req.getDescription() });
+			}
+		}
+	}
+
 	private void removeRowByValue(Requirement req, JTable src) {
 		final int reqID = req.getId();
 		final int entries = src.getRowCount();
@@ -250,7 +431,7 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param dest
 	 *            the table to copy to
 	 */
-	private static void moveRequirementsBetweenTables(JTable src, JTable dest) {
+	private void moveRequirementsBetweenTables(JTable src, JTable dest) {
 		//Pull all the information we need to make this decision
 		int selection = src.getSelectedRow();
 		final DefaultTableModel modelDest = (DefaultTableModel) dest.getModel();
@@ -283,7 +464,7 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param src The table to extract Requirement IDs from
 	 * @return The requirements in the src table
 	 */
-	public static List<Integer> getRequirementIdsFromTable(JTable src) {
+	public List<Integer> getRequirementIdsFromTable(JTable src) {
 		final int countOfEntries = src.getRowCount();
 		final int REQID = 0;
 		final List<Integer> reqIDs = new ArrayList<Integer>();
@@ -299,7 +480,7 @@ public class SelectRequirementsPanel extends JPanel {
 	 * 
 	 * @return The requirements in the pending table
 	 */
-	public static List<Integer> getSelectedRequirementIds() {
+	public List<Integer> getSelectedRequirementIds() {
 		return getRequirementIdsFromTable(requirementsToAddTable);
 	}
 }

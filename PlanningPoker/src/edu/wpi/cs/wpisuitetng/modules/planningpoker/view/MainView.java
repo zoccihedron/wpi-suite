@@ -13,9 +13,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.JTabbedPane;
-
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
@@ -69,9 +71,17 @@ public class MainView extends JTabbedPane {
 		
 		ListRequirementsPanel listRequirementsPanel = new ListRequirementsPanel(dummyGame);
 		//listRequirementsPanel.createAndShowGUI();
-		this.addTab("Requirments", listRequirementsPanel);
+		this.addTab("Requirements", listRequirementsPanel);
 		
-
+		Game testGame = new Game("Test", new Date(), new Date());
+		testGame.setId(1);
+		testGame.setHasDeadline(false);
+		ArrayList<Integer> listReqs = new ArrayList<Integer>();
+		listReqs.add(1);
+		listReqs.add(2);
+		testGame.setRequirements(new ArrayList<Integer>());
+		NewGamePanel testEdit = new NewGamePanel(testGame);
+		this.addTab("testEdit", testEdit);
 	}
 
 	/**

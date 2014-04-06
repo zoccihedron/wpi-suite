@@ -28,10 +28,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * @author  Code On Bleu
  * @version Mar 25, 2014
  */
-/**
- * @author Bootlegger
- *
- */
 public class Game extends AbstractModel{
 	private int id;
 	private static int numberOfIDs = 0;
