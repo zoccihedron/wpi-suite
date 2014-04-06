@@ -12,21 +12,24 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.List;
+
 import javax.swing.DropMode;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeSelectionModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
-import java.util.List;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 /**
  * This class is used to create a requirements tree which will be displayed in the play game pannel
@@ -39,12 +42,14 @@ implements TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
+	private Game game;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
 	 */
 	public ListRequirementsPanel(final Game game) {
 
+		this.game = game;
 		this.setViewportView(tree);
 		this.refresh();  
 
@@ -80,8 +85,14 @@ implements TreeSelectionListener {
 	public void valueChanged(TreeSelectionEvent e) {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)
 				tree.getLastSelectedPathComponent();
-
+		
 		if (node == null) return;
+		
+		Object nodeInfo = node.getUserObject();
+		if(node.isLeaf()){
+		Requirement req = (Requirement)nodeInfo;
+		PlayGameController.getInstance().updateEstimationPane(req.getId(), game);
+		}
 		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}
 
@@ -115,6 +126,8 @@ implements TreeSelectionListener {
 
 		tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
 		tree.addTreeSelectionListener(this);
+		
+		
 
 		tree.setDragEnabled(true);
 		tree.setDropMode(DropMode.ON);
@@ -123,4 +136,6 @@ implements TreeSelectionListener {
 
 		System.out.println("finished refreshing the tree");
 	}
+	
+	
 }

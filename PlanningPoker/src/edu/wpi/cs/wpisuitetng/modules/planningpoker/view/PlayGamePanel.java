@@ -1,8 +1,10 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import javax.swing.JPanel;
+import java.awt.BorderLayout;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
@@ -10,12 +12,23 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequiremen
 
 public class PlayGamePanel extends JPanel{
 
-	GameInfoPanel GameInfoPanel;
-	ListRequirementsPanel listRequirements;
-	
+	private GameInfoPanel gameInfoPanel;
+	private ListRequirementsPanel listRequirementsPanel;
+	// private EstimationPane estimationPane;
+	private JSplitPane splitPane;
 
 	public PlayGamePanel(Game game)
 	{
+		gameInfoPanel = new GameInfoPanel();
+		gameInfoPanel.updatePanel(game);
+		listRequirementsPanel = new ListRequirementsPanel(game);
+		// estimationPane = new EstimationPane();
+		splitPane = new JSplitPane();
+		splitPane.setLeftComponent(listRequirementsPanel);
+		// splitPane.setRightComponent(estimationPane);
+		setLayout(new BorderLayout());
+		add(gameInfoPanel, BorderLayout.NORTH);
+		add(splitPane, BorderLayout.CENTER);
 	}
 
 	
