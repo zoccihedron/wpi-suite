@@ -136,6 +136,7 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(new ChangeDeadline(this));
+		chckbxDeadline.setSelected(true);
 		
 		lblDescription = new JLabel("Description:");
 		panelSetup();
@@ -310,7 +311,6 @@ public class CreateGameInfoPanel extends JPanel {
 		add(deck, constraints);
 		
 		//DEADLINE CHECKBOX
-		chckbxDeadline.setSelected(true);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.0;

@@ -79,7 +79,7 @@ public class MainView extends JTabbedPane {
 		ArrayList<Integer> listReqs = new ArrayList<Integer>();
 		listReqs.add(1);
 		listReqs.add(2);
-		testGame.setRequirements(new ArrayList<Integer>());
+		testGame.setRequirements(listReqs);
 		NewGamePanel testEdit = new NewGamePanel(testGame);
 		this.addTab("testEdit", testEdit);
 	}

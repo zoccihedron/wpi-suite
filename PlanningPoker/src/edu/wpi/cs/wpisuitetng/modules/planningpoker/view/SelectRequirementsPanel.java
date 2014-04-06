@@ -47,7 +47,9 @@ public class SelectRequirementsPanel extends JPanel {
 	private final boolean DISABLED = false;
 	private final boolean ENABLED = true;
 	private final JButton btnAddSelectedReq;
-	private DefaultTableModel model;
+	private DefaultTableModel modelExisting;
+	private DefaultTableModel modelAdded;
+	
 	private Game game;
 	
 	public SelectRequirementsPanel() {
@@ -98,7 +100,7 @@ public class SelectRequirementsPanel extends JPanel {
 				.getColumnModel().getColumn(0));
 
 		// Filling with some initial data for testing
-		model = (DefaultTableModel) existingRequirementsTable
+		modelExisting = (DefaultTableModel) existingRequirementsTable
 				.getModel();
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
@@ -267,7 +269,7 @@ public class SelectRequirementsPanel extends JPanel {
 				.getColumnModel().getColumn(0));
 
 		// Filling with some initial data for testing
-		model = (DefaultTableModel) existingRequirementsTable
+		modelExisting = (DefaultTableModel) existingRequirementsTable
 				.getModel();
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
@@ -385,6 +387,8 @@ public class SelectRequirementsPanel extends JPanel {
 	}
 	
 	public void fillTable() {
+		modelAdded = (DefaultTableModel) requirementsToAddTable
+				.getModel();
 		// TODO Auto-generated method stub
 		final List<Requirement> existingRequirements = new ArrayList<Requirement>(
 				RequirementManagerFacade.getInstance().getPreStoredRequirements());
@@ -403,8 +407,19 @@ public class SelectRequirementsPanel extends JPanel {
 			//Checks that the pulled requirements are
 			//Not in the pendingRequirementsTable already
 			//Not in the existingRequirementsTable already
+			} else if (game != null && !existingReqs.contains(req.getId()) && !pendingReqs.contains(req.getId())) {
+				if(game.getRequirements().contains(req.getId())){
+					modelAdded.addRow(new Object[] {
+							Integer.toString(req.getId()), req.getName(),
+							req.getDescription() });
+				}
+				else{
+					modelExisting.addRow(new Object[] {
+							Integer.toString(req.getId()), req.getName(),
+							req.getDescription() });
+				}
 			} else if (!existingReqs.contains(req.getId()) && !pendingReqs.contains(req.getId())) {
-				model.addRow(new Object[] {
+				modelExisting.addRow(new Object[] {
 						Integer.toString(req.getId()), req.getName(),
 						req.getDescription() });
 			}
@@ -456,6 +471,7 @@ public class SelectRequirementsPanel extends JPanel {
 			selection = src.getSelectedRow();
 		}
 	}
+
 
 	/**
 	 * This function iterates through the src table requirements and returns the
