@@ -29,7 +29,7 @@ import javax.swing.JTabbedPane;
 @SuppressWarnings("serial")
 public class ClosableTabComponent extends JPanel implements ActionListener {
 	
-	private final JTabbedPane tabbedPane;
+	protected final JTabbedPane tabbedPane;
 	
 	/**
 	 * Create a closable tab component belonging to the given tabbedPane.

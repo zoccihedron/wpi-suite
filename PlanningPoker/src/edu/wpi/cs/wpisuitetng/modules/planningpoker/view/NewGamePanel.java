@@ -21,6 +21,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -53,27 +54,6 @@ public class NewGamePanel extends JSplitPane {
 	private JButton btnCancel;
 	private JButton btnStart;
 	private JLabel lblMessage;
-	
-
-	/**
-	 * Outdated! This should be deleted!?
-	 * @param model
-	 * @param parentWindow
-	 */
-	public NewGamePanel(PlanningPokerModel model, MainView parentWindow) {
-		super(JSplitPane.VERTICAL_SPLIT);
-		createGameInfoPanel = new CreateGameInfoPanel(this);
-
-		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
-		selectRequirementsPanel = new SelectRequirementsPanel();
-		
-		tabPane = new JTabbedPane();
-		tabPane.addTab("Requirements", selectRequirementsPanel);
-
-		this.setLeftComponent(createGameInfoPanel);
-		this.setRightComponent(tabPane);
-		this.setDividerLocation(300);
-	}
 	
 	/**
 	 * Use this constructor when starting a new game panel from scratch
@@ -252,8 +232,8 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setVisible(bool);
 	}
 
-	public ArrayList<Integer> getGameRequirements() {
-		return selectRequirementsPanel.getSelectedRequirementIds();
+	public List<Integer> getGameRequirements() {
+		return SelectRequirementsPanel.getSelectedRequirementIds();
 	}
 	
 	public JLabel getMessageField(){

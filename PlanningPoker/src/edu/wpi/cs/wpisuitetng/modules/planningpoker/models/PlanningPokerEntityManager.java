@@ -37,6 +37,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	/** The database */
 	Data db;
 	
+	private static int id_count;
+	
 	/**
 	 * Constructs the entity manager. This constructor is called by
 	 * {@link edu.wpi.cs.wpisuitetng.ManagerLayer#ManagerLayer()}. To make sure
@@ -58,6 +60,17 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	public Game makeEntity(Session s, String content)
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
+		id_count++;
+		/*
+		Game[] gameArray = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+		
+		for(int i = 1; i < gameArray.length; i++){
+			if(gameArray[i].getId() != i){
+				newGame.setId(i);
+			}
+		}
+		*/
+		newGame.setId(id_count);
 		newGame.setGameCreator(s.getUsername());
 		newGame.setId(getAllForEveryone(s).length);
 		if(!db.save(newGame, s.getProject())) {
