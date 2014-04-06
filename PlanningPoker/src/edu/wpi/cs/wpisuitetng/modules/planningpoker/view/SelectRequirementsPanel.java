@@ -207,7 +207,14 @@ public class SelectRequirementsPanel extends JPanel {
 	}
 
 	private void removeRowByValue(Requirement req, JTable src) {
-		//TODO
+		final int reqID = req.getId();
+		final int entries = src.getRowCount();
+		for(int i = 0; i < entries; i++) {
+			int idToCompare =  Integer.valueOf((String) src.getModel().getValueAt(i, 0));
+			if (idToCompare == reqID){
+				((DefaultTableModel) src.getModel()).removeRow(i);
+			}
+		}
 	}
 
 	/**
