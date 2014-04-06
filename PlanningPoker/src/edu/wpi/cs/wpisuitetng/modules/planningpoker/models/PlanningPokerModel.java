@@ -154,4 +154,9 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		nextID = i;
 	}
 
+	public void UpdateGame(Game currentGame) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

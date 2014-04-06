@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Team Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.GridBagConstraints;
@@ -5,6 +16,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,24 +30,32 @@ import javax.swing.table.DefaultTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
+/** This class is the view from which the
+ * user can select requirements to add to a game
+ * 
+ * @author Code On Bleu
+ * @version 1.0
+ *
+ */
+@SuppressWarnings("serial")
 public class SelectRequirementsPanel extends JPanel {
-	private JTable existingRequirementsTable;
-	private JTable requirementsToAddTable;
-	private boolean DISABLED = false;
-	private boolean ENABLED = true;
+	private final JTable existingRequirementsTable;
+	private static JTable requirementsToAddTable = null;
+	private final boolean DISABLED = false;
+	private final boolean ENABLED = true;
 	private final JButton btnAddSelectedReq;
 	
 	public SelectRequirementsPanel() {
 		this.setLayout(new GridBagLayout());
 		// Parent Container
-		GridBagConstraints constraints = new GridBagConstraints();
+		final GridBagConstraints constraints = new GridBagConstraints();
 
 		// Top section of panel
-		String[] columnNames = { "ID", "Name", "Description" };
+		final String[] columnNames = { "ID", "Name", "Description" };
 
-		Object[][] data = {};
+		final Object[][] data = {};
 
-		JLabel existingRequirementsLabel = new JLabel("Existing Requirements");
+		final JLabel existingRequirementsLabel = new JLabel("Existing Requirements");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -43,7 +63,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 0;
 		this.add(existingRequirementsLabel, constraints);
 
-		JButton btnNewRequirement = new JButton("Refresh");
+		final JButton btnNewRequirement = new JButton("Refresh");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -54,7 +74,8 @@ public class SelectRequirementsPanel extends JPanel {
 		existingRequirementsTable = new JTable(new DefaultTableModel(data,
 				columnNames));
 		
-		existingRequirementsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		existingRequirementsTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(existingRequirementsTable.getSelectedRow() == - 1){
@@ -78,10 +99,12 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				// Initially populates the existingReqs Table
-				ArrayList<Requirement> existingRequirements = new ArrayList<Requirement>(
+				final List<Requirement> existingRequirements = new ArrayList<Requirement>(
 						RequirementManagerFacade.getInstance().getRequirments());
-				ArrayList<Integer> pendingReqs = getRequirementIdsFromTable(requirementsToAddTable);
-				ArrayList<Integer> existingReqs = getRequirementIdsFromTable(existingRequirementsTable);
+				final List<Integer> pendingReqs = 
+						getRequirementIdsFromTable(requirementsToAddTable);
+				final List<Integer> existingReqs = 
+						getRequirementIdsFromTable(existingRequirementsTable);
 				for (Requirement req : existingRequirements) {
 					if (!(req.getIteration().equals("Backlog"))) {
 						if (existingReqs.contains(req.getId())) {
@@ -103,7 +126,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 
-		JScrollPane existingRequirementsTablePanel = new JScrollPane(
+		final JScrollPane existingRequirementsTablePanel = new JScrollPane(
 				existingRequirementsTable);
 		
 		
@@ -117,7 +140,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(existingRequirementsTablePanel, constraints);
 
 		// Bottom section of panel
-		JLabel lblRequirementsToEstimate = new JLabel(
+		final JLabel lblRequirementsToEstimate = new JLabel(
 				"Requirements to Estimate");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
@@ -127,7 +150,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 2;
 		this.add(lblRequirementsToEstimate, constraints);
 		
-		JPanel emptyPanel = new JPanel();
+		final JPanel emptyPanel = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
@@ -170,13 +193,14 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 2;
 		this.add(btnRemoveSelectedReq, constraints);
 
-		String[] addColumnNames = { "ID", "Name", "Description" };
-		Object[][] addData = {};
+		final String[] addColumnNames = { "ID", "Name", "Description" };
+		final Object[][] addData = {};
 
 		requirementsToAddTable = new JTable(new DefaultTableModel(addData,
 				addColumnNames));
 
-		requirementsToAddTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		requirementsToAddTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(requirementsToAddTable.getSelectedRow() == - 1){
@@ -193,7 +217,7 @@ public class SelectRequirementsPanel extends JPanel {
 		requirementsToAddTable.removeColumn(requirementsToAddTable
 				.getColumnModel().getColumn(0));
 
-		JScrollPane requirementsToAddTablePanel = new JScrollPane(
+		final JScrollPane requirementsToAddTablePanel = new JScrollPane(
 				requirementsToAddTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_END;
@@ -226,11 +250,11 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param dest
 	 *            the table to copy to
 	 */
-	private void moveRequirementsBetweenTables(JTable src, JTable dest) {
+	private static void moveRequirementsBetweenTables(JTable src, JTable dest) {
 		//Pull all the information we need to make this decision
 		int selection = src.getSelectedRow();
-		DefaultTableModel modelDest = (DefaultTableModel) dest.getModel();
-		DefaultTableModel modelSrc = (DefaultTableModel) src.getModel();
+		final DefaultTableModel modelDest = (DefaultTableModel) dest.getModel();
+		final DefaultTableModel modelSrc = (DefaultTableModel) src.getModel();
 		
 		
 		while (selection != -1) {
@@ -259,10 +283,10 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param src The table to extract Requirement IDs from
 	 * @return The requirements in the src table
 	 */
-	public ArrayList<Integer> getRequirementIdsFromTable(JTable src) {
-		int countOfEntries = src.getRowCount();
-		int REQID = 0;
-		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
+	public static List<Integer> getRequirementIdsFromTable(JTable src) {
+		final int countOfEntries = src.getRowCount();
+		final int REQID = 0;
+		final List<Integer> reqIDs = new ArrayList<Integer>();
 		for (int i = 0; i < countOfEntries; i++) {
 			reqIDs.add(Integer.valueOf((String) (src.getModel().getValueAt(i, REQID))));
 		}
@@ -275,7 +299,7 @@ public class SelectRequirementsPanel extends JPanel {
 	 * 
 	 * @return The requirements in the pending table
 	 */
-	public ArrayList<Integer> getSelectedRequirementIds() {
+	public static List<Integer> getSelectedRequirementIds() {
 		return getRequirementIdsFromTable(requirementsToAddTable);
 	}
 }
