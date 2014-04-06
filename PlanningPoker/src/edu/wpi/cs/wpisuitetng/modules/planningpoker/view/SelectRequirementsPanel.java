@@ -83,12 +83,17 @@ public class SelectRequirementsPanel extends JPanel {
 				ArrayList<Integer> pendingReqs = getRequirementIdsFromTable(requirementsToAddTable);
 				ArrayList<Integer> existingReqs = getRequirementIdsFromTable(existingRequirementsTable);
 				for (Requirement req : existingRequirements) {
-					
+					if (!(req.getIteration().equals("Backlog"))) {
+						if (existingReqs.contains(req.getId())) {
+							removeRowByValue(req, existingRequirementsTable);
+						} else if (pendingReqs.contains(req.getId())) {
+							removeRowByValue(req, requirementsToAddTable);
+						}
+						
 					//Checks that the pulled requirements are
-					//In the backlog
 					//Not in the pendingRequirementsTable already
 					//Not in the existingRequirementsTable already
-					if (!existingReqs.contains(req.getId()) && !pendingReqs.contains(req.getId()) && req.getIteration().equals("Backlog")) {
+					} else if (!existingReqs.contains(req.getId()) && !pendingReqs.contains(req.getId())) {
 						model.addRow(new Object[] {
 								Integer.toString(req.getId()), req.getName(),
 								req.getDescription() });
@@ -199,6 +204,10 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 3;
 		this.add(requirementsToAddTablePanel, constraints);
 
+	}
+
+	private void removeRowByValue(Requirement req, JTable src) {
+		//TODO
 	}
 
 	/**
