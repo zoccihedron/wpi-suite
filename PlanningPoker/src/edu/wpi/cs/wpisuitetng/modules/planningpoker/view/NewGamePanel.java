@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -210,8 +211,8 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setVisible(bool);
 	}
 
-	public ArrayList<Integer> getGameRequirements() {
-		return selectRequirementsPanel.getSelectedRequirementIds();
+	public List<Integer> getGameRequirements() {
+		return SelectRequirementsPanel.getSelectedRequirementIds();
 	}
 	
 	public JLabel getMessageField(){
