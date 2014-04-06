@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Team Code On Bleu
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
@@ -11,7 +23,6 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.VoteActionController;
@@ -19,19 +30,27 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
-//import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
+/**
+ * This class create a GUI pane that a user can use to submit their estimation to
+ * a game.
+ * @author Code On Bleu
+ * @version 0.1
+ */
 public class EstimationPane extends JPanel {
-	private JTextArea requirementName;
-	private JTextArea descriptionText;
-	private Box blankBox;
-	private DeckPanel deckPanel;
-	private JScrollPane  scrollPane;
-	private JLabel message;
-	public Game game;
-	public int reqid;
-	public Requirement req;
-//	public EstimationPane(Requirement req, Estimate/Game) {
+	private final JTextArea requirementName;
+	private final JTextArea descriptionText;
+	private final Box blankBox;
+	private final DeckPanel deckPanel;
+	private final JLabel message;
+	private final Game game;
+	private final int reqid;
+	private final Requirement req;
+
+	/**
+	 * Constructor for panel
+	 * @param reqid The req to vote on
+	 * @param game The game the vote is going towards
+	 */
 	public EstimationPane(int reqid, Game game) {
 		
 		this.game = game;
@@ -40,11 +59,11 @@ public class EstimationPane extends JPanel {
 		req = getRequirementFromId();
 		
 		this.setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
+		final GridBagConstraints constraints = new GridBagConstraints();
 		
-		JLabel nameLabel = new JLabel("Name:");
+		final JLabel nameLabel = new JLabel("Name:");
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0,5,0,10);
+		constraints.insets = new Insets(0, 5, 0, 10);
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
@@ -54,50 +73,46 @@ public class EstimationPane extends JPanel {
 		requirementName.setText(req.getName());
 		requirementName.setEditable(false);
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0,0,0,0);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.weightx = 0.66;
 		constraints.gridwidth = 1;
 		add(requirementName, constraints);
-		//requirementName.setColumns(10);
 		
 		blankBox = new Box(1);
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0,0,0,0);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		constraints.gridx = 2;
 		constraints.gridy = 0;
 		constraints.weightx = 0.33;
 		constraints.gridwidth = 1;
 		add(blankBox, constraints);
-		//requirementName.setColumns(10);
 		
-		JLabel descriptionLabel = new JLabel("Description:");
+		final JLabel descriptionLabel = new JLabel("Description:");
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(5,5,0,5);
+		constraints.insets = new Insets(5, 5, 0, 5);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 3;
 		add(descriptionLabel, constraints);
 		
-		constraints.insets = new Insets(0,0,0,0);
+		constraints.insets = new Insets(0, 0, 0, 0);
 
 		descriptionText = new JTextArea();
 		descriptionText.setText(req.getDescription());
 	
 		descriptionText.setEditable(false);
-		//descriptionText.setText(req.getDescription());
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0,5,0,5);
+		constraints.insets = new Insets(0, 5, 0, 5);
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.gridwidth = 3;
 		add(descriptionText, constraints);
-		//descriptionText.setColumns(10);
 		
-		JLabel temp = new JLabel();
+		final JLabel temp = new JLabel();
 		temp.setText("temp");
 	
 
@@ -112,7 +127,7 @@ public class EstimationPane extends JPanel {
 		add(deckPanel, constraints);
 		
 		
-		JPanel voteButtonPanel = new JPanel();
+		final JPanel voteButtonPanel = new JPanel();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 4;
@@ -120,7 +135,7 @@ public class EstimationPane extends JPanel {
 		constraints.weighty = 1;
 		constraints.gridwidth = 3;
 		constraints.gridheight = 2;
-		constraints.insets = new Insets(0,0,20,0);
+		constraints.insets = new Insets(0, 0, 20, 0);
 		constraints.anchor = GridBagConstraints.PAGE_END;
 		add(voteButtonPanel, constraints);
 		
@@ -136,18 +151,18 @@ public class EstimationPane extends JPanel {
 		constraints.gridy = 0;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0,0,50,0);
+		constraints.insets = new Insets(0, 0, 50, 0);
 		voteButtonPanel.add(message, constraints);
 		
 
-		JButton voteButton = new JButton("Vote");
+		final JButton voteButton = new JButton("Vote");
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0,0,0,0);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		voteButtonPanel.add(voteButton, constraints);
 
 		voteButton.addActionListener(new VoteActionController(this, game));
@@ -160,8 +175,13 @@ public class EstimationPane extends JPanel {
 		return RequirementModel.getInstance().getRequirement(reqid);
 	}
 
+	/**
+	 * This method checks if the estimation is of the correct value (An interger) And updates the
+	 * display to show an error if the value is wrong.
+	 * @return True if everything is all set, return false if the value is incorrect
+	 */
 	public boolean checkField() {
-		int estimate;
+		final int estimate;
 		try{
 			estimate = Integer.parseInt(deckPanel.getEstimateField());
 			
@@ -184,8 +204,14 @@ public class EstimationPane extends JPanel {
 		message.setForeground(Color.RED);
 	}
 	
+	/**
+	 * This method returns the estimate of the requirement. If the value 
+	 * is wrong then it updates the display
+	 * to show there is an error
+	 * @return The value of the estimate, or zero if there is an error
+	 */
 	public int getEstimate(){
-		int estimate;
+		final int estimate;
 		try{
 			estimate = Integer.parseInt(deckPanel.getEstimateField());
 			return estimate;
@@ -202,6 +228,9 @@ public class EstimationPane extends JPanel {
 		return reqid;
 	}
 
+	/**
+	 * This function updates the display to report a success message.
+	 */
 	public void reportSuccess() {
 		message.setText("<html>Success: Vote Updated!</html>");
 		message.setForeground(Color.GREEN);
