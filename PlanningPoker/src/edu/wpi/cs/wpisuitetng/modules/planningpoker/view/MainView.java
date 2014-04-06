@@ -9,7 +9,6 @@
  * Creator:
  *    Team Code On Bleu
  ******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
@@ -18,7 +17,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
 
 /**
@@ -26,25 +24,22 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabCompone
  * contains one inner JPanel, the BoardPanel.
  * 
  * @author Code On Bleu
+ * @version 1.0
  *
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-
-	/* The Games Model */
-	PlanningPokerModel gamesModel;
 	
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
 
 	/**
 	 * Construct the panel.
-	 * @param boardModel 
+	 * @param gamesModel 
 	 */
-	public MainView(PlanningPokerModel gamesModel) {
+	public MainView() {
 		MainViewTabController.getInstance().setMainView(this);
 		
-		this.gamesModel = gamesModel;
 		// Add the board panel to this view
 		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
@@ -58,8 +53,8 @@ public class MainView extends JTabbedPane {
 	 */
 	public void createNewGameTab()
 	{
-		NewGamePanel newGamePanel = new NewGamePanel();
-		newGamePanel.setBounds(0,0,500,500);
+		final NewGamePanel newGamePanel = new NewGamePanel();
+		newGamePanel.setBounds(0, 0, 500, 500);
 		this.addTab("New Game", newGamePanel);
 		this.invalidate(); // force the tabbedpane to redraw
 		this.repaint();
@@ -68,15 +63,10 @@ public class MainView extends JTabbedPane {
 	}
 
 	/**
-	 * Closes a new game tab if there is one
+	 * Get the overview panel from the mainView
+	 * 
+	 * @return overviewPanel
 	 */
-	/*public void CloseNewGameTabFromMain() {
-		if(this.newGamePanelVisible)
-		{
-			remove(newGamePanel);
-			this.newGamePanelVisible = false;
-		}
-	}*/
 	public OverviewPanel getOverviewPanel(){
 		return overviewPanel;
 	}

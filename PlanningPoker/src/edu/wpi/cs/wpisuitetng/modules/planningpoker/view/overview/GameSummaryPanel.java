@@ -70,7 +70,7 @@ public class GameSummaryPanel extends JPanel{
 		
 			public void actionPerformed(ActionEvent e)
 			{
-				MainViewTabController mvt = MainViewTabController.getInstance();
+				final MainViewTabController mvt = MainViewTabController.getInstance();
 				mvt.playGameTab(game);
 			}
 			
@@ -85,7 +85,7 @@ public class GameSummaryPanel extends JPanel{
 			
 			public void actionPerformed(ActionEvent e)
 			{
-				MainViewTabController mvt = MainViewTabController.getInstance();
+				final MainViewTabController mvt = MainViewTabController.getInstance();
 				mvt.createGameTab(game);
 			}
 			
@@ -105,31 +105,32 @@ public class GameSummaryPanel extends JPanel{
 	public void updateSummary(Game gme)
 	{
 		game = gme;
-		this.titleLabel.setText(game.getName());
-		this.deadlineLabel.setText(game.getEnd().toString());
-		this.descriptionLabel.setText(game.getDescription());
-		String appendedReqs = GameSummaryPanel.getRequirementNames(game);
-		this.requirementsList.setText(appendedReqs);
+		titleLabel.setText(game.getName());
+		deadlineLabel.setText(game.getEnd().toString());
+		descriptionLabel.setText(game.getDescription());
+		final String appendedReqs = GameSummaryPanel.getRequirementNames(game);
+		requirementsList.setText(appendedReqs);
 		
 		// if the game is a draft and the user is the creator
 		// allow it to be editable
-		if(game.getStatus().equals(GameStatus.DRAFT) && game.getGameCreator().equals(ConfigManager.getConfig().getUserName()))
+		if(game.getStatus().equals(GameStatus.DRAFT) && 
+				game.getGameCreator().equals(ConfigManager.getConfig().getUserName()))
 		{
-			this.editGameBtn.setEnabled(true);
+			editGameBtn.setEnabled(true);
 		}
 		else
 		{
-			this.editGameBtn.setEnabled(false);
+			editGameBtn.setEnabled(false);
 		}
 		
 		// if the game is started
 		if(game.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
-			this.playGameBtn.setEnabled(true);
+			playGameBtn.setEnabled(true);
 		}
 		else
 		{
-			this.playGameBtn.setEnabled(false);
+			playGameBtn.setEnabled(false);
 		}
 	}
 
@@ -142,10 +143,10 @@ public class GameSummaryPanel extends JPanel{
 	 */
 	private static String getRequirementNames(Game game) {
 		String temp = "";
-		List<Requirement> reqs = RequirementManagerFacade.getInstance().getRequirments();
+		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getRequirments();
 		for(Estimate e : game.getEstimates())
 		{
-			temp += reqs.get(e.getReqID()).getName()+"\n";
+			temp += reqs.get(e.getReqID()).getName() + "\n";
 		}
 		
 		return temp;

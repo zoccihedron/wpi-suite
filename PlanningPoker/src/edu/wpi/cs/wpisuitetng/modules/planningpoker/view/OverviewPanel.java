@@ -16,7 +16,7 @@ import javax.swing.JSplitPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 
-@SuppressWarnings("serial")
+
 /**
  * Creates the overview panel, which includes
  * a button for refreshing and the table that
@@ -25,19 +25,20 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
  * @author Team Code On Bleu
  * @version Mar 31, 2014
  */
+@SuppressWarnings("serial")
 public class OverviewPanel extends JSplitPane {
 	
-	private ListGamePanel whateverthehellwewant;
-	private GameSummaryPanel summaryPanel;
+	private final ListGamePanel whateverthehellwewant;
+	private final GameSummaryPanel summaryPanel;
 	
 	public OverviewPanel()
 	{
-		this.summaryPanel = new GameSummaryPanel();
-		this.whateverthehellwewant = new ListGamePanel();
+		summaryPanel = new GameSummaryPanel();
+		whateverthehellwewant = new ListGamePanel();
 		
-		this.setLeftComponent(this.whateverthehellwewant);
-		this.setRightComponent(this.summaryPanel);
-		this.setDividerLocation(300);
+		setLeftComponent(whateverthehellwewant);
+		setRightComponent(summaryPanel);
+		setDividerLocation(300);
 	}
 }
 
