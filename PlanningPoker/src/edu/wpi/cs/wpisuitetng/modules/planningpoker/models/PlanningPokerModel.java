@@ -9,11 +9,16 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+import javax.swing.Timer;
+
+import edu.wpi.cs.wpisuitetng.network.Network;
 
 
 /**
@@ -25,20 +30,38 @@ import javax.swing.AbstractListModel;
  * @version Mar 25, 2014
  */
 public class PlanningPokerModel extends AbstractListModel<Game> {
-	
+
 	// the list of all games this user could access
 	private List<Game> games;
 	//the next available ID number for the game to be added
 	private int nextID;
-	
+
 	//the static object allow the planning poker model to become a singleton
 	private static PlanningPokerModel instance;
 
 	public PlanningPokerModel() {
 		games = new ArrayList<Game>();
 		nextID = 1;
+
+//		// Creates an ActionListener to be used by the timer to update requirements every few seconds
+//		ActionListener actionListener = new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				try{
+//					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
+//						games = getGames();
+//					}
+//				}
+//
+//				catch(RuntimeException exception){
+//				}
+//			}
+//		};
+//		// Timer will update the requirements every 2 seconds
+//		Timer timer = new Timer(2000, actionListener);
+//		timer.start();
 	}
-	
+
 	/**
 	 * Adds a game to the list
 	 *
@@ -49,8 +72,8 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		games.add(newGame);
 		// TODO: controller.getInstance().refreshTable()/addRequirement
 	}
-	
-	
+
+
 	/**
 	 * Return the game with the given id
 	 * 
@@ -69,8 +92,8 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		}
 		return temp;
 	}
-	
-	
+
+
 	/**
 	 * Return all games stored in this model
 	 * @return all games in list
@@ -79,8 +102,8 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		return games;
 	}
 
-	
-	
+
+
 	/**
 	 * Returns the length of the list of games
 	 * 
@@ -91,7 +114,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	public int getSize() {
 		return games.size();
 	}
-	
+
 	public List<Game> getGames()
 	{
 		return games;
@@ -116,11 +139,11 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		{
 			instance = new PlanningPokerModel();
 		}
-		
+
 		return instance;
 	}
 
-	
+
 	/**
 	 * Adds each game in the database to the PlanningPokerModel
 	 * @param games is the array of games that the database currently holds

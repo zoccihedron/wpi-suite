@@ -57,7 +57,7 @@ public class AddGameController implements ActionListener {
 		final Game currentGame = view.getGameObject();
 		
 		// Make sure there is text
-		if ("".equals(currentGame.getName())) {
+		if (!"".equals(currentGame.getName())) {
 			// Clear the text field
 			// TODO - Reset default fields
 			

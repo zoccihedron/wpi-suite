@@ -28,15 +28,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 @SuppressWarnings("serial")
 public class OverviewPanel extends JSplitPane {
 	
-	private final ListGamePanel whateverthehellwewant;
+	private final ListGamePanel listGamePanel;
 	private final GameSummaryPanel summaryPanel;
 	
 	public OverviewPanel()
 	{
 		summaryPanel = new GameSummaryPanel();
-		whateverthehellwewant = new ListGamePanel();
+		listGamePanel = new ListGamePanel();
 		
-		setLeftComponent(whateverthehellwewant);
+		setLeftComponent(listGamePanel);
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
 	}
