@@ -143,7 +143,7 @@ public class GameSummaryPanel extends JPanel{
 	 */
 	private static String getRequirementNames(Game game) {
 		String temp = "";
-		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getRequirments();
+		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Estimate e : game.getEstimates())
 		{
 			temp += reqs.get(e.getReqID()).getName() + "\n";

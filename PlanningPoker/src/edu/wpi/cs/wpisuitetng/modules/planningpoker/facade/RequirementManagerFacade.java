@@ -2,7 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.facade;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Timer;
@@ -34,7 +36,7 @@ public class RequirementManagerFacade {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
-						requirements = getRequirments();
+						updateRequirements();
 					}
 				}
 
@@ -48,9 +50,8 @@ public class RequirementManagerFacade {
 		timer.start();
 	}
 
-	public List<Requirement> getRequirments() {
-		GetRequirementsController.getInstance().retrieveRequirements();
-		return RequirementModel.getInstance().getRequirements();
+	public void updateRequirements() {
+		GetRequirementsControllerFacade.getInstance().retrieveRequirements();
 	}
 	
 	/**
@@ -60,6 +61,11 @@ public class RequirementManagerFacade {
 	public List<Requirement> getPreStoredRequirements()
 	{
 		return requirements;
+	}
+
+	public void setRequirements(Requirement[] requirements) {
+		// TODO Auto-generated method stub
+		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
 	}
 
 }
