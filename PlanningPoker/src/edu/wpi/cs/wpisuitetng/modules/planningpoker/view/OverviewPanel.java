@@ -96,8 +96,10 @@ public class OverviewPanel extends JPanel {
 		Date end = endTime.getTime();
 		Game game = new Game("new name", start, end);
 		game.addEstimate(new Estimate(1));
-		
-		add(new EstimationPane(1,game));
+		EstimationPane estp = new EstimationPane();
+		estp.setGame(game);
+		estp.setRequirement(1);
+		add(estp);
 		
 	}
 

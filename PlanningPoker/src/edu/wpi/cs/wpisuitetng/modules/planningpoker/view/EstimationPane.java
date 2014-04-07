@@ -42,21 +42,18 @@ public class EstimationPane extends JPanel {
 	private final Box blankBox;
 	private final DeckPanel deckPanel;
 	private final JLabel message;
-	private final Game game;
-	private final int reqid;
-	private final Requirement req;
+	private final JButton voteButton;
+	private int reqid;
+	private Requirement req;
 
+	
+	
 	/**
 	 * Constructor for panel
 	 * @param reqid The req to vote on
 	 * @param game The game the vote is going towards
 	 */
-	public EstimationPane(int reqid, Game game) {
-		
-		this.game = game;
-		this.reqid = reqid;
-		
-		req = getRequirementFromId();
+	public EstimationPane(){
 		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -70,7 +67,6 @@ public class EstimationPane extends JPanel {
 		add(nameLabel, constraints);
 
 		requirementName = new JTextArea();
-		requirementName.setText(req.getName());
 		requirementName.setEditable(false);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0, 0, 0, 0);
@@ -100,7 +96,6 @@ public class EstimationPane extends JPanel {
 		constraints.insets = new Insets(0, 0, 0, 0);
 
 		descriptionText = new JTextArea();
-		descriptionText.setText(req.getDescription());
 	
 		descriptionText.setEditable(false);
 		constraints.fill = GridBagConstraints.BOTH;
@@ -155,7 +150,7 @@ public class EstimationPane extends JPanel {
 		voteButtonPanel.add(message, constraints);
 		
 
-		final JButton voteButton = new JButton("Vote");
+		voteButton = new JButton("Vote");
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
@@ -165,12 +160,30 @@ public class EstimationPane extends JPanel {
 		constraints.insets = new Insets(0, 0, 0, 0);
 		voteButtonPanel.add(voteButton, constraints);
 
-		voteButton.addActionListener(new VoteActionController(this, game));
-		
-		
-		
 	}
 
+	
+	
+	
+
+	public void setGame(Game game){
+		voteButton.addActionListener(new VoteActionController(this, game));
+
+		
+	}
+	
+	
+	
+	public void setRequirement(int reqid){
+		this.reqid = reqid;
+		req = getRequirementFromId();
+		requirementName.setText(req.getName());
+		descriptionText.setText(req.getDescription());
+
+	}
+	
+	
+	
 	private Requirement getRequirementFromId() {
 		return RequirementModel.getInstance().getRequirement(reqid);
 	}
