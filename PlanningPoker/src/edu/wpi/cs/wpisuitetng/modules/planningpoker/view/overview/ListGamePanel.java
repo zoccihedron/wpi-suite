@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Team Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.event.ComponentEvent;
@@ -18,6 +29,13 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
+/**
+ * This class stores all of the games from the database in a
+ * JTree, and sorts them by status (progress, draft, ended).
+ *
+ * @author Team Codon Bleu
+ * @version Apr 7, 2014
+ */
 public class ListGamePanel extends JScrollPane
 implements TreeSelectionListener {
 
@@ -75,7 +93,6 @@ implements TreeSelectionListener {
 		
 		if (node == null) return;
 		//TODO: see about implementing DoublieClick to send data to estimate panel
-//		refresh();
 	}
 
 
@@ -86,27 +103,27 @@ implements TreeSelectionListener {
 
 		try{
 			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
-				GetGamesController gamesController = new GetGamesController();
-				gamesController.initializeTable();			
-				}
+				final GetGamesController gamesController = new GetGamesController();
+				gamesController.initializeTable();
+			}
 		}
 
 		catch(RuntimeException exception){
 		}
 		
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); //makes a starting node
+		//makes a starting node
+		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 
 		games = PlanningPokerModel.getInstance().getAllGames();
 		DefaultMutableTreeNode gameNode = null;
 
-		DefaultMutableTreeNode gameInProgressCategory = new DefaultMutableTreeNode("In Progress");
-		DefaultMutableTreeNode gameEndedCategory = new DefaultMutableTreeNode("Ended");
-		DefaultMutableTreeNode gameDraftCategory = new DefaultMutableTreeNode("Draft");
+		final DefaultMutableTreeNode gameInProgressCategory = new DefaultMutableTreeNode("In Progress");
+		final DefaultMutableTreeNode gameEndedCategory = new DefaultMutableTreeNode("Ended");
+		final DefaultMutableTreeNode gameDraftCategory = new DefaultMutableTreeNode("Draft");
 		
 		for(Game game: games){
 
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
-			top.add(gameNode);
 			switch (game.getStatus()){
 				case IN_PROGRESS: 
 					gameInProgressCategory.add(gameNode);
@@ -123,13 +140,15 @@ implements TreeSelectionListener {
 			top.add(gameInProgressCategory);
 			top.add(gameEndedCategory);
 		}
-
-	
-		tree = new JTree(top); //create the tree with the top node as the top
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
+		
+		//create the tree with the top node as the top
+		tree = new JTree(top); 
+		//tell it that it can only select one thing at a time
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); 
 		tree.setToggleClickCount(0);
 
-		tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
+		//set to custom cell renderer so that icons make sense
+		tree.setCellRenderer(new CustomTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
 
 		tree.setDragEnabled(true);

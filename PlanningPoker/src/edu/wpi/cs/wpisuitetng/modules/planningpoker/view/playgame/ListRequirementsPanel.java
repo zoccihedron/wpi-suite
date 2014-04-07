@@ -12,7 +12,6 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.List;
@@ -32,17 +31,18 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 
 /**
- * This class is used to create a requirements tree which will be displayed in the play game pannel
+ * This class is used to create a requirements tree which will be displayed in the play game panel
  * 
  * @author Codon Bleu
  *
+ * @version $Revision: 1.0 $
  */
 public class ListRequirementsPanel extends JScrollPane
 implements TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
-	private Game game;
+	final private Game game;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
@@ -89,9 +89,9 @@ implements TreeSelectionListener {
 		
 		if (node == null) return;
 		
-		Object nodeInfo = node.getUserObject();
+		final Object nodeInfo = node.getUserObject();
 		if(node.isLeaf()){
-		Requirement req = (Requirement)nodeInfo;
+		final Requirement req = (Requirement)nodeInfo;
 		PlayGameController.getInstance().updateEstimationPane(req.getId(), game);
 		}
 		//TODO: see about implementing DoublieClick to send data to estimate panel
@@ -121,11 +121,14 @@ implements TreeSelectionListener {
 		votedCategory = new DefaultMutableTreeNode("Voted On");
 		top.add(votedCategory);
 
-		tree = new JTree(top); //create the tree with the top node as the top
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
+		//create the tree with the top node as the top
+		tree = new JTree(top); 
+		//tell it that it can only select one thing at a time
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); 
 		tree.setToggleClickCount(0);
 
-		tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
+		//set to custom cell renderer so that icons make sense
+		tree.setCellRenderer(new CustomTreeCellRenderer()); 
 		tree.addTreeSelectionListener(this);
 		
 		
