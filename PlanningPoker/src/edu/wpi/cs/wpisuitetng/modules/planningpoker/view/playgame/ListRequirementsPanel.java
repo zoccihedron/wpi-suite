@@ -52,6 +52,7 @@ implements TreeSelectionListener {
 		this.game = game;
 		this.setViewportView(tree);
 		this.refresh();  
+		
 
 		//Create the nodes.
 		this.addComponentListener(new ComponentListener()

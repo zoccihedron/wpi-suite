@@ -51,6 +51,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		this.db = db;
 	}
 	
+	
 	/**
 	 * Save a game session when it is received from the client
 	 * 

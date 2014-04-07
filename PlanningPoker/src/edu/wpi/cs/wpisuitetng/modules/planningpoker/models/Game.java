@@ -434,6 +434,10 @@ public class Game extends AbstractModel{
 		this.hasDeadline = hasDeadline;
 	}
 	
+	@Override
+	public String toString(){
+		return this.getName();
+	}
 	
 	
 }

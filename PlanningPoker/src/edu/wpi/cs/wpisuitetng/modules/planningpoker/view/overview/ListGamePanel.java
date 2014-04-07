@@ -5,7 +5,6 @@ import java.awt.event.ComponentListener;
 import java.util.List;
 
 import javax.swing.DropMode;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -13,11 +12,9 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
@@ -35,8 +32,8 @@ implements TreeSelectionListener {
 	public ListGamePanel() {
 
 		this.setViewportView(tree);
-		this.refresh();  
-		games = PlanningPokerModel.getInstance().getAllGames();
+		this.refresh();
+		
 
 		//Create the nodes.
 		this.addComponentListener(new ComponentListener()
@@ -45,6 +42,7 @@ implements TreeSelectionListener {
 			@Override
 			public void componentResized(ComponentEvent e) {
 
+				refresh();
 			}
 
 			@Override
@@ -55,24 +53,14 @@ implements TreeSelectionListener {
 
 			@Override
 			public void componentShown(ComponentEvent e) {
-				try{
-					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
-						refresh();
-					}
-				}
-
-				catch(RuntimeException exception){
-				}
-				
-				
-				
+				refresh();
 				
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
-				// TODO Auto-generated method stub
 
+				refresh();
 			}
 		});
 	}
@@ -82,6 +70,9 @@ implements TreeSelectionListener {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)
 				tree.getLastSelectedPathComponent();
 
+		if(!node.isLeaf() || node.isRoot())
+		refresh();
+		
 		if (node == null) return;
 		//TODO: see about implementing DoublieClick to send data to estimate panel
 //		refresh();
@@ -93,6 +84,16 @@ implements TreeSelectionListener {
 	 */
 	public void refresh(){
 
+		try{
+			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
+				GetGamesController gamesController = new GetGamesController();
+				gamesController.initializeTable();			
+				}
+		}
+
+		catch(RuntimeException exception){
+		}
+		
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); //makes a starting node
 		games = PlanningPokerModel.getInstance().getAllGames();
 		DefaultMutableTreeNode gameNode = null;

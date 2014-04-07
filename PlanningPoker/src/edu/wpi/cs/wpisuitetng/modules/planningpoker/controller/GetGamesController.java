@@ -31,20 +31,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class GetGamesController implements ActionListener {
 	
-	private final PlanningPokerModel model;
-	private final OverviewPanel view;
-	private final MainViewTabController mainViewController;
-	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param model the model containing the messages
 	 * @param view the view where the user enters new messages
 	 * @param mainViewController the main view
 	 */
-	public GetGamesController(PlanningPokerModel model, OverviewPanel view, MainViewTabController mainViewController) {
-		this.model = model;
-		this.view = view;
-		this.mainViewController = mainViewController;
+	public GetGamesController() {
+		
 	}
 
 	/* 
