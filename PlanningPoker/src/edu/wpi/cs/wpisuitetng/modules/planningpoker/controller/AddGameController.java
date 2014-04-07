@@ -52,17 +52,18 @@ public class AddGameController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
-		if (!view.checkFields()) return;
-		
-		final Game currentGame = view.getGameObject();
-		
-		// Send a request to the core to save this game
-		final Request request = Network.getInstance().makeRequest(
-				"planningpoker/game", HttpMethod.PUT); // PUT = create
-		request.setBody(currentGame.toJSON()); // put the new message in the body of the request
-		// add an observer to process the response
-		request.addObserver(new AddGameRequestObserver(this));
-		request.send(); // send the request
+		if (view.checkFields())
+		{
+			final Game currentGame = view.getGameObject();
+
+			// Send a request to the core to save this game
+			final Request request = Network.getInstance().makeRequest(
+					"planningpoker/game", HttpMethod.PUT);
+			request.setBody(currentGame.toJSON()); // put the new message in the body of the request
+			// add an observer to process the response
+			request.addObserver(new AddGameRequestObserver(this));
+			request.send(); // send the request
+		}
 	
 	}
 
@@ -74,11 +75,11 @@ public class AddGameController implements ActionListener {
 		model.AddGame(currentGame);
 	}
 
-	public void addGameToView(Game returnGame) {
+	/**
+	 * Shows the used that the game has been saved
+	 */
+	public void addGameToView() {
 		view.reportMessage("<html>Success: Game Saved!</html>");
 		view.closeNewGameTab();
-		//view.setResultName(returnGame.getName());
-		//view.setResultId(Integer.toString(returnGame.getId()));
-		//view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));
 	}
 }

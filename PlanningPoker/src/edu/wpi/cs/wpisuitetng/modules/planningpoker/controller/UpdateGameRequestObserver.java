@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,7 +13,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
@@ -23,21 +22,26 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * to the server to add a message.
  * 
  * @author Code On Bleu
- *
+ * @version 1.0
  */
 public class UpdateGameRequestObserver implements RequestObserver {
 	
 	private final UpdateGameController controller;
 	
+	/**
+	 * Constructor for UpdateGameRequestObserver
+	 * @param controller the controller for the class
+	 */
 	public UpdateGameRequestObserver(UpdateGameController controller) {
 		this.controller = controller;
 	}
 	
-	/*
+	/**
 	 * Parse the game that was received from the server then pass them to
 	 * the controller.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver
+	 * #responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {

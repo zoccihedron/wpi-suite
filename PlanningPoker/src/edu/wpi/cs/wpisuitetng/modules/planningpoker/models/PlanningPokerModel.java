@@ -15,28 +15,42 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+
 
 /**
  * This is a model for the planning poker module. This model
  * contains a list of games. It extends AbstractListModel so that
  * it can provide the model data to the JList component in the BoardPanel.
  *
- * @author Robert, yyan
- * @version Mar 25, 2014
+ * @author Team Code On Bleu
+ * @version 1.0
  */
+@SuppressWarnings("serial")
 public class PlanningPokerModel extends AbstractListModel<Game> {
 	
 	// the list of all games this user could access
-	private List<Game> games;
+	private final List<Game> games;
 	//the next available ID number for the game to be added
 	private int nextID;
 	
 	//the static object allow the planning poker model to become a singleton
-	private static PlanningPokerModel instance;
+	private static PlanningPokerModel instance = null;
 
-	public PlanningPokerModel() {
+	private PlanningPokerModel() {
 		games = new ArrayList<Game>();
 		nextID = 1;
+	}
+	
+	/**
+	 * 
+	 * @return reference to PlanningPokerModel
+	 */
+	public static PlanningPokerModel getInstance() {
+		if (instance == null) {
+			instance = new PlanningPokerModel();
+		}
+		return instance;
 	}
 	
 	/**
@@ -63,7 +77,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		Game temp = null;
 		for(int i = 0;i < games.size();i++){
 			temp = games.get(i);
-			if(temp.getID()==id){
+			if(temp.getID() == id){
 				break;
 			}
 		}
@@ -94,7 +108,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	
 	public List<Game> getGames()
 	{
-		return games;
+		return getAllGames();
 	}
 
 	/**
@@ -110,16 +124,6 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	public Game getElementAt(int index) {
 		return games.get(games.size() - 1 - index);
 	}
-
-	public static PlanningPokerModel getInstance() {
-		if(instance == null)
-		{
-			instance = new PlanningPokerModel();
-		}
-		
-		return instance;
-	}
-
 	
 	/**
 	 * Adds each game in the database to the PlanningPokerModel
@@ -136,8 +140,8 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	 * Removes all elements from the PlanningPokerModel
 	 */
 	public void emptyModel() {
-		int oldSize = getSize();
-		Iterator<Game> iterator = games.iterator();
+		final int oldSize = getSize();
+		final Iterator<Game> iterator = games.iterator();
 		while (iterator.hasNext()) {
 			iterator.next();
 			iterator.remove();
@@ -154,6 +158,10 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		nextID = i;
 	}
 
+	/**
+	 * Updates the given game
+	 * @param currentGame
+	 */
 	public void UpdateGame(Game currentGame) {
 		// TODO Auto-generated method stub
 		
