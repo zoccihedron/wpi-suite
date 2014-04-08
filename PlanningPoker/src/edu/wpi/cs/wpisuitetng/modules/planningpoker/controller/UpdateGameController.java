@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -57,7 +58,7 @@ public class UpdateGameController implements ActionListener {
 		if (view.checkFields())
 		{
 
-			final Game currentGame = view.getGameObject();
+			final Game currentGame = view.getGameObject(new User[0]);
 
 			// Make sure there is text
 			if ("".equals(currentGame.getName())) 

@@ -54,11 +54,11 @@ public class GameSummaryPanel extends JPanel{
 		add(titleLabel);
 		
 		deadlineLabel = new JLabel("Deadline");
-		deadlineLabel.setBounds(313, 6, this.getWidth(), 56);
+		deadlineLabel.setBounds(313, 6, 131, 56);
 		add(deadlineLabel);
 		
 		descriptionLabel = new JLabel("Description");
-		descriptionLabel.setBounds(6, 74, this.getWidth(), 56);
+		descriptionLabel.setBounds(6, 74, 438, 56);
 		add(descriptionLabel);
 		
 		playGameBtn = new JButton("Play Game");
@@ -92,7 +92,7 @@ public class GameSummaryPanel extends JPanel{
 		});
 		
 		requirementsList = new JTextArea("Requirements");
-		requirementsList.setBounds(6, 147, this.getWidth(), 106);
+		requirementsList.setBounds(6, 147, 438, 106);
 		add(requirementsList);
 		requirementsList.setEditable(false);
 	}
