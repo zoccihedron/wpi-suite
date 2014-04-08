@@ -13,20 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 import edu.wpi.cs.wpisuitetng.janeway.modules.IJanewayModule;
 import edu.wpi.cs.wpisuitetng.janeway.modules.JanewayTabModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 
@@ -43,23 +33,20 @@ public class PlanningPoker implements IJanewayModule {
 	/**
 	 * List of tabs that will be available for this module
 	 */
-	private List<JanewayTabModel> tabs;
+	private final List<JanewayTabModel> tabs;
 	
 	/**
 	 * Constructs the main views for this module. Namely one tab.
 	 */
 	public PlanningPoker() {
-	
-		// Constructs and adds the MainPanel
-		PlanningPokerModel games = PlanningPokerModel.getInstance();
 				
-		MainView mainView = new MainView(games);
+		final MainView mainView = new MainView();
 
 		// Initialize the list of tabs (however, this module has only one tab)
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		// Create a toolbar for the tab
-		DefaultToolbarView toolbarView = new ToolbarView(mainView);
+		final DefaultToolbarView toolbarView = new ToolbarView(mainView);
 		
 				
 		// Create a tab model that contains the toolbar panel and the main content panel

@@ -11,89 +11,34 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.BorderLayout;
+import javax.swing.JSplitPane;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesRequestObserver;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.OverviewTable;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
-@SuppressWarnings("serial")
 /**
  * Creates the overview panel, which includes
  * a button for refreshing and the table that
  * displays the game data.
  *
- * @author Robert, Ian, Adam
- * @version Mar 31, 2014
+ * @author Team Code On Bleu
+ * @version 1.0
  */
-public class OverviewPanel extends JPanel {
-	private OverviewTable table;
-	private final String[] colNames = {"Name", "Status", "Deadline", "Number of Requirements", "Owner"};
-	private JScrollPane scrollPane;
-	private PlanningPokerModel gamesModel;
-	private MainView mainView;
-
-	/**
-	 * Create the panel.
-	 */
-	public OverviewPanel(PlanningPokerModel gamesModel, MainView mainView) {
-
-		this.mainView = mainView;
-		this.gamesModel = gamesModel;
-
-		String[][] data = {};
-		setLayout(new BorderLayout());
-
-		table = new OverviewTable(data, colNames);
-		scrollPane = new JScrollPane(table);
-		
-		// Game Name
-		table.getColumnModel().getColumn(0).setMinWidth(240);
-		// Status
-		table.getColumnModel().getColumn(1).setMinWidth(85);
-		table.getColumnModel().getColumn(1).setMaxWidth(85);
-
-		// Deadline
-		table.getColumnModel().getColumn(2).setMinWidth(200);
-		table.getColumnModel().getColumn(2).setMaxWidth(200);
-
-		// Num of Requirements
-		table.getColumnModel().getColumn(3).setMinWidth(40);
-		table.getColumnModel().getColumn(3).setMaxWidth(120);
-
-		
-		// Game Creator
-		table.getColumnModel().getColumn(4).setMinWidth(85);
-		table.getColumnModel().getColumn(4).setMaxWidth(200);
-
-		add(scrollPane, BorderLayout.CENTER);
-	}
-
-	/**
-	 * Updates the table and revalidates to print it to the table
-	 *
-	 */
-	public void updateTable()
+@SuppressWarnings("serial")
+public class OverviewPanel extends JSplitPane {
+	
+	private final ListGamePanel listPanel;
+	private final GameSummaryPanel summaryPanel;
+	
+	public OverviewPanel()
 	{
-		table.refresh();
-		table.revalidate();
-	}
-
-	/**
-	 * Sends an HTTP request to the server to pull games from the database
-	 *
-	 */
-	public void getGamesFromServer(){
-		final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET); // PUT == create
-		request.addObserver(new GetGamesRequestObserver(new GetGamesController(gamesModel, this, mainView))); // add an observer to process the response
-		request.send();
+		summaryPanel = new GameSummaryPanel();
+		listPanel = new ListGamePanel();
+		
+		setLeftComponent(listPanel);
+		setRightComponent(summaryPanel);
+		setDividerLocation(300);
 	}
 }
 

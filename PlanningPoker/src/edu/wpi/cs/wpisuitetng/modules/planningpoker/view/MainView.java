@@ -9,75 +9,73 @@
  * Creator:
  *    Team Code On Bleu
  ******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
 
-import javax.swing.Timer;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
+
 
 /**
  * This panel fills the main content area of the tab for this module. It
  * contains one inner JPanel, the BoardPanel.
  * 
  * @author Code On Bleu
+ * @version 1.0
  *
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
 
-	/* The Games Model */
-	PlanningPokerModel gamesModel;
-	
+
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
 
 	/**
 	 * Construct the panel.
-	 * @param boardModel 
+	 * @param gamesModel 
 	 */
-	public MainView(PlanningPokerModel gamesModel) {
+	public MainView() {
 		MainViewTabController.getInstance().setMainView(this);
+		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
-		this.gamesModel = gamesModel;
 		// Add the board panel to this view
-		overviewPanel = new OverviewPanel(gamesModel, this);
+		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
+
 		
-		// Creates an ActionListener to be used by the timer
-		ActionListener actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try{
-					if(Network.getInstance().getDefaultNetworkConfiguration() != null){
-						overviewPanel.getGamesFromServer();
-						overviewPanel.updateTable();
-					}
-				}
-
-				catch(RuntimeException exception){
-				}
-			}
-		};
-
-		// Timer will update the table every 5 seconds
-		Timer timer = new Timer(5000, actionListener);
-		timer.start();
-
+		// Dummy game for testing tree layout
+		final Game dummyGame = new Game();
+		
+		
+		dummyGame.addEstimate(new Estimate(0));
+		dummyGame.addEstimate(new Estimate(1));
+		
+		
+		
+		
+		final ListRequirementsPanel listRequirementsPanel = new ListRequirementsPanel(dummyGame);
+		this.addTab("Requirements", listRequirementsPanel);
+		
+		final Game testGame = new Game("Test", new Date(), new Date());
+		testGame.setId(1);
+		testGame.setHasDeadline(false);
+		final ArrayList<Integer> listReqs = new ArrayList<Integer>();
+		listReqs.add(1);
+		listReqs.add(2);
+		testGame.setRequirements(listReqs);
+		final NewGamePanel testEdit = new NewGamePanel(testGame);
+		this.addTab("testEdit", testEdit);
 	}
 
 	/**
@@ -86,25 +84,44 @@ public class MainView extends JTabbedPane {
 	 */
 	public void createNewGameTab()
 	{
-		NewGamePanel newGamePanel = new NewGamePanel(gamesModel, this);
-		newGamePanel.setBounds(0,0,500,500);
+		final NewGamePanel newGamePanel = new NewGamePanel();
+		newGamePanel.setBounds(0, 0, 500, 500);
 		this.addTab("New Game", newGamePanel);
 		this.invalidate(); // force the tabbedpane to redraw
 		this.repaint();
+		newGamePanel.resetDividerLocation();
 		this.setSelectedComponent(newGamePanel);
 	}
+	
 
 	/**
-	 * Closes a new game tab if there is one
+	 * Get the overview panel from the mainView
+	 * 
+	 * @return overviewPanel
 	 */
-	/*public void CloseNewGameTabFromMain() {
-		if(this.newGamePanelVisible)
-		{
-			remove(newGamePanel);
-			this.newGamePanelVisible = false;
-		}
-	}*/
 	public OverviewPanel getOverviewPanel(){
 		return overviewPanel;
+	}
+	
+	/**
+	 * Overridden insertTab function to add the closable tab element.
+	 * 
+	 * @param title	Title of the tab
+	 * @param component	The tab
+	 * @param index	Location of the tab
+	 */
+	public void insertTab(String title, Component component, int index) {
+		super.insertTab(title, null, component, null, index);
+		if (!(component instanceof OverviewPanel)) {
+			setTabComponentAt(index, new ClosableTabComponent(this)
+			{
+				@Override
+				public void actionPerformed(ActionEvent e)
+				{
+					final int index = tabbedPane.indexOfTabComponent(this);
+					MainViewTabController.getInstance().closeTab(index);
+				}
+			});
+		}
 	}
 }
