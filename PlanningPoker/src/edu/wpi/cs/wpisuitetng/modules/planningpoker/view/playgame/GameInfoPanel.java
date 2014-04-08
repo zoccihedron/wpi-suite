@@ -34,15 +34,15 @@ public class GameInfoPanel extends JPanel {
 	public GameInfoPanel() {
 		setLayout(null);
 		
-		final JLabel titleLabel = new JLabel("Game Title");
+		titleLabel = new JLabel("Game Title");
 		titleLabel.setBounds(0, 0, 225, 140);
 		add(titleLabel);
 		
-		final JLabel numDoneLabel = new JLabel("Number Completed/Total Number");
+		numDoneLabel = new JLabel("Number Completed/Total Number");
 		numDoneLabel.setBounds(0, 160, 225, 140);
 		add(numDoneLabel);
 		
-		final JLabel descriptionLabel = new JLabel("Description");
+		descriptionLabel = new JLabel("Description");
 		descriptionLabel.setBounds(235, 11, 205, 278);
 		add(descriptionLabel);
 	}
@@ -55,7 +55,7 @@ public class GameInfoPanel extends JPanel {
 	{
 		titleLabel.setText(game.getName());
 		descriptionLabel.setText(game.getDescription());
-		numDoneLabel.setText(this.numDone(game));
+		numDoneLabel.setText(GameInfoPanel.numDone(game));
 	}
 
 	/**

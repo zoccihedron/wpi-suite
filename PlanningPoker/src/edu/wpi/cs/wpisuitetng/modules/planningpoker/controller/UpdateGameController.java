@@ -23,28 +23,30 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * This controller responds when the user clicks the Submit button by
- * sending the contents of the fields to the server as a New Game.
+ * This controller responds when the user clicks the Update button by
+ * sending the contents of the fields to the server as an Updated Game.
  * 
- * @author Team Code On Bleu
+ * @author Code On Bleu
  * @version 1.0
- *
  */
-public class AddGameController implements ActionListener {
+public class UpdateGameController implements ActionListener {
 	
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
+	private Game updatedGame;
 	
 	/**
-	 * Construct an AddMessageController for the given model, view pair
+	 * Construct an UpdateGameController for the given model, view pair
+	 * @param updatedGame the updated game
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 */
-	public AddGameController(CreateGameInfoPanel createGameInfoPanel) {
+	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
+		this.updatedGame = updatedGame;
 	}
 
-	/** 
+	/**
 	 * This method is called when the user clicks the Submit button
 	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -54,31 +56,57 @@ public class AddGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
+
 			final Game currentGame = view.getGameObject();
-			// Send a request to the core to save this game
-			final Request request = Network.getInstance().makeRequest(
-					"planningpoker/game", HttpMethod.PUT);
-			request.setBody(currentGame.toJSON()); // put the new message in the body of the request
-			// add an observer to process the response
-			request.addObserver(new AddGameRequestObserver(this));
-			request.send(); // send the request
+
+			// Make sure there is text
+			if ("".equals(currentGame.getName())) 
+			{
+				// Clear the text field
+				// TODO - Reset default fields
+
+				// Send a request to the core to save this game
+				final Request request = Network.getInstance().makeRequest
+						("planningpoker/game", HttpMethod.POST);
+				// put the updated game in the body of the request
+				request.setBody(currentGame.toJSON());
+				// add an observer to process the response
+				request.addObserver(new UpdateGameRequestObserver(this));
+				request.send(); // send the request
+			}
 		}
-	
 	}
 
 	/**
 	 * When the new message is received back from the server, add it to the local model.
-	 * @param currentGame 
+	 * @param currentGame the game which will be updated
 	 */
 	public void addGameToModel(Game currentGame) {
-		model.AddGame(currentGame);
+		model.UpdateGame(currentGame);
 	}
 
 	/**
-	 * Shows the used that the game has been saved
+	 * Reports a successful message
 	 */
 	public void addGameToView() {
-		view.reportMessage("<html>Success: Game Saved!</html>");
+		view.reportMessage("<html>Success: Game Updated!</html>");
+	}
+
+	/**
+	 * Updates the updated game to the game passed in
+	 * @param returnGame
+	 */
+	public void returnGame(Game returnGame) {
+		updatedGame = returnGame;
+		view.reportMessage("<html>Success: Game Updated!</html>");
 		view.closeNewGameTab();
+	}
+	
+	/**
+	 * Getter for the updatedGame
+	 */
+	public Game getUpdatedGame()
+	{
+		return updatedGame;
 	}
 }

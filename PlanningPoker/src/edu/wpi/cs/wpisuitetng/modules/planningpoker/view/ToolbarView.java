@@ -23,7 +23,7 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 @SuppressWarnings({"serial"})
 public class ToolbarView extends DefaultToolbarView{
 	
-	private final CreateButtonsPanel createButton = new CreateButtonsPanel(this);
+	private final CreateButtonsPanel createButton = new CreateButtonsPanel();
 	private final MainView mainview;
 	
 	/**

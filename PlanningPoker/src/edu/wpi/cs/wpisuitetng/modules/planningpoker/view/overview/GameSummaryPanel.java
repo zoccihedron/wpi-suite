@@ -124,7 +124,7 @@ public class GameSummaryPanel extends JPanel{
 		}
 		
 		// if the game is started
-		if(game.getStatus().equals(GameStatus.IN_PROGRESS))
+		if(game.getStatus().equals(GameStatus.DRAFT)) //TODO change to IN_PROGRESS
 		{
 			playGameBtn.setEnabled(true);
 		}
@@ -143,7 +143,8 @@ public class GameSummaryPanel extends JPanel{
 	 */
 	private static String getRequirementNames(Game game) {
 		String temp = "";
-		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getRequirments();
+		RequirementManagerFacade.getInstance();
+		final List<Requirement> reqs = RequirementManagerFacade.getRequirments();
 		for(Estimate e : game.getEstimates())
 		{
 			temp += reqs.get(e.getReqID()).getName() + "\n";

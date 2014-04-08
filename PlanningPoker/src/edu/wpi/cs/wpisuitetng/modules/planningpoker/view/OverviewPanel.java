@@ -26,11 +26,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
  * displays the game data.
  *
  * @author Team Code On Bleu
- * @version Mar 31, 2014
+ * @version 1.0
  */
 @SuppressWarnings("serial")
 public class OverviewPanel extends JSplitPane {
-	
 	private final ListGamePanel listGamePanel;
 	private final GameSummaryPanel summaryPanel;
 	
@@ -39,9 +38,11 @@ public class OverviewPanel extends JSplitPane {
 	{
 		summaryPanel = new GameSummaryPanel();
 		listGamePanel = new ListGamePanel();
+	
 		OverviewPanelController.getInstance().setGameSummary(summaryPanel);
 		
 		setLeftComponent(listGamePanel);
+
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
 	}

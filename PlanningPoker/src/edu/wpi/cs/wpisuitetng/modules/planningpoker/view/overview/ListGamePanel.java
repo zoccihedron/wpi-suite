@@ -9,6 +9,7 @@
  * Creator:
  *    Team Code On Bleu
  ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.event.ComponentEvent;
@@ -92,7 +93,7 @@ implements TreeSelectionListener {
 		if(!node.isLeaf() || node.isRoot()){
 			refresh();
 		}
-		if(node.isLeaf()){
+		if(node.isLeaf() && !node.isRoot()){
 			final Object nodeInfo = node.getUserObject();
 			final Game gme = (Game) nodeInfo;
 			OverviewPanelController.getInstance().updateGameSummary(gme);

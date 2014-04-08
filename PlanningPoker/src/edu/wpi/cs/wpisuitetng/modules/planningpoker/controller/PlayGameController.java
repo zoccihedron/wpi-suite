@@ -9,7 +9,6 @@ public class PlayGameController {
 	 private EstimationPane estimationPane = null;
 	
 	private PlayGameController() {
-		this.setEstimationPane();
 	}
 	
 	public static PlayGameController getInstance(){
@@ -19,8 +18,8 @@ public class PlayGameController {
 		return instance;
 	}
 
-	public void setEstimationPane(){
-		estimationPane = new EstimationPane();
+	public void setEstimationPane(EstimationPane ep){
+		estimationPane = ep;
 	}
 	
 	public void updateEstimationPane(int id, Game game) {

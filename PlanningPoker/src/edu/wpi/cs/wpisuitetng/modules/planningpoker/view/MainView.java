@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JTabbedPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
@@ -39,6 +41,7 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView() {
 		MainViewTabController.getInstance().setMainView(this);
+		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
 		// Add the board panel to this view
 		overviewPanel = new OverviewPanel();

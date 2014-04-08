@@ -6,21 +6,26 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
+<<<<<<< HEAD
  * Creator:
  *    Team Code On Bleu
+=======
+ * Contributors:
+ *    Team Codon Bleu
+>>>>>>> be6644e43b6e67d32f64f429e235a6c6ea431614
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
-
-import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 
 
+@SuppressWarnings("serial")
 public class PlayGamePanel extends JPanel{
 
 	private GameInfoPanel gameInfoPanel;
@@ -30,6 +35,7 @@ public class PlayGamePanel extends JPanel{
 
 	public PlayGamePanel(Game game)
 	{
+		
 		gameInfoPanel = new GameInfoPanel();
 		gameInfoPanel.updatePanel(game);
 		listRequirementsPanel = new ListRequirementsPanel(game);
@@ -37,13 +43,9 @@ public class PlayGamePanel extends JPanel{
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
 		splitPane.setRightComponent(estimationPane);
-		setLayout(new BorderLayout());
-		add(gameInfoPanel, BorderLayout.NORTH);
-		add(splitPane, BorderLayout.CENTER);
+		PlayGameController.getInstance().setEstimationPane(estimationPane);
+		
+		add(gameInfoPanel);
+		add(splitPane);
 	}
-
-	
-	
-	
-	
 }
