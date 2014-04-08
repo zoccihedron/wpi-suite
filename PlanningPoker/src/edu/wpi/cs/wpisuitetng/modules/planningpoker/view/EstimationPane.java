@@ -246,7 +246,7 @@ public class EstimationPane extends JPanel {
 	 */
 	public void reportSuccess() {
 		message.setText("<html>Success: Vote Updated!</html>");
-		message.setForeground(Color.GREEN);
+		message.setForeground(Color.BLUE);
 		
 	}
 

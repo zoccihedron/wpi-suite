@@ -16,6 +16,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -35,17 +37,18 @@ public class PlayGamePanel extends JPanel{
 
 	public PlayGamePanel(Game game)
 	{
+		setLayout(new BorderLayout());
 		
-		gameInfoPanel = new GameInfoPanel();
-		gameInfoPanel.updatePanel(game);
+		//gameInfoPanel = new GameInfoPanel();
 		listRequirementsPanel = new ListRequirementsPanel(game);
 		estimationPane = new EstimationPane();
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
 		splitPane.setRightComponent(estimationPane);
 		PlayGameController.getInstance().setEstimationPane(estimationPane);
+		//PlayGameController.getInstance().setGameInfoPanel(gameInfoPanel);
 		
-		add(gameInfoPanel);
-		add(splitPane);
+		//add(gameInfoPanel);
+		add(splitPane, BorderLayout.CENTER);
 	}
 }

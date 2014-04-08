@@ -11,6 +11,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -18,12 +20,12 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -44,26 +46,57 @@ public class GameSummaryPanel extends JPanel{
 	JButton editGameBtn;
 	JTextArea requirementsList;
 	Game game;
+	JScrollPane scrollPane;
+	JPanel emptyPanel1, emptyPanel2;
+	
 	
 	public GameSummaryPanel() 
 	{
-		setLayout(null);
+		this.setLayout(new GridBagLayout());
+		
+		final GridBagConstraints constraints = new GridBagConstraints();
 		
 		titleLabel = new JLabel("Title");
-		titleLabel.setBounds(6, 6, 295, 56);
-		add(titleLabel);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.ipady = 10;
+		//titleLabel.setBounds(6, 6, 295, 56);
+		add(titleLabel, constraints);
 		
 		deadlineLabel = new JLabel("Deadline");
-		deadlineLabel.setBounds(313, 6, 131, 56);
-		add(deadlineLabel);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		//deadlineLabel.setBounds(313, 6, 131, 56);
+		add(deadlineLabel, constraints);
 		
 		descriptionLabel = new JLabel("Description");
-		descriptionLabel.setBounds(6, 74, 438, 56);
-		add(descriptionLabel);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 6;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		//descriptionLabel.setBounds(6, 74, 438, 56);
+		add(descriptionLabel, constraints);
 		
 		playGameBtn = new JButton("Play Game");
-		playGameBtn.setBounds(327, 265, 117, 29);
-		add(playGameBtn);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 6;
+		constraints.gridy = 3;
+		constraints.ipady = 0;
+		//playGameBtn.setBounds(327, 265, 117, 29);
+		add(playGameBtn, constraints);
 		playGameBtn.setEnabled(false);
 		
 		playGameBtn.addActionListener(new ActionListener () {
@@ -77,8 +110,14 @@ public class GameSummaryPanel extends JPanel{
 		});
 		
 		editGameBtn = new JButton("Edit Game");
-		editGameBtn.setBounds(184, 265, 117, 29);
-		add(editGameBtn);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 5;
+		constraints.gridy = 3;
+		//editGameBtn.setBounds(184, 265, 117, 29);
+		add(editGameBtn, constraints);
 		editGameBtn.setEnabled(false);
 		
 		editGameBtn.addActionListener(new ActionListener () {
@@ -92,9 +131,34 @@ public class GameSummaryPanel extends JPanel{
 		});
 		
 		requirementsList = new JTextArea("Requirements");
-		requirementsList.setBounds(6, 147, 438, 106);
-		add(requirementsList);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 6;
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		//requirementsList.setBounds(6, 147, 438, 106);
+		scrollPane = new JScrollPane(requirementsList);
+		add(scrollPane, constraints);
 		requirementsList.setEditable(false);
+		
+		emptyPanel1 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = .5;
+		constraints.weighty = 0;
+		constraints.gridx = 2;
+		constraints.gridy = 3;
+		add(emptyPanel1, constraints);
+		
+		emptyPanel2 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = .5;
+		constraints.weighty = 0;
+		constraints.gridx = 3;
+		constraints.gridy = 3;
+		add(emptyPanel2, constraints);
 	}
 	
 	/** Function which takes a game as a parameter and
@@ -145,9 +209,9 @@ public class GameSummaryPanel extends JPanel{
 		String temp = "";
 		RequirementManagerFacade.getInstance();
 		final List<Requirement> reqs = RequirementManagerFacade.getRequirments();
-		for(Estimate e : game.getEstimates())
+		for(Requirement r : reqs)
 		{
-			temp += reqs.get(e.getReqID()).getName() + "\n";
+			temp += r.getName() + "\n";
 		}
 		
 		return temp;
