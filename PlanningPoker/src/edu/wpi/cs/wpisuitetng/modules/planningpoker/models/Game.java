@@ -149,11 +149,11 @@ public class Game extends AbstractModel{
 	public Boolean identify(Object o) {
 		boolean result = false;
 		if(o instanceof Integer){
-			result = (getId() == (Integer)(o));
+			result = (id == (Integer)(o));
 		} else if (o instanceof Game){
-			result = (getId() == ((Game)(o)).getId());
+			result = (id == ((Game)(o)).getId());
 		} else if (o instanceof String){
-			result = (Integer.toString(getId()).equals((String)o));
+			result = (Integer.toString(id).equals((String)o));
 		}
 		return result;
 	}

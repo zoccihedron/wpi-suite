@@ -183,7 +183,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	@Override
 	public void save(Session s, Game model) throws WPISuiteException {
 		if(id_count == 0){
-			Game[] retrieved = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+			final Game[] retrieved =
+							db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
 			if(retrieved.length == 0){
 				id_count = 1;
 			}else{
@@ -244,6 +245,11 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		throw new NotImplementedException();
 	}
 	
+	/**
+	 * Finds the game with the largest ID in order to increment it
+	 * @param retrieved Games already in the database
+	 * @return value of largest ID
+	 */
 	public int getGameWithLargestId(Game[] retrieved){
 		int largestId = 0;
 		for(int i = 0; i < retrieved.length; i++){

@@ -397,7 +397,8 @@ public class SelectRequirementsPanel extends JPanel {
 		final List<Integer> existingReqs = 
 				getRequirementIdsFromTable(existingRequirementsTable);
 		for (Requirement req : existingRequirements) {
-			if (!(req.getIteration().equals("Backlog")) || req.getStatus() == RequirementStatus.DELETED) {
+			if (!(req.getIteration().equals("Backlog")) ||
+								req.getStatus() == RequirementStatus.DELETED) {
 				if (existingReqs.contains(req.getId())) {
 					removeRowByValue(req, existingRequirementsTable);
 				} else if (pendingReqs.contains(req.getId())) {

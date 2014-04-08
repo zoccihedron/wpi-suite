@@ -56,7 +56,7 @@ public class GameInfoPanel extends JPanel {
 	{
 		titleLabel.setText(game.getName());
 		descriptionLabel.setText(game.getDescription());
-		numDoneLabel.setText(this.numDone(game));
+		numDoneLabel.setText(GameInfoPanel.numDone(game));
 	}
 
 	private static String numDone(Game game) {
@@ -65,7 +65,8 @@ public class GameInfoPanel extends JPanel {
 		
 		for(Estimate e: game.getEstimates())
 		{
-			if(e.hasMadeAnEstimation(ConfigManager.getInstance().getConfig().getUserName())) {
+			ConfigManager.getInstance();
+			if(e.hasMadeAnEstimation(ConfigManager.getConfig().getUserName())) {
 				count++;
 			}
 		}

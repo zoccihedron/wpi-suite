@@ -11,19 +11,17 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-
-/**
- * TODO - add proper commenting for this class!
- * 
- * @author Codon Bleu
- * @version 1.0
- *
- */
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 
+/**
+ * TODO - add commenting
+ * @author Codon Bleu
+ * @version 1.0
+ *
+ */
 
 @SuppressWarnings("serial")
 public class PlayGamePanel extends JPanel{
