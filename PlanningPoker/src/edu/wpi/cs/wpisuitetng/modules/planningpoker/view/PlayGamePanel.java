@@ -25,7 +25,7 @@ public class PlayGamePanel extends JPanel{
 
 	private GameInfoPanel gameInfoPanel;
 	private ListRequirementsPanel listRequirementsPanel;
-	// private EstimationPane estimationPane;
+	private EstimationPane estimationPane;
 	private JSplitPane splitPane;
 
 	public PlayGamePanel(Game game)
@@ -33,10 +33,10 @@ public class PlayGamePanel extends JPanel{
 		gameInfoPanel = new GameInfoPanel();
 		gameInfoPanel.updatePanel(game);
 		listRequirementsPanel = new ListRequirementsPanel(game);
-		// estimationPane = new EstimationPane();
+		estimationPane = new EstimationPane();
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
-		// splitPane.setRightComponent(estimationPane);
+		splitPane.setRightComponent(estimationPane);
 		setLayout(new BorderLayout());
 		add(gameInfoPanel, BorderLayout.NORTH);
 		add(splitPane, BorderLayout.CENTER);
