@@ -36,7 +36,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	/** The database */
 	Data db;
 	
-	private static int id_count;
+	private int id_count = 0;
 	
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -61,17 +61,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	public Game makeEntity(Session s, String content)
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
-		id_count++;
-		/*
-		Game[] gameArray = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
-		
-		for(int i = 1; i < gameArray.length; i++){
-			if(gameArray[i].getId() != i){
-				newGame.setId(i);
-			}
-		}
-		*/
-		newGame.setId(id_count);
 		newGame.setGameCreator(s.getUsername());
 		newGame.setId(getAllForEveryone(s).length);
 		if(!db.save(newGame, s.getProject())) {
@@ -175,7 +164,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throw new BadRequestException("Game with ID does not exist.");
 		}
 		
-		final Game existingGame = (Game)oldGames.get(0);	
+		final Game existingGame = (Game)oldGames.get(0);
 		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);
@@ -193,7 +182,19 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * #save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Game model){
+	public void save(Session s, Game model) throws WPISuiteException {
+		if(id_count == 0){
+			final Game[] retrieved =
+							db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+			if(retrieved.length == 0){
+				id_count = 1;
+			}else{
+				id_count = getGameWithLargestId(retrieved) + 1;
+			}
+		}
+		
+		model.setId(id_count);
+		id_count++;
 		db.save(model, s.getProject());
 	}
 	
@@ -244,5 +245,24 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws NotImplementedException {
 		throw new NotImplementedException();
 	}
-
+	
+	/**
+	 * Finds the game with the largest ID in order to increment it
+	 * @param retrieved Games already in the database
+	 * @return value of largest ID
+	 */
+	public int getGameWithLargestId(Game[] retrieved){
+		int largestId = 0;
+		for(int i = 0; i < retrieved.length; i++){
+			if(retrieved[i].getId() > largestId){
+				largestId = retrieved[i].getId();
+			}
+		}
+		return largestId;
+	}
+	
+	public int getIdCount()
+	{
+		return id_count;
+	}
 }

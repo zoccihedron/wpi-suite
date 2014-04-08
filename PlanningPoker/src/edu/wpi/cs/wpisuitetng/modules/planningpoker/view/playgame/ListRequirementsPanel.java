@@ -34,6 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTre
  * This class is used to create a requirements tree which will be displayed in the play game panel
  * 
  * @author Codon Bleu
+ * @version 1.0
  *
  * @version $Revision: 1.0 $
  */
@@ -103,8 +104,10 @@ implements TreeSelectionListener {
   */
 	public void refresh(){
 
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Requirements"); //makes a starting node
-		final List<Requirement> requirements = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final DefaultMutableTreeNode top =
+				new DefaultMutableTreeNode("Requirements"); //makes a starting node
+		final List<Requirement> requirements =
+				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		DefaultMutableTreeNode reqNode = null;
 
 		DefaultMutableTreeNode votedCategory = null;
@@ -121,14 +124,14 @@ implements TreeSelectionListener {
 		votedCategory = new DefaultMutableTreeNode("Voted On");
 		top.add(votedCategory);
 
-		//create the tree with the top node as the top
-		tree = new JTree(top); 
-		//tell it that it can only select one thing at a time
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); 
+
+		tree = new JTree(top); //create the tree with the top node as the top
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+						//tell it that it can only select one thing at a time
 		tree.setToggleClickCount(0);
 
-		//set to custom cell renderer so that icons make sense
-		tree.setCellRenderer(new CustomTreeCellRenderer()); 
+		tree.setCellRenderer(new CustomTreeCellRenderer());
+						//set to custom cell renderer so that icons make sense
 		tree.addTreeSelectionListener(this);
 		
 		

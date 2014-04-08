@@ -78,7 +78,7 @@ public class UpdateGameController implements ActionListener {
 	 * @param currentGame the game which will be updated
 	 */
 	public void addGameToModel(Game currentGame) {
-		model.UpdateGame(currentGame);
+		PlanningPokerModel.UpdateGame(currentGame);
 	}
 
 	/**
