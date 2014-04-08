@@ -211,7 +211,9 @@ public class GameSummaryPanel extends JPanel{
 		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement r : reqs)
 		{
-			temp += r.getName() + "\n";
+			if(game.getRequirements().contains(r.getId())){
+				temp += r.getName() + "\n";
+			}
 		}
 		
 		return temp;

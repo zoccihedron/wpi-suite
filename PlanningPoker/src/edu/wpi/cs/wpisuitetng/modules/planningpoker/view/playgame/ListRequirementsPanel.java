@@ -116,8 +116,10 @@ implements TreeSelectionListener {
 		for(Requirement req: requirements){
 
 			// add new node to requirement tree
+			if(game.getRequirements().contains(req.getId())){
 			reqNode = new DefaultMutableTreeNode(req);
 			votedCategory.add(reqNode);
+			}
 		}
 
 		top.add(votedCategory);
