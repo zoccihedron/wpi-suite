@@ -37,7 +37,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	/** The database */
 	Data db;
 	
-	private static int id_count;
+	private int id_count = 0;
 	
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -60,17 +60,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	public Game makeEntity(Session s, String content)
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
-		id_count++;
-		/*
-		Game[] gameArray = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
-		
-		for(int i = 1; i < gameArray.length; i++){
-			if(gameArray[i].getId() != i){
-				newGame.setId(i);
-			}
-		}
-		*/
-		newGame.setId(id_count);
 		newGame.setGameCreator(s.getUsername());
 		if(!db.save(newGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
@@ -176,6 +165,18 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 */
 	@Override
 	public void save(Session s, Game model) throws WPISuiteException {
+		if(id_count == 0){
+			Game[] retrieved = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+			if(retrieved.length == 0){
+				id_count = 1;
+			}else{
+				id_count = getGameWithLargestId(retrieved) + 1;
+			}
+		}
+		
+		model.setId(id_count);
+		id_count++;
+		
 		db.save(model, s.getProject());
 	}
 	
@@ -226,5 +227,19 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws WPISuiteException {
 		throw new NotImplementedException();
 	}
-
+	
+	public int getGameWithLargestId(Game[] retrieved){
+		int largestId = 0;
+		for(int i = 0; i < retrieved.length; i++){
+			if(retrieved[i].getId() > largestId){
+				largestId = retrieved[i].getId();
+			}
+		}
+		return largestId;
+	}
+	
+	public int getIdCount()
+	{
+		return id_count;
+	}
 }
