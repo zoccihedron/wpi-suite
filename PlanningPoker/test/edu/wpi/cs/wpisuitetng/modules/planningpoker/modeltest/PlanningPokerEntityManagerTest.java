@@ -15,6 +15,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -38,20 +39,20 @@ import java.util.Date;
  */
 public class PlanningPokerEntityManagerTest {
 	
-	MockData db;
-	Game game;
-	Game game2;
-	Game game3;
-	PlanningPokerEntityManager manager;
-	User dummyUser, dummyUser2;
-	Session s1, s2;
-	String mockSsid = "abc123";
-	Project testProject;
-	Project otherProject;
+	static MockData db;
+	static Game game;
+	static Game game2;
+	static Game game3;
+	static PlanningPokerEntityManager manager;
+	static User dummyUser, dummyUser2;
+	static Session s1, s2;
+	static String mockSsid = "abc123";
+	static Project testProject;
+	static Project otherProject;
 	
 	
-	@Before
-	public void setUp(){
+	@BeforeClass
+	public static void setUp(){
 		
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
 		Date start = new Date();
@@ -65,7 +66,10 @@ public class PlanningPokerEntityManagerTest {
 		game2 = new Game("game2", start, end);
 		game3 = new Game("game3", start, end);
 		
-		game3.setId(10);
+		System.out.println(game.getId());
+		System.out.println(game2.getId());
+		System.out.println(game3.getId());
+		
 		game3.setStatus(Game.GameStatus.IN_PROGRESS);
 		
 		testProject = new Project("test", "1");
@@ -76,15 +80,16 @@ public class PlanningPokerEntityManagerTest {
 		s2 = new Session(dummyUser2, testProject, mockSsid);
 		
 		db = new MockData(new HashSet<Object>());
+		manager = new PlanningPokerEntityManager(db);
 		
 		game.setGameCreator(dummyUser.getUsername());
 		game2.setGameCreator(dummyUser.getUsername());
 		game3.setGameCreator(dummyUser.getUsername());
-		
-		db.save(game, testProject);
-		db.save(game2, testProject);
-		db.save(game3, testProject);
-		
+		/*
+		manager.save(s1, game);
+		manager.save(s1, game2);
+		manager.save(s1, game3);
+		*/
 
 		db.save(dummyUser);
 		
@@ -202,8 +207,22 @@ public class PlanningPokerEntityManagerTest {
 	}
 	
 	@Test
+	public void getHighestIdTest() throws WPISuiteException{
+		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		for(Game g : retrievedGames)
+		{
+			System.out.println(manager.getIdCount());
+			System.out.println(g.getName());
+			System.out.println(g.getId());
+		}
+		int largestId = manager.getGameWithLargestId(retrievedGames);
+		assertEquals(largestId, retrievedGames.length);
+	}
+	
+	@Test
 	public void autoIncrementGameIdTest() throws WPISuiteException{
 		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		
 		
 	}
 }

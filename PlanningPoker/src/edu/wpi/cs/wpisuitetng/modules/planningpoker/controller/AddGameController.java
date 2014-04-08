@@ -59,10 +59,9 @@ public class AddGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
-			final Request userRequest = Network.getInstance().makeRequest("core/project", HttpMethod.GET);
-			userRequest.addObserver(new GetUserRequestObserver(this));
-			userRequest.send();
-			final Game currentGame = view.getGameObject(users);
+			
+			final Game currentGame = view.getGameObject();
+
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest(
 					"planningpoker/game", HttpMethod.PUT);

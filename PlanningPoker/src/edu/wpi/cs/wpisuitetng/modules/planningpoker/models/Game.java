@@ -17,6 +17,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 
 /**
@@ -29,7 +30,6 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  */
 public class Game extends AbstractModel{
 	private int id;
-	private static int numberOfIDs = 0;
 	private String name = "";
 	private String description = "";
 	private List<String> participants = new ArrayList<String>();
@@ -71,7 +71,6 @@ public class Game extends AbstractModel{
 	 */
 	public Game(String name, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
-		id = ++numberOfIDs;
 		this.name = name;
 		start = startTime;
 		end = endTime;
@@ -151,11 +150,11 @@ public class Game extends AbstractModel{
 	public Boolean identify(Object o) {
 		boolean result = false;
 		if(o instanceof Integer){
-			result = (getId() == (Integer)(o));
+			result = (id == (Integer)(o));
 		} else if (o instanceof Game){
-			result = (getId() == ((Game)(o)).getId());
+			result = (id == ((Game)(o)).getId());
 		} else if (o instanceof String){
-			result = (Integer.toString(getId()).equals((String)o));
+			result = (Integer.toString(id).equals((String)o));
 		}
 		return result;
 	}
@@ -170,10 +169,13 @@ public class Game extends AbstractModel{
 		name = updatedGame.getName();
 		participants = updatedGame.getParticipants();
 		gameCreator = updatedGame.getGameCreator();
+		description = updatedGame.getDescription();
+		requirements = updatedGame.getRequirements();
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
 		estimates = updatedGame.getEstimates();
+		hasDeadline = updatedGame.isHasDeadline();
 	}
 	
 	
@@ -191,12 +193,12 @@ public class Game extends AbstractModel{
 	 * 
 	 */
 	public String changeCreator(String user)
-	{ //need test
+	{ // TODO need test
 		String newCreator = "";
 		if(isCreator(user)) return user;
-		else if(isParticipant(user)){
-			for(String u: participants){
-				if(u.equals(user)){
+		else if(isParticipant(user)) {
+			for(String u: participants) {
+				if(u.equals(user)) {
 					newCreator = u;
 					participants.remove(u);
 				}
@@ -228,17 +230,20 @@ public class Game extends AbstractModel{
 	 * @param user given for checking
 	 * @return true if the given user is a participant of this game
 	 */
-	public boolean isParticipant(String user){
-		if(participants == null) return false;
-		
-		for(String temp: participants){
-			if(temp.equals(user))
-			{
-				return true;
+	public boolean isParticipant(String user) {
+		boolean result = false;
+
+		if (participants == null) {
+			result = false;
+		} else {
+			for (String temp : participants) {
+				if (temp.equals(user)) {
+					result = true;
+				}
 			}
 		}
-		
-		return false;
+
+		return result;
 	}
 		
 	/**
@@ -260,16 +265,17 @@ public class Game extends AbstractModel{
 	 * 	false if not or the user is already in the list
 	 */
 	public boolean addUser(String user){
+		boolean result = true;
 		
-		if(hasUser(user)) return false;
+		if(hasUser(user)) result = false;
 		participants.add(user);
 		
 		for(Estimate e: estimates){
 			if(!e.canAddUser(user)) {
-				return false;
+				result = false;
 			}
 		}
-		return true;
+		return result;
 		
 	}
 	
@@ -340,12 +346,13 @@ public class Game extends AbstractModel{
 	 * @return false if the start time is later than end time
 	 */
 	public boolean setStart(Date start) {
+		boolean result = true;
 		if(start.compareTo(end) >= 0)
 		{
-			return false;
+			result = false;
 		}
 		this.start = start;
-		return true;
+		return result;
 	}
 
 	/**
@@ -361,10 +368,13 @@ public class Game extends AbstractModel{
 	 * @return false if the end time is earlier than current time or the start time
 	 */
 	public boolean setEnd(Date end) {
+		boolean result = true;
 		final Date now = Calendar.getInstance().getTime();
-		if(end.compareTo(now) <= 0 || end.compareTo(start) <= 0) return false;
+		if(end.compareTo(now) <= 0 || end.compareTo(start) <= 0) {
+			result = false;
+		}
 		this.end = end;
-		return true;
+		return result;
 	}
 	
 	public List<String> getParticipants() {
@@ -440,6 +450,17 @@ public class Game extends AbstractModel{
 			if(e.getReqID() == reqid) return e;
 		}
 		return null;
+	}
+
+	public void setUsers(List<User> list) {
+		for(Integer req: requirements){
+			this.addEstimate(new Estimate(req));
+		}
+		for(Estimate e: this.getEstimates()){
+			for(User u: list){
+				e.addUser(u.getUsername());
+			}
+		}		
 	}
 	
 	

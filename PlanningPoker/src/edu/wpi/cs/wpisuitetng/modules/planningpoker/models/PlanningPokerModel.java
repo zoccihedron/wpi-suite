@@ -20,8 +20,6 @@ import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.network.Network;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-
 
 /**
  * This is a model for the planning poker module. This model
@@ -129,6 +127,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		return games.size();
 	}
 
+
 	public List<Game> getGames()
 	{
 		return getAllGames();
@@ -169,7 +168,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 			iterator.next();
 			iterator.remove();
 		}
-		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));		
+		this.fireIntervalRemoved(this, 0, Math.max(oldSize - 1, 0));
 		this.setId(0);
 	}
 
@@ -185,7 +184,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	 * Updates the given game
 	 * @param currentGame
 	 */
-	public void UpdateGame(Game currentGame) {
+	public static void UpdateGame(Game currentGame) {
 		// TODO Auto-generated method stub
 		
 	}

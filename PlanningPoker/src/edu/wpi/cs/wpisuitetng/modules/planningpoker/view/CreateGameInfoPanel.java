@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -33,7 +32,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
@@ -52,7 +51,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 @SuppressWarnings({"serial"})
 public class CreateGameInfoPanel extends JPanel {
 	private final MainViewTabController mainViewTabController;
-	private final NewGamePanel parent;
+	private final NewGamePanel parentPanel;
 	
 	private final JLabel lblName;
 	private final JTextField gameNameText;
@@ -67,12 +66,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private final ButtonGroup AMPMSelection;
 	private final JLabel lblDeck;
 	private final JComboBox deck;
-	private JButton btnNewButton;
-	private JButton btnSave;
-	private JButton btnCancel;
-	private JButton btnStart;
 	private final JCheckBox chckbxDeadline;
-	private JLabel lblMessage;
 	private Game editingGame;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
@@ -84,7 +78,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 */
 	public CreateGameInfoPanel(NewGamePanel parent) {
 		mainViewTabController = MainViewTabController.getInstance();
-		this.parent = parent;
+		parentPanel = parent;
 		setBounds(5, 5, 307, 393);
 		this.setLayout(new GridBagLayout());
 		
@@ -104,7 +98,8 @@ public class CreateGameInfoPanel extends JPanel {
 		final JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
 		
-		final String[] hours = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+		final String[] hours = {"01", "02", "03", "04", "05", 
+				"06", "07", "08", "09", "10", "11", "12"};
 		hourSelector = new JComboBox(hours);
 	
 		final String[] minutes = {"00", "15", "30", "45"};
@@ -141,7 +136,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 */
 	public CreateGameInfoPanel(NewGamePanel parent, Game passedInGame) {
 		mainViewTabController = MainViewTabController.getInstance();
-		this.parent = parent;
+		parentPanel = parent;
 		editingGame = passedInGame;
 		setBounds(5, 5, 307, 393); 
 		this.setLayout(new GridBagLayout());
@@ -150,7 +145,7 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		lblName = new JLabel("Name:       ");
 		gameNameText = new JTextField();
-		gameNameText.setText(editingGame.getName());	
+		gameNameText.setText(editingGame.getName());
 		
 		lblDescription = new JLabel("Description:");
 		description = new JTextArea();
@@ -173,13 +168,15 @@ public class CreateGameInfoPanel extends JPanel {
 				tempCalendar.get(Calendar.DATE));
 		model.setSelected(true);
 		final JDatePanelImpl datePanel = new JDatePanelImpl(model);
-		datePicker = new JDatePickerImpl(datePanel);	
+		datePicker = new JDatePickerImpl(datePanel);
 		
 		lblTime = new JLabel("Time:");
-		String[] hours = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+		final String[] hours = {"01", "02", "03", "04", "05", "06", 
+				"07", "08", "09", "10", "11", "12"};
 		hourSelector = new JComboBox(hours);
-		hourSelector.setSelectedItem(getHourStringFromCalendar(tempCalendar.get(Calendar.HOUR)));		
-		String[] minutes = {"00","15","30","45"};
+		hourSelector.setSelectedItem(getHourStringFromCalendar
+				(tempCalendar.get(Calendar.HOUR)));
+		final String[] minutes = {"00", "15", "30", "45"};
 		minuteSelector = new JComboBox(minutes);
 		minuteSelector.setSelectedItem(getMinuteStringFromCalendar
 				(tempCalendar.get(Calendar.MINUTE)));
@@ -400,19 +397,20 @@ public class CreateGameInfoPanel extends JPanel {
 	 */
 	private static String getMinuteStringFromCalendar(int minute) {
 		System.out.println("Minute:" + minute);
+		String result = "00";
 		if(minute < 15){
-			return "00";
+			result = "00";
 		}
 		else if(minute < 30){
-			return "15";
+			result = "15";
 		}
 		else if(minute < 45){
-			return "30";
+			result = "30";
 		}
 		else if(minute < 60){
-			return "45";
+			result = "45";
 		}
-		return "00";
+		return result;
 	}
 
 	/**
@@ -424,44 +422,16 @@ public class CreateGameInfoPanel extends JPanel {
 		System.out.println("Hour:" + hour);
 		hour %= 12;
 		System.out.println("Hour % 12:" + hour);
-		if(hour == 0){
-			return "12";
+		String result = "";
+		if(hour < 10)
+		{
+			result = "0" + String.valueOf(hour);
 		}
-		else if(hour == 1){
-			return "01";
+		else
+		{
+			result = String.valueOf(hour);
 		}
-		else if(hour == 2){
-			return "02";
-		}
-		else if(hour == 3){
-			return "03";
-		}
-		else if(hour == 4){
-			return "04";
-		}
-		else if(hour == 5){
-			return "05";
-		}
-		else if(hour == 6){
-			return "06";
-		}
-		else if(hour == 7){
-			return "07";
-		}
-		else if(hour == 8){
-			return "08";
-		}
-		else if(hour == 9){
-			return "09";
-		}
-		else if(hour == 10){
-			return "10";
-		}
-		else if(hour == 11){
-			return "11";
-		}
-		
-		return "12";
+		return result;
 	}
 
 	/**
@@ -470,25 +440,26 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return check  - true if the fields are selected properly, otherwise false
 	 */
 	public boolean checkFields() {
+		boolean result = true;
 		if (gameNameText.getText().trim().isEmpty()){
 				reportError("<html>*Error: Please choose a name!</html>");
-				return false;
+				result = false;
 		}
 		if(chckbxDeadline.isSelected()){
 			if(datePicker.getModel().getValue() == null){
 				reportError("<html>*Error: Please choose a date or turn off the deadline.</html>");
-				return false;
+				result = false;
 			}
 			if(getDeadline().compareTo(new Date()) <= 0){
 				reportError("<html>*Error: The deadline must not be in the past.</html>");
-				return false;
+				result = false;
 			}
 		}
-		if (parent.getGameRequirements().size() == 0){
+		if (parentPanel.getGameRequirements().size() == 0){
 			reportError("<html>*Error: Pick at least one requirement.</html>");
-			return false;
+			result = false;
 		}
-		return true;
+		return result;
 	}
 	
 
@@ -497,36 +468,18 @@ public class CreateGameInfoPanel extends JPanel {
 	 * Will switch the deadline fields to enabled or disabled based on the Deadline checkbox
 	 */
 	public void EnableOrDisableDeadline() {
-		if (chckbxDeadline.isSelected()){
-			datePicker.setEnabled(true);
-			datePicker.setVisible(true);
-			hourSelector.setEnabled(true);
-			hourSelector.setVisible(true);
-			minuteSelector.setEnabled(true);
-			minuteSelector.setVisible(true);
-			rdbtnPm.setEnabled(true);
-			rdbtnPm.setVisible(true);
-			rdbtnAm.setEnabled(true);
-			rdbtnAm.setVisible(true);
-			lblDeadline.setVisible(true);
-			lblTime.setVisible(true);
-		}
-		else {
-			datePicker.setEnabled(false);
-			datePicker.setEnabled(false);
-			datePicker.setVisible(false);
-			hourSelector.setEnabled(false);
-			hourSelector.setVisible(false);
-			minuteSelector.setEnabled(false);
-			minuteSelector.setVisible(false);
-			rdbtnPm.setEnabled(false);
-			rdbtnPm.setVisible(false);
-			rdbtnAm.setEnabled(false);
-			rdbtnAm.setVisible(false);
-			lblDeadline.setVisible(false);
-			lblTime.setVisible(false);
-		}
-		
+		datePicker.setEnabled(chckbxDeadline.isSelected());
+		datePicker.setVisible(chckbxDeadline.isSelected());
+		hourSelector.setEnabled(chckbxDeadline.isSelected());
+		hourSelector.setVisible(chckbxDeadline.isSelected());
+		minuteSelector.setEnabled(chckbxDeadline.isSelected());
+		minuteSelector.setVisible(chckbxDeadline.isSelected());
+		rdbtnPm.setEnabled(chckbxDeadline.isSelected());
+		rdbtnPm.setVisible(chckbxDeadline.isSelected());
+		rdbtnAm.setEnabled(chckbxDeadline.isSelected());
+		rdbtnAm.setVisible(chckbxDeadline.isSelected());
+		lblDeadline.setVisible(chckbxDeadline.isSelected());
+		lblTime.setVisible(chckbxDeadline.isSelected());
 	}
 	
 	/**
@@ -534,36 +487,19 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @param hasDeadline variable from the game object that sets the condition for the setting
 	 */
 	private void ForceEnableOrDisableDeadline(boolean hasDeadline) {
-		if (hasDeadline){
-			chckbxDeadline.setSelected(true);
-			datePicker.setEnabled(true);
-			datePicker.setVisible(true);
-			hourSelector.setEnabled(true);
-			hourSelector.setVisible(true);
-			minuteSelector.setEnabled(true);
-			minuteSelector.setVisible(true);
-			rdbtnPm.setEnabled(true);
-			rdbtnPm.setVisible(true);
-			rdbtnAm.setEnabled(true);
-			rdbtnAm.setVisible(true);
-			lblDeadline.setVisible(true);
-			lblTime.setVisible(true);
-		}
-		else {
-			chckbxDeadline.setSelected(false);
-			datePicker.setEnabled(false);
-			datePicker.setVisible(false);
-			hourSelector.setEnabled(false);
-			hourSelector.setVisible(false);
-			minuteSelector.setEnabled(false);
-			minuteSelector.setVisible(false);
-			rdbtnPm.setEnabled(false);
-			rdbtnPm.setVisible(false);
-			rdbtnAm.setEnabled(false);
-			rdbtnAm.setVisible(false);
-			lblDeadline.setVisible(false);
-			lblTime.setVisible(false);
-		}
+		chckbxDeadline.setSelected(hasDeadline);
+		datePicker.setEnabled(hasDeadline);
+		datePicker.setVisible(hasDeadline);
+		hourSelector.setEnabled(hasDeadline);
+		hourSelector.setVisible(hasDeadline);
+		minuteSelector.setEnabled(hasDeadline);
+		minuteSelector.setVisible(hasDeadline);
+		rdbtnPm.setEnabled(hasDeadline);
+		rdbtnPm.setVisible(hasDeadline);
+		rdbtnAm.setEnabled(hasDeadline);
+		rdbtnAm.setVisible(hasDeadline);
+		lblDeadline.setVisible(hasDeadline);
+		lblTime.setVisible(hasDeadline);
 	}
 	
 	/**Fills the text box with a red warning based on the error Message
@@ -571,7 +507,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @param error the message to be printed, should be in <html>text</html> format
 	 */
 	public void reportError(String error) {
-		parent.reportError(error);
+		parentPanel.reportError(error);
 	}
 	
 	/**Fills the text box with a green message based on the input
@@ -579,7 +515,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @param message the message to be printed, should be in <html>text</html> format
 	 */
 	public void reportMessage(String message) {
-		parent.reportMessage(message);
+		parentPanel.reportMessage(message);
 	}
 	
 
@@ -587,34 +523,28 @@ public class CreateGameInfoPanel extends JPanel {
 	 * Sends the signal to Mainview to close the NewgameTab
 	 */
 	public void closeNewGameTab() {
-		mainViewTabController.closeTab(parent);
+		mainViewTabController.closeTab(parentPanel);
 	}
 
 	/**
 	 * Fills in the game object with the necessary data
 	 * @return newGame
 	 */
-	public Game getGameObject(User[] users) {
+	public Game getGameObject() {
 		int id = 0;
 		if(editingGame != null){
 			id = editingGame.getId();
 		}
-		final Game newGame = new Game(getGameName(), new Date(), getDeadline());
-		newGame.setRequirements(parent.getGameRequirements());
+		
+		final Game newGame = new Game(getGameName(), new Date(), new Date());
+		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
-		
-		for(Integer req: parent.getGameRequirements()){
-			newGame.addEstimate(new Estimate(req));
-		}
-		for(Estimate e: newGame.getEstimates()){
-			for(User u: users){
-				e.addUser(u.getUsername());
-			}
-		}
+
 		if(chckbxDeadline.isSelected())
 		{
 			newGame.setHasDeadline(true);
+			newGame.setEnd(getDeadline());
 		}
 		else
 		{

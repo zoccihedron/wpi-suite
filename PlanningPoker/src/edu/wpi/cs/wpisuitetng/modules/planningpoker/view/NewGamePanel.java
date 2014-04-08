@@ -52,7 +52,6 @@ public class NewGamePanel extends JSplitPane {
 	private final SelectRequirementsPanel selectRequirementsPanel;
 	private final JButton btnSave;
 	private final JButton btnCancel;
-	private JButton btnStart;
 	private final JLabel lblMessage;
 	
 	/**
@@ -96,7 +95,7 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
 		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		bottomPanel.add(lblMessage);		
+		bottomPanel.add(lblMessage);
 		
 		bottomPanel.add(button);
 		
@@ -176,7 +175,7 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
 		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		bottomPanel.add(lblMessage);		
+		bottomPanel.add(lblMessage);
 		
 		bottomPanel.add(button);
 		

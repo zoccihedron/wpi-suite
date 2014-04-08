@@ -58,23 +58,19 @@ public class UpdateGameController implements ActionListener {
 		if (view.checkFields())
 		{
 
-			final Game currentGame = view.getGameObject(new User[0]);
+			final Game currentGame = view.getGameObject();
 
-			// Make sure there is text
-			if ("".equals(currentGame.getName())) 
-			{
-				// Clear the text field
-				// TODO - Reset default fields
+			// Clear the text field
+			// TODO - Reset default fields
 
-				// Send a request to the core to save this game
-				final Request request = Network.getInstance().makeRequest
-						("planningpoker/game", HttpMethod.POST);
-				// put the updated game in the body of the request
-				request.setBody(currentGame.toJSON());
-				// add an observer to process the response
-				request.addObserver(new UpdateGameRequestObserver(this));
-				request.send(); // send the request
-			}
+			// Send a request to the core to save this game
+			final Request request = Network.getInstance().makeRequest
+					("planningpoker/game", HttpMethod.POST);
+			// put the updated game in the body of the request
+			request.setBody(currentGame.toJSON());
+			// add an observer to process the response
+			request.addObserver(new UpdateGameRequestObserver(this));
+			request.send(); // send the request
 		}
 	}
 
@@ -83,7 +79,7 @@ public class UpdateGameController implements ActionListener {
 	 * @param currentGame the game which will be updated
 	 */
 	public void addGameToModel(Game currentGame) {
-		model.UpdateGame(currentGame);
+		PlanningPokerModel.UpdateGame(currentGame);
 	}
 
 	/**
