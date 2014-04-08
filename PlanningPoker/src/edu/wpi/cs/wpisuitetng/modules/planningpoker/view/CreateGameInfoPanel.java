@@ -87,7 +87,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		lblTitle = new JLabel("Game Information");
 		
-		lblName = new JLabel("Name:");
+		lblName = new JLabel("Name:       ");
 		
 		lblDeadline = new JLabel("Deadline:");
 		
