@@ -188,7 +188,7 @@ public class GameSummaryPanel extends JPanel{
 		}
 		
 		// if the game is started
-		if(game.getStatus().equals(GameStatus.DRAFT)) //TODO change to IN_PROGRESS
+		if(game.getStatus().equals(GameStatus.IN_PROGRESS)) 
 		{
 			playGameBtn.setEnabled(true);
 		}

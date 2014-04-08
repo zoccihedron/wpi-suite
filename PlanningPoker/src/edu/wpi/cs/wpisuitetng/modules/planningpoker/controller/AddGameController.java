@@ -39,14 +39,16 @@ public class AddGameController implements ActionListener {
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
 	private static User[] users = {};
+	private boolean startingGame = false;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 */
-	public AddGameController(CreateGameInfoPanel createGameInfoPanel) {
+	public AddGameController(CreateGameInfoPanel createGameInfoPanel, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
+		this.startingGame = startingGame;
 	}
 
 	/** 
@@ -61,6 +63,13 @@ public class AddGameController implements ActionListener {
 		{
 			
 			final Game currentGame = view.getGameObject();
+			
+			if(startingGame){
+				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+			}
+			else{
+				currentGame.setStatus(Game.GameStatus.DRAFT);
+			}
 
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest(

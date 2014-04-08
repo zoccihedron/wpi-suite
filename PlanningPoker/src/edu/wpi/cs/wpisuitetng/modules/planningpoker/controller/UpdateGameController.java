@@ -35,16 +35,18 @@ public class UpdateGameController implements ActionListener {
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
+	private boolean startingGame;
 	
 	/**
 	 * Construct an UpdateGameController for the given model, view pair
 	 * @param updatedGame the updated game
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 */
-	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame) {
+	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
 		this.updatedGame = updatedGame;
+		this.startingGame = startingGame;
 	}
 
 	/**
@@ -60,8 +62,12 @@ public class UpdateGameController implements ActionListener {
 
 			final Game currentGame = view.getGameObject();
 
-			// Clear the text field
-			// TODO - Reset default fields
+			if(startingGame){
+				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+			}
+			else{
+				currentGame.setStatus(Game.GameStatus.DRAFT);
+			}
 
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest

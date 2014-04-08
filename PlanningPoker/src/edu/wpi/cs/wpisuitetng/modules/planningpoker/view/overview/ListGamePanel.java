@@ -111,13 +111,14 @@ implements TreeSelectionListener {
 	 * This method is used to refresh the requirements tree
 	 */
 	public void refresh(){
+		System.out.println("Refreshing Game Tree...");
 		
 
 		try{
 			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 				final GetGamesController gamesController = new GetGamesController();
 				gamesController.initializeTable();
-				RequirementManagerFacade.getInstance().getRequirments();
+				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 
 			}
 		}
