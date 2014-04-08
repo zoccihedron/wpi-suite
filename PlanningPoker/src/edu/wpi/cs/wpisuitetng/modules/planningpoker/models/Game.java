@@ -29,7 +29,6 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  */
 public class Game extends AbstractModel{
 	private int id;
-	private static int numberOfIDs = 0;
 	private String name = "";
 	private String description = "";
 	private List<String> participants = new ArrayList<String>();
@@ -71,7 +70,6 @@ public class Game extends AbstractModel{
 	 */
 	public Game(String name, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
-		id = ++numberOfIDs;
 		this.name = name;
 		start = startTime;
 		end = endTime;
