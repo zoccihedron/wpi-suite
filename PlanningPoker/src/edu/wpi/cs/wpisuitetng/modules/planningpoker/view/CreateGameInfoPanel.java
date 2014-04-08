@@ -98,9 +98,11 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		//Adds the fields and button to the main panel.
 		gameNameText = new JTextField();
+		Border textFieldBorder = gameNameText.getBorder();
 		
 		description = new JTextArea();
-
+		description.setBorder(textFieldBorder);
+		
 		lblTitle = new JLabel("Game Information");
 		
 		lblName = new JLabel("Name:");
@@ -156,10 +158,12 @@ public class CreateGameInfoPanel extends JPanel {
 		
 		lblName = new JLabel("Name:       ");
 		gameNameText = new JTextField();
-		gameNameText.setText(editingGame.getName());	
-		
+		gameNameText.setText(editingGame.getName());
+		Border textFieldBorder = gameNameText.getBorder();
+
 		lblDescription = new JLabel("Description:");
 		description = new JTextArea();
+		description.setBorder(textFieldBorder);
 		description.setText(editingGame.getDescription());
 		
 		lblDeck = new JLabel("Deck:");
