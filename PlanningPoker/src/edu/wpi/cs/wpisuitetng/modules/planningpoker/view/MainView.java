@@ -46,6 +46,7 @@ public class MainView extends JTabbedPane {
 	 */
 	public MainView() {
 		MainViewTabController.getInstance().setMainView(this);
+		this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
 		// Add the board panel to this view
 		overviewPanel = new OverviewPanel();

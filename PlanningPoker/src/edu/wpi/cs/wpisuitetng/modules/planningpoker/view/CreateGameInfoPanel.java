@@ -631,9 +631,15 @@ public class CreateGameInfoPanel extends JPanel {
 		tempCalendar.set(tempCalendar.get(Calendar.YEAR),
 							tempCalendar.get(Calendar.MONTH),
 							tempCalendar.get(Calendar.DATE),
-							getHour(),
+							getHour() % 12,
 							getMinute(),
 							0);
+		if(getHour() >= 12){
+			tempCalendar.set(Calendar.AM_PM, Calendar.PM);
+		}
+		else{
+			tempCalendar.set(Calendar.AM_PM, Calendar.AM);
+		}
 		return tempCalendar.getTime();
 	}
 	
