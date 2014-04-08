@@ -174,7 +174,6 @@ public class Game extends AbstractModel{
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
-		estimates = updatedGame.getEstimates();
 		hasDeadline = updatedGame.isHasDeadline();
 	}
 	
