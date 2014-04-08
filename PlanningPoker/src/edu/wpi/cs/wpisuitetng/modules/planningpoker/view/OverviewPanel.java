@@ -13,9 +13,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import javax.swing.JSplitPane;
 
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
+
 
 
 /**
@@ -33,6 +35,7 @@ public class OverviewPanel extends JSplitPane {
 	private final GameSummaryPanel summaryPanel;
 	
 	public OverviewPanel()
+
 	{
 		summaryPanel = new GameSummaryPanel();
 		listGamePanel = new ListGamePanel();

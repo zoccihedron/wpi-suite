@@ -438,6 +438,14 @@ public class Game extends AbstractModel{
 	public String toString(){
 		return this.getName();
 	}
+
+	public Estimate findEstimate(int reqid){
+		for(Estimate e: estimates){
+			if(e.getReqID() == reqid) return e;
+		}
+		return null;
+	}
+	
 	
 	
 }
