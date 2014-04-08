@@ -170,10 +170,13 @@ public class Game extends AbstractModel{
 		name = updatedGame.getName();
 		participants = updatedGame.getParticipants();
 		gameCreator = updatedGame.getGameCreator();
+		description = updatedGame.getDescription();
+		requirements = updatedGame.getRequirements();
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
 		estimates = updatedGame.getEstimates();
+		hasDeadline = updatedGame.isHasDeadline();
 	}
 	
 	

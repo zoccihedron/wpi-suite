@@ -599,10 +599,11 @@ public class CreateGameInfoPanel extends JPanel {
 		if(editingGame != null){
 			id = editingGame.getId();
 		}
-		final Game newGame = new Game(getGameName(), new Date(), getDeadline());
+		final Game newGame = new Game(getGameName(), new Date(), new Date());
 		newGame.setRequirements(parent.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
+
 		
 		newGame.changeCreator(ConfigManager.getInstance().getConfig().getUserName());
 		
@@ -612,6 +613,7 @@ public class CreateGameInfoPanel extends JPanel {
 		if(chckbxDeadline.isSelected())
 		{
 			newGame.setHasDeadline(true);
+			newGame.setEnd(getDeadline());
 		}
 		else
 		{
