@@ -24,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
@@ -88,8 +89,14 @@ implements TreeSelectionListener {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)
 				tree.getLastSelectedPathComponent();
 
-		if(!node.isLeaf() || node.isRoot())
-		refresh();
+		if(!node.isLeaf() || node.isRoot()){
+			refresh();
+		}
+		if(node.isLeaf()){
+			final Object nodeInfo = node.getUserObject();
+			final Game gme = (Game) nodeInfo;
+			OverviewPanelController.getInstance().updateGameSummary(gme);
+		}
 		
 		if (node == null) return;
 		//TODO: see about implementing DoublieClick to send data to estimate panel
