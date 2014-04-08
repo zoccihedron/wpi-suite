@@ -174,7 +174,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throw new BadRequestException("Game with ID does not exist.");
 		}
 		
-		final Game existingGame = (Game)oldGames.get(0);	
+		final Game existingGame = (Game)oldGames.get(0);
 		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);

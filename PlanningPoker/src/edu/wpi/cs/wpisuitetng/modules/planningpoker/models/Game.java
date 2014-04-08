@@ -191,12 +191,12 @@ public class Game extends AbstractModel{
 	 * 
 	 */
 	public String changeCreator(String user)
-	{ //need test
+	{ // TODO need test
 		String newCreator = "";
 		if(isCreator(user)) return user;
-		else if(isParticipant(user)){
-			for(String u: participants){
-				if(u.equals(user)){
+		else if(isParticipant(user)) {
+			for(String u: participants) {
+				if(u.equals(user)) {
 					newCreator = u;
 					participants.remove(u);
 				}
@@ -228,17 +228,20 @@ public class Game extends AbstractModel{
 	 * @param user given for checking
 	 * @return true if the given user is a participant of this game
 	 */
-	public boolean isParticipant(String user){
-		if(participants == null) return false;
-		
-		for(String temp: participants){
-			if(temp.equals(user))
-			{
-				return true;
+	public boolean isParticipant(String user) {
+		boolean result = false;
+
+		if (participants == null) {
+			result = false;
+		} else {
+			for (String temp : participants) {
+				if (temp.equals(user)) {
+					result = true;
+				}
 			}
 		}
-		
-		return false;
+
+		return result;
 	}
 		
 	/**
@@ -260,16 +263,17 @@ public class Game extends AbstractModel{
 	 * 	false if not or the user is already in the list
 	 */
 	public boolean addUser(String user){
+		boolean result = true;
 		
-		if(hasUser(user)) return false;
+		if(hasUser(user)) result = false;
 		participants.add(user);
 		
 		for(Estimate e: estimates){
 			if(!e.canAddUser(user)) {
-				return false;
+				result = false;
 			}
 		}
-		return true;
+		return result;
 		
 	}
 	
@@ -340,12 +344,13 @@ public class Game extends AbstractModel{
 	 * @return false if the start time is later than end time
 	 */
 	public boolean setStart(Date start) {
+		boolean result = true;
 		if(start.compareTo(end) >= 0)
 		{
-			return false;
+			result = false;
 		}
 		this.start = start;
-		return true;
+		return result;
 	}
 
 	/**
@@ -361,10 +366,13 @@ public class Game extends AbstractModel{
 	 * @return false if the end time is earlier than current time or the start time
 	 */
 	public boolean setEnd(Date end) {
+		boolean result = true;
 		final Date now = Calendar.getInstance().getTime();
-		if(end.compareTo(now) <= 0 || end.compareTo(start) <= 0) return false;
+		if(end.compareTo(now) <= 0 || end.compareTo(start) <= 0) {
+			result = false;
+		}
 		this.end = end;
-		return true;
+		return result;
 	}
 	
 	public List<String> getParticipants() {
