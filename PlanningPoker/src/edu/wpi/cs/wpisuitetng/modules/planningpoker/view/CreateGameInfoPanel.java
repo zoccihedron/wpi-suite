@@ -28,6 +28,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -85,11 +86,14 @@ public class CreateGameInfoPanel extends JPanel {
 		//Adds the fields and button to the main panel.
 		gameNameText = new JTextField();
 		
+		Border jtextFieldBorder = gameNameText.getBorder();
+		
 		description = new JTextArea();
+		description.setBorder(jtextFieldBorder);
 
 		lblTitle = new JLabel("Game Information");
 		
-		lblName = new JLabel("Name:");
+		lblName = new JLabel("Name:       ");
 		
 		lblDeadline = new JLabel("Deadline:");
 		
@@ -147,9 +151,12 @@ public class CreateGameInfoPanel extends JPanel {
 		gameNameText = new JTextField();
 		gameNameText.setText(editingGame.getName());
 		
+		Border jtextFieldBorder = gameNameText.getBorder();
+		
 		lblDescription = new JLabel("Description:");
 		description = new JTextArea();
 		description.setText(editingGame.getDescription());
+		description.setBorder(jtextFieldBorder);
 		
 		lblDeck = new JLabel("Deck:");
 		final String[] decks = {"default"};
