@@ -55,6 +55,7 @@ public class AddGameController implements ActionListener {
 		if (view.checkFields())
 		{
 			final Game currentGame = view.getGameObject();
+			System.out.println("Number of estimates: "+currentGame.getEstimates().size());
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest(
 					"planningpoker/game", HttpMethod.PUT);

@@ -33,8 +33,10 @@ import javax.swing.SwingConstants;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 
@@ -601,6 +603,12 @@ public class CreateGameInfoPanel extends JPanel {
 		newGame.setRequirements(parent.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
+		
+		newGame.changeCreator(ConfigManager.getInstance().getConfig().getUserName());
+		
+		for(Integer req: newGame.getRequirements()){
+			newGame.addEstimate(new Estimate(req));
+		}
 		if(chckbxDeadline.isSelected())
 		{
 			newGame.setHasDeadline(true);
