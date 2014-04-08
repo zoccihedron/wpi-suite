@@ -45,6 +45,7 @@ public class OverviewPanel extends JSplitPane {
 
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
+		
 	}
 }
 
