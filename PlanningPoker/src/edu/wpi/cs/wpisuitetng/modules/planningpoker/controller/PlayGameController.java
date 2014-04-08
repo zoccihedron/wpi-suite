@@ -33,8 +33,9 @@ public class PlayGameController {
 	}
 	
 	public void updateEstimationPane(int id, Game game) {
-		 estimationPane.setGame(game);
-		 estimationPane.setRequirement(id);
+		 estimationPane.setGameAndRequirement(id, game);
+		 //estimationPane.setGame(game);
+		 //estimationPane.setRequirement(id);
 	}
 	
 	

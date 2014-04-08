@@ -166,19 +166,15 @@ public class EstimationPane extends JPanel {
 	
 	
 
-	public void setGame(Game game){
+	public void setGameAndRequirement(int reqid, Game game){
 		voteButton.addActionListener(new VoteActionController(this, game));
 
-		
-	}
-	
-	
-	
-	public void setRequirement(int reqid){
 		this.reqid = reqid;
 		req = getRequirementFromId();
 		requirementName.setText(req.getName());
 		descriptionText.setText(req.getDescription());
+		deckPanel.displayOldEstimate(game,reqid);
+		System.out.println("------finish displaying old estimate");
 
 	}
 	

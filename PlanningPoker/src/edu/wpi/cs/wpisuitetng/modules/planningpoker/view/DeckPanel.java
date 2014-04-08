@@ -7,6 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+
 public class DeckPanel extends JPanel{
 	private JTextField estimateField;
 	
@@ -38,7 +41,22 @@ public class DeckPanel extends JPanel{
 		return this.estimateField.getText();
 	}
 	
+	public void displayOldEstimate(Game game, int reqid) {
+		System.out.println("--------text set for old estiamte");
 
+		String name = ConfigManager.getInstance().getConfig().getUserName();
+		int oldEstimate = game.findEstimate(reqid).getEstimate(name);
+		System.out.println("--------old estimate value: " + oldEstimate);
+		if(oldEstimate > 0)	{
+			estimateField.setText(Integer.toString(oldEstimate));
+			System.out.println("--------reached ");
+
+			
+		} else {
+			estimateField.setText("");
+		}
+		
+	}
 	
 	
 
