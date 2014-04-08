@@ -17,7 +17,6 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 
 /**
@@ -150,14 +149,15 @@ public class Game extends AbstractModel{
 	 */
 	@Override
 	public Boolean identify(Object o) {
+		boolean result = false;
 		if(o instanceof Integer){
-			return (getID() == (Integer)(o));
+			result = (getId() == (Integer)(o));
 		} else if (o instanceof Game){
-			return (getID() == ((Game)(o)).getID());
+			result = (getId() == ((Game)(o)).getId());
 		} else if (o instanceof String){
-			return (Integer.toString(getID()).equals((String)o));
+			result = (Integer.toString(getId()).equals((String)o));
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -265,7 +265,7 @@ public class Game extends AbstractModel{
 		participants.add(user);
 		
 		for(Estimate e: estimates){
-			if(!e.canAddUser(user))	{
+			if(!e.canAddUser(user)) {
 				return false;
 			}
 		}
@@ -340,7 +340,10 @@ public class Game extends AbstractModel{
 	 * @return false if the start time is later than end time
 	 */
 	public boolean setStart(Date start) {
-		if(start.compareTo(end) >= 0) return false;
+		if(start.compareTo(end) >= 0)
+		{
+			return false;
+		}
 		this.start = start;
 		return true;
 	}
@@ -382,10 +385,6 @@ public class Game extends AbstractModel{
 
 	public int getId() {
 		return id;
-	}
-	
-	public int getID() {
-		return this.getId();
 	}
 	
 	public void setId(int id) {

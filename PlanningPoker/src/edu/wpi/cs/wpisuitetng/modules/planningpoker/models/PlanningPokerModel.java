@@ -77,7 +77,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		Game temp = null;
 		for(int i = 0;i < games.size();i++){
 			temp = games.get(i);
-			if(temp.getID() == id){
+			if(temp.getId() == id){
 				break;
 			}
 		}

@@ -19,34 +19,30 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.ToolbarGroupView;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 
 /**
  * This class creates the buttons for creating
  * a new game and a new deck.
  * 
- * @author Ryan Baker
- *
+ * @author Team Code On Bleu
+ * @version 1.0
  */
 @SuppressWarnings("serial")
 public class CreateButtonsPanel extends ToolbarGroupView{
 	
-	private JButton crtGameBtn = new JButton("<html>Create<BR />Game</html>");
-	private JButton crtDeckBtn = new JButton("<html>Manage<BR />Decks</html>");
+	private final JButton crtGameBtn = new JButton("<html>Create<BR />Game</html>");
+	private final JButton crtDeckBtn = new JButton("<html>Manage<BR />Decks</html>");
 	private final JPanel buttonPanel = new JPanel();
-	private final ToolbarView parentPanel;
 	
 	/**
 	 * Constructor for the CreateButtonsPanel
 	 */
-	public CreateButtonsPanel(ToolbarView parentPanel)
+	public CreateButtonsPanel()
 	{
-		
 		super("");
 		
-		this.parentPanel = parentPanel;
-		this.buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(550);
 		
 		buttonPanel.add(crtGameBtn);

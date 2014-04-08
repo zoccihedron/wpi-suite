@@ -13,8 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private final boolean DISABLED = false;
 	private final boolean ENABLED = true;
 	private final JButton btnAddSelectedReq;
-	private DefaultTableModel modelExisting;
+	private final DefaultTableModel modelExisting;
 	private DefaultTableModel modelAdded;
 	
 	private Game game;
@@ -219,9 +217,12 @@ public class SelectRequirementsPanel extends JPanel {
 	}
 
 
-
+	/**
+	 * Constructor for the select requirements panel
+	 * @param editingGame the game for which the requirements will be edited
+	 */
 	public SelectRequirementsPanel(Game editingGame) {
-		this.game = editingGame;
+		game = editingGame;
 		this.setLayout(new GridBagLayout());
 		// Parent Container
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -279,14 +280,10 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 
 		});
-		
-
 
 		final JScrollPane existingRequirementsTablePanel = new JScrollPane(
 				existingRequirementsTable);
-		
-		
-		
+
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
@@ -386,10 +383,12 @@ public class SelectRequirementsPanel extends JPanel {
 
 	}
 	
+	/**
+	 * Fills the table with a list of requirements
+	 */
 	public void fillTable() {
 		modelAdded = (DefaultTableModel) requirementsToAddTable
 				.getModel();
-		// TODO Auto-generated method stub
 		final List<Requirement> existingRequirements = new ArrayList<Requirement>(
 				RequirementManagerFacade.getInstance().getPreStoredRequirements());
 		final List<Integer> pendingReqs = 
@@ -407,7 +406,9 @@ public class SelectRequirementsPanel extends JPanel {
 			//Checks that the pulled requirements are
 			//Not in the pendingRequirementsTable already
 			//Not in the existingRequirementsTable already
-			} else if (game != null && !existingReqs.contains(req.getId()) && !pendingReqs.contains(req.getId())) {
+			} else if (game != null && 
+					!existingReqs.contains(req.getId()) && 
+					!pendingReqs.contains(req.getId())) {
 				if(game.getRequirements().contains(req.getId())){
 					modelAdded.addRow(new Object[] {
 							Integer.toString(req.getId()), req.getName(),
@@ -426,7 +427,7 @@ public class SelectRequirementsPanel extends JPanel {
 		}
 	}
 
-	private void removeRowByValue(Requirement req, JTable src) {
+	private static void removeRowByValue(Requirement req, JTable src) {
 		final int reqID = req.getId();
 		final int entries = src.getRowCount();
 		for(int i = 0; i < entries; i++) {
@@ -446,7 +447,7 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param dest
 	 *            the table to copy to
 	 */
-	private void moveRequirementsBetweenTables(JTable src, JTable dest) {
+	private static void moveRequirementsBetweenTables(JTable src, JTable dest) {
 		//Pull all the information we need to make this decision
 		int selection = src.getSelectedRow();
 		final DefaultTableModel modelDest = (DefaultTableModel) dest.getModel();
@@ -480,7 +481,7 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param src The table to extract Requirement IDs from
 	 * @return The requirements in the src table
 	 */
-	public List<Integer> getRequirementIdsFromTable(JTable src) {
+	public static List<Integer> getRequirementIdsFromTable(JTable src) {
 		final int countOfEntries = src.getRowCount();
 		final int REQID = 0;
 		final List<Integer> reqIDs = new ArrayList<Integer>();
