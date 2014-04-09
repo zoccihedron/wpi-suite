@@ -31,6 +31,10 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * @author Code On Bleu
  * @version Mar 24, 2014
  */
+/**
+ * @author Bootlegger
+ *
+ */
 public class PlanningPokerEntityManager implements EntityManager<Game> {
 	
 	/** The database */
@@ -244,6 +248,13 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		throw new NotImplementedException();
 	}
 	
+	/**
+	 * @param retrieved
+	 * Takes in a list of games and returns an integer containing the largest id
+	 * from the games provided.
+	 * 
+	 * @return largestId
+	 */
 	public int getGameWithLargestId(Game[] retrieved){
 		int largestId = 0;
 		for(int i = 0; i < retrieved.length; i++){
@@ -254,6 +265,10 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		return largestId;
 	}
 	
+	/**
+	 * Returns the id_count - a counter saying how many entities were added upon start up of PlanningPoker
+	 * @return id_count
+	 */
 	public int getIdCount()
 	{
 		return id_count;
