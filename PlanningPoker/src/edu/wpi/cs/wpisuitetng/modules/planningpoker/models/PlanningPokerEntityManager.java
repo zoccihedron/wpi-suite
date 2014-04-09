@@ -31,6 +31,10 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * @author Code On Bleu
  * @version Mar 24, 2014
  */
+/**
+ * @author Bootlegger
+ *
+ */
 public class PlanningPokerEntityManager implements EntityManager<Game> {
 	
 	/** The database */
@@ -270,6 +274,10 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		return largestId;
 	}
 	
+	/**
+	 * Returns the id_count - a counter saying how many entities were added upon start up of PlanningPoker
+	 * @return id_count
+	 */
 	public int getIdCount()
 	{
 		return id_count;
