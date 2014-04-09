@@ -31,10 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * @author Code On Bleu
  * @version Mar 24, 2014
  */
-/**
- * @author Bootlegger
- *
- */
 public class PlanningPokerEntityManager implements EntityManager<Game> {
 	
 	/** The database */
@@ -54,6 +50,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		this.db = db;
 	}
 	
+	
 	/**
 	 * Save a game session when it is received from the client
 	 * 
@@ -66,6 +63,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		final Game newGame = Game.fromJson(content);
 		newGame.setGameCreator(s.getUsername());
 		newGame.setId(getAllForEveryone(s).length);
+		newGame.setUsers(db.retrieveAll(new User()));
 		if(!db.save(newGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
 		}
@@ -171,6 +169,14 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);
+		if(updatedGame.getEstimates().size() == 0){
+			existingGame.setUsers(db.retrieveAll(new User()));
+		}
+		else{
+			existingGame.setEstimates(updatedGame.getEstimates());
+			
+		}
+		
 		
 		if(!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
@@ -185,7 +191,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * #save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Game model) throws WPISuiteException {
+	public void save(Session s, Game model){
 		if(id_count == 0){
 			final Game[] retrieved =
 							db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);

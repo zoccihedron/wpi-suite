@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.OverviewPanel;
+
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -30,24 +30,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version 1.0
  */
 public class GetGamesController implements ActionListener {
-
-	private final PlanningPokerModel model;
-	private final OverviewPanel view;
-	private final MainViewTabController mainViewController;
-	
-	/**
-	 * Construct an AddMessageController for the given model, view pair
-	 * @param model the model containing the messages
-	 * @param view the view where the user enters new messages
-	 * @param mainViewController the main view
-	 */
-	public GetGamesController(PlanningPokerModel model, 
-			OverviewPanel view, MainViewTabController mainViewController) 
-	{
-		this.model = model;
-		this.view = view;
-		this.mainViewController = mainViewController;
-	}
 
 	/* 
 	 * This method is called when the user clicks the Submit button
@@ -94,29 +76,4 @@ public class GetGamesController implements ActionListener {
 			PlanningPokerModel.getInstance().addAllGames(games);
 		}
 	}
-	
-	/**
-	 * Getter for the model
-	 * @return the model
-	 */
-	public PlanningPokerModel getModel() {
-		return model;
-	}
-
-	/**
-	 * Getter for the view
-	 * @return the view
-	 */
-	public OverviewPanel getView() {
-		return view;
-	}
-
-	/**
-	 * Getter for the mainViewController
-	 * @return the mainViewController
-	 */
-	public MainViewTabController getMainViewController() {
-		return mainViewController;
-	}
-
 }

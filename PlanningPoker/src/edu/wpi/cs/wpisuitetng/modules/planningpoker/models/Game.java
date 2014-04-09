@@ -17,6 +17,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
 
 /**
@@ -168,10 +169,12 @@ public class Game extends AbstractModel{
 		name = updatedGame.getName();
 		participants = updatedGame.getParticipants();
 		gameCreator = updatedGame.getGameCreator();
+		description = updatedGame.getDescription();
+		requirements = updatedGame.getRequirements();
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
-		estimates = updatedGame.getEstimates();
+		hasDeadline = updatedGame.isHasDeadline();
 	}
 	
 	
@@ -434,6 +437,41 @@ public class Game extends AbstractModel{
 	 */
 	public void setHasDeadline(boolean hasDeadline) {
 		this.hasDeadline = hasDeadline;
+	}
+	
+	@Override
+	public String toString(){
+		return this.getName();
+	}
+
+	/**
+	 * Finds an estimate for a game based on the requirement id
+	 *
+	 * @param reqid
+	 * @return the estimate for the given requirement ID
+	 */
+	public Estimate findEstimate(int reqid){
+		for(Estimate e: estimates){
+			if(e.getReqID() == reqid) return e;
+		}
+		return null;
+	}
+
+	/**
+	 * Sets all of the given users in the list to each of the estimates
+	 * in the game, after creating an estimate for each req
+	 *
+	 * @param list the list of users to add
+	 */
+	public void setUsers(List<User> list) {
+		for(Integer req: requirements){
+			this.addEstimate(new Estimate(req));
+		}
+		for(Estimate e: estimates){
+			for(User u: list){
+				e.addUser(u.getUsername());
+			}
+		}
 	}
 	
 	
