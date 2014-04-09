@@ -18,8 +18,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
+
+
 
 /**
  * This is a controller created for the purpose of interfacing with the main view.

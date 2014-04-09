@@ -14,9 +14,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -44,6 +41,7 @@ public class AddGameController implements ActionListener {
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param createGameInfoPanel the view where the user enters new messages
+	 * @param startingGame whether the game is being started or not
 	 */
 	public AddGameController(CreateGameInfoPanel createGameInfoPanel, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
@@ -98,6 +96,10 @@ public class AddGameController implements ActionListener {
 		view.closeNewGameTab();
 	}
 
+	/**
+	 * Sets all of the users in a project to add to a game
+	 * @param project The project
+	 */
 	public static void receivedProject(Project project) {
 		users = project.getTeam();
 	}

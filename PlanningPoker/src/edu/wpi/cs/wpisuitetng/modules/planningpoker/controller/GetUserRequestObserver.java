@@ -1,15 +1,36 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
+/**
+ * This request observer returns the project from 
+ *
+ * @author Team Code On Bleu
+ * @version Apr 9, 2014
+ */
 public class GetUserRequestObserver implements RequestObserver {
 	
-	private AddGameController gameController;
+	private final AddGameController gameController;
 	
+	/**
+	 * Constructs the GetUserRequestObserver
+	 * @param gameController the AddGameController to send the project data to
+	 */
 	public GetUserRequestObserver(AddGameController gameController)
 	{
 		this.gameController = gameController;

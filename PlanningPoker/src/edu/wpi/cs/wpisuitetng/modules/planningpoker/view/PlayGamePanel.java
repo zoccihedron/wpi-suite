@@ -27,7 +27,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 
 /**
- * TODO - add commenting
+ * This class constructs the PlayGamePanel, which displays information about the game,
+ * its requirements, and creates the estimation pane.
  * @author Codon Bleu
  * @version 1.0
  *
@@ -37,10 +38,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequiremen
 public class PlayGamePanel extends JPanel{
 
 	private GameInfoPanel gameInfoPanel;
-	private ListRequirementsPanel listRequirementsPanel;
-	private EstimationPane estimationPane;
-	private JSplitPane splitPane;
+	private final ListRequirementsPanel listRequirementsPanel;
+	private final EstimationPane estimationPane;
+	private final JSplitPane splitPane;
 
+	/**
+	 * Constructs the PlayGamePanel with the given game
+	 *
+	 * @param game the game to construct the panel
+	 */
 	public PlayGamePanel(Game game)
 	{
 		setLayout(new BorderLayout());

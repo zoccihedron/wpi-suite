@@ -17,7 +17,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.OverviewPanel;
+
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -30,17 +30,6 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version 1.0
  */
 public class GetGamesController implements ActionListener {
-
-	
-	/**
-	 * Construct an AddMessageController for the given model, view pair
-	 * @param model the model containing the messages
-	 * @param view the view where the user enters new messages
-	 * @param mainViewController the main view
-	 */
-
-	public GetGamesController() {
-	}
 
 	/* 
 	 * This method is called when the user clicks the Submit button

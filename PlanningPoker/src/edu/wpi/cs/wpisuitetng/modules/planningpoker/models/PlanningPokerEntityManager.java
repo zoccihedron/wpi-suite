@@ -191,7 +191,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * #save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Game model) throws WPISuiteException {
+	public void save(Session s, Game model){
 		if(id_count == 0){
 			final Game[] retrieved =
 							db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);

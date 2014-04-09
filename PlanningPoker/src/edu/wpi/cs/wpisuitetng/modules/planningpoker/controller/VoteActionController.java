@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
@@ -11,6 +22,13 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * The controller updates the estimate for a user, and updates
+ * the game with the estimate in the database.
+ *
+ * @author Team Codon Bleu
+ * @version Apr 9, 2014
+ */
 public class VoteActionController implements ActionListener {
 	
 	private final EstimationPane view;
@@ -19,6 +37,12 @@ public class VoteActionController implements ActionListener {
 	
 	
 	
+	/**
+	 * Constructs the VoteActionController
+	 *
+	 * @param view the Estimation Pane
+	 * @param game the game to vote in
+	 */
 	public VoteActionController(EstimationPane view, Game game){
 		this.view = view;
 		this.game = game;
@@ -29,13 +53,13 @@ public class VoteActionController implements ActionListener {
 		
 		if(!view.checkField()) return;
 		
-		String name = ConfigManager.getInstance().getConfig().getUserName();
+		final String name = ConfigManager.getInstance().getConfig().getUserName();
 		estimateValue = view.getEstimate();
 		
-		Estimate estimate = game.findEstimate(view.getReqID());
+		final Estimate estimate = game.findEstimate(view.getReqID());
 		System.out.println("Original estimate for this user: "
 				+ game.findEstimate(view.getReqID()).getEstimate(name));
-		estimate.makeEstimate(name,estimateValue);
+		estimate.makeEstimate(name, estimateValue);
 		System.out.println("Original estimate for this user: "
 				+ game.findEstimate(view.getReqID()).getEstimate(name));
 		// Send a request to the core to update this game
@@ -49,6 +73,10 @@ public class VoteActionController implements ActionListener {
 
 	}
 
+	/**
+	 * Tells the Estimation Pane to update its view with a 
+	 * success message if the estimation was made
+	 */
 	public void reportSuccess() {
 		view.reportSuccess();
 		// TODO Auto-generated method stub

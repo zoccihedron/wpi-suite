@@ -444,6 +444,12 @@ public class Game extends AbstractModel{
 		return this.getName();
 	}
 
+	/**
+	 * Finds an estimate for a game based on the requirement id
+	 *
+	 * @param reqid
+	 * @return the estimate for the given requirement ID
+	 */
 	public Estimate findEstimate(int reqid){
 		for(Estimate e: estimates){
 			if(e.getReqID() == reqid) return e;
@@ -451,15 +457,21 @@ public class Game extends AbstractModel{
 		return null;
 	}
 
+	/**
+	 * Sets all of the given users in the list to each of the estimates
+	 * in the game, after creating an estimate for each req
+	 *
+	 * @param list the list of users to add
+	 */
 	public void setUsers(List<User> list) {
 		for(Integer req: requirements){
 			this.addEstimate(new Estimate(req));
 		}
-		for(Estimate e: this.getEstimates()){
+		for(Estimate e: estimates){
 			for(User u: list){
 				e.addUser(u.getUsername());
 			}
-		}		
+		}
 	}
 	
 	

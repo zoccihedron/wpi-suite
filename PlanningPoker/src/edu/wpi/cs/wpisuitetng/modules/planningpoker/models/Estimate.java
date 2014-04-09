@@ -184,14 +184,27 @@ public class Estimate {
 		return median;
 	}
 	
+	/**
+	 * Makes an estimate for a user, if he is included in the game.
+	 *
+	 * @param user the username
+	 * @param est the ID of the requirement being scored
+	 * @return true if user is in the game, false if not
+	 */
 	public boolean makeEstimate(String user, int est){
-		if(hasUser(user)==false) return false;
+		if(!hasUser(user)) return false;
 		userWithEstimate.put(user, est);
 		return true;
 	}
 	
+	/**
+	 * Adds a user to an estimate with an initial score of 0.
+	 *
+	 * @param user the username
+	 * @return true if the user was added, false if not
+	 */
 	public boolean addUser(String user){
-		if(userWithEstimate.put(user, 0)!=null) return true;
+		if(userWithEstimate.put(user, 0) != null) return true;
 		return false;
 	}
 }

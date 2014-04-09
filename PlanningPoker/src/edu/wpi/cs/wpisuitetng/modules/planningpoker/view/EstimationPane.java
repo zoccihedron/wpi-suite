@@ -162,10 +162,14 @@ public class EstimationPane extends JPanel {
 
 	}
 
-	
-	
-	
-
+	/**
+	 * Sets the game and requirement for displaying in the deck panel and 
+	 * in the requirement information fields, and displays the old
+	 * estimate for the user if there is one
+	 *
+	 * @param reqid the requirement ID
+	 * @param game the game
+	 */
 	public void setGameAndRequirement(int reqid, Game game){
 		voteButton.addActionListener(new VoteActionController(this, game));
 
@@ -173,7 +177,7 @@ public class EstimationPane extends JPanel {
 		req = getRequirementFromId();
 		requirementName.setText(req.getName());
 		descriptionText.setText(req.getDescription());
-		deckPanel.displayOldEstimate(game,reqid);
+		deckPanel.displayOldEstimate(game, reqid);
 		System.out.println("------finish displaying old estimate");
 
 	}

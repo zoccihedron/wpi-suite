@@ -36,7 +36,7 @@ import net.sourceforge.jdatepicker.impl.UtilDateModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 /**
@@ -84,7 +84,7 @@ public class CreateGameInfoPanel extends JPanel {
 		// Adds the fields and button to the main panel.
 		gameNameText = new JTextField();
 
-		Border jtextFieldBorder = gameNameText.getBorder();
+		final Border jtextFieldBorder = gameNameText.getBorder();
 
 		description = new JTextArea();
 		description.setBorder(jtextFieldBorder);
@@ -151,7 +151,7 @@ public class CreateGameInfoPanel extends JPanel {
 		gameNameText = new JTextField();
 		gameNameText.setText(editingGame.getName());
 
-		Border jtextFieldBorder = gameNameText.getBorder();
+		final Border jtextFieldBorder = gameNameText.getBorder();
 
 		lblDescription = new JLabel("Description:");
 		description = new JTextArea();
@@ -595,7 +595,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 */
 	public int getHour() {
 		final String hourString = (String) hourSelector.getSelectedItem();
-		int hourInt = Integer.parseInt(hourString);
+		final int hourInt = Integer.parseInt(hourString);
 
 		if (rdbtnPm.isSelected()) {
 			return hourInt + 12;

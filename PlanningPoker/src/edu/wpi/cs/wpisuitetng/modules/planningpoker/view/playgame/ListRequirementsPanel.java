@@ -35,15 +35,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTre
  * 
  * @author Codon Bleu
  * @version 1.0
- *
- * @version $Revision: 1.0 $
  */
 public class ListRequirementsPanel extends JScrollPane
 implements TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
-	final private Game game;
+	private final Game game;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game

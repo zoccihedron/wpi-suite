@@ -15,7 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -35,12 +35,13 @@ public class UpdateGameController implements ActionListener {
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
-	private boolean startingGame;
+	private final boolean startingGame;
 	
 	/**
 	 * Construct an UpdateGameController for the given model, view pair
 	 * @param updatedGame the updated game
 	 * @param createGameInfoPanel the view where the user enters new messages
+	 * @param startingGame whether the game will be started or not
 	 */
 	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
@@ -84,7 +85,7 @@ public class UpdateGameController implements ActionListener {
 	 * When the new message is received back from the server, add it to the local model.
 	 * @param currentGame the game which will be updated
 	 */
-	public void addGameToModel(Game currentGame) {
+	public static void addGameToModel(Game currentGame) {
 		PlanningPokerModel.UpdateGame(currentGame);
 	}
 

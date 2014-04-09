@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.GridBagConstraints;
@@ -10,15 +21,26 @@ import javax.swing.JTextField;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
+/**
+ * This class creates the field for entering an
+ * estimation for a given requirement. 
+ *
+ * @author Codon Bleu
+ * @version Apr 9, 2014
+ */
 public class DeckPanel extends JPanel{
-	private JTextField estimateField;
+	private final JTextField estimateField;
 	
+	/**
+	 * Constructs the DeckPanel
+	 *
+	 */
 	public DeckPanel() {
 		this.setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
+		final GridBagConstraints constraints = new GridBagConstraints();
 		
 		//create JLabel and JTextField within scrollPane:
-		JLabel estimateLabel = new JLabel();
+		final JLabel estimateLabel = new JLabel();
 		estimateLabel.setText("Type your estimate here!");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
@@ -38,16 +60,23 @@ public class DeckPanel extends JPanel{
 	}
 
 	public String getEstimateField() {
-		return this.estimateField.getText();
+		return estimateField.getText();
 	}
 	
+	/**
+	 * Displays the old estimate made by the user in 
+	 * the voting text field.
+	 *
+	 * @param game the game
+	 * @param reqid the requirement ID
+	 */
 	public void displayOldEstimate(Game game, int reqid) {
 		System.out.println("--------text set for old estiamte");
 
-		String name = ConfigManager.getInstance().getConfig().getUserName();
-		int oldEstimate = game.findEstimate(reqid).getEstimate(name);
+		final String name = ConfigManager.getInstance().getConfig().getUserName();
+		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
 		System.out.println("--------old estimate value: " + oldEstimate);
-		if(oldEstimate > 0)	{
+		if(oldEstimate > 0){
 			estimateField.setText(Integer.toString(oldEstimate));
 			System.out.println("--------reached ");
 
