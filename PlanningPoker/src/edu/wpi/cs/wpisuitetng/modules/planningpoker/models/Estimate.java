@@ -38,7 +38,7 @@ public class Estimate {
 	 */
 	public Estimate(int r){
 		reqID = r;
-		userWithEstimate = new HashMap<String,Integer>();	
+		userWithEstimate = new HashMap<String,Integer>();
 	}
 	
 	/**
@@ -94,11 +94,14 @@ public class Estimate {
 	 */
 	public boolean areAllEstimationsMade()
 	{
+		boolean result = true;
 		for(Entry<String,Integer> e: userWithEstimate.entrySet())
 		{
-			if(e.getValue() == 0) return false;
+			if(e.getValue() == 0) {
+				result = false;
+			}
 		}
-		return true;
+		return result;
 	}
 	
 	/**
@@ -109,15 +112,17 @@ public class Estimate {
 	 */
 	public boolean canMakeEstimate(String user, int est)
 	{
+		boolean result = true;
 		if(!hasUser(user)) 
 		{
-			return false;
+			result = false;
 		}
 		else
 		{
 			userWithEstimate.put(user, est);
-			return true;
+			result = true;
 		}
+		return result;
 	}
 	
 	/**

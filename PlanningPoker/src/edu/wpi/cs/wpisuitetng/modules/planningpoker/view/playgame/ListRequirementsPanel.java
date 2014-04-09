@@ -29,9 +29,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 /**
- * This class is used to create a requirements tree which will be displayed in the play game pannel
+ * This class is used to create a requirements tree which will be displayed in the play game panel
  * 
  * @author Codon Bleu
+ * @version 1.0
  *
  */
 public class ListRequirementsPanel extends JScrollPane
@@ -91,8 +92,10 @@ implements TreeSelectionListener {
   */
 	public void refresh(){
 
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Requirements"); //makes a starting node
-		final List<Requirement> requirements = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final DefaultMutableTreeNode top =
+				new DefaultMutableTreeNode("Requirements"); //makes a starting node
+		final List<Requirement> requirements =
+				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		DefaultMutableTreeNode reqNode = null;
 
 		DefaultMutableTreeNode votedCategory = null;
@@ -110,10 +113,12 @@ implements TreeSelectionListener {
 		top.add(votedCategory);
 
 		tree = new JTree(top); //create the tree with the top node as the top
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+						//tell it that it can only select one thing at a time
 		tree.setToggleClickCount(0);
 
-		tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
+		tree.setCellRenderer(new CustomTreeCellRenderer());
+						//set to custom cell renderer so that icons make sense
 		tree.addTreeSelectionListener(this);
 
 		tree.setDragEnabled(true);

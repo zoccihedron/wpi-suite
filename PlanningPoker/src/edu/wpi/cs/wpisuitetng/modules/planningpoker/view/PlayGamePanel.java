@@ -16,6 +16,12 @@ import javax.swing.JPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 
+/**
+ * TODO - add commenting
+ * @author Codon Bleu
+ * @version 1.0
+ *
+ */
 
 @SuppressWarnings("serial")
 public class PlayGamePanel extends JPanel{
@@ -23,6 +29,11 @@ public class PlayGamePanel extends JPanel{
 	GameInfoPanel GameInfoPanel;
 	ListRequirementsPanel listRequirements;
 	
+	/**
+	 * TODO - create comment
+	 * @param GameInfoPanel The game info panel being used
+	 * @param listRequirements The list of requirements for this game
+	 */
 	public PlayGamePanel(GameInfoPanel GameInfoPanel, ListRequirementsPanel listRequirements ) {
 		this.GameInfoPanel = GameInfoPanel;
 		this.listRequirements = listRequirements;

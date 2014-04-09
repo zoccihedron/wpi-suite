@@ -30,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.characteristics.RequirementStatus;
 
 /** This class is the view from which the
  * user can select requirements to add to a game
@@ -396,7 +397,8 @@ public class SelectRequirementsPanel extends JPanel {
 		final List<Integer> existingReqs = 
 				getRequirementIdsFromTable(existingRequirementsTable);
 		for (Requirement req : existingRequirements) {
-			if (!(req.getIteration().equals("Backlog"))) {
+			if (!(req.getIteration().equals("Backlog")) ||
+								req.getStatus() == RequirementStatus.DELETED) {
 				if (existingReqs.contains(req.getId())) {
 					removeRowByValue(req, existingRequirementsTable);
 				} else if (pendingReqs.contains(req.getId())) {

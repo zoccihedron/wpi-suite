@@ -167,7 +167,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throw new BadRequestException("Game with ID does not exist.");
 		}
 		
-		final Game existingGame = (Game)oldGames.get(0);	
+		final Game existingGame = (Game)oldGames.get(0);
 		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);
@@ -187,7 +187,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	@Override
 	public void save(Session s, Game model) throws WPISuiteException {
 		if(id_count == 0){
-			Game[] retrieved = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+			final Game[] retrieved =
+							db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
 			if(retrieved.length == 0){
 				id_count = 1;
 			}else{
@@ -249,11 +250,9 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	}
 	
 	/**
-	 * @param retrieved
-	 * Takes in a list of games and returns an integer containing the largest id
-	 * from the games provided.
-	 * 
-	 * @return largestId
+	 * Finds the game with the largest ID in order to increment it
+	 * @param retrieved Games already in the database
+	 * @return value of largest ID
 	 */
 	public int getGameWithLargestId(Game[] retrieved){
 		int largestId = 0;

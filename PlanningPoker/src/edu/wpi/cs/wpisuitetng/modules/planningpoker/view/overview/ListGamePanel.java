@@ -14,6 +14,12 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import javax.swing.JPanel;
 
+/**
+ * TODO - add file comments, if this file is even being used anymore
+ * @author Codon Bleu
+ * @version 1.0
+ *
+ */
 public class ListGamePanel extends JPanel{
 
 }
