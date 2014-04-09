@@ -6,13 +6,8 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
-<<<<<<< HEAD
- * Creator:
- *    Team Code On Bleu
-=======
  * Contributors:
  *    Team Codon Bleu
->>>>>>> be6644e43b6e67d32f64f429e235a6c6ea431614
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
