@@ -31,10 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * @author Code On Bleu
  * @version Mar 24, 2014
  */
-/**
- * @author Bootlegger
- *
- */
 public class PlanningPokerEntityManager implements EntityManager<Game> {
 	
 	/** The database */
