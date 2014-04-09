@@ -15,18 +15,10 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.JTabbedPane;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
-import edu.wpi.cs.wpisuitetng.network.Network;
 
 
 /**
@@ -39,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.network.Network;
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-
 
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
@@ -56,33 +47,6 @@ public class MainView extends JTabbedPane {
 		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
-
-		
-		// Dummy game for testing tree layout
-		
-		Game dummyGame = new Game();
-		
-		
-		dummyGame.addEstimate(new Estimate(0));
-		dummyGame.addEstimate(new Estimate(1));
-		//dummyGame.addEstimate(new Estimate(2));
-		
-		
-		
-		
-		ListRequirementsPanel listRequirementsPanel = new ListRequirementsPanel(dummyGame);
-		//listRequirementsPanel.createAndShowGUI();
-		this.addTab("Requirements", listRequirementsPanel);
-		
-		Game testGame = new Game("Test", new Date(), new Date());
-		testGame.setId(1);
-		testGame.setHasDeadline(false);
-		ArrayList<Integer> listReqs = new ArrayList<Integer>();
-		listReqs.add(1);
-		listReqs.add(2);
-		testGame.setRequirements(listReqs);
-		NewGamePanel testEdit = new NewGamePanel(testGame);
-		this.addTab("testEdit", testEdit);
 	}
 
 	/**

@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -23,17 +24,21 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * each person and his/her estimate. If the person has not made an estimate,
  * the estimate stored will be set to default as zero. 
  * 
- * @author yyan
- * @version Mar 25, 2014
+ * @author Team Code On Bleu
+ * @version 1.0
  */
 public class Estimate {
 	
 	private int reqID;
-	private HashMap<String,Integer> userWithEstimate;
+	private final HashMap<String,Integer> userWithEstimate;
 	
+	/**
+	 * Constructor for an estimate object
+	 * @param r the requirement id
+	 */
 	public Estimate(int r){
 		reqID = r;
-		userWithEstimate = new HashMap<String,Integer>();	
+		userWithEstimate = new HashMap<String,Integer>();
 	}
 	
 	/**
@@ -46,10 +51,10 @@ public class Estimate {
 
 	/**
 	 * update new requirement
-	 * @param requirement the new requirement given
+	 * @param requirement the given requirement
 	 */
 	public void setRequirement(Requirement requirement) {
-		this.reqID = requirement.getId();
+		reqID = requirement.getId();
 	}
 	
 	/**
@@ -59,9 +64,8 @@ public class Estimate {
 	 * @param user UserInfo of the new user given
 	 * @return true if the user has been correctly added into
 	 */
-	public boolean addUser(String user){
-		if(userWithEstimate.put(user,0)!= null) return true;
-		return false;
+	public boolean canAddUser(String user){
+		return (userWithEstimate.put(user, 0) != null) ? true : false;
 	}
 	
 	/**
@@ -81,19 +85,26 @@ public class Estimate {
 	 * @return true if the user has made a valid estimation, false if not
 	 */
 	public boolean hasMadeAnEstimation(String user){
-		if(userWithEstimate.get(user)==0)	return false; 
-		return true;	
+		if(userWithEstimate.containsValue(user))
+			return (userWithEstimate.get(user) == 0) ? false : true; 
+		else
+			return false;
 	}
 		
 	/**
 	 * Check if all users have made estimations for this requirement
 	 * @return true if every user has made a valid estimation
 	 */
-	public boolean allEstimationsMade(){
-		for(Entry<String,Integer> e: userWithEstimate.entrySet()){
-			if(e.getValue()==0)	return false;
+	public boolean areAllEstimationsMade()
+	{
+		boolean result = true;
+		for(Entry<String,Integer> e: userWithEstimate.entrySet())
+		{
+			if(e.getValue() == 0) {
+				result = false;
+			}
 		}
-		return true;
+		return result;
 	}
 	
 	/**
@@ -102,10 +113,19 @@ public class Estimate {
 	 * @param est the value of estimation set by user in Integer
 	 * @return true if the data is successfully updated, false if user does not exist in this game
 	 */
-	public boolean makeEstimate(String user, int est){
-		if(hasUser(user)==false)	return false;
-		userWithEstimate.put(user,est);
-		return true;
+	public boolean canMakeEstimate(String user, int est)
+	{
+		boolean result = true;
+		if(!hasUser(user)) 
+		{
+			result = false;
+		}
+		else
+		{
+			userWithEstimate.put(user, est);
+			result = true;
+		}
+		return result;
 	}
 	
 	/**
@@ -113,7 +133,8 @@ public class Estimate {
 	 * @param user the given user
 	 * @return the estimate of the given user
 	 */
-	public int getEstimate(String user){
+	public int getEstimate(String user)
+	{
 		return userWithEstimate.get(user);
 	}
 	
@@ -123,7 +144,8 @@ public class Estimate {
 	 *
 	 * @return the mean of the estimate.
 	 */
-	public double getMean() {
+	public double getMean()
+	{
 		int sum = 0;
 		int count = 0;
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
@@ -132,26 +154,57 @@ public class Estimate {
 				sum += temp.getValue();
 			}
 		}
-		double mean = (double)sum/(double)count;
+		final double mean = (double)sum / (double)count;
 		return mean;
 	}
 	
+	/**
+	 * Generates the median of the estimates for a requirement, and
+	 * ignores any invalid estimates (0).
+	 *
+	 * @return the median of the estimate.
+	 */
 	public double getMedian() {
-		ArrayList<Integer> estimates = new ArrayList<Integer>();
+		final List<Integer> estimates = new ArrayList<Integer>();
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
 			if(temp.getValue() != 0) {
 				estimates.add(temp.getValue());
 			}
 		}
 		Collections.sort(estimates);
-		int length = estimates.size();
+		final int length = estimates.size();
 		double median = 0;
 		if(length % 2 == 0){
-			median = ((double) estimates.get(length / 2) + (double)estimates.get((length/2) - 1)) / 2.0;
+			median = ((double) estimates.get(length / 2) + 
+					(double)estimates.get((length / 2) - 1)) / 2.0;
 		}
 		else {
 			median = (double)estimates.get(length / 2);
 		}
 		return median;
+	}
+	
+	/**
+	 * Makes an estimate for a user, if he is included in the game.
+	 *
+	 * @param user the username
+	 * @param est the ID of the requirement being scored
+	 * @return true if user is in the game, false if not
+	 */
+	public boolean makeEstimate(String user, int est){
+		if(!hasUser(user)) return false;
+		userWithEstimate.put(user, est);
+		return true;
+	}
+	
+	/**
+	 * Adds a user to an estimate with an initial score of 0.
+	 *
+	 * @param user the username
+	 * @return true if the user was added, false if not
+	 */
+	public boolean addUser(String user){
+		if(userWithEstimate.put(user, 0) != null) return true;
+		return false;
 	}
 }

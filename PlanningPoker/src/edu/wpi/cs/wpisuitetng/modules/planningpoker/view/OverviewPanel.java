@@ -13,8 +13,10 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import javax.swing.JSplitPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
+
 
 
 /**
@@ -23,22 +25,26 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
  * displays the game data.
  *
  * @author Team Code On Bleu
- * @version Mar 31, 2014
+ * @version 1.0
  */
 @SuppressWarnings("serial")
 public class OverviewPanel extends JSplitPane {
-	
-	private final ListGamePanel whateverthehellwewant;
+	private final ListGamePanel listGamePanel;
 	private final GameSummaryPanel summaryPanel;
 	
 	public OverviewPanel()
+
 	{
 		summaryPanel = new GameSummaryPanel();
-		whateverthehellwewant = new ListGamePanel();
+		listGamePanel = new ListGamePanel();
+	
+		OverviewPanelController.getInstance().setGameSummary(summaryPanel);
 		
-		setLeftComponent(whateverthehellwewant);
+		setLeftComponent(listGamePanel);
+
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
+		
 	}
 }
 

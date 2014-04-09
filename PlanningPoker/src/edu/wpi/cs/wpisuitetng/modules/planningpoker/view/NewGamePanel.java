@@ -16,11 +16,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.Panel;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+
 import java.io.IOException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -35,7 +35,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CloseNewGameTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 
 
 
@@ -44,16 +43,17 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
  * This class is a JPanel. It contains all the fields needed to 
  * create a new game
  * @author Code On Bleu
+ * @version 1.0
  */
 @SuppressWarnings({"serial"})
 public class NewGamePanel extends JSplitPane {
-	public CreateGameInfoPanel createGameInfoPanel;
-	public JTabbedPane tabPane;
-	private SelectRequirementsPanel selectRequirementsPanel;
-	private JButton btnSave;
-	private JButton btnCancel;
-	private JButton btnStart;
-	private JLabel lblMessage;
+	private final CreateGameInfoPanel createGameInfoPanel;
+	private final JTabbedPane tabPane;
+	private final SelectRequirementsPanel selectRequirementsPanel;
+	private final JButton btnSave;
+	private final JButton btnCancel;
+	private final JButton btnStart;
+	private final JLabel lblMessage;
 	
 	/**
 	 * Use this constructor when starting a new game panel from scratch
@@ -67,12 +67,12 @@ public class NewGamePanel extends JSplitPane {
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Requirements", selectRequirementsPanel);
 		
-		JSplitPane topPanel = new JSplitPane();
+		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
 		topPanel.setRightComponent(tabPane);
 		topPanel.setDividerLocation(300);
 		this.setTopComponent(topPanel);
-		JPanel bottomPanel = new JPanel();
+		final JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(null);
 		
 		
@@ -81,24 +81,25 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new AddGameController(createGameInfoPanel));
+		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false));
 		
+				
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
 		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
 		bottomPanel.add(btnCancel); 
-		JButton button = new JButton("Start");
-		button.setBounds(12, 5, 118, 25);
+		btnStart = new JButton("Start");
+		btnStart.setBounds(12, 5, 118, 25);
+		btnStart.addActionListener(new AddGameController(createGameInfoPanel, true));
 		
 		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
-		//lblMessage.setBounds(26, 274, 266, 52);
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
 		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		bottomPanel.add(lblMessage);		
+		bottomPanel.add(lblMessage);
 		
-		bottomPanel.add(button);
+		bottomPanel.add(btnStart);
 		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("save-icon.png"));
@@ -106,7 +107,9 @@ public class NewGamePanel extends JSplitPane {
 		    
 		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
 		    btnCancel.setIcon(new ImageIcon(img));
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 		
 		this.setBottomComponent(bottomPanel); 
 		this.setDividerSize(0);
@@ -145,13 +148,13 @@ public class NewGamePanel extends JSplitPane {
 		tabPane = new JTabbedPane();
 		tabPane.addTab("Requirements", selectRequirementsPanel);
 		
-		JSplitPane topPanel = new JSplitPane();
+		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
 		topPanel.setRightComponent(tabPane);
 		topPanel.setDividerLocation(300);
 		topPanel.setEnabled(false);
 		this.setTopComponent(topPanel);
-		JPanel bottomPanel = new JPanel();
+		final JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(null);
 		
 		
@@ -160,24 +163,24 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame));
+		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
 		
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
 		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
 		bottomPanel.add(btnCancel); 
-		JButton button = new JButton("Start");
-		button.setBounds(12, 5, 118, 25);
+		btnStart = new JButton("Start");
+		btnStart.setBounds(12, 5, 118, 25);
+		btnStart.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, true));
 		
 		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
-		//lblMessage.setBounds(26, 274, 266, 52);
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
 		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		bottomPanel.add(lblMessage);		
+		bottomPanel.add(lblMessage);
 		
-		bottomPanel.add(button);
+		bottomPanel.add(btnStart);
 		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("save-icon.png"));
@@ -185,7 +188,9 @@ public class NewGamePanel extends JSplitPane {
 		    
 		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
 		    btnCancel.setIcon(new ImageIcon(img));
-		} catch (IOException ex) {}
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 		
 		this.setBottomComponent(bottomPanel); 
 		this.setDividerSize(0);
@@ -211,7 +216,9 @@ public class NewGamePanel extends JSplitPane {
 		});
 	}
 
-	
+	/**
+	 * resets the location of the divider
+	 */
 	public void resetDividerLocation(){
 		setDividerLocation(this.getHeight() - 35);
 	}
@@ -236,6 +243,10 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setVisible(true);
 	}
 	
+	/**
+	 * Set if the error message is visible or not
+	 * @param bool 
+	 */
 	public void setErrorMessageVisible(boolean bool){
 		lblMessage.setVisible(bool);
 	}

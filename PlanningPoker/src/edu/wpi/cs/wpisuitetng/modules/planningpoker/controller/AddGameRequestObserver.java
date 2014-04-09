@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -12,45 +12,39 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer is called when a response is received from a request
  * to the server to add a message.
  * 
  * @author Code On Bleu
- *
+ * @version 1.0
  */
 public class AddGameRequestObserver implements RequestObserver {
 	
 	private final AddGameController controller;
 	
+	/**
+	 * Sets the controller as the one passed in
+	 * @param controller to be set as the class controller
+	 */
 	public AddGameRequestObserver(AddGameController controller) {
 		this.controller = controller;
 	}
 	
-	/*
+	/**
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver
+	 * 		#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// Get the response to the given request
-		final ResponseModel response = iReq.getResponse();
-		
-		// Parse the message out of the response body
-		// TODO - force list update after getting response
-		// final PostBoardMessage message = PostBoardMessage.fromJson(response.getBody());
-		final Game returnGame = Game.fromJson(response.getBody());
-		
 		// Pass the messages back to the controller
-		controller.addGameToView(returnGame);
+		controller.addGameToView();
 		
 	}
 

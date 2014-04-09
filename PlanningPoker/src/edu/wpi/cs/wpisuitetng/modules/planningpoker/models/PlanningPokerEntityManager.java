@@ -15,7 +15,6 @@ import java.util.List;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
@@ -37,7 +36,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	/** The database */
 	Data db;
 	
-	private static int id_count;
+	private int id_count = 0;
 	
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -51,28 +50,20 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		this.db = db;
 	}
 	
+	
 	/**
 	 * Save a game session when it is received from the client
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager
+	 * #makeEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public Game makeEntity(Session s, String content)
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
-		id_count++;
-		/*
-		Game[] gameArray = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
-		
-		for(int i = 1; i < gameArray.length; i++){
-			if(gameArray[i].getId() != i){
-				newGame.setId(i);
-			}
-		}
-		*/
-		newGame.setId(id_count);
 		newGame.setGameCreator(s.getUsername());
 		newGame.setId(getAllForEveryone(s).length);
+		newGame.setUsers(db.retrieveAll(new User()));
 		if(!db.save(newGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
 		}
@@ -87,7 +78,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * @return the game matching the given ID 
 	 * @throws NotFoundException * @throws NotFoundException 
 	 * @throws NotFoundException
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager
+	 * #getEntity(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public Game[] getEntity(Session s, String id) throws NotFoundException {
@@ -104,7 +96,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if(games.length < 1 || games[0] == null) {
 			throw new NotFoundException("There are no games in the list");
 		}
-		if((games[0].getStatus()==Game.GameStatus.DRAFT)&&games[0].getGameCreator()!=s.getUsername()){
+		if((games[0].getStatus() == Game.GameStatus.DRAFT) && 
+				games[0].getGameCreator().equals(s.getUsername())){
 			throw new NotFoundException("Permission denied.");
 		}
 
@@ -120,9 +113,9 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
 	@Override
-	public Game[] getAll(Session s) throws WPISuiteException {
-		Game[] allGames = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
-		ArrayList<Game> gamesViewableByUser = new ArrayList<Game>();
+	public Game[] getAll(Session s) {
+		final Game[] allGames = db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+		final ArrayList<Game> gamesViewableByUser = new ArrayList<Game>();
 		for(Game game : allGames){
 			if(game.getStatus() == Game.GameStatus.DRAFT){
 				if(game.getGameCreator().equals(s.getUsername())){
@@ -134,7 +127,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			}
 		}
 
-		return (Game[]) gamesViewableByUser.toArray(new Game[gamesViewableByUser.size()]);
+		return gamesViewableByUser.toArray(new Game[gamesViewableByUser.size()]);
 			
 	}
 
@@ -142,11 +135,10 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * Returns all game sessions of a project
 	 * 
 	 * @param s the session
-	 * 
 	 * @return the list of games this user participates in
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#getAll(edu.wpi.cs.wpisuitetng.Session)
 	 */
-	public Game[] getAllForEveryone(Session s) throws WPISuiteException {
+	public Game[] getAllForEveryone(Session s) {
 		return db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
 	}
 	
@@ -156,7 +148,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * @param content JSON-encoded content
 	 * 
 	 * @return the updated game * @throws WPISuiteException
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager
+	 * #update(edu.wpi.cs.wpisuitetng.Session, java.lang.String)
 	 */
 	@Override
 	public Game update(Session s, String content) throws WPISuiteException {
@@ -166,15 +159,24 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		 * We have to get the original game from db4o, copy properties from updatedGame,
 		 * then save the original Game again.
 		 */
-		final List<Model> oldGames = db.retrieve(Game.class, "id", updatedGame.getId(), s.getProject());
+		final List<Model> oldGames = db.retrieve
+				(Game.class, "id", updatedGame.getId(), s.getProject());
 		if(oldGames.size() < 1 || oldGames.get(0) == null) {
 			throw new BadRequestException("Game with ID does not exist.");
 		}
 		
-		Game existingGame = (Game)oldGames.get(0);	
+		final Game existingGame = (Game)oldGames.get(0);
 		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);
+		if(updatedGame.getEstimates().size() == 0){
+			existingGame.setUsers(db.retrieveAll(new User()));
+		}
+		else{
+			existingGame.setEstimates(updatedGame.getEstimates());
+			
+		}
+		
 		
 		if(!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
@@ -185,10 +187,23 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 
 	/**
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager
+	 * #save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Game model) throws WPISuiteException {
+	public void save(Session s, Game model){
+		if(id_count == 0){
+			final Game[] retrieved =
+							db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
+			if(retrieved.length == 0){
+				id_count = 1;
+			}else{
+				id_count = getGameWithLargestId(retrieved) + 1;
+			}
+		}
+		
+		model.setId(id_count);
+		id_count++;
 		db.save(model, s.getProject());
 	}
 	
@@ -196,8 +211,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * Ensures that a user is of the specified role
 	 * @param session the session
 	 * @param role the role being verified
-	
-	 * @throws WPISuiteException user isn't authorized for the given role */
+	 * @throws WPISuiteException user isn't authorized for the given role 
+	*/
 	private void ensureRole(Session session, Role role) throws WPISuiteException {
 		final User user = (User) db.retrieve(User.class, "username", session.getUsername()).get(0);
 		if(!user.getRole().equals(role)) {
@@ -206,38 +221,57 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	}
 	
 	@Override
-	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
+	public boolean deleteEntity(Session s, String id) throws NotFoundException{
 		// TODO Implement role check for authorization of delete
 		return (db.delete(getEntity(s, id)[0]) != null) ? true : false;
 	}
 
 	@Override
-	public String advancedGet(Session s, String[] args)
-			throws WPISuiteException {
+	public String advancedGet(Session s, String[] args) throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 
 	@Override
-	public void deleteAll(Session s) throws WPISuiteException {
+	public void deleteAll(Session s) {
 		// TODO Implement role check for authorization of deleteAll
 		db.deleteAll(new Game(), s.getProject());
 	}
 
 	@Override
-	public int Count() throws WPISuiteException {
+	public int Count() {
 		return db.retrieveAll(new Game()).size();
 	}
 
 	@Override
-	public String advancedPut(Session s, String[] args, String content)
-			throws WPISuiteException {
+	public String advancedPut(Session s, String[] args, String content) 
+			throws NotImplementedException
+	{
 		throw new NotImplementedException();
 	}
 
 	@Override
 	public String advancedPost(Session s, String string, String content)
-			throws WPISuiteException {
+			throws NotImplementedException {
 		throw new NotImplementedException();
 	}
-
+	
+	/**
+	 * Finds the game with the largest ID in order to increment it
+	 * @param retrieved Games already in the database
+	 * @return value of largest ID
+	 */
+	public int getGameWithLargestId(Game[] retrieved){
+		int largestId = 0;
+		for(int i = 0; i < retrieved.length; i++){
+			if(retrieved[i].getId() > largestId){
+				largestId = retrieved[i].getId();
+			}
+		}
+		return largestId;
+	}
+	
+	public int getIdCount()
+	{
+		return id_count;
+	}
 }

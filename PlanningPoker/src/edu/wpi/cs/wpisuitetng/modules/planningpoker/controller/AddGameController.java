@@ -14,7 +14,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -34,14 +35,18 @@ public class AddGameController implements ActionListener {
 	
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
+	private static User[] users = {};
+	private boolean startingGame = false;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param createGameInfoPanel the view where the user enters new messages
+	 * @param startingGame whether the game is being started or not
 	 */
-	public AddGameController(CreateGameInfoPanel createGameInfoPanel) {
+	public AddGameController(CreateGameInfoPanel createGameInfoPanel, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
+		this.startingGame = startingGame;
 	}
 
 	/** 
@@ -52,17 +57,26 @@ public class AddGameController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// Get the text that was entered
-		if (!view.checkFields()) return;
-		
-		final Game currentGame = view.getGameObject();
-		
-		// Send a request to the core to save this game
-		final Request request = Network.getInstance().makeRequest(
-				"planningpoker/game", HttpMethod.PUT); // PUT = create
-		request.setBody(currentGame.toJSON()); // put the new message in the body of the request
-		// add an observer to process the response
-		request.addObserver(new AddGameRequestObserver(this));
-		request.send(); // send the request
+		if (view.checkFields())
+		{
+			
+			final Game currentGame = view.getGameObject();
+			
+			if(startingGame){
+				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+			}
+			else{
+				currentGame.setStatus(Game.GameStatus.DRAFT);
+			}
+
+			// Send a request to the core to save this game
+			final Request request = Network.getInstance().makeRequest(
+					"planningpoker/game", HttpMethod.PUT);
+			request.setBody(currentGame.toJSON()); // put the new message in the body of the request
+			// add an observer to process the response
+			request.addObserver(new AddGameRequestObserver(this));
+			request.send(); // send the request
+		}
 	
 	}
 
@@ -74,11 +88,19 @@ public class AddGameController implements ActionListener {
 		model.AddGame(currentGame);
 	}
 
-	public void addGameToView(Game returnGame) {
+	/**
+	 * Shows the used that the game has been saved
+	 */
+	public void addGameToView() {
 		view.reportMessage("<html>Success: Game Saved!</html>");
 		view.closeNewGameTab();
-		//view.setResultName(returnGame.getName());
-		//view.setResultId(Integer.toString(returnGame.getId()));
-		//view.setResultNumReqs(Integer.toString(returnGame.getEstimates().size()));
+	}
+
+	/**
+	 * Sets all of the users in a project to add to a game
+	 * @param project The project
+	 */
+	public static void receivedProject(Project project) {
+		users = project.getTeam();
 	}
 }

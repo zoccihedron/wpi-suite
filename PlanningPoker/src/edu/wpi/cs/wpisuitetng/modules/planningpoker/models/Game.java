@@ -26,11 +26,10 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
  * which will be used in the module.
  *
  * @author  Code On Bleu
- * @version Mar 25, 2014
+ * @version 1.0
  */
 public class Game extends AbstractModel{
 	private int id;
-	private static int numberOfIDs = 0;
 	private String name = "";
 	private String description = "";
 	private List<String> participants = new ArrayList<String>();
@@ -46,7 +45,7 @@ public class Game extends AbstractModel{
 		IN_PROGRESS("In Progress"),
 		ENDED("Ended");
 		
-		private String text; 
+		private final String text; 
         private GameStatus(String text) { 
             this.text = text; 
         } 
@@ -65,17 +64,16 @@ public class Game extends AbstractModel{
 	 * The real constructor of a game instantiation, the game creator field
 	 * of this game will be filled when the game is created
 	 * 
-	 * @param user is the user that created the session
+	 * @param name the name of the game
 	 * @param startTime start time of the game
 	 * @param endTime end time of the game
 	 * 
 	 */
 	public Game(String name, Date startTime, Date endTime) {
 		//TODO: whether a session could be add to the parameter of game's constructor
-		id = ++numberOfIDs;
 		this.name = name;
 		start = startTime;
-		end = endTime;	
+		end = endTime;
 	}
 	
 	/**
@@ -150,17 +148,15 @@ public class Game extends AbstractModel{
 	 */
 	@Override
 	public Boolean identify(Object o) {
-		if(o instanceof Integer){		
-			return (getID() == (Integer)(o));	
-			
+		boolean result = false;
+		if(o instanceof Integer){
+			result = (id == (Integer)(o));
 		} else if (o instanceof Game){
-			return (getID() == ((Game)(o)).getID());
-			
-		} else if (o instanceof String){			
-			return (Integer.toString(getID()).equals((String)o));
-			
+			result = (id == ((Game)(o)).getId());
+		} else if (o instanceof String){
+			result = (Integer.toString(id).equals((String)o));
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -173,10 +169,12 @@ public class Game extends AbstractModel{
 		name = updatedGame.getName();
 		participants = updatedGame.getParticipants();
 		gameCreator = updatedGame.getGameCreator();
+		description = updatedGame.getDescription();
+		requirements = updatedGame.getRequirements();
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
-		estimates = updatedGame.getEstimates();
+		hasDeadline = updatedGame.isHasDeadline();
 	}
 	
 	
@@ -193,12 +191,13 @@ public class Game extends AbstractModel{
 	 * @return new creator of the game
 	 * 
 	 */
-	public String changeCreator(String user){ //need test
+	public String changeCreator(String user)
+	{ // TODO need test
 		String newCreator = "";
-		if(isCreator(user)) return getGameCreator();
-		else if(isParticipant(user)){
-			for(String u: participants){
-				if(u.equals(user)){
+		if(isCreator(user)) return user;
+		else if(isParticipant(user)) {
+			for(String u: participants) {
+				if(u.equals(user)) {
 					newCreator = u;
 					participants.remove(u);
 				}
@@ -207,7 +206,7 @@ public class Game extends AbstractModel{
 		} else {
 			newCreator = user;
 		}
-		String oldCreator = gameCreator;
+		final String oldCreator = gameCreator;
 		participants.add(oldCreator);
 		gameCreator = newCreator;
 		
@@ -221,8 +220,7 @@ public class Game extends AbstractModel{
 	 * @return true if this user is the creator
 	 */
 	public boolean isCreator(String user){
-		if(gameCreator.equals(user)) return true;
-		return false;
+		return (gameCreator.equals(user)) ? true : false;
 	}
 	
 	/**
@@ -231,15 +229,20 @@ public class Game extends AbstractModel{
 	 * @param user given for checking
 	 * @return true if the given user is a participant of this game
 	 */
-	public boolean isParticipant(String user){
-		if(participants==null) return false;
-		
-		for(String temp: participants){
-			if(temp.equals(user))
-				return true;
+	public boolean isParticipant(String user) {
+		boolean result = false;
+
+		if (participants == null) {
+			result = false;
+		} else {
+			for (String temp : participants) {
+				if (temp.equals(user)) {
+					result = true;
+				}
+			}
 		}
-		
-		return false;
+
+		return result;
 	}
 		
 	/**
@@ -257,18 +260,21 @@ public class Game extends AbstractModel{
 	 * Add a new user to this game 
 	 * (by adding this user to the user list and also every estimate in estimate list)
 	 * @param user the new user to be added to this game
-	 * @return true if the user is successfully added, false if not or the user is already in the list
-	 * @throws exception if this user has no 
+	 * @return true if the user is successfully added, 
+	 * 	false if not or the user is already in the list
 	 */
 	public boolean addUser(String user){
+		boolean result = true;
 		
-		if(hasUser(user)) return false;
+		if(hasUser(user)) result = false;
 		participants.add(user);
 		
 		for(Estimate e: estimates){
-			if(!e.addUser(user))	return false;
+			if(!e.canAddUser(user)) {
+				result = false;
+			}
 		}
-		return true;
+		return result;
 		
 	}
 	
@@ -280,11 +286,11 @@ public class Game extends AbstractModel{
 	 */
 	public void addEstimate(Estimate estimate){
 		for(String u: participants){
-			estimate.addUser(u);
+			estimate.canAddUser(u);
 		}
 		//TODO: make sure that creator of the game also participate in game; 
 		//if not, changeCreator will have more things to do
-		estimate.addUser(gameCreator);
+		estimate.canAddUser(gameCreator);
 		
 		estimates.add(estimate);
 		
@@ -296,10 +302,6 @@ public class Game extends AbstractModel{
 	 */
 	public String getGameCreator() {
 		return gameCreator;
-	}
-	
-	public int getID() {
-		return id;
 	}
 	
 	public String getName() {
@@ -316,7 +318,7 @@ public class Game extends AbstractModel{
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
 	public GameStatus getStatus(){
-		Date now = Calendar.getInstance().getTime();
+		final Date now = Calendar.getInstance().getTime();
 		if(now.compareTo(end) >= 0){
 			status = GameStatus.ENDED;
 		}
@@ -342,10 +344,14 @@ public class Game extends AbstractModel{
 	 * @param start the start to set
 	 * @return false if the start time is later than end time
 	 */
-	public boolean setStart(Date s) {
-		if(s.compareTo(end) >= 0) return false;
-		this.start = s;
-		return true;
+	public boolean setStart(Date start) {
+		boolean result = true;
+		if(start.compareTo(end) >= 0)
+		{
+			result = false;
+		}
+		this.start = start;
+		return result;
 	}
 
 	/**
@@ -360,11 +366,14 @@ public class Game extends AbstractModel{
 	 * @param end the end to set
 	 * @return false if the end time is earlier than current time or the start time
 	 */
-	public boolean setEnd(Date e) {
-		Date now = Calendar.getInstance().getTime();
-		if(e.compareTo(now) <= 0 || e.compareTo(start) <= 0) return false;
-		end = e;
-		return true;
+	public boolean setEnd(Date end) {
+		boolean result = true;
+		final Date now = Calendar.getInstance().getTime();
+		if(end.compareTo(now) <= 0 || end.compareTo(start) <= 0) {
+			result = false;
+		}
+		this.end = end;
+		return result;
 	}
 	
 	public List<String> getParticipants() {
@@ -428,6 +437,41 @@ public class Game extends AbstractModel{
 	 */
 	public void setHasDeadline(boolean hasDeadline) {
 		this.hasDeadline = hasDeadline;
+	}
+	
+	@Override
+	public String toString(){
+		return this.getName();
+	}
+
+	/**
+	 * Finds an estimate for a game based on the requirement id
+	 *
+	 * @param reqid
+	 * @return the estimate for the given requirement ID
+	 */
+	public Estimate findEstimate(int reqid){
+		for(Estimate e: estimates){
+			if(e.getReqID() == reqid) return e;
+		}
+		return null;
+	}
+
+	/**
+	 * Sets all of the given users in the list to each of the estimates
+	 * in the game, after creating an estimate for each req
+	 *
+	 * @param list the list of users to add
+	 */
+	public void setUsers(List<User> list) {
+		for(Integer req: requirements){
+			this.addEstimate(new Estimate(req));
+		}
+		for(Estimate e: estimates){
+			for(User u: list){
+				e.addUser(u.getUsername());
+			}
+		}
 	}
 	
 	

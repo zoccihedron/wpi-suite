@@ -12,41 +12,46 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.List;
+
 import javax.swing.DropMode;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeSelectionModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
-import java.util.List;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 /**
- * This class is used to create a requirements tree which will be displayed in the play game pannel
+ * This class is used to create a requirements tree which will be displayed in the play game panel
  * 
  * @author Codon Bleu
- *
+ * @version 1.0
  */
 public class ListRequirementsPanel extends JScrollPane
 implements TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
+	private final Game game;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
 	 */
 	public ListRequirementsPanel(final Game game) {
 
+		this.game = game;
 		this.setViewportView(tree);
 		this.refresh();  
+		
 
 		//Create the nodes.
 		this.addComponentListener(new ComponentListener()
@@ -80,8 +85,14 @@ implements TreeSelectionListener {
 	public void valueChanged(TreeSelectionEvent e) {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)
 				tree.getLastSelectedPathComponent();
-
+		
 		if (node == null) return;
+		
+		final Object nodeInfo = node.getUserObject();
+		if(node.isLeaf()){
+		final Requirement req = (Requirement)nodeInfo;
+		PlayGameController.getInstance().updateEstimationPane(req.getId(), game);
+		}
 		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}
 
@@ -91,8 +102,10 @@ implements TreeSelectionListener {
   */
 	public void refresh(){
 
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Requirements"); //makes a starting node
-		final List<Requirement> requirements = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final DefaultMutableTreeNode top =
+				new DefaultMutableTreeNode("Requirements"); //makes a starting node
+		final List<Requirement> requirements =
+				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		DefaultMutableTreeNode reqNode = null;
 
 		DefaultMutableTreeNode votedCategory = null;
@@ -101,20 +114,27 @@ implements TreeSelectionListener {
 		for(Requirement req: requirements){
 
 			// add new node to requirement tree
+			if(game.getRequirements().contains(req.getId())){
 			reqNode = new DefaultMutableTreeNode(req);
 			votedCategory.add(reqNode);
+			}
 		}
 
 		top.add(votedCategory);
 		votedCategory = new DefaultMutableTreeNode("Voted On");
 		top.add(votedCategory);
 
+
 		tree = new JTree(top); //create the tree with the top node as the top
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); //tell it that it can only select one thing at a time
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+						//tell it that it can only select one thing at a time
 		tree.setToggleClickCount(0);
 
-		tree.setCellRenderer(new CustomTreeCellRenderer()); //set to custom cell renderer so that icons make sense
+		tree.setCellRenderer(new CustomTreeCellRenderer());
+						//set to custom cell renderer so that icons make sense
 		tree.addTreeSelectionListener(this);
+		
+		
 
 		tree.setDragEnabled(true);
 		tree.setDropMode(DropMode.ON);
@@ -123,4 +143,6 @@ implements TreeSelectionListener {
 
 		System.out.println("finished refreshing the tree");
 	}
+	
+	
 }

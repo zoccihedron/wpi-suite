@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Josh and Corey
+ *    Code On Bleu
  ******************************************************************************/
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
@@ -21,22 +21,27 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * This observer is called when a response is received from a request
  * to the server to add a message.
  * 
- * @author Josh and Corey
- *
+ * @author Code On Bleu
+ * @version 1.0
  */
 public class GetGamesRequestObserver implements RequestObserver {
 	
 	private final GetGamesController controller;
 	
+	/**
+	 * Constructor for the GetGamesRequestObserver class
+	 * @param controller
+	 */
 	public GetGamesRequestObserver(GetGamesController controller) {
 		this.controller = controller;
 	}
 	
-	/*
+	/**
 	 * Parse the message that was received from the server then pass them to
 	 * the controller.
 	 * 
-	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver
+	 * #responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
@@ -45,11 +50,10 @@ public class GetGamesRequestObserver implements RequestObserver {
 		
 		// Parse the message out of the response body
 		// TODO - force list update after getting response
-		// final PostBoardMessage message = PostBoardMessage.fromJson(response.getBody());
 		final Game[] returnGames = Game.fromJsonArray(response.getBody());
 		
 		// Pass the messages back to the controller
-		controller.receivedGames(returnGames);
+		GetGamesController.receivedGames(returnGames);
 	}
 
 	@Override
@@ -60,6 +64,14 @@ public class GetGamesRequestObserver implements RequestObserver {
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
 		System.err.println("The request to add a game failed.");
+	}
+	
+	/**
+	 * Gets the class controller
+	 */
+	public GetGamesController getGetGamesController()
+	{
+		return controller;
 	}
 
 }

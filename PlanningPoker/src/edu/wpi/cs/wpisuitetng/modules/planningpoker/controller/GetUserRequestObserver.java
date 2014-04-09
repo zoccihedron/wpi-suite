@@ -9,35 +9,35 @@
  * Creator:
  *    Code On Bleu
  ******************************************************************************/
-
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
+
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
- * This observer is called when a response is received from a request
- * to the server to add a message.
- * 
- * @author Code On Bleu
- * @version 1.0
+ * This request observer returns the project from 
+ *
+ * @author Team Code On Bleu
+ * @version Apr 9, 2014
  */
-public class UpdateGameRequestObserver implements RequestObserver {
+public class GetUserRequestObserver implements RequestObserver {
 	
-	private final UpdateGameController controller;
+	private final AddGameController gameController;
 	
 	/**
-	 * Constructor for UpdateGameRequestObserver
-	 * @param controller the controller for the class
+	 * Constructs the GetUserRequestObserver
+	 * @param gameController the AddGameController to send the project data to
 	 */
-	public UpdateGameRequestObserver(UpdateGameController controller) {
-		this.controller = controller;
+	public GetUserRequestObserver(AddGameController gameController)
+	{
+		this.gameController = gameController;
 	}
 	
 	/**
-	 * Parse the game that was received from the server then pass them to
+	 * Parse the message that was received from the server then pass them to
 	 * the controller.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver
@@ -48,22 +48,23 @@ public class UpdateGameRequestObserver implements RequestObserver {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
 		
-	
-		final Game returnGame = Game.fromJson(response.getBody());
+		// Parse the message out of the response body
+		// TODO - force list update after getting response
+		final Project project = Project.fromJSON(response.getBody());
 		
-		// Pass the game back to the controller
-		controller.returnGame(returnGame);
-		
+		// Pass the messages back to the controller
+		AddGameController.receivedProject(project);
 	}
-
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to update a game failed.");
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to update a game failed.");
+		// TODO Auto-generated method stub
+		
 	}
 
 }
