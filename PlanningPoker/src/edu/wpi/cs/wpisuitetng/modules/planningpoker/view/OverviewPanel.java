@@ -11,6 +11,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Dimension;
+
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
@@ -37,6 +39,9 @@ public class OverviewPanel extends JSplitPane {
 	{
 		summaryPanel = new GameSummaryPanel();
 		listGamePanel = new ListGamePanel();
+		
+		Dimension minimumSize = new Dimension(250, 300);
+		listGamePanel.setMinimumSize(minimumSize);
 	
 		OverviewPanelController.getInstance().setGameSummary(summaryPanel);
 		
