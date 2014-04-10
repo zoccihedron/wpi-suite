@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.VoteActionController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.GetRequirementsControllerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
