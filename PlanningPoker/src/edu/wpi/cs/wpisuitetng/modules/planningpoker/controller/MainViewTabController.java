@@ -18,6 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
 
 
 
@@ -92,6 +93,17 @@ public class MainViewTabController {
 		mainView.invalidate();
 		mainView.repaint();
 		mainView.setSelectedComponent(playGamePanel);
+	}
+	
+	/**
+	 * Creates a user preferences tab
+	 */
+	public void userPreferencesTab() {
+		final UserPreferencesPanel userPrefPanel = new UserPreferencesPanel();
+		mainView.insertTab("Preferences", userPrefPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(userPrefPanel);
 	}
 	
 	/**
