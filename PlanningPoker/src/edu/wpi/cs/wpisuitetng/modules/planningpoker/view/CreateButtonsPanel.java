@@ -11,10 +11,14 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -50,6 +54,18 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		buttonPanel.setOpaque(false);
 		
 		this.add(buttonPanel);
+		
+
+		try {
+		    Image img = ImageIO.read(getClass().getResource("card.png"));
+		    crtGameBtn.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("deck.png"));
+		    crtDeckBtn.setIcon(new ImageIcon(img));
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
 		this.setupListeners();
 	}
 	
