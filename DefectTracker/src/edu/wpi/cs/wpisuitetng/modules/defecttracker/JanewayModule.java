@@ -33,7 +33,6 @@ import edu.wpi.cs.wpisuitetng.modules.defecttracker.toolbar.ToolbarView;
  * The module consists of a single "Defects" tab.
  */
 public class JanewayModule implements IJanewayModule {
-
 	private ArrayList<JanewayTabModel> tabs;
 	public final MainTabController mainTabController;
 	public ToolbarController toolbarController;

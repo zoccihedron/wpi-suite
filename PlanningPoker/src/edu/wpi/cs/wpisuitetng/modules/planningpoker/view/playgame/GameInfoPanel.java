@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 -- WPI Suite
+ * Copyright (c) 2014 -- WPI Suite
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,8 +7,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Creator:
- *    Code On Bleu
+ *    Team Code On Bleu
  ******************************************************************************/
+
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame;
 
@@ -21,10 +22,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 
 /**
- * The panel containing the information for the game
- * @author Codon Bleu
- * @version 1.0
+ * GameInfoPanel displays the information of a game
+ * that was selected from the GameListPanel
  *
+ * @author Team Codon Bleu
+ * @version Apr 7, 2014
+
  */
 public class GameInfoPanel extends JPanel {
 	JLabel titleLabel;
@@ -35,15 +38,17 @@ public class GameInfoPanel extends JPanel {
 	public GameInfoPanel() {
 		setLayout(null);
 		
-		final JLabel titleLabel = new JLabel("Game Title");
+
+		titleLabel = new JLabel("Game Title");
 		titleLabel.setBounds(0, 0, 225, 140);
 		add(titleLabel);
 		
-		final JLabel numDoneLabel = new JLabel("Number Completed/Total Number");
+		numDoneLabel = new JLabel("Number Completed/Total Number");
 		numDoneLabel.setBounds(0, 160, 225, 140);
 		add(numDoneLabel);
 		
-		final JLabel descriptionLabel = new JLabel("Description");
+		descriptionLabel = new JLabel("Description");
+
 		descriptionLabel.setBounds(235, 11, 205, 278);
 		add(descriptionLabel);
 	}
@@ -59,6 +64,13 @@ public class GameInfoPanel extends JPanel {
 		numDoneLabel.setText(GameInfoPanel.numDone(game));
 	}
 
+
+	/**
+	 * Gets the number of requirements completed by the user in a game
+	 *
+	 * @param game the Game
+	 * @return the number of estimated requirements
+	 */
 	private static String numDone(Game game) {
 		final String temp;
 		int count = 0;

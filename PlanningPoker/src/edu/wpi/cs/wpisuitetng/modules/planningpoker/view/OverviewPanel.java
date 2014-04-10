@@ -13,8 +13,10 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import javax.swing.JSplitPane;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
+
 
 
 /**
@@ -27,18 +29,22 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
  */
 @SuppressWarnings("serial")
 public class OverviewPanel extends JSplitPane {
-	
-	private final ListGamePanel listPanel;
+	private final ListGamePanel listGamePanel;
 	private final GameSummaryPanel summaryPanel;
 	
 	public OverviewPanel()
+
 	{
 		summaryPanel = new GameSummaryPanel();
-		listPanel = new ListGamePanel();
+		listGamePanel = new ListGamePanel();
+	
+		OverviewPanelController.getInstance().setGameSummary(summaryPanel);
 		
-		setLeftComponent(listPanel);
+		setLeftComponent(listGamePanel);
+
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
+		
 	}
 }
 

@@ -17,11 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JTabbedPane;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
 
 
@@ -35,7 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabCompone
  */
 @SuppressWarnings("serial")
 public class MainView extends JTabbedPane {
-
 
 	/** The overview panel */
 	private final OverviewPanel overviewPanel;
@@ -52,30 +47,6 @@ public class MainView extends JTabbedPane {
 		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
-
-		
-		// Dummy game for testing tree layout
-		final Game dummyGame = new Game();
-		
-		
-		dummyGame.addEstimate(new Estimate(0));
-		dummyGame.addEstimate(new Estimate(1));
-		
-		
-		
-		
-		final ListRequirementsPanel listRequirementsPanel = new ListRequirementsPanel(dummyGame);
-		this.addTab("Requirements", listRequirementsPanel);
-		
-		final Game testGame = new Game("Test", new Date(), new Date());
-		testGame.setId(1);
-		testGame.setHasDeadline(false);
-		final ArrayList<Integer> listReqs = new ArrayList<Integer>();
-		listReqs.add(1);
-		listReqs.add(2);
-		testGame.setRequirements(listReqs);
-		final NewGamePanel testEdit = new NewGamePanel(testGame);
-		this.addTab("testEdit", testEdit);
 	}
 
 	/**

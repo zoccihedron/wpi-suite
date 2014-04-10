@@ -15,7 +15,6 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-
 /**
  * This is a model for the planning poker module. This model
  * contains a list of games. It extends AbstractListModel so that
@@ -26,12 +25,12 @@ import javax.swing.AbstractListModel;
  */
 @SuppressWarnings("serial")
 public class PlanningPokerModel extends AbstractListModel<Game> {
-	
+
 	// the list of all games this user could access
 	private final List<Game> games;
 	//the next available ID number for the game to be added
 	private int nextID;
-	
+
 	//the static object allow the planning poker model to become a singleton
 	private static PlanningPokerModel instance = null;
 
@@ -39,7 +38,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		games = new ArrayList<Game>();
 		nextID = 1;
 	}
-	
+
 	/**
 	 * 
 	 * @return reference to PlanningPokerModel
@@ -61,8 +60,8 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		games.add(newGame);
 		// TODO: controller.getInstance().refreshTable()/addRequirement
 	}
-	
-	
+
+
 	/**
 	 * Return the game with the given id
 	 * 
@@ -81,8 +80,8 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		}
 		return temp;
 	}
-	
-	
+
+
 	/**
 	 * Return all games stored in this model
 	 * @return all games in list
@@ -91,8 +90,8 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 		return games;
 	}
 
-	
-	
+
+
 	/**
 	 * Returns the length of the list of games
 	 * 
@@ -103,7 +102,13 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	public int getSize() {
 		return games.size();
 	}
-	
+
+
+	public List<Game> getGames()
+	{
+		return getAllGames();
+	}
+
 	/**
 	 * Returns the game at the index. This
 	 * implementation indexes in the reverse
@@ -117,7 +122,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	public Game getElementAt(int index) {
 		return games.get(games.size() - 1 - index);
 	}
-	
+
 	/**
 	 * Adds each game in the database to the PlanningPokerModel
 	 * @param games is the array of games that the database currently holds

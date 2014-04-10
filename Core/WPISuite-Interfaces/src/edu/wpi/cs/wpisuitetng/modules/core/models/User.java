@@ -51,6 +51,11 @@ public class User extends AbstractModel
 		this.role = Role.USER;
 	}
 	
+	public User()
+	{
+		
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if(other instanceof User)
