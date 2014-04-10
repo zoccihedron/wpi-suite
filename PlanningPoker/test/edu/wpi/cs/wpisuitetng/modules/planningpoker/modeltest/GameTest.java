@@ -9,16 +9,21 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
-import org.junit.*;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import static org.junit.Assert.*;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
 /**
  * Game testing class for Planning Poker
@@ -75,7 +80,52 @@ public class GameTest {
 
 	}
 	
-	
+	@Test
+	public void testEndIfAllEstimated(){
+		Game game = new Game();
+		Game endedGame = new Game();
+		Game notFinishedGame = new Game();
+		Game draftGame = new Game();
+		List<Integer> reqs = new ArrayList<Integer>();
+		List<User> users = new ArrayList<User>();
+		
+		reqs.add(0);
+		reqs.add(1);
+		
+		users.add(dummyUser);
+		users.add(dummyUser2);
+		
+		game.setRequirements(reqs);
+		game.setUsers(users);
+		
+		notFinishedGame.setRequirements(reqs);
+		game.setUsers(users);
+		
+		for(Estimate e : game.getEstimates()){
+			for(User u : users){
+				e.makeEstimate(u.getName(), 4);
+			}
+		}
+		
+		for(Estimate e: notFinishedGame.getEstimates()){
+			e.makeEstimate(dummyUser.getName(), 3);
+		}
+		
+		endedGame.setStatus(GameStatus.ENDED);
+		draftGame.setStatus(GameStatus.DRAFT);
+		
+		game.endIfAllEstimated();
+		notFinishedGame.endIfAllEstimated();
+		
+		assertEquals(notFinishedGame.getStatus(), draftGame.getStatus());
+		
+		notFinishedGame.setStatus(GameStatus.IN_PROGRESS);
+		notFinishedGame.endIfAllEstimated();
+		
+		assertEquals(notFinishedGame.getStatus(), endedGame.getStatus());
+		assertEquals(game.getStatus(), endedGame.getStatus());
+		
+	}
 
 	
 

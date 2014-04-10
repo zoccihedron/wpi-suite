@@ -474,6 +474,28 @@ public class Game extends AbstractModel{
 		}
 	}
 	
+	/**
+	 * Check if all users have estimated on all requirements. If this is true,
+	 * end the game by changing the game status enum. Otherwise do nothing. This
+	 * function should not do anything if the game is not currently being played.
+	 */
+	public void endIfAllEstimated(){
+		boolean shouldEnd = true;
+		
+		if(this.status == GameStatus.DRAFT){
+			return;
+		}
+		
+		for(Estimate estimate: this.estimates){
+			shouldEnd &= estimate.areAllEstimationsMade();
+		}
+		
+		if(shouldEnd){
+			this.status = GameStatus.ENDED;
+		}
+				
+	}
+	
 	
 	
 }
