@@ -19,7 +19,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+
 import java.util.List;
+
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -49,10 +51,9 @@ public class EstimationPane extends JPanel {
 	private final JLabel message;
 	private final JButton voteButton;
 	private int reqid;
+	
 	private Requirement req;
-
-
-
+	
 	/**
 	 * Constructor for panel
 	 * @param reqid The req to vote on
@@ -153,8 +154,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 50, 0);
 		voteButtonPanel.add(message, constraints);
-
-
+		
 		voteButton = new JButton("Vote");
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
