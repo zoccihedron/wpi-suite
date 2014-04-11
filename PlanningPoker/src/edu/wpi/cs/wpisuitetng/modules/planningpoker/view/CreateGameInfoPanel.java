@@ -33,10 +33,8 @@ import javax.swing.border.Border;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.ChangeDeadlineVisibilityController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 /**
@@ -124,7 +122,7 @@ public class CreateGameInfoPanel extends JPanel {
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline.addActionListener(new ChangeDeadline(this));
+		chckbxDeadline.addActionListener(new ChangeDeadlineVisibilityController(this));
 		chckbxDeadline.setSelected(true);
 
 		lblDescription = new JLabel("Description:");
@@ -166,7 +164,7 @@ public class CreateGameInfoPanel extends JPanel {
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline.addActionListener(new ChangeDeadline(this));
+		chckbxDeadline.addActionListener(new ChangeDeadlineVisibilityController(this));
 		lblDeadline = new JLabel("Deadline:");
 
 		// creates a date picker and sets its position
@@ -207,7 +205,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		ForceEnableOrDisableDeadline(editingGame.isHasDeadline());
 
-		chckbxDeadline.addActionListener(new ChangeDeadline(this));
+		chckbxDeadline.addActionListener(new ChangeDeadlineVisibilityController(this));
 		panelSetup();
 	}
 
