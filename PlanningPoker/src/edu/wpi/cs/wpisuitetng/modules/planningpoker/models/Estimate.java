@@ -33,7 +33,7 @@ public class Estimate {
 	
 	private int gameID;
 	private int reqID;
-	private final HashMap<String,Integer> userWithEstimate;
+	private HashMap<String,Integer> userWithEstimate;
 	
 	/**
 	 * Constructor for an estimate object
@@ -230,11 +230,17 @@ public class Estimate {
 	 * @return true if the user was added, false if not
 	 */
 	public boolean addUser(String user){
-		if(userWithEstimate.put(user, 0) != null) return true;
+		System.out.println("Adding User to estimate!");
+		if(userWithEstimate.put(user, -1) != null) return true;
 		return false;
 	}
 
-
+	public Estimate getCopy(){
+		Estimate copyEst = new Estimate(reqID, gameID);
+		copyEst.userWithEstimate = userWithEstimate;
+		return copyEst;
+	}
+	
 	public int getGameID() {
 		return gameID;
 	}

@@ -256,15 +256,19 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		
 			String returnString = "false";
 			if( string.equals("vote") ){
+				
 				final Estimate estimate = Estimate.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
 				final Estimate gameEst = game.findEstimate(estimate.getReqID());
 	
 				gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+				game.replaceEstimate(gameEst);
+					
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
 				}
 				returnString = game.toJSON();
+				db.update(Game.class, "id", game.getId(), "estimates", game.getEstimates());
 			}
 			return returnString;
 	}

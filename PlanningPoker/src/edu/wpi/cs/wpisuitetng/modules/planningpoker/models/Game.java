@@ -495,6 +495,19 @@ public class Game extends AbstractModel{
 		}
 				
 	}
+
+	public void replaceEstimate(Estimate gameEst) {
+		List<Estimate> newEstimates = new ArrayList<Estimate>();
+		for(Estimate e: estimates){
+			if(e.getReqID() == gameEst.getReqID()) {
+				newEstimates.add(gameEst);
+			}
+			else{
+				newEstimates.add(e);
+			}
+		}
+		setEstimates(newEstimates);
+	}
 	
 	
 	
