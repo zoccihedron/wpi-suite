@@ -56,6 +56,7 @@ public class GameSummaryInfoPanel extends JPanel {
 	private final JCheckBox chckbxDeadline;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
+	private final JLabel lblDeck;
 
 	/**
 	 * This constructor is to be used when starting from a new game

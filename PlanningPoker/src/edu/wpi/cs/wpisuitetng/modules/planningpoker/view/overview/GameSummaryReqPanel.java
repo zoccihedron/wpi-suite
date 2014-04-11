@@ -88,7 +88,6 @@ public class GameSummaryReqPanel extends JPanel {
 	 * @param game to get requirements from
 	 */
 	private void fillRequirementsTable(Game game){
-		//TODO Empty table before filling, maybe separate function called in updateReqSummary?
 		modelReqs = (DefaultTableModel) requirementsTable.getModel();
 		List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
@@ -98,6 +97,7 @@ public class GameSummaryReqPanel extends JPanel {
 						req.getDescription()});
 			}
 		}
+		
 	}
 	
 	/**
@@ -105,6 +105,7 @@ public class GameSummaryReqPanel extends JPanel {
 	 * @param game to get info from
 	 */
 	public void updateReqSummary(Game game){
+		
 		fillRequirementsTable(game);
 		
 	}
