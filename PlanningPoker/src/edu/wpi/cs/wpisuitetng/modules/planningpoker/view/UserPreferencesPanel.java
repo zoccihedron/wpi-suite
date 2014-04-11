@@ -16,6 +16,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -23,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * Creates the user preference panel, which allows the users to denote whether or not
@@ -34,6 +38,11 @@ import javax.swing.SwingConstants;
 public class UserPreferencesPanel extends JPanel {
 	private JTextField emailField;
 	private JTextField imField;
+	private final JButton btnSubmit;
+	private final JButton btnCancel;
+	private Pattern pattern;
+	private Matcher matcher;
+	private final String emailPattern = "[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}";
 
 	/**
 	 * Create the panel.
@@ -108,7 +117,7 @@ public class UserPreferencesPanel extends JPanel {
 		panel.add(imField, gbc_textField_1);
 		imField.setColumns(10);
 		
-		JButton btnSubmit = new JButton("Submit");
+		btnSubmit = new JButton("Submit");
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
 		gbc_btnSubmit.anchor = GridBagConstraints.NORTH;
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
@@ -117,7 +126,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_btnSubmit.gridy = 4;
 		panel.add(btnSubmit, gbc_btnSubmit);
 		
-		JButton btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Cancel");
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(0, 0, 0, 5);
 		gbc_btnCancel.anchor = GridBagConstraints.NORTH;
@@ -132,7 +141,34 @@ public class UserPreferencesPanel extends JPanel {
 		JLabel lblPreferences = new JLabel("Preferences");
 		lblPreferences.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		panel_1.add(lblPreferences);
+		
+		emailField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
+	}
+	
+	private boolean isCorrectEmailFormat(String email){
+		pattern = Pattern.compile(emailPattern);
+		matcher = pattern.matcher(email);
+		return matcher.matches();
 	}
 
 }
