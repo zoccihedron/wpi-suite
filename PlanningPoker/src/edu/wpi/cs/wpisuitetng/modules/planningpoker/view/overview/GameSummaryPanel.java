@@ -25,11 +25,13 @@ import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /** GameSummaryPanel is a class which displays the summary
@@ -41,6 +43,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 @SuppressWarnings("serial")
 public class GameSummaryPanel extends JPanel{
 	
+	//private final CreateGameInfoPanel createGameInfoPanel;
 	JLabel titleLabel;
 	JLabel deadlineLabel;
 	JLabel descriptionLabel;
@@ -50,7 +53,7 @@ public class GameSummaryPanel extends JPanel{
 	JTextArea requirementsList;
 	Game game;
 	JScrollPane scrollPane;
-	JPanel emptyPanel1, emptyPanel2;
+	JPanel emptyPanel1, emptyPanel2;	
 	
 	public GameSummaryPanel() 
 	{
@@ -123,20 +126,18 @@ public class GameSummaryPanel extends JPanel{
 		add(endGameBtn, constraints);
 		endGameBtn.setVisible(false);
 		endGameBtn.setEnabled(false);
+
 		
-		endGameBtn.addActionListener(new ActionListener () {
-		
-			public void actionPerformed(ActionEvent e)
-			{
-				final MainViewTabController mvt = MainViewTabController.getInstance();
-				mvt.playGameTab(game);
-			}
-			
-		});
-		
-		CreateGameInfoPanel createGameInfoPanel = new CreateGameInfoPanel(null);
-		
-		endGameBtn.addActionListener(new UpdateGameController(createGameInfoPanel, game, false, false));
+//		endGameBtn.addActionListener(new ActionListener () {
+//		
+//			public void actionPerformed(ActionEvent e)
+//			{
+//				game.setStatus(GameStatus.ENDED);
+//			}
+//			
+//		});
+//		
+
 		
 		
 		editGameBtn = new JButton("Edit Game");
