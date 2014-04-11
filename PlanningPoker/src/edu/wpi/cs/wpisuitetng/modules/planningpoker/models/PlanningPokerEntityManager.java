@@ -251,26 +251,22 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content) throws NotFoundException, WPISuiteException{
+	public String advancedPost(Session s, String string, String content) 
+			throws NotFoundException, WPISuiteException{
+		
+			String returnString = "false";
 			if( string.equals("vote") ){
-				System.out.println("Entered advanced post");
-				Estimate estimate = Estimate.fromJson(content);
-				System.out.println("1 --- ID: " + estimate.getGameID());
-				Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
-				System.out.println("2");
-				Estimate gameEst = game.findEstimate(estimate.getReqID());
-				System.out.println("3   Username:" + s.getUsername());
+				final Estimate estimate = Estimate.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
+				final Estimate gameEst = game.findEstimate(estimate.getReqID());
 	
 				gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
-				System.out.println("4");
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
-				}	
-				System.out.println("Exiting Advanced Post");
-				return game.toJSON();
+				}
+				returnString = game.toJSON();
 			}
-			System.out.println("Skiped");
-			return "false";
+			return returnString;
 	}
 	
 	/**
@@ -289,7 +285,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	}
 	
 	/**
-	 * Returns the id_count - a counter saying how many entities were added upon start up of PlanningPoker
+	 * Returns the id_count - a counter saying how many entities were 
+	 * added upon start up of PlanningPoker
 	 * @return id_count
 	 */
 	public int getIdCount()
