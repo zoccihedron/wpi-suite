@@ -14,6 +14,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.Component;
 
+import javax.swing.JTabbedPane;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
@@ -96,9 +98,15 @@ public class MainViewTabController {
 	}
 	
 	/**
-	 * Creates a user preferences tab
+	 * Creates a user preferences tab, but only if
+	 * there are no other preference tabs open.
 	 */
 	public void userPreferencesTab() {
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == UserPreferencesPanel.class){
+				return;
+			}
+		}
 		final UserPreferencesPanel userPrefPanel = new UserPreferencesPanel();
 		mainView.insertTab("Preferences", userPrefPanel, mainView.getTabCount());
 		mainView.invalidate();
