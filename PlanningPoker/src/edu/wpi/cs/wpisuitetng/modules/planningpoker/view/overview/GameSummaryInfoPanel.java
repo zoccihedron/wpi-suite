@@ -15,28 +15,17 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 
 /**
  * This class is a JPanel.
@@ -53,9 +42,9 @@ public class GameSummaryInfoPanel extends JPanel {
 	private final JTextArea description;
 	private final JTextField deadline;
 	private final JLabel lblDeadline;
-	private final JCheckBox chckbxDeadline;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
+	private final JScrollPane descriptionScroll;
 
 	/**
 	 * This constructor is to be used when starting from a new game
@@ -73,11 +62,14 @@ public class GameSummaryInfoPanel extends JPanel {
 		gameNameText.setEnabled(false);
 
 		final Border jtextFieldBorder = gameNameText.getBorder();
-
+		
 		description = new JTextArea();
 		description.setBorder(jtextFieldBorder);
 		description.setEnabled(false);
 		description.setAutoscrolls(true);
+		
+		descriptionScroll = new JScrollPane();
+		descriptionScroll.add(description);
 
 		deadline = new JTextField();
 		deadline.setEnabled(false);
@@ -87,12 +79,6 @@ public class GameSummaryInfoPanel extends JPanel {
 		lblName = new JLabel("Name:       ");
 
 		lblDeadline = new JLabel("Deadline:");
-
-		lblDeck = new JLabel("Deck:");
-
-		chckbxDeadline = new JCheckBox("Deadline?");
-		//chckbxDeadline.addActionListener(new ChangeDeadline(this));
-		chckbxDeadline.setSelected(true);
 
 		lblDescription = new JLabel("Description:");
 		infoPanelSetup();
@@ -110,17 +96,18 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
+		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.ipadx = 10;
 		constraints.ipady = 10;
 		add(fakePanel1, constraints);
+		
 		final JPanel fakePanel2 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
+		constraints.weighty = 1.0;
 		constraints.gridx = 4;
 		constraints.gridy = 0;
 		constraints.ipadx = 10;
@@ -149,6 +136,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		add(lblName, constraints);
+		lblName.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -169,25 +157,22 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridy = 10;
 		add(lblDescription, constraints);
 
+		
+		JScrollPane scrollPane = new JScrollPane(description); 
+		description.setEditable(false);
+		
 		// DESCRIPTION
 		description.setLineWrap(true);
 		constraints.fill = GridBagConstraints.BOTH;
+		
+		// DESCRIPTION SCROLL
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
-		constraints.weightx = 0.90;
-		constraints.weighty = 0.90;
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
 		constraints.gridx = 1;
 		constraints.gridy = 11;
-		add(description, constraints);
-
-
-		// DEADLINE CHECKBOX
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 3;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 1;
-		constraints.gridy = 5;
-		add(chckbxDeadline, constraints);
+		add(scrollPane, constraints);
 
 		// DEADLINE LABEL
 		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -199,8 +184,9 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridy = 6;
 		constraints.anchor = GridBagConstraints.WEST;
 		add(lblDeadline, constraints);
+		lblDeadline.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		// DATE PICKER
+		// DEADLINE FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
@@ -221,8 +207,12 @@ public class GameSummaryInfoPanel extends JPanel {
 	public void updateInfoSummary(Game game){
 		gameNameText.setText(game.getName());
 		description.setText(game.getDescription());
-		chckbxDeadline.setEnabled(game.isHasDeadline());
-		deadline.setText(game.getEnd().toString());
+		if(game.isHasDeadline()){
+			deadline.setText(game.getEnd().toString());
+		}
+		else{
+			deadline.setText("This game has no deadline.");
+		}
 	}
 
 	

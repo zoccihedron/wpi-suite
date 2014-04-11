@@ -21,16 +21,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
-
-import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
-import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
-import net.sourceforge.jdatepicker.impl.UtilDateModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -45,6 +38,8 @@ public class GameSummaryReqPanel extends JPanel {
 
 	private JTable requirementsTable = null;
 	private DefaultTableModel modelReqs;
+	private String[] columnNames = { "ID", "Name", "Description"};
+	private Object[][] data = new Object[][] {};
 
 	/**
 	 * This constructor is to be used when starting from a new game
@@ -56,9 +51,6 @@ public class GameSummaryReqPanel extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		
-		// Top section of panel
-		final String[] columnNames = { "ID", "Name", "Description" };
-		final Object[][] data = {};
 				
 		requirementsTable = new JTable(new DefaultTableModel(data,columnNames) {
 			public boolean isCellEditable(int row, int column){
@@ -68,15 +60,15 @@ public class GameSummaryReqPanel extends JPanel {
 		
 
 		// Hide the column with IDs
-		requirementsTable.removeColumn(requirementsTable
-				.getColumnModel().getColumn(0));
+		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
+		
 		
 		final JScrollPane requirementsTablePanel = new JScrollPane(requirementsTable);
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 1;
-		constraints.weightx = 1;
-		constraints.weighty = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		add(requirementsTablePanel, constraints);
@@ -88,7 +80,15 @@ public class GameSummaryReqPanel extends JPanel {
 	 * @param game to get requirements from
 	 */
 	private void fillRequirementsTable(Game game){
-		//TODO Empty table before filling, maybe separate function called in updateReqSummary?
+		// Set to new empty model to empty table
+		requirementsTable.setModel(new DefaultTableModel(data,columnNames) {
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		});
+		// Hide the column with IDs
+		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
+		
 		modelReqs = (DefaultTableModel) requirementsTable.getModel();
 		List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
@@ -99,6 +99,7 @@ public class GameSummaryReqPanel extends JPanel {
 			}
 		}
 	}
+	
 	
 	/**
 	 * fills fields on this panel with info specific to game 
