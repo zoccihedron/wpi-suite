@@ -22,7 +22,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -80,6 +79,7 @@ public class GameSummaryReqPanel extends JPanel {
 	 * @param game to get requirements from
 	 */
 	private void fillRequirementsTable(Game game){
+
 		// Set to new empty model to empty table
 		requirementsTable.setModel(new DefaultTableModel(data,columnNames) {
 			public boolean isCellEditable(int row, int column){
@@ -88,7 +88,7 @@ public class GameSummaryReqPanel extends JPanel {
 		});
 		// Hide the column with IDs
 		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
-		
+	
 		modelReqs = (DefaultTableModel) requirementsTable.getModel();
 		List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
@@ -98,6 +98,7 @@ public class GameSummaryReqPanel extends JPanel {
 						req.getDescription()});
 			}
 		}
+		
 	}
 	
 	
@@ -106,6 +107,7 @@ public class GameSummaryReqPanel extends JPanel {
 	 * @param game to get info from
 	 */
 	public void updateReqSummary(Game game){
+		
 		fillRequirementsTable(game);
 		
 	}

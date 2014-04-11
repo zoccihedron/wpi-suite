@@ -88,6 +88,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipady = 10;
 		add(reqPanel, constraints);
 		
+
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.SOUTHEAST;
 		constraints.gridwidth = 1;
