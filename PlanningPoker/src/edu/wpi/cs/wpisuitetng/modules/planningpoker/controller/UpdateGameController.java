@@ -53,6 +53,8 @@ public class UpdateGameController implements ActionListener {
 	/**
 	 * This method is called when the user clicks the Submit button
 	 * 
+	 * TODO add proper verification of view being a game object.
+	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override

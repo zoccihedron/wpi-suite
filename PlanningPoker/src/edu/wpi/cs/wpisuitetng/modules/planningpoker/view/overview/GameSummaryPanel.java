@@ -44,11 +44,11 @@ public class GameSummaryPanel extends JPanel{
 	JLabel descriptionLabel;
 	JButton playGameBtn;
 	JButton editGameBtn;
+	JButton endGameBtn;
 	JTextArea requirementsList;
 	Game game;
 	JScrollPane scrollPane;
 	JPanel emptyPanel1, emptyPanel2;
-	
 	
 	public GameSummaryPanel() 
 	{
@@ -98,6 +98,18 @@ public class GameSummaryPanel extends JPanel{
 		//playGameBtn.setBounds(327, 265, 117, 29);
 		add(playGameBtn, constraints);
 		playGameBtn.setEnabled(false);
+		
+		endGameBtn = new JButton("End Game");
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		constraints.ipady = 0;
+		add(endGameBtn, constraints);
+		endGameBtn.setVisible(false);
+		endGameBtn.setEnabled(false);
 		
 		playGameBtn.addActionListener(new ActionListener () {
 		
@@ -191,10 +203,15 @@ public class GameSummaryPanel extends JPanel{
 		if(game.getStatus().equals(GameStatus.IN_PROGRESS)) 
 		{
 			playGameBtn.setEnabled(true);
+			if (game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
+				playGameBtn.setVisible(true);
+				playGameBtn.setEnabled(true);
+			}
 		}
-		else
+		if(game.getStatus().equals(GameStatus.ENDED))
 		{
 			playGameBtn.setEnabled(false);
+			playGameBtn.setVisible(false);
 		}
 	}
 

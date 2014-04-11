@@ -58,7 +58,6 @@ public class Game extends AbstractModel{
 	private GameStatus status = GameStatus.DRAFT;
 	
 	//TODO: timestamp, countdown or time for deadline, estimate, boolean for termination
-
 	
 	/**
 	 * The real constructor of a game instantiation, the game creator field
@@ -295,7 +294,6 @@ public class Game extends AbstractModel{
 		estimates.add(estimate);
 		
 	}
-
 	
 	/**
 	 * @return the gameCreator
