@@ -38,6 +38,7 @@ public class Estimate {
 	/**
 	 * Constructor for an estimate object
 	 * @param r the requirement id
+	 * @param gameID the game to be associate with the estimate
 	 */
 	public Estimate(int r, int gameID){
 		reqID = r;
@@ -90,10 +91,12 @@ public class Estimate {
 	 * @return true if the user has made a valid estimation, false if not
 	 */
 	public boolean hasMadeAnEstimation(String user){
-		if(userWithEstimate.containsValue(user))
+		if(userWithEstimate.containsValue(user)){
 			return (userWithEstimate.get(user) == 0) ? false : true; 
-		else
+		}
+		else{
 			return false;
+		}
 	}
 		
 	/**
@@ -105,7 +108,7 @@ public class Estimate {
 		boolean result = true;
 		for(Entry<String,Integer> e: userWithEstimate.entrySet())
 		{
-			if(e.getValue() == 0) {
+			if(e.getValue() <= 0) {
 				result = false;
 			}
 		}
@@ -235,27 +238,36 @@ public class Estimate {
 		return false;
 	}
 
+	/**
+	 * Generates a copy of the current estimate
+	 * @return copiedEstimate
+	 */
 	public Estimate getCopy(){
-		Estimate copyEst = new Estimate(reqID, gameID);
-		copyEst.userWithEstimate = userWithEstimate;
+		final Estimate copyEst = new Estimate(reqID, gameID);
+		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
 		return copyEst;
 	}
 	
+	/**
+	 * Gets the current game id associated with the estimate
+	 * @return gameID
+	 */
 	public int getGameID() {
 		return gameID;
 	}
 
-
+	/**
+	 * sets the game id associated with the current estimate
+	 * @param gameID
+	 */
 	public void setGameID(int gameID) {
 		this.gameID = gameID;
 	}
 
-
-	public HashMap<String, Integer> getUserWithEstimate() {
-		return userWithEstimate;
-	}
-
-
+	/**
+	 * Set the requirement id for the estimate
+	 * @param reqID
+	 */
 	public void setReqID(int reqID) {
 		this.reqID = reqID;
 	}
