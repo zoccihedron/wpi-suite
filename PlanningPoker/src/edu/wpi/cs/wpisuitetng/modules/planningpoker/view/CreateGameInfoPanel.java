@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -33,10 +34,8 @@ import javax.swing.border.Border;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.ChangeDeadline;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 /**
@@ -83,7 +82,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		// Adds the fields and button to the main panel.
 		gameNameText = new JTextField();
-
+		gameNameText.setText("Game " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date()));
 		final Border jtextFieldBorder = gameNameText.getBorder();
 
 		description = new JTextArea();
@@ -125,8 +124,8 @@ public class CreateGameInfoPanel extends JPanel {
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(new ChangeDeadline(this));
-		chckbxDeadline.setSelected(true);
-
+		chckbxDeadline.setSelected(false);
+		EnableOrDisableDeadline();
 		lblDescription = new JLabel("Description:");
 		panelSetup();
 	}
