@@ -25,9 +25,11 @@ import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /** GameSummaryPanel is a class which displays the summary
@@ -97,7 +99,18 @@ public class GameSummaryPanel extends JPanel{
 		constraints.ipady = 0;
 		//playGameBtn.setBounds(327, 265, 117, 29);
 		add(playGameBtn, constraints);
+		playGameBtn.setEnabled(true);
 		playGameBtn.setEnabled(false);
+		
+		playGameBtn.addActionListener(new ActionListener () {
+			
+			public void actionPerformed(ActionEvent e)
+			{
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+				mvt.playGameTab(game);
+			}
+			
+		});
 		
 		endGameBtn = new JButton("End Game");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -111,7 +124,7 @@ public class GameSummaryPanel extends JPanel{
 		endGameBtn.setVisible(false);
 		endGameBtn.setEnabled(false);
 		
-		playGameBtn.addActionListener(new ActionListener () {
+		endGameBtn.addActionListener(new ActionListener () {
 		
 			public void actionPerformed(ActionEvent e)
 			{
@@ -120,6 +133,11 @@ public class GameSummaryPanel extends JPanel{
 			}
 			
 		});
+		
+		CreateGameInfoPanel createGameInfoPanel = new CreateGameInfoPanel(null);
+		
+		endGameBtn.addActionListener(new UpdateGameController(createGameInfoPanel, game, false, false));
+		
 		
 		editGameBtn = new JButton("Edit Game");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -187,31 +205,60 @@ public class GameSummaryPanel extends JPanel{
 		final String appendedReqs = GameSummaryPanel.getRequirementNames(game);
 		requirementsList.setText(appendedReqs);
 		
-		// if the game is a draft and the user is the creator
-		// allow it to be editable
-		if(game.getStatus().equals(GameStatus.DRAFT) && 
-				game.getGameCreator().equals(ConfigManager.getConfig().getUserName()))
-		{
-			editGameBtn.setEnabled(true);
-		}
-		else
-		{
-			editGameBtn.setEnabled(false);
-		}
-		
-		// if the game is started
-		if(game.getStatus().equals(GameStatus.IN_PROGRESS)) 
-		{
-			playGameBtn.setEnabled(true);
-			if (game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
+		// Controls whether the buttons are enabled/disabled and visible/invisible.
+		// The buttons start, edit, or end the game.
+		// playGameBtn, editGameBtn, and endGameBtn
+		// If the user is the game creator.
+		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
+			// If the game is a draft.
+			if(game.getStatus().equals(GameStatus.DRAFT)) {
+				playGameBtn.setVisible(true);
+				playGameBtn.setEnabled(false);
+				editGameBtn.setVisible(true);
+				editGameBtn.setEnabled(true);
+				endGameBtn.setVisible(true);
+				endGameBtn.setEnabled(false);
+			}
+			// If the game is in progress.
+			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				playGameBtn.setVisible(true);
 				playGameBtn.setEnabled(true);
+				editGameBtn.setVisible(true);
+				editGameBtn.setEnabled(false);
+				endGameBtn.setVisible(true);
+				endGameBtn.setEnabled(true);
+			}
+			// If the game is ended.
+			else {
+				playGameBtn.setVisible(true);
+				playGameBtn.setEnabled(false);
+				editGameBtn.setVisible(true);
+				editGameBtn.setEnabled(false);
+				endGameBtn.setVisible(true);
+				endGameBtn.setEnabled(false);
 			}
 		}
-		if(game.getStatus().equals(GameStatus.ENDED))
-		{
-			playGameBtn.setEnabled(false);
-			playGameBtn.setVisible(false);
+		// If the user is not the game creator.
+		else {
+			// Users cannot see the drafts of other users.
+			// If the game is in progress.
+			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
+				playGameBtn.setVisible(true);
+				playGameBtn.setEnabled(true);
+				editGameBtn.setVisible(false);
+				editGameBtn.setEnabled(false);
+				endGameBtn.setVisible(false);
+				endGameBtn.setEnabled(false);
+			}
+			// If the game is ended.
+			else {
+				playGameBtn.setVisible(true);
+				playGameBtn.setEnabled(false);
+				editGameBtn.setVisible(false);
+				editGameBtn.setEnabled(false);
+				endGameBtn.setVisible(false);
+				endGameBtn.setEnabled(false);
+			}
 		}
 	}
 
