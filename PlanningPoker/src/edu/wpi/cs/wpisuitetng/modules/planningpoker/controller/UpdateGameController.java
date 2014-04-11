@@ -43,6 +43,7 @@ public class UpdateGameController implements ActionListener {
 	 * @param updatedGame the updated game
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 * @param startingGame whether the game will be started or not
+	 * @param endingGame whether the game will be ended or not
 	 */
 	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame, boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
