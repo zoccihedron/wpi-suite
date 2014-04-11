@@ -56,7 +56,7 @@ public class PlanningPokerModel extends AbstractListModel<Game> {
 	 * @param newGame the new game to be added to the list
 	 */
 	public void AddGame(Game newGame) {
-		newGame.setId(nextID++);
+		//newGame.setId(nextID++);
 		games.add(newGame);
 		// TODO: controller.getInstance().refreshTable()/addRequirement
 	}

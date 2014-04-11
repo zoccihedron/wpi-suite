@@ -441,7 +441,7 @@ public class Game extends AbstractModel{
 	
 	@Override
 	public String toString(){
-		return this.getName();
+		return getName();
 	}
 
 	/**
@@ -465,7 +465,7 @@ public class Game extends AbstractModel{
 	 */
 	public void setUsers(List<User> list) {
 		for(Integer req: requirements){
-			this.addEstimate(new Estimate(req));
+			this.addEstimate(new Estimate(req, id));
 		}
 		for(Estimate e: estimates){
 			for(User u: list){
@@ -482,19 +482,20 @@ public class Game extends AbstractModel{
 	public void endIfAllEstimated(){
 		boolean shouldEnd = true;
 		
-		if(this.status == GameStatus.DRAFT){
+		if(status == GameStatus.DRAFT){
 			return;
 		}
 		
-		for(Estimate estimate: this.estimates){
+		for(Estimate estimate: estimates){
 			shouldEnd &= estimate.areAllEstimationsMade();
 		}
 		
 		if(shouldEnd){
-			this.status = GameStatus.ENDED;
+			status = GameStatus.ENDED;
 		}
 				
 	}
+
 	
 	
 	
