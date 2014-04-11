@@ -64,8 +64,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		newGame.setGameCreator(s.getUsername());
 		newGame.setUsers(db.retrieveAll(new User()));
 		save(s, newGame);
-		return (Game) db.retrieve
-				(Game.class, "id", newGame.getId(), s.getProject()).get(0);
+		return db.retrieve
+				(Game.class, "id", newGame.getId(), s.getProject()).toArray(new Game[0])[0];
 	}
 
 	/**
@@ -189,7 +189,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager
 	 * #save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
-	@Override
 	public void save(Session s, Game model) throws WPISuiteException{
 		if(id_count == 0){
 			final Game[] retrieved =
@@ -204,7 +203,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		System.out.println("id count:" + id_count);
 		model.setId(id_count);
 		id_count++;
-		if(db.save(model, s.getProject())) {
+		if(!db.save(model, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
 		}
 	}
