@@ -63,6 +63,7 @@ public class AddGameController implements ActionListener {
 			final Game currentGame = view.getGameObject();
 			
 			if(startingGame){
+				// TODO send email to notify team
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
 			}
 			else{
@@ -102,5 +103,10 @@ public class AddGameController implements ActionListener {
 	 */
 	public static void receivedProject(Project project) {
 		users = project.getTeam();
+	}
+	
+	public User[] getUsers()
+	{
+		return users;
 	}
 }
