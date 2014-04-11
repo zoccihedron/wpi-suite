@@ -318,10 +318,7 @@ public class Game extends AbstractModel{
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
 	public GameStatus getStatus(){
-		final Date now = Calendar.getInstance().getTime();
-		if(now.compareTo(end) >= 0){
-			status = GameStatus.ENDED;
-		}
+		updateStatus();
 		return status;
 	}
 	
@@ -330,6 +327,18 @@ public class Game extends AbstractModel{
 	 */
 	public void setStatus(GameStatus newStatus){
 		status = newStatus;
+	}
+	
+	/**
+	 * Checks if the deadline has passed and updates the status
+	 */
+	public void updateStatus() {
+		if(hasDeadline) {
+			final Date now = Calendar.getInstance().getTime();
+			if(now.compareTo(end) >= 0){
+				status = GameStatus.ENDED;
+			}
+		}
 	}
 
 	/**
