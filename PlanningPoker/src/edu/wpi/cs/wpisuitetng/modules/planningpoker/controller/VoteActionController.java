@@ -56,20 +56,17 @@ public class VoteActionController implements ActionListener {
 		final String name = ConfigManager.getInstance().getConfig().getUserName();
 		estimateValue = view.getEstimate();
 		
-		final Estimate estimate = game.findEstimate(view.getReqID());
-		System.out.println("Original estimate for this user: "
-				+ game.findEstimate(view.getReqID()).getEstimate(name));
+		final Estimate oldEstimate = game.findEstimate(view.getReqID());
+		oldEstimate.makeEstimate(name, estimateValue);
+		Estimate estimate = new Estimate(view.getReqID(), game.getId());
+		estimate.addUser(name);
 		estimate.makeEstimate(name, estimateValue);
-		System.out.println("Original estimate for this user: "
-				+ game.findEstimate(view.getReqID()).getEstimate(name));
 		// Send a request to the core to update this game
-		final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.POST); // POST == update
-		request.setBody(game.toJSON()); // put the new message in the body of the request
+		System.out.println("Sending estimates----Username:" + name);
+		final Request request = Network.getInstance().makeRequest("Advanced/planningpoker/game/vote", HttpMethod.POST); // POST == update
+		request.setBody(estimate.toJSON()); // put the new message in the body of the request
 		request.addObserver(new VoteActionObserver(this)); // add an observer to process the response
 		request.send(); // send the request
-		
-		
-		
 
 	}
 

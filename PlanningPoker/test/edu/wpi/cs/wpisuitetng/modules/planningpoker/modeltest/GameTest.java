@@ -55,7 +55,7 @@ public class GameTest {
 		dummyUser2 = new User("Bill", "bill", "abc123", 1);
 		
 		
-		Estimate est1 = new Estimate(1);		
+		Estimate est1 = new Estimate(1, game1.getId());		
 		game1.addEstimate(est1);
 		
 		est1.addUser(dummyUser.getUsername());

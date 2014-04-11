@@ -465,7 +465,7 @@ public class Game extends AbstractModel{
 	 */
 	public void setUsers(List<User> list) {
 		for(Integer req: requirements){
-			this.addEstimate(new Estimate(req));
+			this.addEstimate(new Estimate(req, id));
 		}
 		for(Estimate e: estimates){
 			for(User u: list){

@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
@@ -29,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class Estimate {
 	
+	private int gameID;
 	private int reqID;
 	private final HashMap<String,Integer> userWithEstimate;
 	
@@ -36,10 +39,12 @@ public class Estimate {
 	 * Constructor for an estimate object
 	 * @param r the requirement id
 	 */
-	public Estimate(int r){
+	public Estimate(int r, int gameID){
 		reqID = r;
+		this.gameID = gameID;
 		userWithEstimate = new HashMap<String,Integer>();
 	}
+	
 	
 	/**
 	 * Get requirement of this estimate
@@ -105,6 +110,27 @@ public class Estimate {
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * Converts the estimate to JSON-encoded string
+	 * 
+	 * @return JSON-encoded string
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
+	 */
+	public String toJSON() {
+		return new Gson().toJson(this, Estimate.class);
+	}
+	
+	/**
+	 * Returns an estimate from JSON encoded string
+	 *
+	 * @param json JSON-encoded string
+	 * @return Estimate
+	 */
+	public static Estimate fromJson(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, Estimate.class);
 	}
 	
 	/**
@@ -206,5 +232,25 @@ public class Estimate {
 	public boolean addUser(String user){
 		if(userWithEstimate.put(user, 0) != null) return true;
 		return false;
+	}
+
+
+	public int getGameID() {
+		return gameID;
+	}
+
+
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
+	}
+
+
+	public HashMap<String, Integer> getUserWithEstimate() {
+		return userWithEstimate;
+	}
+
+
+	public void setReqID(int reqID) {
+		this.reqID = reqID;
 	}
 }

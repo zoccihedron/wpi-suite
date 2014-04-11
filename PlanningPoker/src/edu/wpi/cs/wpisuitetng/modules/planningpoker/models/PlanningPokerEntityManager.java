@@ -62,12 +62,10 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws WPISuiteException {
 		final Game newGame = Game.fromJson(content);
 		newGame.setGameCreator(s.getUsername());
-		newGame.setId(getAllForEveryone(s).length);
 		newGame.setUsers(db.retrieveAll(new User()));
-		if(!db.save(newGame, s.getProject())) {
-			throw new WPISuiteException("Save was not successful");
-		}
-		return newGame;
+		save(s, newGame);
+		return (Game) db.retrieve
+				(Game.class, "id", newGame.getId(), s.getProject()).get(0);
 	}
 
 	/**
@@ -187,11 +185,12 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 
 	/**
 	 * 
+	 * @throws WPISuiteException 
 	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager
 	 * #save(edu.wpi.cs.wpisuitetng.Session, edu.wpi.cs.wpisuitetng.modules.Model)
 	 */
 	@Override
-	public void save(Session s, Game model){
+	public void save(Session s, Game model) throws WPISuiteException{
 		if(id_count == 0){
 			final Game[] retrieved =
 							db.retrieveAll(new Game(), s.getProject()).toArray(new Game[0]);
@@ -202,9 +201,12 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			}
 		}
 		
+		System.out.println("id count:" + id_count);
 		model.setId(id_count);
 		id_count++;
-		db.save(model, s.getProject());
+		if(db.save(model, s.getProject())) {
+			throw new WPISuiteException("Save was not successful");
+		}
 	}
 	
 	/**
@@ -250,9 +252,26 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	}
 
 	@Override
-	public String advancedPost(Session s, String string, String content)
-			throws NotImplementedException {
-		throw new NotImplementedException();
+	public String advancedPost(Session s, String string, String content) throws NotFoundException, WPISuiteException{
+			if( string.equals("vote") ){
+				System.out.println("Entered advanced post");
+				Estimate estimate = Estimate.fromJson(content);
+				System.out.println("1 --- ID: " + estimate.getGameID());
+				Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
+				System.out.println("2");
+				Estimate gameEst = game.findEstimate(estimate.getReqID());
+				System.out.println("3   Username:" + s.getUsername());
+	
+				gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+				System.out.println("4");
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}	
+				System.out.println("Exiting Advanced Post");
+				return game.toJSON();
+			}
+			System.out.println("Skiped");
+			return "false";
 	}
 	
 	/**
