@@ -61,7 +61,7 @@ public class NewGamePanel extends JSplitPane {
 	public NewGamePanel() {
 		super(JSplitPane.VERTICAL_SPLIT);
 		createGameInfoPanel = new CreateGameInfoPanel(this);
-		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
+		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		
 		tabPane = new JTabbedPane();

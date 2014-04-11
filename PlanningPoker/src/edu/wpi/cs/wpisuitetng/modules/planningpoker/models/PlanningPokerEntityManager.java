@@ -270,6 +270,10 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		return largestId;
 	}
 	
+	/**
+	 * Returns the id_count - a counter saying how many entities were added upon start up of PlanningPoker
+	 * @return id_count
+	 */
 	public int getIdCount()
 	{
 		return id_count;

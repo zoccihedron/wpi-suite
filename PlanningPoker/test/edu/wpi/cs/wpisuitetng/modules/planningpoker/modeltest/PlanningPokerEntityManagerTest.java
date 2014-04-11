@@ -52,7 +52,7 @@ public class PlanningPokerEntityManagerTest {
 	
 	
 	@BeforeClass
-	public static void setUp(){
+	public static void setUp() throws WPISuiteException{
 		
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
 		Date start = new Date();
@@ -85,11 +85,10 @@ public class PlanningPokerEntityManagerTest {
 		game.setGameCreator(dummyUser.getUsername());
 		game2.setGameCreator(dummyUser.getUsername());
 		game3.setGameCreator(dummyUser.getUsername());
-		/*
+		
 		manager.save(s1, game);
 		manager.save(s1, game2);
 		manager.save(s1, game3);
-		*/
 
 		db.save(dummyUser);
 		
@@ -113,7 +112,7 @@ public class PlanningPokerEntityManagerTest {
 			PermissionDenied = true;
 		}
 		assertTrue(PermissionDenied);
-		assertEquals(exceptionMessage,"Permission denied.");
+		assertEquals("Permission denied.", exceptionMessage);
 		
 		boolean PermissionAllowed = true;
 		try{
@@ -132,14 +131,14 @@ public class PlanningPokerEntityManagerTest {
 		boolean successfulRetrievalByNotOwner = true;
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s1,"10");
+			Game[] retrievedGames = manager.getEntity(s1,"0");
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByOwner = false;
 		}
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s2,"10");
+			Game[] retrievedGames = manager.getEntity(s2,"0");
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByNotOwner = false;
@@ -153,14 +152,14 @@ public class PlanningPokerEntityManagerTest {
 	public void AddGameEntityToDatabaseTest() throws WPISuiteException{
 		Game newGame = manager.makeEntity(s1, game3.toJSON());
 		assertEquals("game3", newGame.getName());
-		Game newGameRetrieved = (Game) db.retrieve(Game.class, "id", 10).get(0);
+		Game newGameRetrieved = (Game) db.retrieve(Game.class, "id", 2).get(0);
 		assertTrue(game3.getName().equals(newGameRetrieved.getName()));
 	}
 	
 	
 	@Test
 	public void GetGameEntityFromDatabase() throws NotFoundException, WPISuiteException{
-		Game[] retrieved = manager.getEntity(s1, "10");
+		Game[] retrieved = manager.getEntity(s1, "1");
 		assertSame(game3, retrieved[0]);
 	}
 	

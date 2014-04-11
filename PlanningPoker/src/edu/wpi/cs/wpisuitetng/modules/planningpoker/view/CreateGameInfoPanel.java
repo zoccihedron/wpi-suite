@@ -89,6 +89,7 @@ public class CreateGameInfoPanel extends JPanel {
 		description = new JTextArea();
 		description.setBorder(jtextFieldBorder);
 
+
 		lblTitle = new JLabel("Game Information");
 
 		lblName = new JLabel("Name:       ");
@@ -153,8 +154,10 @@ public class CreateGameInfoPanel extends JPanel {
 
 		final Border jtextFieldBorder = gameNameText.getBorder();
 
+
 		lblDescription = new JLabel("Description:");
 		description = new JTextArea();
+		description.setBorder(jtextFieldBorder);
 		description.setText(editingGame.getDescription());
 		description.setBorder(jtextFieldBorder);
 

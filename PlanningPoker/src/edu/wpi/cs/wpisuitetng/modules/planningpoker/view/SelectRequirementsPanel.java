@@ -78,7 +78,11 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(btnNewRequirement, constraints);
 
 		existingRequirementsTable = new JTable(new DefaultTableModel(data,
-				columnNames));
+				columnNames) {
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		});
 		
 		existingRequirementsTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
@@ -184,7 +188,11 @@ public class SelectRequirementsPanel extends JPanel {
 		final Object[][] addData = {};
 
 		requirementsToAddTable = new JTable(new DefaultTableModel(addData,
-				addColumnNames));
+				addColumnNames){
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		});
 
 		requirementsToAddTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
