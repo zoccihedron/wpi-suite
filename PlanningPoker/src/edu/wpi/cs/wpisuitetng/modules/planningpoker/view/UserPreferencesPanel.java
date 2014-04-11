@@ -16,6 +16,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +31,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateUserPreferenceObserver;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * Creates the user preference panel, which allows the users to denote whether or not
@@ -58,6 +69,7 @@ public class UserPreferencesPanel extends JPanel {
 		+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private boolean emailVerified = true;
 	private final boolean imVerified = true;
+	private UserPreferencesPanel userPreferencesPane = this;
 
 	/**
 	 * Create the panel.
@@ -160,6 +172,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_btnCancel.gridy = 4;
 		preferencesPanel.add(btnCancel, gbc_btnCancel);
 		
+		
 		titlePanel = new JPanel();
 		add(titlePanel, BorderLayout.NORTH);
 		
@@ -216,6 +229,41 @@ public class UserPreferencesPanel extends JPanel {
 				}
 				
 			}
+		});
+		
+		btnCancel.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mainViewTabController = MainViewTabController.getInstance();
+				mainViewTabController.closeTab(userPreferencesPane);
+	
+			}
+			
+		});
+		
+		btnSubmit.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				User dummyUser = new User();
+					
+				dummyUser.setIdNum(0);
+				dummyUser.setUserName("Username");
+				dummyUser.setName("Name");
+				dummyUser.setRole(Role.USER);
+				dummyUser.setEmail(emailField.getText());
+				dummyUser.setIM(imField.getText());
+				dummyUser.setAllowEmail(checkBoxEmail.isSelected());
+				dummyUser.setAllowIM(checkBoxIM.isSelected());
+				Request request = Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
+						request.setBody(dummyUser.toJSON());
+				request.addObserver(new UpdateUserPreferenceObserver());
+				request.send();
+
+			}
+			
 		});
 
 	}
