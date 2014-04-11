@@ -6,11 +6,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
+ * Creator:
  *    Code On Bleu
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -24,20 +24,20 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @author Code On Bleu
  * @version 1.0
  */
-public class GetGamesRequestObserver implements RequestObserver {
+public class UpdateGameRequestObserver implements RequestObserver {
 	
-	private final GetGamesController controller;
+	private final UpdateGameController controller;
 	
 	/**
-	 * Constructor for the GetGamesRequestObserver class
-	 * @param controller
+	 * Constructor for UpdateGameRequestObserver
+	 * @param controller the controller for the class
 	 */
-	public GetGamesRequestObserver(GetGamesController controller) {
+	public UpdateGameRequestObserver(UpdateGameController controller) {
 		this.controller = controller;
 	}
 	
 	/**
-	 * Parse the message that was received from the server then pass them to
+	 * Parse the game that was received from the server then pass them to
 	 * the controller.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver
@@ -48,30 +48,22 @@ public class GetGamesRequestObserver implements RequestObserver {
 		// Get the response to the given request
 		final ResponseModel response = iReq.getResponse();
 		
-		// Parse the message out of the response body
-		// TODO - force list update after getting response
-		final Game[] returnGames = Game.fromJsonArray(response.getBody());
+	
+		final Game returnGame = Game.fromJson(response.getBody());
 		
-		// Pass the messages back to the controller
-		GetGamesController.receivedGames(returnGames);
+		// Pass the game back to the controller
+		controller.returnGame(returnGame);
+		
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to add a game failed.");
+		System.err.println("The request to update a game failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to add a game failed.");
-	}
-	
-	/**
-	 * Gets the class controller
-	 */
-	public GetGamesController getGetGamesController()
-	{
-		return controller;
+		System.err.println("The request to update a game failed.");
 	}
 
 }

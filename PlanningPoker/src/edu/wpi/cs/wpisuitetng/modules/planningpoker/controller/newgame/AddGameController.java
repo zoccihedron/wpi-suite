@@ -10,10 +10,11 @@
  *    Code On Bleu
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;

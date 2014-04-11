@@ -24,7 +24,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.PlayGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;

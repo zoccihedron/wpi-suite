@@ -316,10 +316,7 @@ public class Game extends AbstractModel{
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
 	public GameStatus getStatus(){
-		final Date now = Calendar.getInstance().getTime();
-		if(now.compareTo(end) >= 0){
-			status = GameStatus.ENDED;
-		}
+		updateStatus();
 		return status;
 	}
 	
@@ -328,6 +325,18 @@ public class Game extends AbstractModel{
 	 */
 	public void setStatus(GameStatus newStatus){
 		status = newStatus;
+	}
+	
+	/**
+	 * Checks if the deadline has passed and updates the status
+	 */
+	public void updateStatus() {
+		if(hasDeadline) {
+			final Date now = Calendar.getInstance().getTime();
+			if(now.compareTo(end) >= 0){
+				status = GameStatus.ENDED;
+			}
+		}
 	}
 
 	/**
@@ -470,6 +479,28 @@ public class Game extends AbstractModel{
 				e.addUser(u.getUsername());
 			}
 		}
+	}
+	
+	/**
+	 * Check if all users have estimated on all requirements. If this is true,
+	 * end the game by changing the game status enum. Otherwise do nothing. This
+	 * function should not do anything if the game is not currently being played.
+	 */
+	public void endIfAllEstimated(){
+		boolean shouldEnd = true;
+		
+		if(this.status == GameStatus.DRAFT){
+			return;
+		}
+		
+		for(Estimate estimate: this.estimates){
+			shouldEnd &= estimate.areAllEstimationsMade();
+		}
+		
+		if(shouldEnd){
+			this.status = GameStatus.ENDED;
+		}
+				
 	}
 	
 	

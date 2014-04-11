@@ -18,9 +18,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-
 import java.io.IOException;
-
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -31,9 +29,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.AddGameController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.CloseNewGameTabController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.AddGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.CloseNewGameTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 
