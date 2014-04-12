@@ -60,6 +60,7 @@ public class UserPreferencesPanel extends JPanel {
 	private JTextField imField;
 	private final JLabel lblTitle;
 	private final JLabel lblAllow;
+	private final JLabel lblUserInfo;
 	private final JLabel lblEmailCheck;
 	private JLabel lblIMCheck;
 	private final JLabel lblEmail;
@@ -76,81 +77,86 @@ public class UserPreferencesPanel extends JPanel {
 	private boolean emailVerified = true;
 	private boolean imVerified = true;
 	private UserPreferencesPanel userPreferencesPane = this;
-	private JLabel lblCurrentEmail;
-	private JLabel lblCurrentIm;
 
 	/**
 	 * Create the panel.
 	 */
 	public UserPreferencesPanel() {
 		setLayout(new BorderLayout(0, 0));
+		
 
 		preferencesPanel = new JPanel();
 		add(preferencesPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_panel = new GridBagLayout();
+		
 		gbl_panel.columnWidths = new int[]{21, 31, 86, 40, 86, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{39, 21, 33, 21, 23, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		preferencesPanel.setLayout(gbl_panel);
-
+		
+		lblUserInfo = new JLabel("User name: " + ConfigManager.getInstance().getConfig().getUserName());
+		lblUserInfo.setVerticalAlignment(SwingConstants.BOTTOM);
+		GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
+		gbc_lblUserInfo.insets = new Insets(0, 0, 5, 5);
+		gbc_lblUserInfo.gridwidth = 3;
+		gbc_lblUserInfo.gridx = 1;
+		gbc_lblUserInfo.gridy = 0;
+		preferencesPanel.add(lblUserInfo, gbc_lblUserInfo);
+		
+		
 		lblAllow = new JLabel("Allow:");
 		lblAllow.setVerticalAlignment(SwingConstants.BOTTOM);
 		GridBagConstraints gbc_lblAllow = new GridBagConstraints();
 		gbc_lblAllow.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAllow.gridx = 1;
-		gbc_lblAllow.gridy = 0;
+		gbc_lblAllow.gridy = 1;
 		preferencesPanel.add(lblAllow, gbc_lblAllow);
 
 		checkBoxEmail = new JCheckBox("");
 		GridBagConstraints gbc_checkBox = new GridBagConstraints();
+		gbc_checkBox.fill = GridBagConstraints.CENTER;
 		gbc_checkBox.anchor = GridBagConstraints.WEST;
 		gbc_checkBox.insets = new Insets(0, 0, 5, 5);
 		gbc_checkBox.gridx = 1;
-		gbc_checkBox.gridy = 1;
+		gbc_checkBox.gridy = 2;
 		preferencesPanel.add(checkBoxEmail, gbc_checkBox);
 
 		lblEmail = new JLabel("Email: ");
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
+		gbc_lblEmail.fill = GridBagConstraints.CENTER;
 		gbc_lblEmail.anchor = GridBagConstraints.WEST;
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.gridx = 2;
-		gbc_lblEmail.gridy = 1;
+		gbc_lblEmail.gridy = 2;
 		preferencesPanel.add(lblEmail, gbc_lblEmail);
 
 		emailField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.CENTER;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 1;
+		gbc_textField.gridy = 2;
 		preferencesPanel.add(emailField, gbc_textField);
 		emailField.setColumns(10);
 		emailField.setEnabled(false);
 
 		lblEmailCheck = new JLabel("Error*");
 		GridBagConstraints gbc_lblEmailCheck = new GridBagConstraints();
+		gbc_lblEmailCheck.anchor = GridBagConstraints.WEST;
 		gbc_lblEmailCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmailCheck.gridx = 4;
-		gbc_lblEmailCheck.gridy = 1;
+		gbc_lblEmailCheck.gridy = 2;
 		lblEmailCheck.setVisible(false);
 		preferencesPanel.add(lblEmailCheck, gbc_lblEmailCheck);
 		
-		lblCurrentEmail = new JLabel("Current Email:");
-		lblCurrentEmail.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_lblCurrentEmail = new GridBagConstraints();
-		gbc_lblCurrentEmail.insets = new Insets(0, 0, 5, 0);
-		gbc_lblCurrentEmail.gridx = 7;
-		gbc_lblCurrentEmail.gridy = 1;
-		lblCurrentEmail.setVisible(false);
-		preferencesPanel.add(lblCurrentEmail, gbc_lblCurrentEmail);
-
 		checkBoxIM = new JCheckBox("");
 		GridBagConstraints gbc_checkBox_1 = new GridBagConstraints();
 		gbc_checkBox_1.anchor = GridBagConstraints.WEST;
 		gbc_checkBox_1.insets = new Insets(0, 0, 5, 5);
 		gbc_checkBox_1.gridx = 1;
-		gbc_checkBox_1.gridy = 2;
+		gbc_checkBox_1.gridy = 3;
 		preferencesPanel.add(checkBoxIM, gbc_checkBox_1);
 
 		lblIM = new JLabel("IM: ");
@@ -158,7 +164,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_IM.anchor = GridBagConstraints.WEST;
 		gbc_IM.insets = new Insets(0, 0, 5, 5);
 		gbc_IM.gridx = 2;
-		gbc_IM.gridy = 2;
+		gbc_IM.gridy = 3;
 		preferencesPanel.add(lblIM, gbc_IM);
 
 		imField = new JTextField();
@@ -166,35 +172,27 @@ public class UserPreferencesPanel extends JPanel {
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_1.gridx = 3;
-		gbc_textField_1.gridy = 2;
+		gbc_textField_1.gridy = 3;
 		preferencesPanel.add(imField, gbc_textField_1);
 		imField.setColumns(10);
 		imField.setEnabled(false);
 		
 		lblIMCheck = new JLabel("Error*");
 		GridBagConstraints gbc_lblIMCheck = new GridBagConstraints();
+		gbc_lblIMCheck.anchor = GridBagConstraints.WEST;
 		gbc_lblIMCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIMCheck.gridx = 4;
-		gbc_lblIMCheck.gridy = 2;
+		gbc_lblIMCheck.gridy = 3;
 		lblIMCheck.setVisible(false);
 		preferencesPanel.add(lblIMCheck, gbc_lblIMCheck);
 		
-		lblCurrentIm = new JLabel("Current IM:");
-		GridBagConstraints gbc_lblCurrentIm = new GridBagConstraints();
-		gbc_lblCurrentIm.insets = new Insets(0, 0, 5, 0);
-		gbc_lblCurrentIm.gridx = 7;
-		gbc_lblCurrentIm.gridy = 2;
-		lblCurrentIm.setVisible(false);
-		preferencesPanel.add(lblCurrentIm, gbc_lblCurrentIm);
-		
-
 		btnSubmit = new JButton("Submit");
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
 		gbc_btnSubmit.anchor = GridBagConstraints.NORTH;
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSubmit.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSubmit.gridx = 2;
-		gbc_btnSubmit.gridy = 4;
+		gbc_btnSubmit.gridy = 5;
 		preferencesPanel.add(btnSubmit, gbc_btnSubmit);
 
 		btnCancel = new JButton("Cancel");
@@ -203,13 +201,12 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_btnCancel.anchor = GridBagConstraints.NORTH;
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancel.gridx = 3;
-		gbc_btnCancel.gridy = 4;
+		gbc_btnCancel.gridy = 5;
 		preferencesPanel.add(btnCancel, gbc_btnCancel);
 
 
 		titlePanel = new JPanel();
 		add(titlePanel, BorderLayout.NORTH);
-
 		lblTitle = new JLabel("User Preferences");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titlePanel.add(lblTitle);
@@ -418,7 +415,7 @@ public class UserPreferencesPanel extends JPanel {
 			return;
 		}
 		if(!isCorrectEmailFormat(email)){
-			lblEmailCheck.setText("<html>Error: Email is not formatted correctly.<html>");
+			lblEmailCheck.setText("<html>*Error: Email is not formatted correctly.<html>");
 			lblEmailCheck.setVisible(true);
 			emailVerified = false;
 			configSubmitButton();
@@ -446,7 +443,7 @@ public class UserPreferencesPanel extends JPanel {
 			return;
 		}
 		if(!isCorrectIMFormat(IM)){
-			lblIMCheck.setText("<html>Error: IM contain spaces.<html>");
+			lblIMCheck.setText("<html>*Error: IM contain spaces.<html>");
 			lblIMCheck.setVisible(true);
 			imVerified = false;
 			configSubmitButton();

@@ -53,8 +53,9 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		
 		buttonPanel.add(crtGameBtn);
 		buttonPanel.add(crtDeckBtn);
-		buttonPanel.add(Box.createHorizontalStrut(50));
 		buttonPanel.add(userPrefBtn);
+		buttonPanel.add(Box.createHorizontalStrut(50));
+		
 		buttonPanel.setOpaque(false);
 		
 		this.add(buttonPanel);
@@ -66,6 +67,11 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		    
 		    img = ImageIO.read(getClass().getResource("deck.png"));
 		    crtDeckBtn.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("gear.png"));
+		    userPrefBtn.setIcon(new ImageIcon(img));
+
+		    
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
