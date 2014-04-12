@@ -30,14 +30,15 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
-/** GameSummaryPanel is a class which displays the summary
- * of a game that can be chosen to edit and/or play by a user
+/**
+ * GameSummaryPanel is a class which displays the summary of a game that can be
+ * chosen to edit and/or play by a user
  * 
  * @author Team Code On Bleu
  * @version 1.0
  */
 @SuppressWarnings("serial")
-public class GameSummaryPanel extends JPanel{
+public class GameSummaryPanel extends JPanel {
 
 	//private final CreateGameInfoPanel createGameInfoPanel;
 	JLabel titleLabel;
@@ -53,6 +54,7 @@ public class GameSummaryPanel extends JPanel{
 
 	public GameSummaryPanel() 
 	{
+
 		this.setLayout(new GridBagLayout());
 
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -124,18 +126,6 @@ public class GameSummaryPanel extends JPanel{
 		endGameBtn.setEnabled(false);
 
 
-		//		endGameBtn.addActionListener(new ActionListener () {
-		//		
-		//			public void actionPerformed(ActionEvent e)
-		//			{
-		//				game.setStatus(GameStatus.ENDED);
-		//			}
-		//			
-		//		});
-		//		
-
-
-
 		editGameBtn = new JButton("Edit Game");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
@@ -189,7 +179,7 @@ public class GameSummaryPanel extends JPanel{
 	}
 
 	/** Function which takes a game as a parameter and
-	 * updates the summary of the game that is displayed
+	 *  updates the summary of the game that is displayed
 	 * 
 	 * @param gme the game to update the panel information with
 	 */
@@ -259,6 +249,7 @@ public class GameSummaryPanel extends JPanel{
 		}
 	}
 
+
 	/** Function which returns a string with all requirement names
 	 * for the given game appended (with new lines) into ones
 	 * string
@@ -266,6 +257,7 @@ public class GameSummaryPanel extends JPanel{
 	 * @param game holds the requirements that will be returned
 	 * @return String of appended requirement names for the game
 	 */
+
 	private static String getRequirementNames(Game game) {
 		String temp = "";
 
@@ -277,7 +269,6 @@ public class GameSummaryPanel extends JPanel{
 				temp += r.getName() + "\n";
 			}
 		}
-
 		return temp;
 	}
 }

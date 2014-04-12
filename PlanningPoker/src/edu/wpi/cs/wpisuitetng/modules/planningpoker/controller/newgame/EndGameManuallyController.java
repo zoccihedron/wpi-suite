@@ -6,6 +6,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -14,7 +15,8 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * TODO - comment this!
+ * This controller responds when the user clicks the End Game button by
+ * sending the contents of the fields to the server as an Ended Game.
  * @author Codon Bleu
  *
  */
@@ -22,16 +24,19 @@ public class EndGameManuallyController implements ActionListener {
 	
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
-	private Game updatedGame;
+	private Game endedGame;
 	private final boolean endingGame;
 
 	
-	public EndGameManuallyController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean endingGame) {
+	public EndGameManuallyController(CreateGameInfoPanel createGameInfoPanel, Game endedGame, boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
-		this.updatedGame = updatedGame;
+		this.endedGame = endedGame;
 		this.endingGame = endingGame;
 	}
+	
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -56,10 +61,40 @@ public class EndGameManuallyController implements ActionListener {
 			// put the updated game in the body of the request
 			request.setBody(currentGame.toJSON());
 			// add an observer to process the response
-			request.addObserver(new UpdateGameRequestObserver(this));
+			request.addObserver(new EndGameManuallyRequestObserver(this));
 			request.send(); // send the request
 		}
 
 	}
 
+	/**
+	 * Updates the ended game to the game passed in
+	 * @param returnGame
+	 */
+	public void returnGame(Game returnGame) {
+		endedGame = returnGame;
+		view.reportMessage("<html>Success: Game Ended!</html>");
+	}
+
+	/**
+	 * When the new message is received back from the server, add it to the local model.
+	 * @param currentGame the game which will be updated
+	 */
+	public static void addGameToModel(Game currentGame) {
+		PlanningPokerModel.UpdateGame(currentGame);
+	}
+	
+	/**
+	 * Getter for the updatedGame
+	 */
+	public Game getUpdatedGame()
+	{
+		return endedGame;
+	}
+	
+	public boolean isEndingGame() {
+		return endingGame;
+	}
+
+	
 }
