@@ -9,7 +9,7 @@
  * Creator:
  *    Code On Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
