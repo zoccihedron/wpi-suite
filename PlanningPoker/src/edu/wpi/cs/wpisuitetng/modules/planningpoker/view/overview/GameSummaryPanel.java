@@ -12,17 +12,22 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
@@ -41,6 +46,8 @@ public class GameSummaryPanel extends JPanel {
 	private final GameSummaryReqPanel reqPanel;
 	private final JButton editGameButton;
 	private final JButton playGameButton;
+	private final JButton endGameButton;
+	private final JLabel reportMessage;
 	JPanel buttonsPanel;
 	Game game;
 	
@@ -54,11 +61,50 @@ public class GameSummaryPanel extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 
 		buttonsPanel = new JPanel();
+		buttonsPanel.setLayout(new GridBagLayout());
 
+		reportMessage = new JLabel();
+		reportMessage.setText("     ");
+		reportMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
+		reportMessage.setVisible(true);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 0);
+		buttonsPanel.add(reportMessage, constraints);
+		
 		editGameButton = new JButton("Edit");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 0);
+		buttonsPanel.add(editGameButton, constraints);
+		
 		playGameButton = new JButton("Play");
-		buttonsPanel.add(editGameButton);
-		buttonsPanel.add(playGameButton);
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 0);
+		buttonsPanel.add(playGameButton, constraints);
+		
+		endGameButton = new JButton("End Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 0);
+		buttonsPanel.add(endGameButton, constraints);
+		
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
+		
+		
 		
 		infoPanel = new GameSummaryInfoPanel();
 		infoPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
@@ -128,27 +174,78 @@ public class GameSummaryPanel extends JPanel {
 	public void updateSummary(Game game){
 		this.game = game;
 		
-		if(game.getStatus()==(GameStatus.DRAFT)){
-			playGameButton.setEnabled(false);
+		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
+			//make all buttons visible
+			editGameButton.setVisible(true);
+			endGameButton.setVisible(true);
+			
+			// If the game is a draft.
+			if(game.getStatus().equals(GameStatus.DRAFT)) {
+				playGameButton.setEnabled(false);
+				editGameButton.setEnabled(true);
+				endGameButton.setEnabled(false);
+			}
+			// If the game is in progress.
+			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
+				playGameButton.setEnabled(true);
+				editGameButton.setEnabled(false);
+				endGameButton.setEnabled(true);
+			}
+			// If the game is ended.
+			else {
+				playGameButton.setEnabled(false);
+				editGameButton.setEnabled(false);
+				endGameButton.setEnabled(false);
+			}
 		}
-		else{
-			playGameButton.setEnabled(true);
+		// If the user is not the game creator.
+		else {			
+			// disable all instances of edit and end game
+			editGameButton.setVisible(false);
+			editGameButton.setEnabled(false);
+			endGameButton.setVisible(false);
+			endGameButton.setEnabled(false);
+			
+			// Users cannot see the drafts of other users.
+			// If the game is in progress.
+			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
+				playGameButton.setEnabled(true);
+
+			}
+			// If the game is ended.
+			else {
+				playGameButton.setEnabled(false);
+			}
 		}
 		
-		if(game.getStatus()==GameStatus.ENDED){
-			playGameButton.setEnabled(false);
-			editGameButton.setEnabled(false);
-		}
-		else{
-			playGameButton.setEnabled(true);
-			editGameButton.setEnabled(true);
-		}
+		// play game button is always visible
+		playGameButton.setVisible(true);
 		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
+
+	}
+	
+	public Game getGameObject() {
+		return game;
 	}
 
+	public void reportError(String string) {
+		reportMessage.setText(string);
+		reportMessage.setForeground(Color.RED);
+	}
+	
+	public void reportSuccess(String string) {
+		reportMessage.setText(string);
+		reportMessage.setForeground(Color.BLUE);
+	}
 	
 }
 
-	
+
+
+
+
+
+
+

@@ -15,7 +15,7 @@ import java.awt.Dimension;
 
 import javax.swing.JSplitPane;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 

@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c) 2014 -- WPI Suite
  *
@@ -17,6 +18,9 @@ import java.awt.event.ComponentListener;
 import java.util.List;
 
 
+
+
+
 import javax.swing.DropMode;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -26,8 +30,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
+
+
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
@@ -177,3 +184,4 @@ implements TreeSelectionListener {
 		System.out.println("finished refreshing the tree");
 	}
 }
+
