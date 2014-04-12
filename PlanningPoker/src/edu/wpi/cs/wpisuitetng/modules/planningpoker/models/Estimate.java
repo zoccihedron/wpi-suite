@@ -91,10 +91,15 @@ public class Estimate {
 	 * @return true if the user has made a valid estimation, false if not
 	 */
 	public boolean hasMadeAnEstimation(String user){
-		if(userWithEstimate.containsValue(user)){
-			return (userWithEstimate.get(user) == 0) ? false : true; 
+		for(String str : userWithEstimate.keySet()){
+			System.out.println("User: " + str);
+		}
+		if(userWithEstimate.containsKey(user)){
+			System.out.println("CONTAINS: " + userWithEstimate.get(user));
+			return (userWithEstimate.get(user) > 0); 
 		}
 		else{
+			System.out.println("DOES NOT CONTAIN");
 			return false;
 		}
 	}

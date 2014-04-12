@@ -63,7 +63,6 @@ public class VoteActionController implements ActionListener {
 			estimate.makeEstimate(name, estimateValue);
 			
 			// Send a request to the core to update this game
-			System.out.println("Sending estimates----Username:" + name);
 			final Request request = Network.getInstance().makeRequest(
 					"Advanced/planningpoker/game/vote", 
 					HttpMethod.POST); // POST is update
