@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;

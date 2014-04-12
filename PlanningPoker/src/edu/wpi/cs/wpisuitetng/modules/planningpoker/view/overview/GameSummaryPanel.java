@@ -28,6 +28,7 @@ import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -124,6 +125,8 @@ public class GameSummaryPanel extends JPanel {
 		endGameBtn.setVisible(false);
 		endGameBtn.setEnabled(false);
 		
+		endGameBtn.addActionListener(new EndGameManuallyController(this, game, true));
+		
 		reportMessage = new JLabel();
 		reportMessage.setText("     ");
 		reportMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
@@ -200,6 +203,7 @@ public class GameSummaryPanel extends JPanel {
 		descriptionLabel.setText("Description: " + game.getDescription());
 		final String appendedReqs = GameSummaryPanel.getRequirementNames(game);
 		requirementsList.setText(appendedReqs);
+		reportMessage.setText("     ");
 
 		// Controls whether the buttons are enabled/disabled and visible/invisible.
 		// The buttons start, edit, or end the game.
