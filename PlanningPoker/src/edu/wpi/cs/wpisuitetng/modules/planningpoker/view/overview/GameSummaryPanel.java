@@ -121,32 +121,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipady = 10;
 		add(buttonsPanel, constraints);
 		
-		// TODO
-		/*
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(endGameBtn, constraints);
-		endGameBtn.setVisible(false);
-		endGameBtn.setEnabled(false);
-		
-		reportMessage.setText("testtesttest     ");
-		reportMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		reportMessage.setVisible(true);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 1;
-		constraints.gridy = 3;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 0);
-		add(reportMessage, constraints);
-		//end TODO
-		*/
 		
 		editGameButton.addActionListener(new ActionListener () {
 			@Override
@@ -251,29 +225,3 @@ public class GameSummaryPanel extends JPanel {
 		reportMessage.setForeground(Color.BLUE);
 	}
 }
-
-// TODO if no problems, delete everything beneath this
-	/** Function which returns a string with all requirement names
-	 * for the given game appended (with new lines) into ones
-	 * string
-	 * 
-	 * @param game holds the requirements that will be returned
-	 * @return String of appended requirement names for the game
-	 */
-/*
-	private static String getRequirementNames(Game game) {
-		String temp = "";
-
-		RequirementManagerFacade.getInstance();
-		final List<Requirement> reqs =
-						RequirementManagerFacade.getInstance().getPreStoredRequirements();
-		for(Requirement r : reqs)
-		{
-			if(game.getRequirements().contains(r.getId())){
-				temp += r.getName() + "\n";
-			}
-		}
-		return temp;
-	}
-
-}*/
