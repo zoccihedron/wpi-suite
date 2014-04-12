@@ -25,13 +25,9 @@ import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /** GameSummaryPanel is a class which displays the summary
@@ -42,7 +38,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 @SuppressWarnings("serial")
 public class GameSummaryPanel extends JPanel{
-	
+
 	//private final CreateGameInfoPanel createGameInfoPanel;
 	JLabel titleLabel;
 	JLabel deadlineLabel;
@@ -54,13 +50,13 @@ public class GameSummaryPanel extends JPanel{
 	Game game;
 	JScrollPane scrollPane;
 	JPanel emptyPanel1, emptyPanel2;	
-	
+
 	public GameSummaryPanel() 
 	{
 		this.setLayout(new GridBagLayout());
-		
+
 		final GridBagConstraints constraints = new GridBagConstraints();
-		
+
 		titleLabel = new JLabel("Title");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
@@ -71,7 +67,7 @@ public class GameSummaryPanel extends JPanel{
 		constraints.ipady = 10;
 		//titleLabel.setBounds(6, 6, 295, 56);
 		add(titleLabel, constraints);
-		
+
 		deadlineLabel = new JLabel("Deadline");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
@@ -81,7 +77,7 @@ public class GameSummaryPanel extends JPanel{
 		constraints.gridy = 0;
 		//deadlineLabel.setBounds(313, 6, 131, 56);
 		add(deadlineLabel, constraints);
-		
+
 		descriptionLabel = new JLabel("Description");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 6;
@@ -91,7 +87,7 @@ public class GameSummaryPanel extends JPanel{
 		constraints.gridy = 1;
 		//descriptionLabel.setBounds(6, 74, 438, 56);
 		add(descriptionLabel, constraints);
-		
+
 		playGameBtn = new JButton("Play Game");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
@@ -104,17 +100,17 @@ public class GameSummaryPanel extends JPanel{
 		add(playGameBtn, constraints);
 		playGameBtn.setEnabled(true);
 		playGameBtn.setEnabled(false);
-		
+
 		playGameBtn.addActionListener(new ActionListener () {
-			
+
 			public void actionPerformed(ActionEvent e)
 			{
 				final MainViewTabController mvt = MainViewTabController.getInstance();
 				mvt.playGameTab(game);
 			}
-			
+
 		});
-		
+
 		endGameBtn = new JButton("End Game");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
@@ -127,19 +123,19 @@ public class GameSummaryPanel extends JPanel{
 		endGameBtn.setVisible(false);
 		endGameBtn.setEnabled(false);
 
-		
-//		endGameBtn.addActionListener(new ActionListener () {
-//		
-//			public void actionPerformed(ActionEvent e)
-//			{
-//				game.setStatus(GameStatus.ENDED);
-//			}
-//			
-//		});
-//		
 
-		
-		
+		//		endGameBtn.addActionListener(new ActionListener () {
+		//		
+		//			public void actionPerformed(ActionEvent e)
+		//			{
+		//				game.setStatus(GameStatus.ENDED);
+		//			}
+		//			
+		//		});
+		//		
+
+
+
 		editGameBtn = new JButton("Edit Game");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
@@ -150,17 +146,17 @@ public class GameSummaryPanel extends JPanel{
 		//editGameBtn.setBounds(184, 265, 117, 29);
 		add(editGameBtn, constraints);
 		editGameBtn.setEnabled(false);
-		
+
 		editGameBtn.addActionListener(new ActionListener () {
-			
+
 			public void actionPerformed(ActionEvent e)
 			{
 				final MainViewTabController mvt = MainViewTabController.getInstance();
 				mvt.createGameTab(game);
 			}
-			
+
 		});
-		
+
 		requirementsList = new JTextArea("Requirements");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 6;
@@ -172,7 +168,7 @@ public class GameSummaryPanel extends JPanel{
 		scrollPane = new JScrollPane(requirementsList);
 		add(scrollPane, constraints);
 		requirementsList.setEditable(false);
-		
+
 		emptyPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
@@ -181,7 +177,7 @@ public class GameSummaryPanel extends JPanel{
 		constraints.gridx = 2;
 		constraints.gridy = 3;
 		add(emptyPanel1, constraints);
-		
+
 		emptyPanel2 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
@@ -191,7 +187,7 @@ public class GameSummaryPanel extends JPanel{
 		constraints.gridy = 3;
 		add(emptyPanel2, constraints);
 	}
-	
+
 	/** Function which takes a game as a parameter and
 	 * updates the summary of the game that is displayed
 	 * 
@@ -205,7 +201,7 @@ public class GameSummaryPanel extends JPanel{
 		descriptionLabel.setText("Description: " + game.getDescription());
 		final String appendedReqs = GameSummaryPanel.getRequirementNames(game);
 		requirementsList.setText(appendedReqs);
-		
+
 		// Controls whether the buttons are enabled/disabled and visible/invisible.
 		// The buttons start, edit, or end the game.
 		// playGameBtn, editGameBtn, and endGameBtn
@@ -281,7 +277,7 @@ public class GameSummaryPanel extends JPanel{
 				temp += r.getName() + "\n";
 			}
 		}
-		
+
 		return temp;
 	}
 }
