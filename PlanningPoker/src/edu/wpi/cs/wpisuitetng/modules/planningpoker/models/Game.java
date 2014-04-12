@@ -318,10 +318,7 @@ public class Game extends AbstractModel{
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
 	public GameStatus getStatus(){
-		final Date now = Calendar.getInstance().getTime();
-		if(now.compareTo(end) >= 0){
-			status = GameStatus.ENDED;
-		}
+		updateStatus();
 		return status;
 	}
 	
@@ -330,6 +327,19 @@ public class Game extends AbstractModel{
 	 */
 	public void setStatus(GameStatus newStatus){
 		status = newStatus;
+	}
+	
+	/**
+	 * Checks if the deadline has passed and updates the status
+	 */
+	public void updateStatus() {
+		if(hasDeadline) {
+			final Date now = Calendar.getInstance().getTime();
+			if(now.compareTo(end) >= 0){
+				status = GameStatus.ENDED;
+			}
+		}
+		endIfAllEstimated();
 	}
 
 	/**
@@ -441,7 +451,7 @@ public class Game extends AbstractModel{
 	
 	@Override
 	public String toString(){
-		return this.getName();
+		return getName();
 	}
 
 	/**
@@ -465,7 +475,7 @@ public class Game extends AbstractModel{
 	 */
 	public void setUsers(List<User> list) {
 		for(Integer req: requirements){
-			this.addEstimate(new Estimate(req));
+			this.addEstimate(new Estimate(req, id));
 		}
 		for(Estimate e: estimates){
 			for(User u: list){
@@ -482,19 +492,20 @@ public class Game extends AbstractModel{
 	public void endIfAllEstimated(){
 		boolean shouldEnd = true;
 		
-		if(this.status == GameStatus.DRAFT){
+		if(status == GameStatus.DRAFT){
 			return;
 		}
 		
-		for(Estimate estimate: this.estimates){
+		for(Estimate estimate: estimates){
 			shouldEnd &= estimate.areAllEstimationsMade();
 		}
 		
 		if(shouldEnd){
-			this.status = GameStatus.ENDED;
+			status = GameStatus.ENDED;
 		}
 				
 	}
+
 	
 	
 	
