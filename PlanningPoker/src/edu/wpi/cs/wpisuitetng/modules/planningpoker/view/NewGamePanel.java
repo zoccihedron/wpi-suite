@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -255,6 +256,22 @@ public class NewGamePanel extends JSplitPane {
 	
 	public JLabel getMessageField(){
 		return lblMessage;
+	}
+
+	public boolean isReadyToClose() {
+		Object options[] = {"Yes", "No"};
+		int i = JOptionPane.showOptionDialog(this, 
+				"There are unsaved changes would you like to exit anyways?",
+				"Unsaved Changes!",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null, options, options[1]);
+		
+		if(i == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }
