@@ -209,10 +209,12 @@ public class GameSummaryPanel extends JPanel {
 		// The buttons start, edit, or end the game.
 		// playGameBtn, editGameBtn, and endGameBtn
 		
+		// play game button is always visible
+		playGameBtn.setVisible(true);
+		
 		// If the user is the game creator.
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
 			//make all buttons visible
-			playGameBtn.setVisible(true);
 			editGameBtn.setVisible(true);
 			endGameBtn.setVisible(true);
 			
@@ -236,10 +238,7 @@ public class GameSummaryPanel extends JPanel {
 			}
 		}
 		// If the user is not the game creator.
-		else {
-			//show play game button
-			playGameBtn.setVisible(true);
-			
+		else {			
 			// disable all instances of edit and end game
 			editGameBtn.setVisible(false);
 			editGameBtn.setEnabled(false);
