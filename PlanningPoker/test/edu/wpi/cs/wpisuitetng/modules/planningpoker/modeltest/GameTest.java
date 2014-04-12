@@ -33,7 +33,7 @@ public class GameTest {
 	User dummyUser2;
 	
 	
-	@Before
+	@BeforeClass
 	public void setUp(){
 		String game1name = "Game1";
 		Date start = new Date();
