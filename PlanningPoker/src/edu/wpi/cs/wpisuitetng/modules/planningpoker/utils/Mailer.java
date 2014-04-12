@@ -57,11 +57,7 @@ public class Mailer {
 	 */
 	public void notifyStart()
 	{
-//		final ArrayList<String> emails = new ArrayList<String>();
 		String message = "";
-
-		// Get the default Session object.
-
 
 		for(User u : users)
 		{
@@ -71,15 +67,8 @@ public class Mailer {
 						"\n Your game: " + game.getName() + " has started";
 				
 				sendEmail(u.getEmail(), message);
-//				emails.add(u.getEmail());
 			}
 		}
-//		for (String email : emails)
-//		{
-//			// send the email with a given message
-//
-//			sendEmail(email, message);
-//		}
 	}
 
 	/**
@@ -115,9 +104,5 @@ public class Mailer {
 		{
 			mex.printStackTrace();
 		}
-
-
-
-
 	}
 }
