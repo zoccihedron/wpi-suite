@@ -40,7 +40,6 @@ public class UpdateGameController implements ActionListener {
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
 	private final boolean startingGame;
-	private final boolean endingGame;
 
 	 
 	/**
@@ -50,12 +49,11 @@ public class UpdateGameController implements ActionListener {
 	 * @param startingGame whether the game will be started or not
 	 * @param endingGame whether the game will be ended or not
 	 */
-	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame, boolean endingGame) {
+	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
 		this.updatedGame = updatedGame;
 		this.startingGame = startingGame;
-		this.endingGame = endingGame;
 	}
 
 	/**
@@ -75,9 +73,6 @@ public class UpdateGameController implements ActionListener {
 
 			if(startingGame){
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
-			}
-			else if(endingGame) {
-				currentGame.setStatus(Game.GameStatus.ENDED);
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);
