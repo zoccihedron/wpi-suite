@@ -6,6 +6,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -27,12 +28,15 @@ public class EndGameManuallyController implements ActionListener {
 	private final boolean endingGame;
 
 	
-	public EndGameManuallyController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean endingGame) {
+	public EndGameManuallyController(CreateGameInfoPanel createGameInfoPanel, Game endedGame, boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
-		this.endedGame = updatedGame;
+		this.endedGame = endedGame;
 		this.endingGame = endingGame;
 	}
+	
+	
+	
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -87,5 +91,10 @@ public class EndGameManuallyController implements ActionListener {
 	{
 		return endedGame;
 	}
+	
+	public boolean isEndingGame() {
+		return endingGame;
+	}
+
 	
 }
