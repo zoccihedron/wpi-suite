@@ -16,9 +16,10 @@ public class UpdateUserPreferenceObserver implements RequestObserver {
 
 	@Override
 	public void responseSuccess(IRequest iReq) {
+		
 		final ResponseModel response = iReq.getResponse();
-		final User user = User.fromJSON(response.getBody());
-		userPreferencePanel.setCurrentEmailAndIM(user.getEmail(), user.getIM());
+		final User[] user = User.fromJsonArray(response.getBody());
+		userPreferencePanel.setCurrentEmailAndIM(user[0].getEmail(), user[0].getIM());
 
 	}
 

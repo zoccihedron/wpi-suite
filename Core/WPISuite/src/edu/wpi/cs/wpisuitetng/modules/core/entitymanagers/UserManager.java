@@ -320,7 +320,7 @@ public class UserManager implements EntityManager<User> {
 
 
 			
-			return("Success");
+			return currentUser.toJsonArray();
 
 			
 		}else throw new NotImplementedException();

@@ -264,7 +264,11 @@ public class UserPreferencesPanel extends JPanel {
 
 			}
 		});
-
+		
+		/*
+		 * Set up an action listener for the Email checkbox that will
+		 * enable and disable the email textfeld depending on if it is selected.
+		 */
 		checkBoxEmail.addChangeListener(new ChangeListener() {
 
 			@Override
