@@ -109,9 +109,6 @@ implements TreeSelectionListener {
 				OverviewPanelController.getInstance().updateGameSummary(gme);
 			}
 		}
-		
-		if (node == null) return;
-		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}
 
 
