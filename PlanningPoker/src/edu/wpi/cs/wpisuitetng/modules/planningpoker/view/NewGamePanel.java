@@ -80,7 +80,7 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false));
+		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
 		
 				
 		btnCancel = new JButton("Cancel");
@@ -89,7 +89,7 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnCancel); 
 		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
-		btnStart.addActionListener(new AddGameController(createGameInfoPanel, true));
+		btnStart.addActionListener(new AddGameController(createGameInfoPanel, true, false));
 		
 		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
@@ -275,4 +275,3 @@ public class NewGamePanel extends JSplitPane {
 	}
 	
 }
-
