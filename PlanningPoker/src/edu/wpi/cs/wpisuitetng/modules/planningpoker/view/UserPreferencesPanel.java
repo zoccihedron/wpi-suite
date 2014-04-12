@@ -41,7 +41,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabContro
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.UpdateUserPreferenceObserver;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * Creates the user preference panel, which allows the users to denote whether or not
@@ -140,6 +142,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblCurrentEmail.insets = new Insets(0, 0, 5, 0);
 		gbc_lblCurrentEmail.gridx = 7;
 		gbc_lblCurrentEmail.gridy = 1;
+		lblCurrentEmail.setVisible(false);
 		preferencesPanel.add(lblCurrentEmail, gbc_lblCurrentEmail);
 
 		checkBoxIM = new JCheckBox("");
@@ -181,6 +184,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblCurrentIm.insets = new Insets(0, 0, 5, 0);
 		gbc_lblCurrentIm.gridx = 7;
 		gbc_lblCurrentIm.gridy = 2;
+		lblCurrentIm.setVisible(false);
 		preferencesPanel.add(lblCurrentIm, gbc_lblCurrentIm);
 		
 
@@ -256,7 +260,6 @@ public class UserPreferencesPanel extends JPanel {
 				}
 				else{
 					imField.setEnabled(false);
-					imField.setText("");
 					lblIMCheck.setVisible(false);
 					imVerified = true;
 					configSubmitButton();
@@ -279,7 +282,6 @@ public class UserPreferencesPanel extends JPanel {
 				}
 				else{
 					emailField.setEnabled(false);
-					emailField.setText("");
 					lblEmailCheck.setVisible(false);
 					emailVerified = true;
 					configSubmitButton();
@@ -316,7 +318,27 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setAllowIM(checkBoxIM.isSelected());
 				Request request = Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
 				request.setBody(dummyUser.toJSON());
-				request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
+				request.addObserver(new RequestObserver(){
+
+					@Override
+					public void responseSuccess(IRequest iReq) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void responseError(IRequest iReq) {
+						// TODO Auto-generated method stub
+						
+					}
+
+					@Override
+					public void fail(IRequest iReq, Exception exception) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
 				request.send();
 
 			}
@@ -449,9 +471,11 @@ public class UserPreferencesPanel extends JPanel {
 		else btnSubmit.setEnabled(false);
 	}
 	
-	public void setCurrentEmailAndIM(String currentEmail, String currentIM){
-		lblCurrentEmail.setText("Current Email: " + currentEmail);
-		lblCurrentIm.setText("Current IM: " + currentIM);
+	public void setCurrentEmailAndIM(String currentEmail, String currentIM, boolean allowEmail, boolean allowIM){
+		emailField.setText(currentEmail);
+		imField.setText(currentIM);
+		checkBoxEmail.setSelected(allowEmail);
+		checkBoxIM.setSelected(allowIM);
 	}
 
 }
