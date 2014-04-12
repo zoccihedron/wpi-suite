@@ -97,24 +97,24 @@ public class UserDeserializer implements JsonDeserializer<User> {
 		 }
 		 
 		 //if user allow email notification
-		 if(deflated.has("EmailAllow")  && !deflated.get("EmailAllow").getAsString().equals(""))
-		 {
-			 String isAllowEmail = deflated.get("EmailAllow").getAsString();
-			 inflated.setAllowEmail((isAllowEmail.equals("true")) ? true:false);
-			 
-		 } else {
-			 inflated.setAllowEmail(false);
-		 }
+//		 if(deflated.has("EmailAllow")  && !deflated.get("EmailAllow").getAsString().equals(""))
+//		 {
+//			 String isAllowEmail = deflated.get("EmailAllow").getAsString();
+//			 inflated.setAllowEmail((isAllowEmail.equals("true")) ? true:false);
+//			 
+//		 } else {
+//			 inflated.setAllowEmail();
+//		 }
 		 
 		 //if user allow IM notification
-		 if(deflated.has("IMAllow")  && !deflated.get("IMAllow").getAsString().equals(""))
-		 {
-			 String isAllowIM = deflated.get("IMAllow").getAsString();
-			 inflated.setAllowIM((isAllowIM.equals("true")) ? true:false);
-		 } else {
-			 inflated.setAllowIM(false);
-		 }
-		 
+//		 if(deflated.has("IMAllow")  && !deflated.get("IMAllow").getAsString().equals(""))
+//		 {
+//			 String isAllowIM = deflated.get("IMAllow").getAsString();
+//			 inflated.setAllowIM((isAllowIM.equals("true")) ? true:false);
+//		 } else {
+//			 inflated.setAllowIM(false);
+//		 }
+//		 
 		 
 		 
 		 return inflated;

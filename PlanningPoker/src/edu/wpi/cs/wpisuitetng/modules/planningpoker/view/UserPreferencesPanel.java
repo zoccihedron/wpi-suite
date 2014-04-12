@@ -18,6 +18,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +74,8 @@ public class UserPreferencesPanel extends JPanel {
 	private boolean emailVerified = true;
 	private boolean imVerified = true;
 	private UserPreferencesPanel userPreferencesPane = this;
+	private JLabel lblCurrentEmail;
+	private JLabel lblCurrentIm;
 
 	/**
 	 * Create the panel.
@@ -82,9 +86,9 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel = new JPanel();
 		add(preferencesPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{21, 31, 86, 40, 86, 0};
+		gbl_panel.columnWidths = new int[]{21, 31, 86, 40, 86, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{39, 21, 33, 21, 23, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		preferencesPanel.setLayout(gbl_panel);
 
@@ -124,11 +128,19 @@ public class UserPreferencesPanel extends JPanel {
 
 		lblEmailCheck = new JLabel("Error*");
 		GridBagConstraints gbc_lblEmailCheck = new GridBagConstraints();
-		gbc_lblEmailCheck.insets = new Insets(0, 0, 5, 0);
+		gbc_lblEmailCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmailCheck.gridx = 4;
 		gbc_lblEmailCheck.gridy = 1;
 		lblEmailCheck.setVisible(false);
 		preferencesPanel.add(lblEmailCheck, gbc_lblEmailCheck);
+		
+		lblCurrentEmail = new JLabel("Current Email:");
+		lblCurrentEmail.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_lblCurrentEmail = new GridBagConstraints();
+		gbc_lblCurrentEmail.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCurrentEmail.gridx = 7;
+		gbc_lblCurrentEmail.gridy = 1;
+		preferencesPanel.add(lblCurrentEmail, gbc_lblCurrentEmail);
 
 		checkBoxIM = new JCheckBox("");
 		GridBagConstraints gbc_checkBox_1 = new GridBagConstraints();
@@ -158,11 +170,18 @@ public class UserPreferencesPanel extends JPanel {
 		
 		lblIMCheck = new JLabel("Error*");
 		GridBagConstraints gbc_lblIMCheck = new GridBagConstraints();
-		gbc_lblIMCheck.insets = new Insets(0, 0, 5, 0);
+		gbc_lblIMCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIMCheck.gridx = 4;
 		gbc_lblIMCheck.gridy = 2;
 		lblIMCheck.setVisible(false);
 		preferencesPanel.add(lblIMCheck, gbc_lblIMCheck);
+		
+		lblCurrentIm = new JLabel("Current IM:");
+		GridBagConstraints gbc_lblCurrentIm = new GridBagConstraints();
+		gbc_lblCurrentIm.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCurrentIm.gridx = 7;
+		gbc_lblCurrentIm.gridy = 2;
+		preferencesPanel.add(lblCurrentIm, gbc_lblCurrentIm);
 		
 
 		btnSubmit = new JButton("Submit");
@@ -293,12 +312,43 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setAllowIM(checkBoxIM.isSelected());
 				Request request = Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
 				request.setBody(dummyUser.toJSON());
-				request.addObserver(new UpdateUserPreferenceObserver());
+				request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 				request.send();
 
 			}
 
 		});
+		
+		this.addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent e) {
+				Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+				request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
+				request.send();
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 
 	}
 
@@ -393,6 +443,11 @@ public class UserPreferencesPanel extends JPanel {
 			btnSubmit.setEnabled(true);
 		}
 		else btnSubmit.setEnabled(false);
+	}
+	
+	public void setCurrentEmailAndIM(String currentEmail, String currentIM){
+		lblCurrentEmail.setText("Current Email: " + currentEmail);
+		lblCurrentIm.setText("Current IM: " + currentIM);
 	}
 
 }
