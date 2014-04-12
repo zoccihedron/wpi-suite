@@ -109,7 +109,7 @@ public class Estimate {
 		for(Entry<String,Integer> e: userWithEstimate.entrySet())
 		{
 			if(e.getValue() <= 0) {
-				result = false;
+				result &= false;
 			}
 		}
 		return result;

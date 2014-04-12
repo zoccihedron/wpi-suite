@@ -339,6 +339,7 @@ public class Game extends AbstractModel{
 				status = GameStatus.ENDED;
 			}
 		}
+		endIfAllEstimated();
 	}
 
 	/**
