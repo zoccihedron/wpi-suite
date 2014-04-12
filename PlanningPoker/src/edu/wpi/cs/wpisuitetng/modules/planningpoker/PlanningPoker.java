@@ -46,7 +46,7 @@ public class PlanningPoker implements IJanewayModule {
 		tabs = new ArrayList<JanewayTabModel>();
 		
 		// Create a toolbar for the tab
-		final DefaultToolbarView toolbarView = new ToolbarView(mainView);
+		final DefaultToolbarView toolbarView = new ToolbarView();
 		
 				
 		// Create a tab model that contains the toolbar panel and the main content panel

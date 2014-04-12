@@ -104,12 +104,11 @@ implements TreeSelectionListener {
 		}
 		if(node.isLeaf() && !node.isRoot()){
 			final Object nodeInfo = node.getUserObject();
-			final Game gme = (Game) nodeInfo;
-			OverviewPanelController.getInstance().updateGameSummary(gme);
+			if(nodeInfo instanceof Game) {
+				final Game gme = (Game) nodeInfo;
+				OverviewPanelController.getInstance().updateGameSummary(gme);
+			}
 		}
-		
-		if (node == null) return;
-		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}
 
 
