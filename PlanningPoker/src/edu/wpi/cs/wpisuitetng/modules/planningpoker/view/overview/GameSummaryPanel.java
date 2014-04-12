@@ -11,8 +11,11 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -40,17 +43,17 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 @SuppressWarnings("serial")
 public class GameSummaryPanel extends JPanel {
 
-	//private final CreateGameInfoPanel createGameInfoPanel;
 	JLabel titleLabel;
 	JLabel deadlineLabel;
 	JLabel descriptionLabel;
 	JButton playGameBtn;
 	JButton editGameBtn;
 	JButton endGameBtn;
+	JLabel reportMessage;
 	JTextArea requirementsList;
 	Game game;
 	JScrollPane scrollPane;
-	JPanel emptyPanel1, emptyPanel2;	
+	JPanel emptyPanel1, emptyPanel2;
 
 	public GameSummaryPanel() 
 	{
@@ -67,7 +70,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.ipady = 10;
-		//titleLabel.setBounds(6, 6, 295, 56);
 		add(titleLabel, constraints);
 
 		deadlineLabel = new JLabel("Deadline");
@@ -77,7 +79,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weighty = 0;
 		constraints.gridx = 3;
 		constraints.gridy = 0;
-		//deadlineLabel.setBounds(313, 6, 131, 56);
 		add(deadlineLabel, constraints);
 
 		descriptionLabel = new JLabel("Description");
@@ -87,7 +88,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weighty = 0;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		//descriptionLabel.setBounds(6, 74, 438, 56);
 		add(descriptionLabel, constraints);
 
 		playGameBtn = new JButton("Play Game");
@@ -98,7 +98,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 6;
 		constraints.gridy = 3;
 		constraints.ipady = 0;
-		//playGameBtn.setBounds(327, 265, 117, 29);
 		add(playGameBtn, constraints);
 		playGameBtn.setEnabled(true);
 		playGameBtn.setEnabled(false);
@@ -124,6 +123,17 @@ public class GameSummaryPanel extends JPanel {
 		add(endGameBtn, constraints);
 		endGameBtn.setVisible(false);
 		endGameBtn.setEnabled(false);
+		
+		reportMessage = new JLabel();
+		reportMessage.setText("     ");
+		reportMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
+		reportMessage.setVisible(true);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 1;
+		constraints.gridy = 3;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 0);
+		add(reportMessage, constraints);
 
 
 		editGameBtn = new JButton("Edit Game");
@@ -133,7 +143,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weighty = 0;
 		constraints.gridx = 5;
 		constraints.gridy = 3;
-		//editGameBtn.setBounds(184, 265, 117, 29);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		add(editGameBtn, constraints);
 		editGameBtn.setEnabled(false);
 
@@ -149,12 +159,11 @@ public class GameSummaryPanel extends JPanel {
 
 		requirementsList = new JTextArea("Requirements");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 6;
+		constraints.gridwidth = 7;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		//requirementsList.setBounds(6, 147, 438, 106);
 		scrollPane = new JScrollPane(requirementsList);
 		add(scrollPane, constraints);
 		requirementsList.setEditable(false);
@@ -195,56 +204,53 @@ public class GameSummaryPanel extends JPanel {
 		// Controls whether the buttons are enabled/disabled and visible/invisible.
 		// The buttons start, edit, or end the game.
 		// playGameBtn, editGameBtn, and endGameBtn
+		
 		// If the user is the game creator.
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
+			//make all buttons visible
+			playGameBtn.setVisible(true);
+			editGameBtn.setVisible(true);
+			endGameBtn.setVisible(true);
+			
 			// If the game is a draft.
 			if(game.getStatus().equals(GameStatus.DRAFT)) {
-				playGameBtn.setVisible(true);
 				playGameBtn.setEnabled(false);
-				editGameBtn.setVisible(true);
 				editGameBtn.setEnabled(true);
-				endGameBtn.setVisible(true);
 				endGameBtn.setEnabled(false);
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameBtn.setVisible(true);
 				playGameBtn.setEnabled(true);
-				editGameBtn.setVisible(true);
 				editGameBtn.setEnabled(false);
-				endGameBtn.setVisible(true);
 				endGameBtn.setEnabled(true);
 			}
 			// If the game is ended.
 			else {
-				playGameBtn.setVisible(true);
 				playGameBtn.setEnabled(false);
-				editGameBtn.setVisible(true);
 				editGameBtn.setEnabled(false);
-				endGameBtn.setVisible(true);
 				endGameBtn.setEnabled(false);
 			}
 		}
 		// If the user is not the game creator.
 		else {
+			//show play game button
+			playGameBtn.setVisible(true);
+			
+			// disable all instances of edit and end game
+			editGameBtn.setVisible(false);
+			editGameBtn.setEnabled(false);
+			endGameBtn.setVisible(false);
+			endGameBtn.setEnabled(false);
+			
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
 			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameBtn.setVisible(true);
 				playGameBtn.setEnabled(true);
-				editGameBtn.setVisible(false);
-				editGameBtn.setEnabled(false);
-				endGameBtn.setVisible(false);
-				endGameBtn.setEnabled(false);
+
 			}
 			// If the game is ended.
 			else {
-				playGameBtn.setVisible(true);
 				playGameBtn.setEnabled(false);
-				editGameBtn.setVisible(false);
-				editGameBtn.setEnabled(false);
-				endGameBtn.setVisible(false);
-				endGameBtn.setEnabled(false);
 			}
 		}
 	}
@@ -262,7 +268,8 @@ public class GameSummaryPanel extends JPanel {
 		String temp = "";
 
 		RequirementManagerFacade.getInstance();
-		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final List<Requirement> reqs =
+						RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement r : reqs)
 		{
 			if(game.getRequirements().contains(r.getId())){
@@ -270,5 +277,19 @@ public class GameSummaryPanel extends JPanel {
 			}
 		}
 		return temp;
+	}
+
+	public Game getGameObject() {
+		return game;
+	}
+
+	public void reportError(String string) {
+		reportMessage.setText(string);
+		reportMessage.setForeground(Color.RED);
+	}
+	
+	public void reportSuccess(String string) {
+		reportMessage.setText(string);
+		reportMessage.setForeground(Color.BLUE);
 	}
 }

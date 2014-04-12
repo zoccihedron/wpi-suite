@@ -6,10 +6,10 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -23,14 +23,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 public class EndGameManuallyController implements ActionListener {
 	
 	private final PlanningPokerModel model;
-	private final CreateGameInfoPanel view;
+	private final GameSummaryPanel view;
 	private Game endedGame;
 	private final boolean endingGame;
 
 	
-	public EndGameManuallyController(CreateGameInfoPanel createGameInfoPanel, Game endedGame, boolean endingGame) {
+	public EndGameManuallyController(GameSummaryPanel gameSummaryPanel, Game endedGame, boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
-		view = createGameInfoPanel;
+		view = gameSummaryPanel;
 		this.endedGame = endedGame;
 		this.endingGame = endingGame;
 	}
@@ -73,7 +73,7 @@ public class EndGameManuallyController implements ActionListener {
 	 */
 	public void returnGame(Game returnGame) {
 		endedGame = returnGame;
-		view.reportMessage("<html>Success: Game Ended!</html>");
+		view.reportSuccess("Game ended successfully!");
 	}
 
 	/**
@@ -82,6 +82,13 @@ public class EndGameManuallyController implements ActionListener {
 	 */
 	public static void addGameToModel(Game currentGame) {
 		PlanningPokerModel.UpdateGame(currentGame);
+	}
+	
+	/**
+	 * Reports when there has been an error ending the game
+	 */
+	public void returnErrorGame() {
+		view.reportError("Error: Game not ended.");
 	}
 	
 	/**

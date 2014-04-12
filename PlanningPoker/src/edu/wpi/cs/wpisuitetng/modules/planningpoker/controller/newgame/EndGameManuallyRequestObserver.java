@@ -9,7 +9,8 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
- * @author Corey
+ * @author Codon Bleu
+ * @version 1.0
  *
  */
 public class EndGameManuallyRequestObserver implements RequestObserver {
@@ -42,16 +43,20 @@ public class EndGameManuallyRequestObserver implements RequestObserver {
 		// Pass the game back to the controller
 		controller.returnGame(returnGame);
 		
+		
+		
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
 		System.err.println("The request to end a game failed.");
+		controller.returnErrorGame();
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
 		System.err.println("The request to end a game failed.");
+		controller.returnErrorGame();
 	}
 
 }
