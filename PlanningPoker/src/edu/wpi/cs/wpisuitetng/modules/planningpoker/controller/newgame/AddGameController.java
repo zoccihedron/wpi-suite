@@ -38,16 +38,18 @@ public class AddGameController implements ActionListener {
 	private final CreateGameInfoPanel view;
 	private static User[] users = {};
 	private boolean startingGame = false;
+	private boolean endingGame = false;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 * @param startingGame whether the game is being started or not
 	 */
-	public AddGameController(CreateGameInfoPanel createGameInfoPanel, boolean startingGame) {
+	public AddGameController(CreateGameInfoPanel createGameInfoPanel, boolean startingGame, boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
 		this.startingGame = startingGame;
+		this.endingGame = endingGame;
 	}
 
 	/** 
@@ -65,6 +67,9 @@ public class AddGameController implements ActionListener {
 			
 			if(startingGame){
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+			}
+			else if(endingGame){
+				currentGame.setStatus(Game.GameStatus.ENDED);
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);
