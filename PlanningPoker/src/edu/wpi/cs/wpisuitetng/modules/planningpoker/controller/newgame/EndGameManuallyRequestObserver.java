@@ -1,16 +1,7 @@
-/*******************************************************************************
- * Copyright (c) 2014 -- WPI Suite
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Creator:
- *    Code On Bleu
- ******************************************************************************/
-
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+/**
+ * 
+ */
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -18,24 +9,22 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
- * This observer is called when a response is received from a request
- * to the server to add a message.
- * 
- * @author Code On Bleu
+ * @author Codon Bleu
  * @version 1.0
+ *
  */
-public class UpdateGameRequestObserver implements RequestObserver {
+public class EndGameManuallyRequestObserver implements RequestObserver {
 	
-	private final UpdateGameController controller;
+	private final EndGameManuallyController controller;
 	
 	/**
 	 * Constructor for UpdateGameRequestObserver
 	 * @param controller the controller for the class
 	 */
-	public UpdateGameRequestObserver(UpdateGameController controller) {
+	public EndGameManuallyRequestObserver(EndGameManuallyController controller) {
 		this.controller = controller;
 	}
-	
+
 	/**
 	 * Parse the game that was received from the server then pass them to
 	 * the controller.
@@ -54,16 +43,20 @@ public class UpdateGameRequestObserver implements RequestObserver {
 		// Pass the game back to the controller
 		controller.returnGame(returnGame);
 		
+		
+		
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to update a game failed.");
+		System.err.println("The request to end a game failed.");
+		controller.returnErrorGame();
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to update a game failed.");
+		System.err.println("The request to end a game failed.");
+		controller.returnErrorGame();
 	}
 
 }
