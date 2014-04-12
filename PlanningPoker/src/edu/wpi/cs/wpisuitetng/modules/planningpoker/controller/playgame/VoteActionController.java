@@ -79,6 +79,7 @@ public class VoteActionController implements ActionListener {
 	 * success message if the estimation was made
 	 */
 	public void reportSuccess() {
+		view.refresh();
 		view.reportSuccess();
 		// TODO Auto-generated method stub
 		

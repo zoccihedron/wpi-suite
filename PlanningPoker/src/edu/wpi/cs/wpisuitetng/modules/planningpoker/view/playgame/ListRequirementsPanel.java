@@ -120,7 +120,6 @@ implements TreeSelectionListener {
 		notVotedCategory = new DefaultMutableTreeNode("Not Voted On");
 		votedCategory = new DefaultMutableTreeNode("Voted On");
 		String user = ConfigManager.getInstance().getConfig().getUserName();
-		System.out.println(user);
 		for(Requirement req: requirements){
 
 			// add new node to requirement tree
@@ -147,6 +146,7 @@ implements TreeSelectionListener {
 
 
 		tree = new JTree(top); //create the tree with the top node as the top
+		for(int i = 0; i < tree.getRowCount(); i++) tree.expandRow(i);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 						//tell it that it can only select one thing at a time
 		tree.setToggleClickCount(0);

@@ -49,14 +49,14 @@ public class PlayGamePanel extends JPanel{
 		
 		//gameInfoPanel = new GameInfoPanel();
 		
-		estimationPane = new EstimationPane();
 		PlayGameController playGameController = new PlayGameController();
-		playGameController.setEstimationPane(estimationPane);
 		listRequirementsPanel = new ListRequirementsPanel(game, playGameController);
 		Dimension minimumSize = new Dimension(250, 300);
 		listRequirementsPanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
+		estimationPane = new EstimationPane(listRequirementsPanel);
+		playGameController.setEstimationPane(estimationPane);
 		splitPane.setRightComponent(estimationPane);
 		
 		//PlayGameController.getInstance().setGameInfoPanel(gameInfoPanel);
