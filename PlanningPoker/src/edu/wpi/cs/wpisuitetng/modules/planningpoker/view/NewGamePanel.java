@@ -261,8 +261,8 @@ public class NewGamePanel extends JSplitPane {
 	public boolean isReadyToClose() {
 		Object options[] = {"Yes", "No"};
 		int i = JOptionPane.showOptionDialog(this, 
-				"There are unsaved changes would you like to exit anyways?",
-				"Unsaved Changes!",
+				"Any unsaved changes will be lost, would you like to exit anyways?",
+				"Exit?",
 				JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
 				null, options, options[1]);
