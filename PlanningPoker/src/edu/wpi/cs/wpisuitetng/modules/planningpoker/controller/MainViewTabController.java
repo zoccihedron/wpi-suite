@@ -99,14 +99,14 @@ public class MainViewTabController {
 	 * @param tabToClose the tab to close
 	 */
 	public void closeTab(Component tabToClose) {
-		mainView.remove(tabToClose);
-	}
-	
-	/**
-	 * Closes a tab given an index
-	 * @param index the tab's index to close
-	 */
-	public void closeTab(int index){
-		mainView.remove(index);
+		if(tabToClose instanceof NewGamePanel) {
+			if(((NewGamePanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
+		} else if(tabToClose instanceof PlayGamePanel) {
+			if(((PlayGamePanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
+		}
 	}
 }

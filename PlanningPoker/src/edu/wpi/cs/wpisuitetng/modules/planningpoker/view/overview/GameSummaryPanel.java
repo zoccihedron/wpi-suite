@@ -32,11 +32,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
 /**
- * This class is a JPanel. 
- * It contains both a summary of fields from a game and 
- * a table of requirements in a game.
+ * GameSummaryPanel is a class which displays the summary of a game that can be
+ * chosen to edit and/or play by a user
  * 
- * @author Code On Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 @SuppressWarnings({ "serial" })
@@ -59,7 +58,7 @@ public class GameSummaryPanel extends JPanel {
 		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
-
+		
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridBagLayout());
 
@@ -103,9 +102,6 @@ public class GameSummaryPanel extends JPanel {
 		
 		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
-		
-		
-		
 		infoPanel = new GameSummaryInfoPanel();
 		infoPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
 		
@@ -134,7 +130,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipady = 10;
 		add(reqPanel, constraints);
 		
-
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.SOUTHEAST;
 		constraints.gridwidth = 1;
@@ -145,6 +140,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipadx = 10;
 		constraints.ipady = 10;
 		add(buttonsPanel, constraints);
+		
 		
 		editGameButton.addActionListener(new ActionListener () {
 			@Override
@@ -241,11 +237,3 @@ public class GameSummaryPanel extends JPanel {
 	}
 	
 }
-
-
-
-
-
-
-
-
