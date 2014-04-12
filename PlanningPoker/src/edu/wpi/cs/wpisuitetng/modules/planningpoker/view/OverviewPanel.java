@@ -52,3 +52,4 @@ public class OverviewPanel extends JSplitPane {
 		
 	}
 }
+

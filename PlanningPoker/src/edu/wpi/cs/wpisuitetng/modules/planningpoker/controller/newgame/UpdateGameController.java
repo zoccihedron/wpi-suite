@@ -18,11 +18,9 @@ import java.awt.event.ActionListener;
 
 
 
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -40,14 +38,12 @@ public class UpdateGameController implements ActionListener {
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
 	private final boolean startingGame;
-
-	 
+	
 	/**
 	 * Construct an UpdateGameController for the given model, view pair
 	 * @param updatedGame the updated game
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 * @param startingGame whether the game will be started or not
-	 * @param endingGame whether the game will be ended or not
 	 */
 	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
@@ -58,8 +54,6 @@ public class UpdateGameController implements ActionListener {
 
 	/**
 	 * This method is called when the user clicks the Submit button
-	 * 
-	 * TODO add proper verification of view being a game object.
 	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
