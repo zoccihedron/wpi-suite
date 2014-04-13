@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -36,7 +36,6 @@ public class GameTest {
 	Game game2;
 	User dummyUser;
 	User dummyUser2;
-	
 	
 	@BeforeClass
 	public void setUp(){
