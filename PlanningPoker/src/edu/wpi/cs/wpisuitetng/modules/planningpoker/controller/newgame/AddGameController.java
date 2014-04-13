@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -99,6 +100,7 @@ public class AddGameController implements ActionListener {
 	 */
 	public void addGameToView() {
 		view.reportMessage("<html>Success: Game Saved!</html>");
+		OverviewPanelController.getInstance().refreshListGames();
 		view.closeNewGameTab();
 	}
 

@@ -19,6 +19,8 @@ import java.awt.event.ActionListener;
 
 
 
+
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -86,6 +88,7 @@ public class UpdateGameController implements ActionListener {
 			// add an observer to process the response
 			request.addObserver(new UpdateGameRequestObserver(this));
 			request.send(); // send the request
+			OverviewPanelController.getInstance().refreshListGames();
 		}
 	}
 
@@ -111,6 +114,7 @@ public class UpdateGameController implements ActionListener {
 	public void returnGame(Game returnGame) {
 		updatedGame = returnGame;
 		view.reportMessage("<html>Success: Game Updated!</html>");
+		OverviewPanelController.getInstance().refreshListGames();
 		view.closeNewGameTab();
 	}
 	
