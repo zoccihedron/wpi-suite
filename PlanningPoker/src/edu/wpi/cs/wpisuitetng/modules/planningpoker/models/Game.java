@@ -58,7 +58,6 @@ public class Game extends AbstractModel{
 	private GameStatus status = GameStatus.DRAFT;
 	
 	//TODO: timestamp, countdown or time for deadline, estimate, boolean for termination
-
 	
 	/**
 	 * The real constructor of a game instantiation, the game creator field
@@ -295,7 +294,6 @@ public class Game extends AbstractModel{
 		estimates.add(estimate);
 		
 	}
-
 	
 	/**
 	 * @return the gameCreator
@@ -318,10 +316,7 @@ public class Game extends AbstractModel{
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
 	public GameStatus getStatus(){
-		final Date now = Calendar.getInstance().getTime();
-		if(now.compareTo(end) >= 0){
-			status = GameStatus.ENDED;
-		}
+		updateStatus();
 		return status;
 	}
 	
@@ -330,6 +325,19 @@ public class Game extends AbstractModel{
 	 */
 	public void setStatus(GameStatus newStatus){
 		status = newStatus;
+	}
+	
+	/**
+	 * Checks if the deadline has passed and updates the status
+	 */
+	public void updateStatus() {
+		if(hasDeadline) {
+			final Date now = Calendar.getInstance().getTime();
+			if(now.compareTo(end) >= 0){
+				status = GameStatus.ENDED;
+			}
+		}
+		endIfAllEstimated();
 	}
 
 	/**
@@ -441,7 +449,7 @@ public class Game extends AbstractModel{
 	
 	@Override
 	public String toString(){
-		return this.getName();
+		return getName();
 	}
 
 	/**
@@ -465,7 +473,7 @@ public class Game extends AbstractModel{
 	 */
 	public void setUsers(List<User> list) {
 		for(Integer req: requirements){
-			this.addEstimate(new Estimate(req));
+			this.addEstimate(new Estimate(req, id));
 		}
 		for(Estimate e: estimates){
 			for(User u: list){
@@ -473,6 +481,29 @@ public class Game extends AbstractModel{
 			}
 		}
 	}
+	
+	/**
+	 * Check if all users have estimated on all requirements. If this is true,
+	 * end the game by changing the game status enum. Otherwise do nothing. This
+	 * function should not do anything if the game is not currently being played.
+	 */
+	public void endIfAllEstimated(){
+		boolean shouldEnd = true;
+		
+		if(status == GameStatus.DRAFT || getEstimates().isEmpty()){
+			return;
+		}
+		
+		for(Estimate estimate: estimates){
+			shouldEnd &= estimate.areAllEstimationsMade();
+		}
+		
+		if(shouldEnd){
+			status = GameStatus.ENDED;
+		}
+				
+	}
+
 	
 	
 	

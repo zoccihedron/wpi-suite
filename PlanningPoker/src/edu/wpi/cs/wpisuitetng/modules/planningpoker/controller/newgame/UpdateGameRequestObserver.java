@@ -10,10 +10,12 @@
  *    Code On Bleu
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This observer is called when a response is received from a request
@@ -22,40 +24,46 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @author Code On Bleu
  * @version 1.0
  */
-public class AddGameRequestObserver implements RequestObserver {
+public class UpdateGameRequestObserver implements RequestObserver {
 	
-	private final AddGameController controller;
+	private final UpdateGameController controller;
 	
 	/**
-	 * Sets the controller as the one passed in
-	 * @param controller to be set as the class controller
+	 * Constructor for UpdateGameRequestObserver
+	 * @param controller the controller for the class
 	 */
-	public AddGameRequestObserver(AddGameController controller) {
+	public UpdateGameRequestObserver(UpdateGameController controller) {
 		this.controller = controller;
 	}
 	
 	/**
-	 * Parse the message that was received from the server then pass them to
+	 * Parse the game that was received from the server then pass them to
 	 * the controller.
 	 * 
 	 * @see edu.wpi.cs.wpisuitetng.network.RequestObserver
-	 * 		#responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
+	 * #responseSuccess(edu.wpi.cs.wpisuitetng.network.models.IRequest)
 	 */
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// Pass the messages back to the controller
-		controller.addGameToView();
+		// Get the response to the given request
+		final ResponseModel response = iReq.getResponse();
+		
+	
+		final Game returnGame = Game.fromJson(response.getBody());
+		
+		// Pass the game back to the controller
+		controller.returnGame(returnGame);
 		
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		System.err.println("The request to add a game failed.");
+		System.err.println("The request to update a game failed.");
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		System.err.println("The request to add a game failed.");
+		System.err.println("The request to update a game failed.");
 	}
 
 }

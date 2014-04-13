@@ -9,7 +9,7 @@
  * Creator:
  *    Code On Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.EstimationPane;
@@ -23,24 +23,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
  */
 public class PlayGameController {
 	
-	private static PlayGameController instance = null;
-	 private EstimationPane estimationPane = null;
-	 private GameInfoPanel infoPanel = null;
 	
-	private PlayGameController() {
-	}
+	private EstimationPane estimationPane = null;
+	private GameInfoPanel infoPanel = null;
 	
-	/**
-	 * Gets an instance of the PlayGameController, or
-	 * creates a new one if there is no instance
-	 *
-	 * @return an instane of the PlayGameController
-	 */
-	public static PlayGameController getInstance(){
-		if(instance == null){
-			instance = new PlayGameController();
-		}
-		return instance;
+	public PlayGameController() {
 	}
 
 	public void setEstimationPane(EstimationPane ep){

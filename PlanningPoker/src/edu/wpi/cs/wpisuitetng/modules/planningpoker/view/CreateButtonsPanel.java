@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -37,6 +38,7 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 	
 	private final JButton crtGameBtn = new JButton("<html>Create<BR />Game</html>");
 	private final JButton crtDeckBtn = new JButton("<html>Manage<BR />Decks</html>");
+	private final JButton userPrefBtn = new JButton("<html>User<BR />Preferences<html>");
 	private final JPanel buttonPanel = new JPanel();
 	
 	/**
@@ -47,10 +49,13 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		super("");
 		
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-		this.setPreferredWidth(550);
+		this.setPreferredWidth(700);
 		
 		buttonPanel.add(crtGameBtn);
 		buttonPanel.add(crtDeckBtn);
+		buttonPanel.add(userPrefBtn);
+		buttonPanel.add(Box.createHorizontalStrut(50));
+		
 		buttonPanel.setOpaque(false);
 		
 		this.add(buttonPanel);
@@ -62,6 +67,11 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		    
 		    img = ImageIO.read(getClass().getResource("deck.png"));
 		    crtDeckBtn.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("gear.png"));
+		    userPrefBtn.setIcon(new ImageIcon(img));
+
+		    
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -78,6 +88,13 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainViewTabController.getInstance().createGameTab();
+			}
+		});
+		
+		userPrefBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainViewTabController.getInstance().userPreferencesTab();
 			}
 		});
 	}

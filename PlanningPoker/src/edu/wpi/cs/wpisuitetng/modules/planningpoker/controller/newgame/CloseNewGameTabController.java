@@ -6,11 +6,11 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *    Team Code On Bleu
+ * Creator:
+ *    Code On Bleu
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,14 +23,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
  * @author Code On Bleu
  * @version 1.0
  */
-public class ChangeDeadline implements ActionListener {
+public class CloseNewGameTabController implements ActionListener {
 	private final CreateGameInfoPanel view;
 	
 	/**
 	 * Construct an ChangeDeadline for the given model, view pair
 	 * @param createGameInfoPanel the view where the user selects the Deadline? Button
 	 */
-	public ChangeDeadline(CreateGameInfoPanel createGameInfoPanel) {
+	public CloseNewGameTabController(CreateGameInfoPanel createGameInfoPanel) {
 		view = createGameInfoPanel;
 	}
 
@@ -41,7 +41,7 @@ public class ChangeDeadline implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		view.EnableOrDisableDeadline();
+		view.closeNewGameTab();
 	}
 
 

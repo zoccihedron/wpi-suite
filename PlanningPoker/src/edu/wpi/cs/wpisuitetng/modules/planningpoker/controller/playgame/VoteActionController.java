@@ -9,12 +9,13 @@
  * Creator:
  *    Code On Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.EstimationPane;
@@ -51,25 +52,26 @@ public class VoteActionController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		
-		if(!view.checkField()) return;
-		
-		final String name = ConfigManager.getInstance().getConfig().getUserName();
-		estimateValue = view.getEstimate();
-		
-		final Estimate estimate = game.findEstimate(view.getReqID());
-		System.out.println("Original estimate for this user: "
-				+ game.findEstimate(view.getReqID()).getEstimate(name));
-		estimate.makeEstimate(name, estimateValue);
-		System.out.println("Original estimate for this user: "
-				+ game.findEstimate(view.getReqID()).getEstimate(name));
-		// Send a request to the core to update this game
-		final Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.POST); // POST == update
-		request.setBody(game.toJSON()); // put the new message in the body of the request
-		request.addObserver(new VoteActionObserver(this)); // add an observer to process the response
-		request.send(); // send the request
-		
-		
-		
+		if(view.checkField()) {
+				
+			final String name = ConfigManager.getInstance().getConfig().getUserName();
+			estimateValue = view.getEstimate();
+			
+			final Estimate oldEstimate = game.findEstimate(view.getReqID());
+			oldEstimate.makeEstimate(name, estimateValue);
+			final Estimate estimate = new Estimate(view.getReqID(), game.getId());
+			estimate.addUser(name);
+			estimate.makeEstimate(name, estimateValue);
+			
+			// Send a request to the core to update this game
+			final Request request = Network.getInstance().makeRequest(
+					"Advanced/planningpoker/game/vote", 
+					HttpMethod.POST); // POST is update
+			request.setBody(estimate.toJSON()); // put the new message in the body of the request
+			request.addObserver(new VoteActionObserver(this)); 
+			request.send(); 
+			
+		}
 
 	}
 
@@ -78,6 +80,8 @@ public class VoteActionController implements ActionListener {
 	 * success message if the estimation was made
 	 */
 	public void reportSuccess() {
+		view.refresh();
+		OverviewPanelController.getInstance().refreshListGames();
 		view.reportSuccess();
 		// TODO Auto-generated method stub
 		
