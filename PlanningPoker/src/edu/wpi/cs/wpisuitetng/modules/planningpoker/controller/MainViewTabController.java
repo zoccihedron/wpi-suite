@@ -127,6 +127,10 @@ public class MainViewTabController {
 			if(((PlayGamePanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
+		} else if(tabToClose instanceof UserPreferencesPanel) {
+			if(((UserPreferencesPanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
 		}
 	}
 }
