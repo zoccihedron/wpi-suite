@@ -96,28 +96,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		// DEFINE CONSTAINTS
 		final GridBagConstraints constraints = new GridBagConstraints();
 
-		final JPanel fakePanel1 = new JPanel();
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		//add(fakePanel1, constraints);
-		
-		final JPanel fakePanel2 = new JPanel();
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
-		constraints.gridx = 4;
-		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		//add(fakePanel2, constraints);
+
 
 		// GAME INFORMATION LABEL
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);

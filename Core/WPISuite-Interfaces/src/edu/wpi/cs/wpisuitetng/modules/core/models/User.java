@@ -159,6 +159,10 @@ public class User extends AbstractModel
 		return json;	
 	}
 	
+	public String toJsonArray(){
+		return "[" + this.toJSON() + "]";
+	}
+	
 	/**
 	 * Static method offering comma-delimited JSON
 	 * 	serializing of User lists
@@ -286,6 +290,17 @@ public class User extends AbstractModel
 		gson = builder.create();
 		
 		return gson.fromJson(json, User.class);
+	}
+	
+	public static User[] fromJsonArray(String json)
+	{
+		Gson gson;
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(User.class, new UserDeserializer());
+
+		gson = builder.create();
+		
+		return gson.fromJson(json, User[].class);
 	}
 
 	@Override

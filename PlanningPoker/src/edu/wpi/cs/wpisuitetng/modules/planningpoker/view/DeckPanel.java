@@ -54,6 +54,14 @@ public class DeckPanel extends JScrollPane {
 	public String getEstimateField() {
 		return estimateField.getText();
 	}
+	
+	/**
+	 * changes whether jTextField for estimate is enabled
+	 * @param editable
+	 */
+	public void setEstimateFieldEditable(boolean editable){
+		estimateField.setEditable(editable);
+	}
 
 	private JPanel textVersion() {
 		final ScrollablePanel textPanel = new ScrollablePanel();
@@ -77,6 +85,7 @@ public class DeckPanel extends JScrollPane {
 		constraints.gridwidth = 1;
 		estimateField.setColumns(10);
 		textPanel.add(estimateField, constraints);
+		estimateField.setEditable(false);
 
 		return textPanel;
 	}
