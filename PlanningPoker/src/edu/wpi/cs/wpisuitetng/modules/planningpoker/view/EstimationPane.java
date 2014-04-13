@@ -190,6 +190,8 @@ public class EstimationPane extends JPanel {
 		catch(NotFoundException exception){
 			this.message.setText("Exception: Requirement Not Found");
 		}
+		
+		deckPanel.setEstimateFieldEditable(true);
 
 
 	}
