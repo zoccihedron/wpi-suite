@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.EstimationPane;
@@ -69,6 +70,7 @@ public class VoteActionController implements ActionListener {
 			request.setBody(estimate.toJSON()); // put the new message in the body of the request
 			request.addObserver(new VoteActionObserver(this)); 
 			request.send(); 
+			OverviewPanelController.getInstance().refreshListGames();
 			
 		}
 
