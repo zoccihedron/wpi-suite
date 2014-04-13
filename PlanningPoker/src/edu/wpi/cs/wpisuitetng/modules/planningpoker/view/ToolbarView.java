@@ -12,6 +12,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 
 /**
  * This class is the view for the toolbar. It has button groups
@@ -23,17 +24,17 @@ import edu.wpi.cs.wpisuitetng.janeway.gui.container.toolbar.DefaultToolbarView;
 @SuppressWarnings({"serial"})
 public class ToolbarView extends DefaultToolbarView{
 	
-	private final CreateButtonsPanel createButton = new CreateButtonsPanel();
-	private final MainView mainview;
+	private final CreateButtonsPanel createButton;
+	private final MainViewTabController mainViewTabController;
 	
 	/**
 	 * Sets up and positions the toolbar buttons
-	 * @param mainView 
 	 */
-	public ToolbarView(MainView mainView)
+	public ToolbarView()
 	{
+		createButton = new CreateButtonsPanel();
 		this.addGroup(createButton);
-		mainview = mainView;
+		mainViewTabController = MainViewTabController.getInstance();
 	}
 	
 	/**
@@ -48,6 +49,6 @@ public class ToolbarView extends DefaultToolbarView{
 	 * Creates a CreateNewGame tab in the main view
 	 */
 	public void crtGamePressed() {
-		mainview.createNewGameTab();
+		mainViewTabController.createGameTab();
 	}
 }
