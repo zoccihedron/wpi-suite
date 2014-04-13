@@ -91,8 +91,8 @@ public class Estimate {
 	 * @return true if the user has made a valid estimation, false if not
 	 */
 	public boolean hasMadeAnEstimation(String user){
-		if(userWithEstimate.containsValue(user)){
-			return (userWithEstimate.get(user) == 0) ? false : true; 
+		if(userWithEstimate.containsKey(user)){
+			return (userWithEstimate.get(user) > 0); 
 		}
 		else{
 			return false;
