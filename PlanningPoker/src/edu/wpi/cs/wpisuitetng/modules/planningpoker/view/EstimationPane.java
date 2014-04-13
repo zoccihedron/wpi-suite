@@ -30,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
@@ -48,6 +49,7 @@ public class EstimationPane extends JPanel {
 	private final JButton voteButton;
 	private int reqid;
 	private ListRequirementsPanel listReqPanel;
+	private Game game;
 	
 	private Requirement req;
 	
@@ -175,6 +177,8 @@ public class EstimationPane extends JPanel {
 	 * @param game the game
 	 */
 	public void setGameAndRequirement(int reqid, Game game){
+		this.game = game;
+		
 		voteButton.addActionListener(new VoteActionController(this, game));
 
 		this.reqid = reqid;
@@ -222,6 +226,11 @@ public class EstimationPane extends JPanel {
 
 		if(estimate <= 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+			return false;
+		}
+		
+		if(game.getStatus() == GameStatus.ENDED){
+			reportError("<html>Error: Game has ended</html>");
 			return false;
 		}
 		return true;
