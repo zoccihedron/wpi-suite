@@ -490,7 +490,7 @@ public class Game extends AbstractModel{
 	public void endIfAllEstimated(){
 		boolean shouldEnd = true;
 		
-		if(status == GameStatus.DRAFT){
+		if(status == GameStatus.DRAFT || getEstimates().isEmpty()){
 			return;
 		}
 		
