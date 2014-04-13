@@ -215,7 +215,7 @@ public class EstimationPane extends JPanel {
 	public boolean checkField() {
 		
 		if(!deckPanel.hasDeckSelected()) {
-			reportError("<html>Error: Select a deck.</html>");
+			reportError("<html>Error: Select a card.</html>");
 			return false;
 		}
 		

@@ -27,6 +27,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
@@ -52,13 +54,7 @@ public class DeckPanel extends JScrollPane {
 	 * 
 	 */
 	public DeckPanel() {
-		ArrayList<Integer> cards = new ArrayList<Integer>();
-		 cards.add(1);
-		 cards.add(3);
-		 cards.add(1);
-		 cards.add(3);
-		Deck test = new Deck("Test", false, cards);
-		this.setViewportView(deckVersion(test));
+		this.setViewportView(textVersion());
 	}
 
 	public String getEstimateField() {
@@ -143,15 +139,19 @@ public class DeckPanel extends JScrollPane {
 			constraints.gridy = 2;
 			constraints.gridwidth = 1;
 			constraints.insets = new Insets(0, 5, 0, 5);
-			cardToAdd.addMouseListener(new MouseAdapter() {
+			cardToAdd.addChangeListener(new ChangeListener() {
 				@Override
-				public void mouseClicked(MouseEvent arg0) {
+				public void stateChanged(ChangeEvent arg0) {
 					if(!deck.canSelectMultipleCards()){
 						clearPrevious(cardToAdd);
 					}
 					calculateSum();
 				}
 			});
+			
+				
+			
+
 			listOfButtons.add(cardToAdd);
 			deckPanel.add(cardToAdd, constraints);
 		}
