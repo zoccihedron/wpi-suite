@@ -30,6 +30,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabContro
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
 
 /**
  * GameSummaryPanel is a class which displays the summary of a game that can be
@@ -157,7 +158,8 @@ public class GameSummaryPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				final MainViewTabController mvt = MainViewTabController.getInstance();
  				mvt.playGameTab(game);
-				
+				final Mailer m = new Mailer(game);
+				m.notifyStart();
 			}
 
  		});

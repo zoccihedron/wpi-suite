@@ -9,12 +9,9 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
-import static org.junit.Assert.*;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,7 +19,6 @@ import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -53,11 +49,11 @@ public class MailerTest {
 		/*
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
 		dummyUser.setAllowEmail(true);
-		dummyUser.setEmail("planningpoker@yahoo.com");
+		dummyUser.setEmail("rdbaker@wpi.edu");
 
 		dummyUser2 = new User("Bill", "bill", "abc123", 1);
 		dummyUser2.setAllowEmail(true);
-		dummyUser2.setEmail("planningpoker@yahoo.com");
+		dummyUser2.setEmail("rdbaker@wpi.edu");
 		
 		
 		dummyUser.setRole(Role.ADMIN);
