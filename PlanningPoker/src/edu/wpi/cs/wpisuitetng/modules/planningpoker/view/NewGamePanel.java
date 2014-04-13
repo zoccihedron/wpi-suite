@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
@@ -79,7 +80,7 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnSave);
 		
 		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false));
+		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
 		
 				
 		btnCancel = new JButton("Cancel");
@@ -88,7 +89,7 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnCancel); 
 		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
-		btnStart.addActionListener(new AddGameController(createGameInfoPanel, true));
+		btnStart.addActionListener(new AddGameController(createGameInfoPanel, true, false));
 		
 		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
@@ -256,6 +257,21 @@ public class NewGamePanel extends JSplitPane {
 	public JLabel getMessageField(){
 		return lblMessage;
 	}
+
+	public boolean isReadyToClose() {
+		Object options[] = {"Yes", "No"};
+		int i = JOptionPane.showOptionDialog(this, 
+				"Any unsaved changes will be lost, would you like to exit anyways?",
+				"Exit?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null, options, options[1]);
+		
+		if(i == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 }
-

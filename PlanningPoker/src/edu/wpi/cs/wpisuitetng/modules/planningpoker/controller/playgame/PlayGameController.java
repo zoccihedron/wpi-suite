@@ -23,25 +23,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
  */
 public class PlayGameController {
 	
-	//private static PlayGameController instance = null;
-	 private EstimationPane estimationPane = null;
-	 private GameInfoPanel infoPanel = null;
+	
+	private EstimationPane estimationPane = null;
+	private GameInfoPanel infoPanel = null;
 	
 	public PlayGameController() {
 	}
-	
-	/**
-	 * Gets an instance of the PlayGameController, or
-	 * creates a new one if there is no instance
-	 *
-	 * @return an instance of the PlayGameController
-	 */
-	/*public static PlayGameController getInstance(){
-		if(instance == null){
-			instance = new PlayGameController();
-		}
-		return instance;
-	}*/
 
 	public void setEstimationPane(EstimationPane ep){
 		estimationPane = ep;

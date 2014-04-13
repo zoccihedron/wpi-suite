@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -64,5 +65,21 @@ public class PlayGamePanel extends JPanel{
 		//add(gameInfoPanel);
 		add(splitPane, BorderLayout.CENTER);
 
+	}
+
+	public boolean isReadyToClose() {
+		Object options[] = {"Yes", "No"};
+		int i = JOptionPane.showOptionDialog(this, 
+				"Any unsaved changes will be lost, would you like to exit anyways?",
+				"Exit?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null, options, options[1]);
+		
+		if(i == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
