@@ -38,9 +38,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 public class GameSummaryInfoPanel extends JPanel {
 
 	private final JLabel lblName;
-	private final JTextField gameNameText;
+	private final JTextArea gameNameText;
 	private final JTextArea description;
-	private final JTextField deadline;
+	private final JTextArea deadline;
 	private final JLabel lblDeadline;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
@@ -57,22 +57,26 @@ public class GameSummaryInfoPanel extends JPanel {
 		setBounds(5, 5, 307, 393);
 		this.setLayout(new GridBagLayout());
 
+		final Border jtextFieldBorder = new JTextField().getBorder();
+		
 		// Adds the fields and button to the main panel.
-		gameNameText = new JTextField();
-		gameNameText.setEnabled(false);
-
-		final Border jtextFieldBorder = gameNameText.getBorder();
+		gameNameText = new JTextArea();
+		gameNameText.setEditable(false);
+		gameNameText.setEnabled(true);
+		gameNameText.setBorder(jtextFieldBorder);
 		
 		description = new JTextArea();
 		description.setBorder(jtextFieldBorder);
-		description.setEnabled(false);
+		description.setEditable(false);
 		description.setAutoscrolls(true);
 		
 		descriptionScroll = new JScrollPane();
 		descriptionScroll.add(description);
 
-		deadline = new JTextField();
-		deadline.setEnabled(false);
+		deadline = new JTextArea();
+		deadline.setEditable(false);
+		deadline.setEnabled(true);
+		deadline.setBorder(jtextFieldBorder);
 
 		lblTitle = new JLabel("Game Information");
 
@@ -93,7 +97,8 @@ public class GameSummaryInfoPanel extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 
 		final JPanel fakePanel1 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
@@ -101,10 +106,10 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridy = 0;
 		constraints.ipadx = 10;
 		constraints.ipady = 10;
-		add(fakePanel1, constraints);
+		//add(fakePanel1, constraints);
 		
 		final JPanel fakePanel2 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
@@ -112,7 +117,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridy = 0;
 		constraints.ipadx = 10;
 		constraints.ipady = 10;
-		add(fakePanel2, constraints);
+		//add(fakePanel2, constraints);
 
 		// GAME INFORMATION LABEL
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -141,7 +146,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
-		constraints.weightx = 0.0;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 2;
 		constraints.gridy = 1;
@@ -151,7 +156,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		lblDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
-		constraints.weightx = 0.0;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 1;
 		constraints.gridy = 10;
@@ -189,7 +194,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		// DEADLINE FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
-		constraints.weightx = 0.0;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 2;
 		constraints.gridy = 6;
