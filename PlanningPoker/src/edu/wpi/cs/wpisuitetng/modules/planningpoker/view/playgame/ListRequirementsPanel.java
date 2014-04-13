@@ -24,8 +24,10 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
@@ -42,15 +44,17 @@ implements TreeSelectionListener {
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private final Game game;
+	private PlayGameController playGameController;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
 	 */
-	public ListRequirementsPanel(final Game game) {
+	public ListRequirementsPanel(final Game game, PlayGameController playGameController) {
 
 		this.game = game;
 		this.setViewportView(tree);
 		this.refresh();  
+		this.playGameController = playGameController;
 		
 
 		//Create the nodes.
@@ -88,10 +92,13 @@ implements TreeSelectionListener {
 		
 		if (node == null) return;
 		
+		if(node.isRoot()){
+			refresh();
+		}
 		final Object nodeInfo = node.getUserObject();
 		if(node.isLeaf()){
-		final Requirement req = (Requirement)nodeInfo;
-		PlayGameController.getInstance().updateEstimationPane(req.getId(), game);
+			final Requirement req = (Requirement)nodeInfo;
+			playGameController.updateEstimationPane(req.getId(), game);
 		}
 		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}
@@ -108,24 +115,38 @@ implements TreeSelectionListener {
 				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		DefaultMutableTreeNode reqNode = null;
 
+		DefaultMutableTreeNode notVotedCategory = null;
 		DefaultMutableTreeNode votedCategory = null;
-		votedCategory = new DefaultMutableTreeNode("Not Voted On");
-
+		notVotedCategory = new DefaultMutableTreeNode("Not Voted On");
+		votedCategory = new DefaultMutableTreeNode("Voted On");
+		String user = ConfigManager.getInstance().getConfig().getUserName();
 		for(Requirement req: requirements){
 
 			// add new node to requirement tree
 			if(game.getRequirements().contains(req.getId())){
-			reqNode = new DefaultMutableTreeNode(req);
-			votedCategory.add(reqNode);
+				for(Estimate e : game.getEstimates())
+				{
+					if(e.getReqID() == req.getId()){
+						if(!e.hasMadeAnEstimation(user)){
+							reqNode = new DefaultMutableTreeNode(req);
+							notVotedCategory.add(reqNode);
+						}
+						else{
+							reqNode = new DefaultMutableTreeNode(req);
+							votedCategory.add(reqNode);
+						}
+					}
+				}
+			
 			}
 		}
 
-		top.add(votedCategory);
-		votedCategory = new DefaultMutableTreeNode("Voted On");
+		top.add(notVotedCategory);
 		top.add(votedCategory);
 
 
 		tree = new JTree(top); //create the tree with the top node as the top
+		for(int i = 0; i < tree.getRowCount(); i++) tree.expandRow(i);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 						//tell it that it can only select one thing at a time
 		tree.setToggleClickCount(0);

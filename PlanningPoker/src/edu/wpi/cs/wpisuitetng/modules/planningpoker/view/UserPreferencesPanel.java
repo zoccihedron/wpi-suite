@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -473,6 +474,10 @@ public class UserPreferencesPanel extends JPanel {
 		imField.setText(currentIM);
 		checkBoxEmail.setSelected(allowEmail);
 		checkBoxIM.setSelected(allowIM);
+	}
+	
+	public boolean isReadyToClose() {
+		return true;
 	}
 
 }
