@@ -59,20 +59,20 @@ public class GameSummaryInfoPanel extends JPanel {
 
 		// Adds the fields and button to the main panel.
 		gameNameText = new JTextField();
-		gameNameText.setEnabled(false);
+		gameNameText.setEditable(false);
 
 		final Border jtextFieldBorder = gameNameText.getBorder();
 		
 		description = new JTextArea();
 		description.setBorder(jtextFieldBorder);
-		description.setEnabled(false);
+		description.setEditable(false);
 		description.setAutoscrolls(true);
 		
 		descriptionScroll = new JScrollPane();
 		descriptionScroll.add(description);
 
 		deadline = new JTextField();
-		deadline.setEnabled(false);
+		deadline.setEditable(false);
 
 		lblTitle = new JLabel("Game Information");
 
