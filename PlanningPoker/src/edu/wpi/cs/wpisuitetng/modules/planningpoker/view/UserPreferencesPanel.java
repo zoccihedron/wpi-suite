@@ -96,6 +96,17 @@ public class UserPreferencesPanel extends JPanel {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		preferencesPanel.setLayout(gbl_panel);
 		
+		titlePanel = new JPanel();
+		GridBagConstraints gbc_titlePanel = new GridBagConstraints();
+		gbc_titlePanel.insets = new Insets(0,0,5,5);
+		gbc_titlePanel.gridwidth = 3;
+		gbc_titlePanel.gridx = 1;
+		gbc_titlePanel.gridy = 0;
+		preferencesPanel.add(titlePanel, gbc_titlePanel);
+		lblTitle = new JLabel("User Preferences");
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
+		titlePanel.add(lblTitle);
+		
 		lblUserInfo = new JLabel("User name: " + ConfigManager.getInstance().getConfig().getUserName());
 		lblUserInfo.setVerticalAlignment(SwingConstants.BOTTOM);
 		GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
@@ -206,11 +217,7 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(btnCancel, gbc_btnCancel);
 
 
-		titlePanel = new JPanel();
-		add(titlePanel, BorderLayout.NORTH);
-		lblTitle = new JLabel("User Preferences");
-		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
-		titlePanel.add(lblTitle);
+		
 
 		emailField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -477,7 +484,19 @@ public class UserPreferencesPanel extends JPanel {
 	}
 	
 	public boolean isReadyToClose() {
-		return true;
+		Object options[] = {"Yes", "No"};
+		int i = JOptionPane.showOptionDialog(this, 
+				"Any unsaved changes will be lost, would you like to exit anyways?",
+				"Exit?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null, options, options[1]);
+		
+		if(i == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
