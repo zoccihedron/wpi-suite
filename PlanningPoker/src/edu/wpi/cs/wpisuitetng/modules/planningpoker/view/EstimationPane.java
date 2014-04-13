@@ -163,6 +163,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		voteButtonPanel.add(voteButton, constraints);
+		voteButton.setEnabled(false);
 
 	}
 
@@ -176,6 +177,8 @@ public class EstimationPane extends JPanel {
 	 */
 	public void setGameAndRequirement(int reqid, Game game){
 		voteButton.addActionListener(new VoteActionController(this, game));
+		
+		voteButton.setEnabled(true);
 
 		this.reqid = reqid;
 		try{
