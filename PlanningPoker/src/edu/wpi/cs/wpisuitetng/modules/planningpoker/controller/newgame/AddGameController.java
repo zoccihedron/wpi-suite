@@ -83,7 +83,6 @@ public class AddGameController implements ActionListener {
 			// add an observer to process the response
 			request.addObserver(new AddGameRequestObserver(this));
 			request.send(); // send the request
-			OverviewPanelController.getInstance().refreshListGames();
 		}
 	
 	}
@@ -101,6 +100,7 @@ public class AddGameController implements ActionListener {
 	 */
 	public void addGameToView() {
 		view.reportMessage("<html>Success: Game Saved!</html>");
+		OverviewPanelController.getInstance().refreshListGames();
 		view.closeNewGameTab();
 	}
 

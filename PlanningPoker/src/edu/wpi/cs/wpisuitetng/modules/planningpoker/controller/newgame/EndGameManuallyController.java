@@ -6,6 +6,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
@@ -73,6 +74,7 @@ public class EndGameManuallyController implements ActionListener {
 	public void returnGame(Game returnGame) {
 		endedGame = returnGame;
 		view.reportSuccess("Game ended successfully!");
+		OverviewPanelController.getInstance().refreshListGames();
 	}
 
 	/**

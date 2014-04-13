@@ -70,7 +70,6 @@ public class VoteActionController implements ActionListener {
 			request.setBody(estimate.toJSON()); // put the new message in the body of the request
 			request.addObserver(new VoteActionObserver(this)); 
 			request.send(); 
-			OverviewPanelController.getInstance().refreshListGames();
 			
 		}
 
@@ -82,6 +81,7 @@ public class VoteActionController implements ActionListener {
 	 */
 	public void reportSuccess() {
 		view.refresh();
+		OverviewPanelController.getInstance().refreshListGames();
 		view.reportSuccess();
 		// TODO Auto-generated method stub
 		
