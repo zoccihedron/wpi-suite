@@ -302,7 +302,30 @@ public class UserManager implements EntityManager<User> {
 	@Override
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
-		throw new NotImplementedException();
+		logger.log(Level.FINE, "Editing the user");
+
+		if(string.equals("changeInPreference")){
+			User changes = User.fromJSON(content);
+			User currentUser = s.getUser();
+			currentUser.setEmail(changes.getEmail());
+			currentUser.setIM(changes.getIM());
+			currentUser.setAllowEmail(changes.isAllowEmail());
+			currentUser.setAllowIM(changes.isAllowIM());
+			
+			logger.log(Level.FINE, s.getUser().getEmail());
+			
+			this.save(s,currentUser);
+			logger.log(Level.FINE, "Editing the user");
+			logger.log(Level.FINE, s.getUser().getEmail());
+
+
+			
+			return currentUser.toJsonArray();
+
+			
+		}else throw new NotImplementedException();
+		
+		
 	}
 
 
