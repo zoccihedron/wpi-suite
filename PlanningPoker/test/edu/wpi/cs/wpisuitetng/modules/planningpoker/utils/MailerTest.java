@@ -9,17 +9,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
-import org.junit.*;
-
-import edu.wpi.cs.wpisuitetng.Session;
-import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
 import static org.junit.Assert.*;
 
 import java.util.Calendar;
@@ -27,27 +16,41 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import edu.wpi.cs.wpisuitetng.Session;
+import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
+
 /**
- * Game testing class for Planning Poker
+ * Class to test notifying users
  *
  * @author  Code On Bleu
- * @version Mar 23, 2014
+ * @version 1.0
  */
 public class MailerTest {
 	static MockData db;
-	static Game game;
-	static Game game2;
-	static Game game3;
+	static Game g;
 	static PlanningPokerEntityManager manager;
-	static User dummyUser, dummyUser2;
+	static User u1, u2;
 	static Session s1, s2;
 	static String mockSsid = "abc123";
-	static Project testProject;
+	static Project p;
 	
 	
 	@BeforeClass
 	public static void setUp() throws WPISuiteException{
-		
+		Date start = new Date();
+		Calendar endTime = new GregorianCalendar();
+		endTime.set(2015, 1,1);
+		Date end = endTime.getTime();
+		/*
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
 		dummyUser.setAllowEmail(true);
 		dummyUser.setEmail("planningpoker@yahoo.com");
@@ -56,10 +59,6 @@ public class MailerTest {
 		dummyUser2.setAllowEmail(true);
 		dummyUser2.setEmail("planningpoker@yahoo.com");
 		
-		Date start = new Date();
-		Calendar endTime = new GregorianCalendar();
-		endTime.set(2015, 1,1);
-		Date end = endTime.getTime();
 		
 		dummyUser.setRole(Role.ADMIN);
 		
@@ -87,18 +86,28 @@ public class MailerTest {
 		
 		
 		manager = new PlanningPokerEntityManager(db);
+		*/
+		
+		g = new Game("Game", start, end);
+		u1 = new User("Bob", "bob", "abc123", 1);
+		u1.setAllowEmail(true);
+		u1.setEmail("planningpoker@yahoo.com");
+		u2 = new User("Bill", "bill", "abc123", 2); // favorite band!
+		u2.setAllowEmail(true);
+		u2.setEmail("planningpoker@yahoo.com");
+		p = new Project("test", "1", u1,
+				new User[] {u1, u2},
+				new String[] {"PlanningPoker", "PostBoard", "RequirementManager"});
+
+		g.setProject(p);
 	}
 	
 
 	@Test
 	public void testEmail()
 	{
-
-		assertNull(testProject.getTeam());
-		/*
-		Mailer mailer = new Mailer(game);
+		Mailer mailer = new Mailer(g);
 		mailer.notifyStart();
-		*/
 	}
 	
 	

@@ -11,10 +11,15 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
-import java.util.ArrayList;
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
+import java.util.Properties;
+
+import javax.mail.PasswordAuthentication;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -32,7 +37,7 @@ public class Mailer {
 	private Properties properties;
 	private Session session;
 	private final String from = "planningpoker@yahoo.com";
-	private final String host = "localhost"; // send email from localhost
+	private final String host = "smtp.mail.yahoo.com";
 
 	/**
 	 * Constructor for Mailer
@@ -45,10 +50,19 @@ public class Mailer {
 
 		// Get system properties
 		properties = System.getProperties();
+		properties.put("mail.smtp.host", host);
+		properties.put("mail.smtp.auth", "true");
+		properties.put("mail.debug", "false");
+		properties.put("mail.smtp.port", "587");
 
-		// Setup mail server
-		properties.setProperty("mail.smtp.host", host);
-		session = Session.getDefaultInstance(properties);
+		// Setup mail settings
+		session = Session.getDefaultInstance(properties,
+				new javax.mail.Authenticator(){
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(from, "CodonBleu1");
+					}
+				});
+		session.setDebug(true);
 	}
 
 	/**
@@ -87,8 +101,8 @@ public class Mailer {
 			message.setFrom(new InternetAddress(from));
 
 			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO,
-					new InternetAddress(sendToEmail));
+			message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(sendToEmail));
 
 			// Set Subject: header field
 			message.setSubject(game.getName() + "has started!");
@@ -97,7 +111,9 @@ public class Mailer {
 			message.setText(messageText);
 
 			// Send message
-			Transport.send(message);
+			Transport transport = session.getTransport();
+			transport.connect(from, "CodonBleu1");
+			transport.sendMessage(message, message.getAllRecipients());
 			System.out.println("Sent message to " + sendToEmail + " successfully....");
 		}
 		catch (MessagingException mex) 
