@@ -48,7 +48,7 @@ implements TreeSelectionListener {
 	
 	/**
 	 * Constructs the panel
-	 * @param game Taken in to get all requirements for the game
+	 * @param draftGame Taken in to get all requirements for the game
 	 */
 	public ListGamePanel() {
 

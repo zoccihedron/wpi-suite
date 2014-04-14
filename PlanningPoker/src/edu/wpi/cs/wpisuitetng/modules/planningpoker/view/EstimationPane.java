@@ -56,7 +56,7 @@ public class EstimationPane extends JPanel {
 	/**
 	 * Constructor for panel
 	 * @param reqid The req to vote on
-	 * @param game The game the vote is going towards
+	 * @param draftGame The game the vote is going towards
 	 */
 	public EstimationPane(ListRequirementsPanel listReqPanel){
 
