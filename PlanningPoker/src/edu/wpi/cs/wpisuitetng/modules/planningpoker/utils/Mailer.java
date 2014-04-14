@@ -23,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
 
 /**
  * This class is used to send emails to notify users
