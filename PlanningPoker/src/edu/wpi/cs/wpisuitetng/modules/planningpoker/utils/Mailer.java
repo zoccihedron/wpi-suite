@@ -13,9 +13,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
 import java.util.Properties;
 
-import javax.mail.PasswordAuthentication;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -36,8 +36,8 @@ public class Mailer {
 	private User[] users;
 	private Properties properties;
 	private Session session;
-	private final String from = "planningpoker@yahoo.com";
-	private final String host = "smtp.mail.yahoo.com";
+	private final String from = "codonbleu@gmail.com";
+	private final String host = "smtp.gmail.com";
 
 	/**
 	 * Constructor for Mailer
@@ -46,22 +46,25 @@ public class Mailer {
 	public Mailer(Game game)
 	{
 		this.game = game;
-		users = game.getProject().getTeam();
 
 		// Get system properties
-		properties = System.getProperties();
-		properties.put("mail.smtp.host", host);
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.debug", "false");
-		properties.put("mail.smtp.port", "587");
+        properties = System.getProperties();
 
-		// Setup mail settings
-		session = Session.getDefaultInstance(properties,
-				new javax.mail.Authenticator(){
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(from, "CodonBleu1");
-					}
-				});
+        // Set the properties
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.ssl.trust", host);
+        properties.put("mail.smtp.starttls.enable", "true");
+        
+        session = Session.getInstance(properties,
+      		  new javax.mail.Authenticator() {
+      			protected PasswordAuthentication getPasswordAuthentication() {
+      				return new PasswordAuthentication(from, "CodonBleu1");
+      			}
+      		  });
+		
+		
 		session.setDebug(true);
 	}
 
@@ -71,6 +74,7 @@ public class Mailer {
 	 */
 	public void notifyStart()
 	{
+		users = game.getProject().getTeam();
 		String message = "";
 
 		for(User u : users)
@@ -101,8 +105,7 @@ public class Mailer {
 			message.setFrom(new InternetAddress(from));
 
 			// Set To: header field of the header.
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(sendToEmail));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
 
 			// Set Subject: header field
 			message.setSubject(game.getName() + "has started!");
@@ -111,9 +114,7 @@ public class Mailer {
 			message.setText(messageText);
 
 			// Send message
-			Transport transport = session.getTransport();
-			transport.connect(from, "CodonBleu1");
-			transport.sendMessage(message, message.getAllRecipients());
+			Transport.send(message);
 			System.out.println("Sent message to " + sendToEmail + " successfully....");
 		}
 		catch (MessagingException mex) 

@@ -46,51 +46,13 @@ public class MailerTest {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
 		Date end = endTime.getTime();
-		/*
-		User dummyUser = new User("Bob", "bob", "abc123", 1);
-		dummyUser.setAllowEmail(true);
-		dummyUser.setEmail("rdbaker@wpi.edu");
-
-		dummyUser2 = new User("Bill", "bill", "abc123", 1);
-		dummyUser2.setAllowEmail(true);
-		dummyUser2.setEmail("rdbaker@wpi.edu");
-		
-		
-		dummyUser.setRole(Role.ADMIN);
-		
-		game = new Game("game", start, end);
-		
-		
-		testProject = new Project("test", "1");
-		//testProject.addTeamMember(dummyUser);
-		//testProject.addTeamMember(dummyUser2);
-		
-		
-		s1 = new Session(dummyUser, testProject, mockSsid);
-
-		
-
-		
-		db = new MockData(new HashSet<Object>());
-		manager = new PlanningPokerEntityManager(db);
-		
-		game.setGameCreator(dummyUser.getUsername());
-		
-		manager.save(s1, game);
-
-		db.save(dummyUser);
-		
-		
-		manager = new PlanningPokerEntityManager(db);
-		*/
-		
 		g = new Game("Game", start, end);
 		u1 = new User("Bob", "bob", "abc123", 1);
 		u1.setAllowEmail(true);
-		u1.setEmail("planningpoker@yahoo.com");
+		u1.setEmail("codonbleu@gmail.com");
 		u2 = new User("Bill", "bill", "abc123", 2); // favorite band!
 		u2.setAllowEmail(true);
-		u2.setEmail("planningpoker@yahoo.com");
+		u2.setEmail("codonbleu@gmail.com");
 		p = new Project("test", "1", u1,
 				new User[] {u1, u2},
 				new String[] {"PlanningPoker", "PostBoard", "RequirementManager"});
