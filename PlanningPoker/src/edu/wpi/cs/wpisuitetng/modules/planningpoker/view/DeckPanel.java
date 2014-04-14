@@ -42,6 +42,7 @@ public class DeckPanel extends JScrollPane {
 	private ImageIcon img = null;
 	private final int CARD_WIDTH = 100;
 	private final int CARD_HEIGHT = 128;
+	private String currentEstimate;
 
 	/**
 	 * Constructs the DeckPanel
@@ -151,12 +152,22 @@ public class DeckPanel extends JScrollPane {
 		System.out.println("--------old estimate value: " + oldEstimate);
 		if (oldEstimate > 0) {
 			estimateField.setText(Integer.toString(oldEstimate));
+			currentEstimate = Integer.toString(oldEstimate);
 			System.out.println("--------reached ");
 
 		} else {
 			estimateField.setText("");
+			currentEstimate = "";
 		}
 
+	}
+	
+	public boolean isOldEstimate(){
+		return currentEstimate.equals(estimateField.getText());
+	}
+	
+	public void setCurrentEstimate(String estimate){
+		currentEstimate = estimate;
 	}
 
 }
