@@ -18,6 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -47,7 +48,7 @@ public class DeckPanel extends JScrollPane {
 	private ImageIcon img = null;
 	private final int CARD_WIDTH = 100;
 	private final int CARD_HEIGHT = 128;
-	private final ArrayList<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
+	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
 	/**
 	 * Constructs the DeckPanel
@@ -120,7 +121,7 @@ public class DeckPanel extends JScrollPane {
 		final GridBagConstraints constraints = new GridBagConstraints();
 
 		//Populate the deck with the cards it contains.
-		final ArrayList<Integer> cards = (ArrayList<Integer>) deck.getCards();
+		final List<Integer> cards = deck.getCards();
 
 		try {
 			img = new ImageIcon(ImageIO.read(getClass().getResource(
