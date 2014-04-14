@@ -19,16 +19,14 @@ import com.google.gson.Gson;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
-
 /**
- * This is the model for the planning poker module.
- * The game will keep track of any estimates for a session,
- * which will be used in the module.
- *
- * @author  Code On Bleu
+ * This is the model for the planning poker module. The game will keep track of
+ * any estimates for a session, which will be used in the module.
+ * 
+ * @author Code On Bleu
  * @version 1.0
  */
-public class Game extends AbstractModel{
+public class Game extends AbstractModel {
 	private int id;
 	private String name = "";
 	private String description = "";
@@ -39,76 +37,83 @@ public class Game extends AbstractModel{
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
-	
-	public enum GameStatus{
-		DRAFT("Draft"),
-		IN_PROGRESS("In Progress"),
-		ENDED("Ended");
-		
-		private final String text; 
-        private GameStatus(String text) { 
-            this.text = text; 
-        } 
-        
-        @Override 
-        public String toString(){ 
-            return text; 
-        }
+
+	public enum GameStatus {
+		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
+
+		private final String text;
+
+		private GameStatus(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
 	}
+
 	private GameStatus status = GameStatus.DRAFT;
-	
-	//TODO: timestamp, countdown or time for deadline, estimate, boolean for termination
-	
+
+	// TODO: timestamp, countdown or time for deadline, estimate, boolean for
+	// termination
+
 	/**
-	 * The real constructor of a game instantiation, the game creator field
-	 * of this game will be filled when the game is created
+	 * The real constructor of a game instantiation, the game creator field of
+	 * this game will be filled when the game is created
 	 * 
-	 * @param name the name of the game
-	 * @param startTime start time of the game
-	 * @param endTime end time of the game
+	 * @param name
+	 *            the name of the game
+	 * @param startTime
+	 *            start time of the game
+	 * @param endTime
+	 *            end time of the game
 	 * 
 	 */
 	public Game(String name, Date startTime, Date endTime) {
-		//TODO: whether a session could be add to the parameter of game's constructor
+		// TODO: whether a session could be add to the parameter of game's
+		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
 	}
-	
+
 	/**
-	 * this constructor is only for Count() and retrieve method in PlanningPokerEntityManager,
-	 * and should not be called when a real game is created
+	 * this constructor is only for Count() and retrieve method in
+	 * PlanningPokerEntityManager, and should not be called when a real game is
+	 * created
 	 */
-	public Game(){
+	public Game() {
 		id = 0;
 	}
-	
 
 	/**
 	 * Returns a game from JSON encoded string
-	 *
-	 * @param json JSON-encoded string
+	 * 
+	 * @param json
+	 *            JSON-encoded string
 	 * @return Game
 	 */
 	public static Game fromJson(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, Game.class);
 	}
-	
+
 	/**
 	 * Returns a game array from JSON encoded string
 	 * 
-	 * @param json JSON-encoded string
+	 * @param json
+	 *            JSON-encoded string
 	 * @return GameArray
 	 */
-	public static Game[] fromJsonArray(String json)
-	{
+	public static Game[] fromJsonArray(String json) {
 		final Gson parser = new Gson();
 		return parser.fromJson(json, Game[].class);
 	}
 
 	/**
 	 * Saves the game
+	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#save()
 	 */
 	@Override
@@ -118,6 +123,7 @@ public class Game extends AbstractModel{
 
 	/**
 	 * Deletes the game
+	 * 
 	 * @see edu.wpi.cs.wpisuitetng.modules.Model#delete()
 	 */
 	@Override
@@ -136,28 +142,28 @@ public class Game extends AbstractModel{
 		return new Gson().toJson(this, Game.class);
 	}
 
-	
 	/**
-	 * Check if Object o provided is equal to this game by checking id
-	 * number of the game (id number should be unique)
+	 * Check if Object o provided is equal to this game by checking id number of
+	 * the game (id number should be unique)
 	 * 
-	 * @param o given Object for checking
+	 * @param o
+	 *            given Object for checking
 	 * @return true if same
 	 * 
 	 */
 	@Override
 	public Boolean identify(Object o) {
 		boolean result = false;
-		if(o instanceof Integer){
-			result = (id == (Integer)(o));
-		} else if (o instanceof Game){
-			result = (id == ((Game)(o)).getId());
-		} else if (o instanceof String){
-			result = (Integer.toString(id).equals((String)o));
+		if (o instanceof Integer) {
+			result = (id == (Integer) (o));
+		} else if (o instanceof Game) {
+			result = (id == ((Game) (o)).getId());
+		} else if (o instanceof String) {
+			result = (Integer.toString(id).equals((String) o));
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Copies all of the values from the given game to this game.
 	 * 
@@ -175,57 +181,62 @@ public class Game extends AbstractModel{
 		status = updatedGame.getStatus();
 		hasDeadline = updatedGame.isHasDeadline();
 	}
-	
-	
-	
+
 	/**
-	 * Make the given user to become the creator of the game.
-	 * If this user is already in the participants list, it would
-	 * be removed from the list.
+	 * Make the given user to become the creator of the game. If this user is
+	 * already in the participants list, it would be removed from the list.
 	 * 
-	 * After this method is called, the old creator becomes a 
-	 * normal participants who has no control over the game
+	 * After this method is called, the old creator becomes a normal
+	 * participants who has no control over the game
 	 * 
-	 * @param user the given user who should become the creator
+	 * @param user
+	 *            the given user who should become the creator
 	 * @return new creator of the game
 	 * 
 	 */
-	public String changeCreator(String user)
-	{ // TODO need test
+	public String changeCreator(String user) { // TODO need test
 		String newCreator = "";
-		if(isCreator(user)) return user;
-		else if(isParticipant(user)) {
-			for(String u: participants) {
-				if(u.equals(user)) {
-					newCreator = u;
-					participants.remove(u);
-				}
-			}
-			
+
+		if (isCreator(user)) {
+			gameCreator = user;
 		} else {
-			newCreator = user;
+
+			if (isParticipant(user)) {
+				for (String u : participants) {
+					if (u.equals(user)) {
+						newCreator = u;
+						participants.remove(u);
+					}
+				}
+			} else {
+				newCreator = user;
+			}
+
+			final String oldCreator = gameCreator;
+			participants.add(oldCreator);
+			gameCreator = newCreator;
 		}
-		final String oldCreator = gameCreator;
-		participants.add(oldCreator);
-		gameCreator = newCreator;
-		
+
 		return gameCreator;
 	}
-	
+
 	/**
-	 * Check if a given user is the creator of this game
-	 *  (has authorization to change participants/users)
-	 * @param user given
+	 * Check if a given user is the creator of this game (has authorization to
+	 * change participants/users)
+	 * 
+	 * @param user
+	 *            given
 	 * @return true if this user is the creator
 	 */
-	public boolean isCreator(String user){
+	public boolean isCreator(String user) {
 		return (gameCreator.equals(user)) ? true : false;
 	}
-	
+
 	/**
 	 * Check if the given user is a participant of this game (not the creator)
 	 * 
-	 * @param user given for checking
+	 * @param user
+	 *            given for checking
 	 * @return true if the given user is a participant of this game
 	 */
 	public boolean isParticipant(String user) {
@@ -243,143 +254,154 @@ public class Game extends AbstractModel{
 
 		return result;
 	}
-		
+
 	/**
 	 * Check if the given user is in this game (either creator or participant)
 	 * 
-	 * @param user given for checking
+	 * @param user
+	 *            given for checking
 	 * @return true if the given user is in this game
 	 */
-	public boolean hasUser(String user){
+	public boolean hasUser(String user) {
 		return isParticipant(user) || isCreator(user);
-		
+
 	}
-	
+
 	/**
-	 * Add a new user to this game 
-	 * (by adding this user to the user list and also every estimate in estimate list)
-	 * @param user the new user to be added to this game
-	 * @return true if the user is successfully added, 
-	 * 	false if not or the user is already in the list
+	 * Add a new user to this game (by adding this user to the user list and
+	 * also every estimate in estimate list)
+	 * 
+	 * @param user
+	 *            the new user to be added to this game
+	 * @return true if the user is successfully added, false if not or the user
+	 *         is already in the list
 	 */
-	public boolean addUser(String user){
+	public boolean addUser(String user) {
 		boolean result = true;
-		
-		if(hasUser(user)) result = false;
+
+		if (hasUser(user)){
+			result = false;
+		}
 		participants.add(user);
-		
-		for(Estimate e: estimates){
-			if(!e.canAddUser(user)) {
-				result = false;
+
+		for (Estimate e : estimates) {
+			if (!e.canAddUser(user)) {
+				result &= false;
 			}
 		}
 		return result;
-		
+
 	}
-	
+
 	/**
-	 * Add a new estimate to this game
-	 * before adding to the list of estimates, all users present in this game will
-	 * be added to this estimate
+	 * Add a new estimate to this game before adding to the list of estimates,
+	 * all users present in this game will be added to this estimate
+	 * 
 	 * @param estimate
 	 */
-	public void addEstimate(Estimate estimate){
-		for(String u: participants){
+	public void addEstimate(Estimate estimate) {
+		for (String u : participants) {
 			estimate.canAddUser(u);
 		}
-		//TODO: make sure that creator of the game also participate in game; 
-		//if not, changeCreator will have more things to do
+		// TODO: make sure that creator of the game also participate in game;
+		// if not, changeCreator will have more things to do
 		estimate.canAddUser(gameCreator);
-		
+
 		estimates.add(estimate);
-		
+
 	}
-	
+
 	/**
 	 * Finds an estimate for a game based on the requirement id
-	 *
+	 * 
 	 * @param reqid
 	 * @return the estimate for the given requirement ID
 	 */
-	public Estimate findEstimate(int reqid){
-		for(Estimate e: estimates){
-			if(e.getReqID() == reqid) return e;
+	public Estimate findEstimate(int reqid) {
+		Estimate tempEst = null;
+		for (Estimate e : estimates) {
+			if (e.getReqID() == reqid){
+				tempEst = e;
+			}
 		}
-		return null;
+		return tempEst;
 	}
-	
+
 	/**
 	 * Checks if the deadline has passed and updates the status
 	 */
 	public void updateStatus() {
-		if(hasDeadline) {
+		if (hasDeadline) {
 			final Date now = Calendar.getInstance().getTime();
-			if(now.compareTo(end) >= 0){
+			if (now.compareTo(end) >= 0) {
 				status = GameStatus.ENDED;
 			}
 		}
 		endIfAllEstimated();
 	}
-	
+
 	/**
 	 * Check if all users have estimated on all requirements. If this is true,
 	 * end the game by changing the game status enum. Otherwise do nothing. This
-	 * function should not do anything if the game is not currently being played.
+	 * function should not do anything if the game is not currently being
+	 * played.
 	 */
-	public void endIfAllEstimated(){
+	public void endIfAllEstimated() {
 		boolean shouldEnd = true;
-		
-		if(status == GameStatus.DRAFT || getEstimates().isEmpty()){
-			return;
+
+		if (status != GameStatus.DRAFT && !estimates.isEmpty()) {
+			
+			for (Estimate estimate : estimates) {
+				shouldEnd &= estimate.areAllEstimationsMade();
+			}
+
+			if (shouldEnd) {
+				status = GameStatus.ENDED;
+			}
 		}
-		
-		for(Estimate estimate: estimates){
-			shouldEnd &= estimate.areAllEstimationsMade();
-		}
-		
-		if(shouldEnd){
-			status = GameStatus.ENDED;
-		}
-				
 	}
-	
+
 	/**
 	 * @return the gameCreator
 	 */
 	public String getGameCreator() {
 		return gameCreator;
 	}
-	
+
 	/**
 	 * return the name of the game
+	 * 
 	 * @return name
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Sets the name of the game
-	 * @param n the name
+	 * 
+	 * @param n
+	 *            the name
 	 */
-	public void setName(String n){
+	public void setName(String n) {
 		name = n;
 	}
-	
-	
+
 	/**
 	 * Checks if the game end time has been reached
+	 * 
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
-	public GameStatus getStatus(){
+	public GameStatus getStatus() {
 		updateStatus();
 		return status;
 	}
-	
+
 	/**
-	 * @param newStatus GameStatus set Game.status to
+	 * @param newStatus
+	 *            GameStatus set Game.status to
 	 */
-	public void setStatus(GameStatus newStatus){
+	public void setStatus(GameStatus newStatus) {
 		status = newStatus;
 	}
 
@@ -392,13 +414,14 @@ public class Game extends AbstractModel{
 
 	/**
 	 * reset start time of the game
-	 * @param start the start to set
+	 * 
+	 * @param start
+	 *            the start to set
 	 * @return false if the start time is later than end time
 	 */
 	public boolean setStart(Date start) {
 		boolean result = true;
-		if(start.compareTo(end) >= 0)
-		{
+		if (start.compareTo(end) >= 0) {
 			result = false;
 		}
 		this.start = start;
@@ -414,29 +437,34 @@ public class Game extends AbstractModel{
 
 	/**
 	 * Reset end time of the game
-	 * @param end the end to set
-	 * @return false if the end time is earlier than current time or the start time
+	 * 
+	 * @param end
+	 *            the end to set
+	 * @return false if the end time is earlier than current time or the start
+	 *         time
 	 */
 	public boolean setEnd(Date end) {
 		boolean result = true;
 		final Date now = Calendar.getInstance().getTime();
-		if(end.compareTo(now) <= 0 || end.compareTo(start) <= 0) {
+		if (end.compareTo(now) <= 0 || end.compareTo(start) <= 0) {
 			result = false;
 		}
 		this.end = end;
 		return result;
 	}
-	
+
 	/**
 	 * Returns the list of the particpants in the game
+	 * 
 	 * @return particpants
 	 */
 	public List<String> getParticipants() {
 		return participants;
 	}
-	
+
 	/**
 	 * sets the participants of the game
+	 * 
 	 * @param participants
 	 */
 	public void setParticipants(List<String> participants) {
@@ -445,6 +473,7 @@ public class Game extends AbstractModel{
 
 	/**
 	 * returns the list of estimates inside the game
+	 * 
 	 * @return estimates
 	 */
 	public List<Estimate> getEstimates() {
@@ -453,6 +482,7 @@ public class Game extends AbstractModel{
 
 	/**
 	 * sets the list of estimates inside the game
+	 * 
 	 * @param estimates
 	 */
 	public void setEstimates(List<Estimate> estimates) {
@@ -461,22 +491,25 @@ public class Game extends AbstractModel{
 
 	/**
 	 * returns the id of the game
+	 * 
 	 * @return
 	 */
 	public int getId() {
 		return id;
 	}
-	
+
 	/**
 	 * sets the id of the game
+	 * 
 	 * @param id
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Sets the game creator of the game
+	 * 
 	 * @param gameCreator
 	 */
 	public void setGameCreator(String gameCreator) {
@@ -491,26 +524,30 @@ public class Game extends AbstractModel{
 	}
 
 	/**
-	 * @param description the description to set
+	 * @param description
+	 *            the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	/**
 	 * Gets the list of requirements
+	 * 
 	 * @return requirements
 	 */
-	public List<Integer> getRequirements(){
+	public List<Integer> getRequirements() {
 		return requirements;
 	}
-	
+
 	/**
 	 * Sets the requirements in the game
-	 * @param the requirement ids to be stored in the game
+	 * 
+	 * @param the
+	 *            requirement ids to be stored in the game
 	 */
-	public void setRequirements(List<Integer> requirements){
-		this.requirements = requirements;	
+	public void setRequirements(List<Integer> requirements) {
+		this.requirements = requirements;
 	}
 
 	/**
@@ -521,37 +558,38 @@ public class Game extends AbstractModel{
 	}
 
 	/**
-	 * @param hasDeadline the hasDeadline to set
+	 * @param hasDeadline
+	 *            the hasDeadline to set
 	 */
 	public void setHasDeadline(boolean hasDeadline) {
 		this.hasDeadline = hasDeadline;
 	}
-	
+
 	/**
 	 * returns the name of the game
 	 */
 	@Override
-	public String toString(){
-		return getName();
+	public String toString() {
+		return name;
 	}
 
 	/**
-	 * Sets all of the given users in the list to each of the estimates
-	 * in the game, after creating an estimate for each req
-	 *
-	 * @param list the list of users to add
+	 * Sets all of the given users in the list to each of the estimates in the
+	 * game, after creating an estimate for each req
+	 * 
+	 * @param list
+	 *            the list of users to add
 	 */
 	public void setUsers(List<User> list) {
 		estimates = new ArrayList<Estimate>();
-		for(Integer req: requirements){
+		for (Integer req : requirements) {
 			this.addEstimate(new Estimate(req, id));
 		}
-		for(Estimate e: estimates){
-			for(User u: list){
+		for (Estimate e : estimates) {
+			for (User u : list) {
 				e.addUser(u.getUsername());
 			}
 		}
 	}
-	
 
 }
