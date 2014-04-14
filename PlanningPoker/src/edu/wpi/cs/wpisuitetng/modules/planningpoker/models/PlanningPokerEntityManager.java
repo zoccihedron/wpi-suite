@@ -176,12 +176,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);
-		if (updatedGame.getEstimates().size() == 0) {
-			existingGame.setUsers(db.retrieveAll(new User()));
-		} else {
-			existingGame.setEstimates(updatedGame.getEstimates());
-
-		}
+		
+		existingGame.setUsers(db.retrieveAll(new User()));
 
 		if (!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");

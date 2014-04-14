@@ -169,7 +169,7 @@ public class Game extends AbstractModel{
 		participants = updatedGame.getParticipants();
 		gameCreator = updatedGame.getGameCreator();
 		description = updatedGame.getDescription();
-		requirements = updatedGame.getRequirements();
+		setRequirements(updatedGame.getRequirements());
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
@@ -429,8 +429,9 @@ public class Game extends AbstractModel{
 	public List<Integer> getRequirements(){
 		return requirements;
 	}
-	public void setRequirements(List<Integer> requirements){
-		this.requirements = requirements;
+	public void setRequirements(List<Integer> newRequirements){
+		requirements = newRequirements;
+		
 	}
 
 	/**
@@ -472,6 +473,7 @@ public class Game extends AbstractModel{
 	 * @param list the list of users to add
 	 */
 	public void setUsers(List<User> list) {
+		estimates = new ArrayList<Estimate>();
 		for(Integer req: requirements){
 			this.addEstimate(new Estimate(req, id));
 		}
