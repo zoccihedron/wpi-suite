@@ -169,7 +169,7 @@ public class Game extends AbstractModel{
 		participants = updatedGame.getParticipants();
 		gameCreator = updatedGame.getGameCreator();
 		description = updatedGame.getDescription();
-		setRequirements(updatedGame.getRequirements());
+		requirements = updatedGame.getRequirements();
 		start = updatedGame.getStart();
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
@@ -296,16 +296,72 @@ public class Game extends AbstractModel{
 	}
 	
 	/**
+	 * Finds an estimate for a game based on the requirement id
+	 *
+	 * @param reqid
+	 * @return the estimate for the given requirement ID
+	 */
+	public Estimate findEstimate(int reqid){
+		for(Estimate e: estimates){
+			if(e.getReqID() == reqid) return e;
+		}
+		return null;
+	}
+	
+	/**
+	 * Checks if the deadline has passed and updates the status
+	 */
+	public void updateStatus() {
+		if(hasDeadline) {
+			final Date now = Calendar.getInstance().getTime();
+			if(now.compareTo(end) >= 0){
+				status = GameStatus.ENDED;
+			}
+		}
+		endIfAllEstimated();
+	}
+	
+	/**
+	 * Check if all users have estimated on all requirements. If this is true,
+	 * end the game by changing the game status enum. Otherwise do nothing. This
+	 * function should not do anything if the game is not currently being played.
+	 */
+	public void endIfAllEstimated(){
+		boolean shouldEnd = true;
+		
+		if(status == GameStatus.DRAFT || getEstimates().isEmpty()){
+			return;
+		}
+		
+		for(Estimate estimate: estimates){
+			shouldEnd &= estimate.areAllEstimationsMade();
+		}
+		
+		if(shouldEnd){
+			status = GameStatus.ENDED;
+		}
+				
+	}
+	
+	/**
 	 * @return the gameCreator
 	 */
 	public String getGameCreator() {
 		return gameCreator;
 	}
 	
+	/**
+	 * return the name of the game
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Sets the name of the game
+	 * @param n the name
+	 */
 	public void setName(String n){
 		name = n;
 	}
@@ -325,19 +381,6 @@ public class Game extends AbstractModel{
 	 */
 	public void setStatus(GameStatus newStatus){
 		status = newStatus;
-	}
-	
-	/**
-	 * Checks if the deadline has passed and updates the status
-	 */
-	public void updateStatus() {
-		if(hasDeadline) {
-			final Date now = Calendar.getInstance().getTime();
-			if(now.compareTo(end) >= 0){
-				status = GameStatus.ENDED;
-			}
-		}
-		endIfAllEstimated();
 	}
 
 	/**
@@ -384,30 +427,58 @@ public class Game extends AbstractModel{
 		return result;
 	}
 	
+	/**
+	 * Returns the list of the particpants in the game
+	 * @return particpants
+	 */
 	public List<String> getParticipants() {
 		return participants;
 	}
-
+	
+	/**
+	 * sets the participants of the game
+	 * @param participants
+	 */
 	public void setParticipants(List<String> participants) {
 		this.participants = participants;
 	}
 
+	/**
+	 * returns the list of estimates inside the game
+	 * @return estimates
+	 */
 	public List<Estimate> getEstimates() {
 		return estimates;
 	}
 
+	/**
+	 * sets the list of estimates inside the game
+	 * @param estimates
+	 */
 	public void setEstimates(List<Estimate> estimates) {
 		this.estimates = estimates;
 	}
 
+	/**
+	 * returns the id of the game
+	 * @return
+	 */
 	public int getId() {
 		return id;
 	}
 	
+	/**
+	 * sets the id of the game
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 	
+	/**
+	 * Sets the game creator of the game
+	 * @param gameCreator
+	 */
 	public void setGameCreator(String gameCreator) {
 		this.gameCreator = gameCreator;
 	}
@@ -426,12 +497,20 @@ public class Game extends AbstractModel{
 		this.description = description;
 	}
 	
+	/**
+	 * Gets the list of requirements
+	 * @return requirements
+	 */
 	public List<Integer> getRequirements(){
 		return requirements;
 	}
-	public void setRequirements(List<Integer> newRequirements){
-		requirements = newRequirements;
-		
+	
+	/**
+	 * Sets the requirements in the game
+	 * @param the requirement ids to be stored in the game
+	 */
+	public void setRequirements(List<Integer> requirements){
+		this.requirements = requirements;	
 	}
 
 	/**
@@ -448,22 +527,12 @@ public class Game extends AbstractModel{
 		this.hasDeadline = hasDeadline;
 	}
 	
+	/**
+	 * returns the name of the game
+	 */
 	@Override
 	public String toString(){
 		return getName();
-	}
-
-	/**
-	 * Finds an estimate for a game based on the requirement id
-	 *
-	 * @param reqid
-	 * @return the estimate for the given requirement ID
-	 */
-	public Estimate findEstimate(int reqid){
-		for(Estimate e: estimates){
-			if(e.getReqID() == reqid) return e;
-		}
-		return null;
 	}
 
 	/**
@@ -484,29 +553,5 @@ public class Game extends AbstractModel{
 		}
 	}
 	
-	/**
-	 * Check if all users have estimated on all requirements. If this is true,
-	 * end the game by changing the game status enum. Otherwise do nothing. This
-	 * function should not do anything if the game is not currently being played.
-	 */
-	public void endIfAllEstimated(){
-		boolean shouldEnd = true;
-		
-		if(status == GameStatus.DRAFT || getEstimates().isEmpty()){
-			return;
-		}
-		
-		for(Estimate estimate: estimates){
-			shouldEnd &= estimate.areAllEstimationsMade();
-		}
-		
-		if(shouldEnd){
-			status = GameStatus.ENDED;
-		}
-				
-	}
 
-	
-	
-	
 }

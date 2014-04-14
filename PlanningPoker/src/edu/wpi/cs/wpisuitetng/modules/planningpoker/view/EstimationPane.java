@@ -190,6 +190,7 @@ public class EstimationPane extends JPanel {
 			requirementName.setText(req.getName());
 			descriptionText.setText(req.getDescription());
 			deckPanel.displayOldEstimate(game, reqid);
+			message.setText(" ");
 		}
 		catch(NotFoundException exception){
 			this.message.setText("Exception: Requirement Not Found");
