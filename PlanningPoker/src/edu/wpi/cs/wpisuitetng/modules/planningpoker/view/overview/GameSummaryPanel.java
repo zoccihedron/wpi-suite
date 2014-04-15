@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
@@ -46,6 +47,7 @@ public class GameSummaryPanel extends JPanel {
 	private final JButton editGameButton;
 	private final JButton playGameButton;
 	private final JButton endGameButton;
+	private final JButton sendReqsButton;
 	private final JLabel reportMessage;
 	JPanel buttonsPanel;
 	Game game;
@@ -92,6 +94,19 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 10, 0, 20);
 		buttonsPanel.add(playGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		
+		sendReqsButton = new JButton("Send Estimates");
+		sendReqsButton.setToolTipText("Update estimates in the Requirement Manager");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 20);
+		buttonsPanel.add(sendReqsButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		
 		infoPanel = new GameSummaryInfoPanel();
@@ -189,6 +204,14 @@ public class GameSummaryPanel extends JPanel {
 			}
 
  		});
+		
+		sendReqsButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates());				
+			}
+
+ 		});
 	}
 	
 	/**
@@ -208,18 +231,21 @@ public class GameSummaryPanel extends JPanel {
 				playGameButton.setEnabled(false);
 				editGameButton.setEnabled(true);
 				endGameButton.setEnabled(false);
+				sendReqsButton.setVisible(false);
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				playGameButton.setEnabled(true);
 				editGameButton.setEnabled(false);
 				endGameButton.setEnabled(true);
+				sendReqsButton.setVisible(false);
 			}
 			// If the game is ended.
 			else {
 				playGameButton.setEnabled(false);
 				editGameButton.setEnabled(false);
 				endGameButton.setEnabled(false);
+				sendReqsButton.setVisible(true);
 			}
 		}
 		// If the user is not the game creator.
@@ -229,6 +255,7 @@ public class GameSummaryPanel extends JPanel {
 			editGameButton.setEnabled(false);
 			endGameButton.setVisible(false);
 			endGameButton.setEnabled(false);
+			sendReqsButton.setVisible(false);
 			
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.

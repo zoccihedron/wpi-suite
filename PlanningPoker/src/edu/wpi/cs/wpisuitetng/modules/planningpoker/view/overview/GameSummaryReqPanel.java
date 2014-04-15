@@ -37,7 +37,7 @@ public class GameSummaryReqPanel extends JPanel {
 
 	private JTable requirementsTable = null;
 	private DefaultTableModel modelReqs;
-	private String[] columnNames = { "ID", "Name", "Description"};
+	private String[] columnNames = { "ID", "Name", "Description", "Mean"};
 	private Object[][] data = new Object[][] {};
 
 	/**
@@ -93,12 +93,23 @@ public class GameSummaryReqPanel extends JPanel {
 		List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
 			if(reqIDs.contains(req.getId())){
+				int meanEstimate;
+				try{
+					meanEstimate = (int)game.findEstimate(req.getId()).getMean();
+				}
+				catch(NullPointerException e){
+					System.out.println(e.getMessage());
+				}
+				finally{
+					meanEstimate = 0;
+				}
 				modelReqs.addRow(new Object[] {
 						Integer.toString(req.getId()), req.getName(),
-						req.getDescription()});
+						req.getDescription(),
+						meanEstimate});
 			}
 		}
-		
+		//TODO hide mean column if game not ended
 	}
 	
 	

@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
@@ -96,6 +97,19 @@ public class RequirementManagerFacade {
 	public void setRequirements(Requirement[] requirements) {
 		// TODO Auto-generated method stub
 		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
+	}
+	
+	/**
+	 * Sends average of estimations to requirement manager 
+	 * Updates estimates in those requirements
+	 * @param estimates to send
+	 */
+	public void sendEstimates(List<Estimate> estimates){
+		for(Estimate estimate : estimates){
+			Requirement req = requirements.get(estimate.getReqID());
+			System.out.println("Req name: "+req.getName()+" Req Mean: "+estimate.getMean());
+			req.setEstimate((int)estimate.getMean());
+		}
 	}
 
 }

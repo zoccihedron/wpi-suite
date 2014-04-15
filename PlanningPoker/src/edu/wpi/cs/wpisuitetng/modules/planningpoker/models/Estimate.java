@@ -33,6 +33,7 @@ public class Estimate {
 	
 	private int gameID;
 	private int reqID;
+	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
 	
 	/**
@@ -178,12 +179,12 @@ public class Estimate {
 		int sum = 0;
 		int count = 0;
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != 0) {
+			if(temp.getValue() != -1) {
 				count++;
 				sum += temp.getValue();
 			}
 		}
-		final double mean = (double)sum / (double)count;
+		this.mean = (double)sum / (double)count;
 		return mean;
 	}
 	
@@ -196,7 +197,7 @@ public class Estimate {
 	public double getMedian() {
 		final List<Integer> estimates = new ArrayList<Integer>();
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != 0) {
+			if(temp.getValue() != -1) {
 				estimates.add(temp.getValue());
 			}
 		}
