@@ -15,16 +15,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-
-
-
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -42,6 +37,7 @@ public class UpdateGameController implements ActionListener {
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
 	private final boolean startingGame;
+	private Mailer m;
 
 	 
 	/**
@@ -75,6 +71,8 @@ public class UpdateGameController implements ActionListener {
 
 			if(startingGame){
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+				m = new Mailer(currentGame);
+				m.notifyStart();
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);

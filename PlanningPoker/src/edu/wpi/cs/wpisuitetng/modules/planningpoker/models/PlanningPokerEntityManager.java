@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
+
 /**
  * This is the entity manager for the game sessions in the PlanningPoker module
  * 
@@ -313,5 +314,15 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 */
 	public int getIdCount() {
 		return id_count;
+	}
+	
+	/**
+	 * Returns all users that are on the same project
+	 * 
+	 * @return List<User> a list of all users
+	 */
+	public List<Class<User>> getAllUsers()
+	{
+		return db.retrieveAll(User.class);
 	}
 }
