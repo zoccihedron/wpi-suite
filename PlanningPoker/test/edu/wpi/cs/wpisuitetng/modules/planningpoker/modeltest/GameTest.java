@@ -9,15 +9,13 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -37,7 +35,7 @@ public class GameTest {
 	User dummyUser;
 	User dummyUser2;
 	
-	@BeforeClass
+	@Before
 	public void setUp(){
 		String game1name = "Game1";
 		Date start = new Date();
