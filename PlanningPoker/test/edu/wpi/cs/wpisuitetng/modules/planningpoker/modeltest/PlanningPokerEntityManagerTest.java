@@ -51,8 +51,8 @@ public class PlanningPokerEntityManagerTest {
 	static Project otherProject;
 	
 	
-	@BeforeClass
-	public static void setUp() throws WPISuiteException{
+	@Before
+	public void setUp() throws WPISuiteException{
 		
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
 		Date start = new Date();
