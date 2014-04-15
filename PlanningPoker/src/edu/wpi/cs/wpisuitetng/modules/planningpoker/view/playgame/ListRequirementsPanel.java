@@ -24,7 +24,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.PlayGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -42,15 +42,17 @@ implements TreeSelectionListener {
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private final Game game;
+	private PlayGameController playGameController;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
 	 */
-	public ListRequirementsPanel(final Game game) {
+	public ListRequirementsPanel(final Game game, PlayGameController playGameController) {
 
 		this.game = game;
 		this.setViewportView(tree);
 		this.refresh();  
+		this.playGameController = playGameController;
 		
 
 		//Create the nodes.
@@ -91,7 +93,7 @@ implements TreeSelectionListener {
 		final Object nodeInfo = node.getUserObject();
 		if(node.isLeaf()){
 		final Requirement req = (Requirement)nodeInfo;
-		PlayGameController.getInstance().updateEstimationPane(req.getId(), game);
+		playGameController.updateEstimationPane(req.getId(), game);
 		}
 		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}

@@ -10,12 +10,13 @@
  *    Code On Bleu
  ******************************************************************************/
 
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
@@ -24,33 +25,34 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
- * This controller responds when the user clicks the Update button by
- * sending the contents of the fields to the server as an Updated Game.
+ * This controller responds when the user clicks the Submit button by
+ * sending the contents of the fields to the server as a New Game.
  * 
- * @author Code On Bleu
+ * @author Team Code On Bleu
  * @version 1.0
+ *
  */
-public class UpdateGameController implements ActionListener {
+public class AddGameController implements ActionListener {
 	
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
-	private Game updatedGame;
-	private final boolean startingGame;
+	private static User[] users = {};
+	private boolean startingGame = false;
+	private boolean endingGame = false;
 	
 	/**
-	 * Construct an UpdateGameController for the given model, view pair
-	 * @param updatedGame the updated game
+	 * Construct an AddMessageController for the given model, view pair
 	 * @param createGameInfoPanel the view where the user enters new messages
-	 * @param startingGame whether the game will be started or not
+	 * @param startingGame whether the game is being started or not
 	 */
-	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame) {
+	public AddGameController(CreateGameInfoPanel createGameInfoPanel, boolean startingGame, boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
-		this.updatedGame = updatedGame;
 		this.startingGame = startingGame;
+		this.endingGame = endingGame;
 	}
 
-	/**
+	/** 
 	 * This method is called when the user clicks the Submit button
 	 * 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -60,57 +62,51 @@ public class UpdateGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
-
+			
 			final Game currentGame = view.getGameObject();
-
+			
 			if(startingGame){
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+			}
+			else if(endingGame){
+				currentGame.setStatus(Game.GameStatus.ENDED);
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);
 			}
 
 			// Send a request to the core to save this game
-			final Request request = Network.getInstance().makeRequest
-					("planningpoker/game", HttpMethod.POST);
-			// put the updated game in the body of the request
-			request.setBody(currentGame.toJSON());
+			final Request request = Network.getInstance().makeRequest(
+					"planningpoker/game", HttpMethod.PUT);
+			request.setBody(currentGame.toJSON()); // put the new message in the body of the request
 			// add an observer to process the response
-			request.addObserver(new UpdateGameRequestObserver(this));
+			request.addObserver(new AddGameRequestObserver(this));
 			request.send(); // send the request
 		}
+	
 	}
 
 	/**
 	 * When the new message is received back from the server, add it to the local model.
-	 * @param currentGame the game which will be updated
+	 * @param currentGame 
 	 */
-	public static void addGameToModel(Game currentGame) {
-		PlanningPokerModel.UpdateGame(currentGame);
+	public void addGameToModel(Game currentGame) {
+		model.AddGame(currentGame);
 	}
 
 	/**
-	 * Reports a successful message
+	 * Shows the used that the game has been saved
 	 */
 	public void addGameToView() {
-		view.reportMessage("<html>Success: Game Updated!</html>");
+		view.reportMessage("<html>Success: Game Saved!</html>");
+		view.closeNewGameTab();
 	}
 
 	/**
-	 * Updates the updated game to the game passed in
-	 * @param returnGame
+	 * Sets all of the users in a project to add to a game
+	 * @param project The project
 	 */
-	public void returnGame(Game returnGame) {
-		updatedGame = returnGame;
-		view.reportMessage("<html>Success: Game Updated!</html>");
-		view.closeNewGameTab();
-	}
-	
-	/**
-	 * Getter for the updatedGame
-	 */
-	public Game getUpdatedGame()
-	{
-		return updatedGame;
+	public static void receivedProject(Project project) {
+		users = project.getTeam();
 	}
 }

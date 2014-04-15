@@ -16,7 +16,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.List;
 
-
 import javax.swing.DropMode;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
@@ -25,9 +24,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.OverviewPanelController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
@@ -98,12 +96,11 @@ implements TreeSelectionListener {
 		}
 		if(node.isLeaf() && !node.isRoot()){
 			final Object nodeInfo = node.getUserObject();
-			final Game gme = (Game) nodeInfo;
-			OverviewPanelController.getInstance().updateGameSummary(gme);
+			if(nodeInfo instanceof Game) {
+				final Game gme = (Game) nodeInfo;
+				OverviewPanelController.getInstance().updateGameSummary(gme);
+			}
 		}
-		
-		if (node == null) return;
-		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}
 
 

@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import com.google.gson.Gson;
+
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
@@ -29,17 +31,21 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class Estimate {
 	
+	private int gameID;
 	private int reqID;
-	private final HashMap<String,Integer> userWithEstimate;
+	private HashMap<String,Integer> userWithEstimate;
 	
 	/**
 	 * Constructor for an estimate object
 	 * @param r the requirement id
+	 * @param gameID the game to be associate with the estimate
 	 */
-	public Estimate(int r){
+	public Estimate(int r, int gameID){
 		reqID = r;
+		this.gameID = gameID;
 		userWithEstimate = new HashMap<String,Integer>();
 	}
+	
 	
 	/**
 	 * Get requirement of this estimate
@@ -85,10 +91,12 @@ public class Estimate {
 	 * @return true if the user has made a valid estimation, false if not
 	 */
 	public boolean hasMadeAnEstimation(String user){
-		if(userWithEstimate.containsValue(user))
+		if(userWithEstimate.containsValue(user)){
 			return (userWithEstimate.get(user) == 0) ? false : true; 
-		else
+		}
+		else{
 			return false;
+		}
 	}
 		
 	/**
@@ -100,11 +108,32 @@ public class Estimate {
 		boolean result = true;
 		for(Entry<String,Integer> e: userWithEstimate.entrySet())
 		{
-			if(e.getValue() == 0) {
-				result = false;
+			if(e.getValue() <= 0) {
+				result &= false;
 			}
 		}
 		return result;
+	}
+	
+	/**
+	 * Converts the estimate to JSON-encoded string
+	 * 
+	 * @return JSON-encoded string
+	 * @see edu.wpi.cs.wpisuitetng.modules.Model#toJSON()
+	 */
+	public String toJSON() {
+		return new Gson().toJson(this, Estimate.class);
+	}
+	
+	/**
+	 * Returns an estimate from JSON encoded string
+	 *
+	 * @param json JSON-encoded string
+	 * @return Estimate
+	 */
+	public static Estimate fromJson(String json) {
+		final Gson parser = new Gson();
+		return parser.fromJson(json, Estimate.class);
 	}
 	
 	/**
@@ -204,7 +233,42 @@ public class Estimate {
 	 * @return true if the user was added, false if not
 	 */
 	public boolean addUser(String user){
-		if(userWithEstimate.put(user, 0) != null) return true;
+		System.out.println("Adding User to estimate!");
+		if(userWithEstimate.put(user, -1) != null) return true;
 		return false;
+	}
+
+	/**
+	 * Generates a copy of the current estimate
+	 * @return copiedEstimate
+	 */
+	public Estimate getCopy(){
+		final Estimate copyEst = new Estimate(reqID, gameID);
+		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		return copyEst;
+	}
+	
+	/**
+	 * Gets the current game id associated with the estimate
+	 * @return gameID
+	 */
+	public int getGameID() {
+		return gameID;
+	}
+
+	/**
+	 * sets the game id associated with the current estimate
+	 * @param gameID
+	 */
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
+	}
+
+	/**
+	 * Set the requirement id for the estimate
+	 * @param reqID
+	 */
+	public void setReqID(int reqID) {
+		this.reqID = reqID;
 	}
 }

@@ -81,7 +81,7 @@ public class MainView extends JTabbedPane {
 	 * @param component	The tab
 	 * @param index	Location of the tab
 	 */
-	public void insertTab(String title, Component component, int index) {
+	public void insertTab(String title, final Component component, int index) {
 		super.insertTab(title, null, component, null, index);
 		if (!(component instanceof OverviewPanel)) {
 			setTabComponentAt(index, new ClosableTabComponent(this)
@@ -89,8 +89,7 @@ public class MainView extends JTabbedPane {
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					final int index = tabbedPane.indexOfTabComponent(this);
-					MainViewTabController.getInstance().closeTab(index);
+					MainViewTabController.getInstance().closeTab(component);
 				}
 			});
 		}
