@@ -25,6 +25,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
@@ -127,6 +129,26 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weighty = 1.5;
 		add(deckPanel, constraints);
+		
+		// adds listener for live validation of the Estimate Field
+		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkField();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkField();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkField(); 
+			}
+			
+		});
 
 
 		final JPanel voteButtonPanel = new JPanel();
@@ -228,6 +250,7 @@ public class EstimationPane extends JPanel {
 		
 		final int estimate;
 		try{
+			reportError("<html></html>");
 			estimate = Integer.parseInt(deckPanel.getEstimateField());
 
 		} catch (NumberFormatException e){
