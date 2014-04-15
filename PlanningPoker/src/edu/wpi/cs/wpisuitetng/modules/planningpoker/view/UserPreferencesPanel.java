@@ -57,13 +57,13 @@ public class UserPreferencesPanel extends JPanel {
 
 	private final JPanel preferencesPanel;
 	private final JPanel titlePanel;
-	private JTextField emailField;
-	private JTextField imField;
+	private final JTextField emailField;
+	private final JTextField imField;
 	private final JLabel lblTitle;
 	private final JLabel lblAllow;
 	private final JLabel lblUserInfo;
 	private final JLabel lblEmailCheck;
-	private JLabel lblIMCheck;
+	private final JLabel lblIMCheck;
 	private final JLabel lblEmail;
 	private final JLabel lblIM;
 	private final JCheckBox checkBoxEmail;
@@ -77,7 +77,7 @@ public class UserPreferencesPanel extends JPanel {
 	private final String imPattern = "^[A-Za-z0-9]*$";
 	private boolean emailVerified = true;
 	private boolean imVerified = true;
-	private UserPreferencesPanel userPreferencesPane = this;
+	private final UserPreferencesPanel userPreferencesPane = this;
 	private String initEmail = "";
 	private String initIM = "";
 	private boolean initAllowEmail;
@@ -92,17 +92,19 @@ public class UserPreferencesPanel extends JPanel {
 
 		preferencesPanel = new JPanel();
 		add(preferencesPanel, BorderLayout.CENTER);
-		GridBagLayout gbl_panel = new GridBagLayout();
+		final GridBagLayout gbl_panel = new GridBagLayout();
 
 		gbl_panel.columnWidths = new int[]{21, 31, 86, 40, 86, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{39, 21, 33, 21, 23, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]
+				{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]
+				{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		preferencesPanel.setLayout(gbl_panel);
 
 		titlePanel = new JPanel();
-		GridBagConstraints gbc_titlePanel = new GridBagConstraints();
-		gbc_titlePanel.insets = new Insets(0,0,5,5);
+		final GridBagConstraints gbc_titlePanel = new GridBagConstraints();
+		gbc_titlePanel.insets = new Insets(0, 0, 5, 5);
 		gbc_titlePanel.gridwidth = 3;
 		gbc_titlePanel.gridx = 1;
 		gbc_titlePanel.gridy = 0;
@@ -110,10 +112,10 @@ public class UserPreferencesPanel extends JPanel {
 		lblTitle = new JLabel("User Preferences");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titlePanel.add(lblTitle);
-
+		
 		lblUserInfo = new JLabel("User name: " + ConfigManager.getInstance().getConfig().getUserName());
 		lblUserInfo.setVerticalAlignment(SwingConstants.BOTTOM);
-		GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
+		final GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
 		gbc_lblUserInfo.insets = new Insets(0, 0, 5, 5);
 		gbc_lblUserInfo.gridwidth = 3;
 		gbc_lblUserInfo.gridx = 1;
@@ -123,14 +125,14 @@ public class UserPreferencesPanel extends JPanel {
 
 		lblAllow = new JLabel("Allow:");
 		lblAllow.setVerticalAlignment(SwingConstants.BOTTOM);
-		GridBagConstraints gbc_lblAllow = new GridBagConstraints();
+		final GridBagConstraints gbc_lblAllow = new GridBagConstraints();
 		gbc_lblAllow.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAllow.gridx = 1;
 		gbc_lblAllow.gridy = 1;
 		preferencesPanel.add(lblAllow, gbc_lblAllow);
 
 		checkBoxEmail = new JCheckBox("");
-		GridBagConstraints gbc_checkBox = new GridBagConstraints();
+		final GridBagConstraints gbc_checkBox = new GridBagConstraints();
 		gbc_checkBox.fill = GridBagConstraints.CENTER;
 		gbc_checkBox.anchor = GridBagConstraints.WEST;
 		gbc_checkBox.insets = new Insets(0, 0, 5, 5);
@@ -140,7 +142,7 @@ public class UserPreferencesPanel extends JPanel {
 
 		lblEmail = new JLabel("Email: ");
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
+		final GridBagConstraints gbc_lblEmail = new GridBagConstraints();
 		gbc_lblEmail.fill = GridBagConstraints.CENTER;
 		gbc_lblEmail.anchor = GridBagConstraints.WEST;
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
@@ -149,7 +151,7 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(lblEmail, gbc_lblEmail);
 
 		emailField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
+		final GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.CENTER;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 3;
@@ -159,7 +161,7 @@ public class UserPreferencesPanel extends JPanel {
 		emailField.setEnabled(false);
 
 		lblEmailCheck = new JLabel("Error*");
-		GridBagConstraints gbc_lblEmailCheck = new GridBagConstraints();
+		final GridBagConstraints gbc_lblEmailCheck = new GridBagConstraints();
 		gbc_lblEmailCheck.anchor = GridBagConstraints.WEST;
 		gbc_lblEmailCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmailCheck.gridx = 4;
@@ -168,7 +170,7 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(lblEmailCheck, gbc_lblEmailCheck);
 
 		checkBoxIM = new JCheckBox("");
-		GridBagConstraints gbc_checkBox_1 = new GridBagConstraints();
+		final GridBagConstraints gbc_checkBox_1 = new GridBagConstraints();
 		gbc_checkBox_1.anchor = GridBagConstraints.WEST;
 		gbc_checkBox_1.insets = new Insets(0, 0, 5, 5);
 		gbc_checkBox_1.gridx = 1;
@@ -176,7 +178,7 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(checkBoxIM, gbc_checkBox_1);
 
 		lblIM = new JLabel("IM: ");
-		GridBagConstraints gbc_IM = new GridBagConstraints();
+		final GridBagConstraints gbc_IM = new GridBagConstraints();
 		gbc_IM.anchor = GridBagConstraints.WEST;
 		gbc_IM.insets = new Insets(0, 0, 5, 5);
 		gbc_IM.gridx = 2;
@@ -185,7 +187,7 @@ public class UserPreferencesPanel extends JPanel {
 
 		imField = new JTextField();
 		imField.setToolTipText("");
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
+		final GridBagConstraints gbc_textField_1 = new GridBagConstraints();
 		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_1.gridx = 3;
 		gbc_textField_1.gridy = 3;
@@ -194,7 +196,7 @@ public class UserPreferencesPanel extends JPanel {
 		imField.setEnabled(false);
 
 		lblIMCheck = new JLabel("Error*");
-		GridBagConstraints gbc_lblIMCheck = new GridBagConstraints();
+		final GridBagConstraints gbc_lblIMCheck = new GridBagConstraints();
 		gbc_lblIMCheck.anchor = GridBagConstraints.WEST;
 		gbc_lblIMCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblIMCheck.gridx = 4;
@@ -203,7 +205,7 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(lblIMCheck, gbc_lblIMCheck);
 
 		btnSubmit = new JButton("Submit");
-		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
+		final GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
 		gbc_btnSubmit.anchor = GridBagConstraints.NORTH;
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSubmit.insets = new Insets(0, 0, 5, 5);
@@ -212,7 +214,7 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(btnSubmit, gbc_btnSubmit);
 
 		btnCancel = new JButton("Cancel");
-		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
+		final GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCancel.anchor = GridBagConstraints.NORTH;
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
@@ -315,7 +317,7 @@ public class UserPreferencesPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				User dummyUser = new User();
+				final User dummyUser = new User();
 
 				dummyUser.setIdNum(0);
 				dummyUser.setUserName("Username");
@@ -325,7 +327,7 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setIM(imField.getText());
 				dummyUser.setAllowEmail(checkBoxEmail.isSelected());
 				dummyUser.setAllowIM(checkBoxIM.isSelected());
-				Request request = Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
+				final Request request = Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
 				request.setBody(dummyUser.toJSON());
 				request.addObserver(new RequestObserver(){
 
@@ -349,7 +351,10 @@ public class UserPreferencesPanel extends JPanel {
 
 				});
 				request.send();
-				userPreferencesPane.setCurrentEmailAndIM(emailField.getText(), imField.getText(), checkBoxEmail.isSelected(), checkBoxIM.isSelected());
+				userPreferencesPane.setCurrentEmailAndIM(emailField.getText(), 
+						imField.getText(), 
+						checkBoxEmail.isSelected(), 
+						checkBoxIM.isSelected());
 
 			}
 
@@ -359,7 +364,7 @@ public class UserPreferencesPanel extends JPanel {
 
 			@Override
 			public void componentShown(ComponentEvent e) {
-				Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+				final Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
 				request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 				request.send();
 
@@ -490,7 +495,10 @@ public class UserPreferencesPanel extends JPanel {
 	 * @param allowEmail the user's current stored email preference
 	 * @param allowIM the user's current stored IM preferences
 	 */
-	public void setCurrentEmailAndIM(String currentEmail, String currentIM, boolean allowEmail, boolean allowIM){
+	public void setCurrentEmailAndIM(String currentEmail, 
+			String currentIM, 
+			boolean allowEmail, 
+			boolean allowIM){
 		emailField.setText(currentEmail);
 		initEmail = currentEmail;
 		imField.setText(currentIM);
@@ -516,19 +524,15 @@ public class UserPreferencesPanel extends JPanel {
 			return true;
 		}
 		else{
-			Object options[] = {"Yes", "No"};
-			int i = JOptionPane.showOptionDialog(this, 
+			final Object[] options = {"Yes", "No"};
+			final int i = JOptionPane.showOptionDialog(this, 
 					"Any unsaved changes will be lost, would you like to exit anyways?",
 					"Exit?",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE,
 					null, options, options[1]);
 
-			if(i == 0) {
-				return true;
-			} else {
-				return false;
-			}
+			return i == 0;
 		}
 	}
 
