@@ -14,8 +14,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -25,8 +28,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ScrollablePanel;
 
@@ -43,7 +49,9 @@ public class DeckPanel extends JScrollPane {
 	private final int CARD_WIDTH = 100;
 	private final int CARD_HEIGHT = 128;
 	private String currentEstimate;
-
+	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
+	private boolean isDeckView;
+	
 	/**
 	 * Constructs the DeckPanel
 	 * 
@@ -64,7 +72,26 @@ public class DeckPanel extends JScrollPane {
 		estimateField.setEditable(editable);
 	}
 
+	/**
+	 * This function returns true if a deck is selected, or is in text version
+	 * @return true if a deck is selected
+	 */
+	public boolean hasDeckSelected(){
+		boolean result = true;
+		
+		if(isDeckView){
+			result = false;
+			for( JToggleButton button : listOfButtons){
+				if(button.isSelected()){
+					result = true;
+				}
+			}
+		}
+		return result;
+	}
+	
 	private JPanel textVersion() {
+		isDeckView = false;
 		final ScrollablePanel textPanel = new ScrollablePanel();
 		textPanel.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -95,23 +122,18 @@ public class DeckPanel extends JScrollPane {
 	/**
 	 * This is a proof of concept Temp GUI there is no functionality programmed in it
 	 * However it may be useful as a basis.
+	 * @param test 
 	 * @return The panel with clickable cards
 	 */
-	private JPanel deckVersion() {
-
+	private JPanel deckVersion(final Deck deck) {
+		isDeckView = true;
 		final JPanel deckPanel = new JPanel();
 		deckPanel.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
 
-		// This creates a deck choice
-		final ArrayList<Integer> cards = new ArrayList<Integer>();
-		cards.add(0);
-		cards.add(1);
-		cards.add(1);
-		cards.add(2);
-		cards.add(3);
-		cards.add(5);
-		cards.add(8);
+		//Populate the deck with the cards it contains.
+		final List<Integer> cards = deck.getCards();
+
 		try {
 			img = new ImageIcon(ImageIO.read(getClass().getResource(
 					"cardtemplate.png")));
@@ -120,7 +142,7 @@ public class DeckPanel extends JScrollPane {
 		}
 
 		for (int i = 0; i < cards.size(); i++) {
-			JToggleButton cardToAdd = new JToggleButton(Integer.toString(cards
+			final JToggleButton cardToAdd = new JToggleButton(Integer.toString(cards
 					.get(i)), img);
 			cardToAdd.setHorizontalTextPosition(SwingConstants.CENTER);
 			cardToAdd.setVerticalTextPosition(SwingConstants.CENTER);
@@ -129,12 +151,46 @@ public class DeckPanel extends JScrollPane {
 			constraints.gridy = 2;
 			constraints.gridwidth = 1;
 			constraints.insets = new Insets(0, 5, 0, 5);
+			cardToAdd.addChangeListener(new ChangeListener() {
+				@Override
+				public void stateChanged(ChangeEvent arg0) {
+					if(!deck.canSelectMultipleCards()){
+						clearPrevious(cardToAdd);
+					}
+					calculateSum();
+				}
+			});
+			
+				
+			
+
+			listOfButtons.add(cardToAdd);
 			deckPanel.add(cardToAdd, constraints);
 		}
 
 		return deckPanel;
 	}
 
+	private void clearPrevious(JToggleButton cardToAdd) {
+		for( JToggleButton button : listOfButtons){
+			if(!button.equals(cardToAdd)){
+				button.setSelected(false);
+			}
+		}
+		
+	}
+	
+	private void calculateSum() {
+		int result = 0;
+		
+		for( JToggleButton button : listOfButtons){
+			if(button.isSelected()){
+				result += Integer.valueOf(button.getText());
+			}
+		}
+		estimateField.setText(Integer.toString(result));
+	}
+	
 	/**
 	 * Displays the old estimate made by the user in the voting text field.
 	 * 
@@ -172,6 +228,16 @@ public class DeckPanel extends JScrollPane {
 	
 	public String getCurrentEstimate(){
 		return currentEstimate;
+	}
+
+	/**
+	 * This function is used to rest the deck selection to a blank state 
+	 */
+	public void clearCardsSelected() {
+		for( JToggleButton button : listOfButtons){
+			button.setSelected(false);
+		}
+		
 	}
 
 }
