@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -89,6 +90,10 @@ public class GameSummaryReqPanel extends JPanel {
 		// Hide the column with IDs
 		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
 	
+		if (game.getStatus() != GameStatus.ENDED) {
+			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(2));
+		}
+		
 		modelReqs = (DefaultTableModel) requirementsTable.getModel();
 		List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
@@ -108,7 +113,6 @@ public class GameSummaryReqPanel extends JPanel {
 						meanEstimate});
 			}
 		}
-		//TODO hide mean column if game not ended
 	}
 	
 	
