@@ -40,9 +40,9 @@ import java.util.Date;
 public class PlanningPokerEntityManagerTest {
 	
 	static MockData db;
-	static Game game;
-	static Game game2;
-	static Game game3;
+	static Game draftGame;
+	static Game draftGameYouCreated;
+	static Game inProgressGame;
 	static PlanningPokerEntityManager manager;
 	static User dummyUser, dummyUser2;
 	static Session s1, s2;
@@ -62,15 +62,11 @@ public class PlanningPokerEntityManagerTest {
 		
 		dummyUser.setRole(Role.ADMIN);
 		
-		game = new Game("game", start, end);
-		game2 = new Game("game2", start, end);
-		game3 = new Game("game3", start, end);
+		draftGame = new Game("game", start, end);
+		draftGameYouCreated = new Game("game2", start, end);
+		inProgressGame = new Game("game3", start, end);
 		
-		System.out.println(game.getId());
-		System.out.println(game2.getId());
-		System.out.println(game3.getId());
-		
-		game3.setStatus(Game.GameStatus.IN_PROGRESS);
+		inProgressGame.setStatus(Game.GameStatus.IN_PROGRESS);
 		
 		testProject = new Project("test", "1");
 		
@@ -82,13 +78,13 @@ public class PlanningPokerEntityManagerTest {
 		db = new MockData(new HashSet<Object>());
 		manager = new PlanningPokerEntityManager(db);
 		
-		game.setGameCreator(dummyUser.getUsername());
-		game2.setGameCreator(dummyUser.getUsername());
-		game3.setGameCreator(dummyUser.getUsername());
+		draftGame.setGameCreator(dummyUser.getUsername());
+		draftGameYouCreated.setGameCreator(dummyUser.getUsername());
+		inProgressGame.setGameCreator(dummyUser.getUsername());
 		
-		manager.save(s1, game);
-		manager.save(s1, game2);
-		manager.save(s1, game3);
+		manager.save(s1, draftGame);
+		manager.save(s1, draftGameYouCreated);
+		manager.save(s1, inProgressGame);
 
 		db.save(dummyUser);
 		
@@ -103,9 +99,7 @@ public class PlanningPokerEntityManagerTest {
 		Game[] retrievedGames;
 		
 		try{
-			retrievedGames = manager.getEntity(s2, "1");
-			System.out.println("Game Creator: "+retrievedGames[0].getGameCreator());
-			System.out.println("Session user: "+s2.getUser().getUsername());
+			retrievedGames = manager.getEntity(s2, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			exceptionMessage=e.getMessage();
@@ -116,7 +110,7 @@ public class PlanningPokerEntityManagerTest {
 		
 		boolean PermissionAllowed = true;
 		try{
-			retrievedGames = manager.getEntity(s1, "1");
+			retrievedGames = manager.getEntity(s1, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			PermissionAllowed = false;
@@ -131,14 +125,14 @@ public class PlanningPokerEntityManagerTest {
 		boolean successfulRetrievalByNotOwner = true;
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s1,"0");
+			Game[] retrievedGames = manager.getEntity(s1,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByOwner = false;
 		}
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s2,"0");
+			Game[] retrievedGames = manager.getEntity(s2,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByNotOwner = false;
@@ -150,17 +144,17 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void AddGameEntityToDatabaseTest() throws WPISuiteException{
-		Game newGame = manager.makeEntity(s1, game3.toJSON());
+		Game newGame = manager.makeEntity(s1, inProgressGame.toJSON());
 		assertEquals("game3", newGame.getName());
-		Game newGameRetrieved = (Game) db.retrieve(Game.class, "id", 2).get(0);
-		assertTrue(game3.getName().equals(newGameRetrieved.getName()));
+		Game newGameRetrieved = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		assertTrue(inProgressGame.getName().equals(newGameRetrieved.getName()));
 	}
 	
 	
 	@Test
 	public void GetGameEntityFromDatabase() throws NotFoundException, WPISuiteException{
-		Game[] retrieved = manager.getEntity(s1, "1");
-		assertSame(game3, retrieved[0]);
+		Game[] retrieved = manager.getEntity(s1, "" + inProgressGame.getId());
+		assertSame(inProgressGame, retrieved[0]);
 	}
 	
 	@Test
@@ -208,12 +202,6 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void getHighestIdTest() throws WPISuiteException{
 		Game[] retrievedGames = (Game[])manager.getAll(s1);
-		for(Game g : retrievedGames)
-		{
-			System.out.println(manager.getIdCount());
-			System.out.println(g.getName());
-			System.out.println(g.getId());
-		}
 		int largestId = manager.getGameWithLargestId(retrievedGames);
 		assertEquals(largestId, retrievedGames.length);
 	}
@@ -221,7 +209,16 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void autoIncrementGameIdTest() throws WPISuiteException{
 		Game[] retrievedGames = (Game[])manager.getAll(s1);
-		
-		
+		for(Game game : retrievedGames){
+			if (game.getName().equals("game")){
+				assertEquals(1, game.getId());
+			} 
+			else if (game.getName().equals("game2")){
+				assertEquals(2, game.getId());
+			} 
+			else if (game.getName().equals("game3")){
+				assertEquals(3, game.getId());
+			} 
+		}
 	}
 }

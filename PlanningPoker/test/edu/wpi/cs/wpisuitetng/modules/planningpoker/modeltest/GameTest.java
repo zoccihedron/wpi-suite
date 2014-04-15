@@ -62,18 +62,12 @@ public class GameTest {
 		est1.addUser(dummyUser2.getUsername());
 		
 	}
-	
+
 	@Test
-	public void autoIncrementingIDAndUpdateEstimateTest()
-	{
-		assertEquals(game1.getName(),"Game1");
-		assertEquals(game1.getId(), 1);
-		
-		assertEquals(game2.getId(), 2);
-		
-		
+	public void updateEstimateTest()
+	{			
 		int estimateValue = 3;
-		assertEquals(game1.findEstimate(1).getEstimate(dummyUser.getUsername()),0);
+		assertEquals(game1.findEstimate(1).getEstimate(dummyUser.getUsername()),-1);
 		Estimate estimate = game1.findEstimate(1);
 		estimate.makeEstimate(dummyUser.getUsername(),estimateValue);
 		assertEquals(game1.findEstimate(1).getEstimate(dummyUser.getUsername()),3);
@@ -81,52 +75,54 @@ public class GameTest {
 	}
 	
 	@Test
-	public void testEndIfAllEstimated(){
-		Game game = new Game();
-		Game endedGame = new Game();
-		Game notFinishedGame = new Game();
+	public void dontEndDraftTest(){
 		Game draftGame = new Game();
-		List<Integer> reqs = new ArrayList<Integer>();
-		List<User> users = new ArrayList<User>();
-		
-		reqs.add(0);
-		reqs.add(1);
-		
-		users.add(dummyUser);
-		users.add(dummyUser2);
-		
-		game.setRequirements(reqs);
-		game.setUsers(users);
-		
-		notFinishedGame.setRequirements(reqs);
-		game.setUsers(users);
-		
-		for(Estimate e : game.getEstimates()){
-			for(User u : users){
-				e.makeEstimate(u.getName(), 4);
-			}
-		}
-		
-		for(Estimate e: notFinishedGame.getEstimates()){
-			e.makeEstimate(dummyUser.getName(), 3);
-		}
-		
-		endedGame.setStatus(GameStatus.ENDED);
-		draftGame.setStatus(GameStatus.DRAFT);
-		
-		game.endIfAllEstimated();
-		notFinishedGame.endIfAllEstimated();
-		
-		assertEquals(notFinishedGame.getStatus(), draftGame.getStatus());
-		
-		notFinishedGame.setStatus(GameStatus.IN_PROGRESS);
-		notFinishedGame.endIfAllEstimated();
-		
-		assertEquals(notFinishedGame.getStatus(), endedGame.getStatus());
-		assertEquals(game.getStatus(), endedGame.getStatus());
-		
+		draftGame.endIfAllEstimated();
+		assertEquals(GameStatus.DRAFT, draftGame.getStatus());
 	}
-
 	
+	@Test
+	public void dontEndNotCompletedTest(){
+		Game inProgressGame = new Game();
+		inProgressGame.setStatus(GameStatus.IN_PROGRESS);
+		User user1 = new User("user", "us", "password", 1);
+		Estimate estimate1 = new Estimate(1, 1);
+		Estimate estimate2 = new Estimate(2, 1);
+
+		estimate1.addUser(user1.getName());
+		estimate2.addUser(user1.getName());
+		
+		estimate1.makeEstimate(user1.getName(), 4);
+		
+		inProgressGame.addEstimate(estimate1);
+		inProgressGame.addEstimate(estimate2);
+		
+		inProgressGame.endIfAllEstimated();
+		
+		assertEquals(GameStatus.IN_PROGRESS, inProgressGame.getStatus());
+	}
+	
+	@Test
+	public void gameEndsAfterAllUsersEstimateTest(){
+		Game endedGame = new Game();
+		endedGame.setStatus(GameStatus.IN_PROGRESS);
+		User user1 = new User("user", "us", "password", 1);
+		Estimate estimate1 = new Estimate(1, 1);
+		Estimate estimate2 = new Estimate(2, 1);
+
+		estimate1.addUser(user1.getName());
+		estimate2.addUser(user1.getName());
+		
+		estimate1.makeEstimate(user1.getName(), 4);
+		estimate2.makeEstimate(user1.getName(), 4);
+
+		endedGame.addEstimate(estimate1);
+		endedGame.addEstimate(estimate2);
+		
+		
+		endedGame.endIfAllEstimated();
+		
+		assertEquals(GameStatus.IN_PROGRESS, endedGame.getStatus());
+	}
 
 }

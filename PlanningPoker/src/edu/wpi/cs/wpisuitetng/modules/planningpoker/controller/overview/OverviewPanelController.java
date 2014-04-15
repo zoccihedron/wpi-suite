@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 
 /**
  * This panel controls setting and updating the game summary
@@ -25,6 +26,7 @@ public class OverviewPanelController {
 	
 	private static OverviewPanelController instance = null;
 	private GameSummaryPanel gameSummaryPanel = null;
+	private ListGamePanel listGamePanel = null;
 	
 	private OverviewPanelController() {
 	}
@@ -46,6 +48,10 @@ public class OverviewPanelController {
 		 gameSummaryPanel = gsp;
 	}
 	
+	public void setListGames(ListGamePanel lgp){
+		listGamePanel = lgp;
+	}
+	
 	/**
 	 * Updates the gameSummaryPanel in the overview with
 	 * information from the given game
@@ -56,7 +62,9 @@ public class OverviewPanelController {
 		gameSummaryPanel.updateSummary(game);
 	}
 	
-	
+	public void refreshListGames(){
+		listGamePanel.updateTree();
+	}
 	
 
 }

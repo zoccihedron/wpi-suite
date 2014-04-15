@@ -13,8 +13,10 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -43,10 +45,9 @@ public class GameSummaryPanel extends JPanel {
 	private final GameSummaryReqPanel reqPanel;
 	private final JButton editGameButton;
 	private final JButton playGameButton;
-	private final JButton endGameBtn;
+	private final JButton endGameButton;
 	private final JLabel reportMessage;
-	private final JPanel buttonsPanel;
-	private final JPanel endPanel;
+	JPanel buttonsPanel;
 	Game game;
 	
 
@@ -59,67 +60,114 @@ public class GameSummaryPanel extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		
 		buttonsPanel = new JPanel();
-		endPanel = new JPanel();
-
-		editGameButton = new JButton("Edit");
-		playGameButton = new JButton("Play");
-		buttonsPanel.add(editGameButton);
-		buttonsPanel.add(playGameButton);
+		buttonsPanel.setLayout(new GridBagLayout());
 		
-		endGameBtn = new JButton("End");
-		reportMessage = new JLabel();
-		endPanel.add(endGameBtn);
-		endPanel.add(reportMessage);
+		JPanel extraPanel1 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		buttonsPanel.add(extraPanel1, constraints);
+		
+		editGameButton = new JButton("Edit");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 0, 0, 0);
+		buttonsPanel.add(editGameButton, constraints);
+		
+		playGameButton = new JButton("Play");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 20);
+		buttonsPanel.add(playGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		
 		infoPanel = new GameSummaryInfoPanel();
-		infoPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
+		infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
 		
 		reqPanel = new GameSummaryReqPanel();
 		reqPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_START;
-		constraints.gridwidth = 6;
+		constraints.gridwidth = 4;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.5;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
+		constraints.ipadx = 0;
+		constraints.ipady = 0;
 		add(infoPanel, constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_END;
-		constraints.gridwidth = 6;
+		constraints.gridwidth = 4;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.5;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
+		constraints.ipadx = 20;
+		constraints.ipady = 20;
 		add(reqPanel, constraints);
-
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.SOUTHWEST;
+		
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.EAST;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 2;
+		constraints.ipadx = 0;
+		constraints.ipady = 0;
+		add(buttonsPanel, constraints);
+		
+		
+		reportMessage = new JLabel();
+		reportMessage.setText("     ");
+		reportMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
+		reportMessage.setVisible(true);
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 1;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		add(reportMessage, constraints);
+		
+		JPanel extraPanel2 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		add(extraPanel2, constraints);
+		
+		endGameButton = new JButton("End Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(endPanel, constraints);
-		
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.SOUTHEAST;
 		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 5;
-		constraints.gridy = 2;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(buttonsPanel, constraints);
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(endGameButton, constraints);
+		
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
 		
 		
 		editGameButton.addActionListener(new ActionListener () {
@@ -141,8 +189,6 @@ public class GameSummaryPanel extends JPanel {
 			}
 
  		});
-
-		endGameBtn.addActionListener(new EndGameManuallyController(this, game, true));
 	}
 	
 	/**
@@ -151,39 +197,29 @@ public class GameSummaryPanel extends JPanel {
 	 */
 	public void updateSummary(Game game){
 		this.game = game;
-		reportMessage.setText("     ");
-
 		
-		// Controls whether the buttons are enabled/disabled and visible/invisible.
-		// The buttons start, edit, or end the game.
-		// playGameBtn, editGameBtn, and endGameBtn
-
-		// play game button is always visible
-		playGameButton.setVisible(true);
-
-		// If the user is the game creator.
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
 			//make all buttons visible
 			editGameButton.setVisible(true);
-			endGameBtn.setVisible(true);
-
+			endGameButton.setVisible(true);
+			
 			// If the game is a draft.
 			if(game.getStatus().equals(GameStatus.DRAFT)) {
 				playGameButton.setEnabled(false);
 				editGameButton.setEnabled(true);
-				endGameBtn.setEnabled(false);
+				endGameButton.setEnabled(false);
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				playGameButton.setEnabled(true);
 				editGameButton.setEnabled(false);
-				endGameBtn.setEnabled(true);
+				endGameButton.setEnabled(true);
 			}
 			// If the game is ended.
 			else {
 				playGameButton.setEnabled(false);
 				editGameButton.setEnabled(false);
-				endGameBtn.setEnabled(false);
+				endGameButton.setEnabled(false);
 			}
 		}
 		// If the user is not the game creator.
@@ -191,9 +227,9 @@ public class GameSummaryPanel extends JPanel {
 			// disable all instances of edit and end game
 			editGameButton.setVisible(false);
 			editGameButton.setEnabled(false);
-			endGameBtn.setVisible(false);
-			endGameBtn.setEnabled(false);
-
+			endGameButton.setVisible(false);
+			endGameButton.setEnabled(false);
+			
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
 			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
@@ -204,17 +240,21 @@ public class GameSummaryPanel extends JPanel {
 			else {
 				playGameButton.setEnabled(false);
 			}
-
-
-			infoPanel.updateInfoSummary(game);
-			reqPanel.updateReqSummary(game);
 		}
+		
+		// play game button is always visible
+		playGameButton.setVisible(true);
+		
+		infoPanel.updateInfoSummary(game);
+		reqPanel.updateReqSummary(game);
+
+		reportMessage.setText("");
 	}
 	
 	public Game getGameObject() {
 		return game;
 	}
-	
+
 	public void reportError(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.RED);
@@ -224,4 +264,5 @@ public class GameSummaryPanel extends JPanel {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.BLUE);
 	}
+	
 }

@@ -18,10 +18,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
-
 import java.util.List;
-
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -31,11 +28,11 @@ import javax.swing.JTextArea;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.GetRequirementsControllerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 
 /**
  * This class create a GUI pane that a user can use to submit their estimation to
@@ -51,16 +48,20 @@ public class EstimationPane extends JPanel {
 	private final JLabel message;
 	private final JButton voteButton;
 	private int reqid;
+	private ListRequirementsPanel listReqPanel;
+	private Game game;
 	
 	private Requirement req;
 	
 	/**
 	 * Constructor for panel
 	 * @param reqid The req to vote on
-	 * @param game The game the vote is going towards
+	 * @param draftGame The game the vote is going towards
 	 */
-	public EstimationPane(){
+	public EstimationPane(ListRequirementsPanel listReqPanel){
 
+		this.listReqPanel = listReqPanel;
+		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
 
@@ -164,6 +165,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		voteButtonPanel.add(voteButton, constraints);
+		voteButton.setEnabled(false);
 
 	}
 
@@ -176,7 +178,11 @@ public class EstimationPane extends JPanel {
 	 * @param game the game
 	 */
 	public void setGameAndRequirement(int reqid, Game game){
+		this.game = game;
+		
 		voteButton.addActionListener(new VoteActionController(this, game));
+		
+		voteButton.setEnabled(true);
 
 		this.reqid = reqid;
 		try{
@@ -184,12 +190,12 @@ public class EstimationPane extends JPanel {
 			requirementName.setText(req.getName());
 			descriptionText.setText(req.getDescription());
 			deckPanel.displayOldEstimate(game, reqid);
-			message.setText("");
-			System.out.println("------finish displaying old estimate");
 		}
 		catch(NotFoundException exception){
 			this.message.setText("Exception: Requirement Not Found");
 		}
+		
+		deckPanel.setEstimateFieldEditable(true);
 
 
 	}
@@ -223,6 +229,11 @@ public class EstimationPane extends JPanel {
 
 		if(estimate <= 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+			return false;
+		}
+		
+		if(game.getStatus() == GameStatus.ENDED){
+			reportError("<html>Error: Game has ended</html>");
 			return false;
 		}
 		return true;
@@ -268,6 +279,12 @@ public class EstimationPane extends JPanel {
 
 	}
 
+	/**
+	 * Refreshes the list requirements panel
+	 */
+	public void refresh(){
+		listReqPanel.refresh();
+	}
 
 
 

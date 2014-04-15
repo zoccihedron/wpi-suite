@@ -14,10 +14,13 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.Component;
 
+import javax.swing.JTabbedPane;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
 
 
 
@@ -95,6 +98,23 @@ public class MainViewTabController {
 	}
 	
 	/**
+	 * Creates a user preferences tab, but only if
+	 * there are no other preference tabs open.
+	 */
+	public void userPreferencesTab() {
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == UserPreferencesPanel.class){
+				return;
+			}
+		}
+		final UserPreferencesPanel userPrefPanel = new UserPreferencesPanel();
+		mainView.insertTab("Preferences", userPrefPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(userPrefPanel);
+	}
+	
+	/**
 	 * Closes a given tab
 	 * @param tabToClose the tab to close
 	 */
@@ -105,6 +125,10 @@ public class MainViewTabController {
 			}
 		} else if(tabToClose instanceof PlayGamePanel) {
 			if(((PlayGamePanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
+		} else if(tabToClose instanceof UserPreferencesPanel) {
+			if(((UserPreferencesPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
 		}

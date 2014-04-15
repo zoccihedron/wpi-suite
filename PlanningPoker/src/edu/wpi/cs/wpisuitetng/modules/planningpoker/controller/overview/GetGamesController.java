@@ -73,6 +73,7 @@ public class GetGamesController implements ActionListener {
 		if(games != null)
 		{
 			PlanningPokerModel.getInstance().addAllGames(games);
+			OverviewPanelController.getInstance().refreshListGames();
 		}
 	}
 }

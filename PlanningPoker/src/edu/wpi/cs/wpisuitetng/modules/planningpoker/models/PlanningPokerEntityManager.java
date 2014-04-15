@@ -98,7 +98,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throw new NotFoundException("There are no games in the list");
 		}
 		if ((games[0].getStatus() == Game.GameStatus.DRAFT)
-				&& games[0].getGameCreator().equals(s.getUsername())) {
+				&& ! games[0].getGameCreator().equals(s.getUsername())) {
 			throw new NotFoundException("Permission denied.");
 		}
 

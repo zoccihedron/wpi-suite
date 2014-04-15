@@ -82,6 +82,41 @@ public class UserDeserializer implements JsonDeserializer<User> {
 			 inflated.setRole(null);
 		 }
 		 
+		 //for retrieving email field
+		 if(deflated.has("email")  && !deflated.get("role").getAsString().equals(""))
+		 {
+			 String email = deflated.get("email").getAsString();
+			 inflated.setEmail(email);
+		 }
+		 
+		 //for retrieving IM field
+		 if(deflated.has("IM")  && !deflated.get("IM").getAsString().equals(""))
+		 {
+			 String im = deflated.get("IM").getAsString();
+			 inflated.setIM(im);
+		 }
+		 
+		 //if user allow email notification
+		 if(deflated.has("EmailAllow")  && !deflated.get("EmailAllow").getAsString().equals(""))
+		 {
+			 String isAllowEmail = deflated.get("EmailAllow").getAsString();
+			 inflated.setAllowEmail((isAllowEmail.equals("true")) ? true:false);
+			 
+		 } else {
+			 inflated.setAllowEmail(false);
+		 }
+		 
+		 //if user allow IM notification
+		 if(deflated.has("IMAllow")  && !deflated.get("IMAllow").getAsString().equals(""))
+		 {
+			 String isAllowIM = deflated.get("IMAllow").getAsString();
+			 inflated.setAllowIM((isAllowIM.equals("true")) ? true:false);
+		 } else {
+			 inflated.setAllowIM(false);
+		 }
+		 
+		 
+		 
 		 return inflated;
 	}
 	

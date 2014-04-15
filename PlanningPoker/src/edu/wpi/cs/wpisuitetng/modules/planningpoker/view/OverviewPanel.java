@@ -12,6 +12,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Dimension;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JSplitPane;
 
@@ -44,11 +46,15 @@ public class OverviewPanel extends JSplitPane {
 		listGamePanel.setMinimumSize(minimumSize);
 	
 		OverviewPanelController.getInstance().setGameSummary(summaryPanel);
+		OverviewPanelController.getInstance().setListGames(listGamePanel);
 		
 		setLeftComponent(listGamePanel);
 
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
 		
+		
+		
 	}
+	
 }
