@@ -17,10 +17,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -189,6 +193,13 @@ public class EstimationPane extends JPanel {
 		voteButtonPanel.add(voteButton, constraints);
 		voteButton.setEnabled(false);
 
+		try {
+		    Image img = ImageIO.read(getClass().getResource("vote.png"));
+		    voteButton.setIcon(new ImageIcon(img));		    
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
 	}
 
 	/**

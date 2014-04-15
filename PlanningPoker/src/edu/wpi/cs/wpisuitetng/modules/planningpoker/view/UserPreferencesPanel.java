@@ -15,14 +15,18 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -359,8 +363,16 @@ public class UserPreferencesPanel extends JPanel {
 		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 		request.send();
 
-
-
+		try {
+		    Image img = ImageIO.read(getClass().getResource("submit.png"));
+		    btnSubmit.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("redX.png"));
+		    btnCancel.setIcon(new ImageIcon(img));
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 
 	}
 

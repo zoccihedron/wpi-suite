@@ -98,11 +98,17 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnStart);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("save-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("start-icon.png"));
+		    btnStart.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("save-icon.png"));
 		    btnSave.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
 		    btnCancel.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("start-icon.png"));
+		    btnStart.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -179,7 +185,10 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnStart);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("save-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("start-icon.png"));
+		    btnStart.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("save-icon.png"));
 		    btnSave.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
