@@ -59,5 +59,4 @@ public class MailerTest {
 
 		g.setProject(p);
 	}
-	// TODO: Add tests for the mailer.
 }
