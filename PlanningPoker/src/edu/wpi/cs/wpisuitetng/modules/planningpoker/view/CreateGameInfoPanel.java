@@ -124,8 +124,8 @@ public class CreateGameInfoPanel extends JPanel {
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline
-				.addActionListener(new ChangeDeadlineVisibilityController(this));
+		chckbxDeadline.addActionListener(
+			new ChangeDeadlineVisibilityController(this));
 		chckbxDeadline.setSelected(true);
 
 		lblDescription = new JLabel("Description:");
