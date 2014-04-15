@@ -103,7 +103,7 @@ public class GameTest {
 	}
 	
 	@Test
-	public void endCompletedTest(){
+	public void gameEndsAfterAllUsersEstimateTest(){
 		Game endedGame = new Game();
 		endedGame.setStatus(GameStatus.IN_PROGRESS);
 		User user1 = new User("user", "us", "password", 1);
