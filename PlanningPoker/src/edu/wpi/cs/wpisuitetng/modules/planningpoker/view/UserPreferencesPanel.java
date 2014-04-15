@@ -363,35 +363,6 @@ public class UserPreferencesPanel extends JPanel {
 		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 		request.send();
 
-<<<<<<< HEAD
-			@Override
-			public void componentShown(ComponentEvent e) {
-				Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
-				request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
-				request.send();
-
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		
-		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("submit.png"));
 		    btnSubmit.setIcon(new ImageIcon(img));
@@ -402,11 +373,6 @@ public class UserPreferencesPanel extends JPanel {
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-		
-=======
-
-
->>>>>>> f049813027a935fb078b19d2f48878ea8c687612
 
 	}
 
