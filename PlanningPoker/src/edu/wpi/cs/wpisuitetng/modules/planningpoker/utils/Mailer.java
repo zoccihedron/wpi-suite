@@ -141,7 +141,7 @@ public class Mailer {
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
 
 			// Set Subject: header field
-			message.setSubject(game.getName() + "has started!");
+			message.setSubject(game.getName() + " has started!");
 
 			// Now set the actual message
 			message.setText(messageText);
