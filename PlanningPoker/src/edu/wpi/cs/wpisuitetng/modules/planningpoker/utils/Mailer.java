@@ -21,8 +21,17 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.Response;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * This class is used to send emails to notify users
@@ -74,19 +83,53 @@ public class Mailer {
 	 */
 	public void notifyStart()
 	{
-		users = game.getProject().getTeam();
-		String message = "";
-
-		for(User u : users)
-		{
-			if(u.isAllowEmail())
-			{
-				message = "Hello, " + u.getName() + 
-						"\n Your game: " + game.getName() + " has started";
+		//users = game.getProject().getTeam();
+		Request request = Network.getInstance().makeRequest("core/project/" + ConfigManager.getInstance().getConfig().getProjectName(), HttpMethod.GET);
+		request.addObserver(new RequestObserver() {
+			
+			@Override
+			public void responseSuccess(IRequest iReq) {
+				ResponseModel response = iReq.getResponse();
+				Project project = Project.fromJSON(response.getBody().substring(1, response.getBody().length() - 2));
+				User[] users = project.getTeam();
+				for(User u : users)
+				{
+					String message = "";
+					if(u.isAllowEmail())
+					{
+						message = "Hello, " + u.getName() + 
+								"\n Your game: " + game.getName() + " has started";
+						
+						sendEmail(u.getEmail(), message);
+					}
+				}
 				
-				sendEmail(u.getEmail(), message);
+				
 			}
-		}
+			
+			@Override
+			public void responseError(IRequest iReq) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void fail(IRequest iReq, Exception exception) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+
+//		for(User u : users)
+//		{
+//			if(u.isAllowEmail())
+//			{
+//				message = "Hello, " + u.getName() + 
+//						"\n Your game: " + game.getName() + " has started";
+//				
+//				sendEmail(u.getEmail(), message);
+//			}
+//		}
 	}
 
 	/**
