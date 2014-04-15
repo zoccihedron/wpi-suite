@@ -184,8 +184,13 @@ public class Estimate {
 				sum += temp.getValue();
 			}
 		}
-		this.mean = (double)sum / (double)count;
-		return mean;
+		if(count != 0){
+			this.mean = (double)sum / (double)count;
+			return mean;
+			
+		} else return 0;
+		
+		
 	}
 	
 	/**

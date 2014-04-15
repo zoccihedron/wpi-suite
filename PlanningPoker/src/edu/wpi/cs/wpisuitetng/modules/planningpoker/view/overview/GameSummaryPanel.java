@@ -49,6 +49,7 @@ public class GameSummaryPanel extends JPanel {
 	private final JButton endGameButton;
 	private final JButton sendReqsButton;
 	private final JLabel reportMessage;
+	private final GameSummaryPanel  gameSummaryPanel= this;
 	JPanel buttonsPanel;
 	Game game;
 	
@@ -207,7 +208,7 @@ public class GameSummaryPanel extends JPanel {
 		sendReqsButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates());				
+				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(),gameSummaryPanel);				
 			}
 
  		});
