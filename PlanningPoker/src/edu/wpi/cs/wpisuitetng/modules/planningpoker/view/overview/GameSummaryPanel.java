@@ -16,10 +16,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -188,6 +192,20 @@ public class GameSummaryPanel extends JPanel {
 			}
 
  		});
+		
+		try {
+		    Image img = ImageIO.read(getClass().getResource("yield.png"));
+		    editGameButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("stop.png"));
+		    endGameButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("greenCircle.png"));
+		    playGameButton.setIcon(new ImageIcon(img));   
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 	}
 	
 	/**
