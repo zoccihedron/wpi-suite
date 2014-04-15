@@ -48,7 +48,7 @@ implements TreeSelectionListener {
 	
 	/**
 	 * Constructs the panel
-	 * @param game Taken in to get all requirements for the game
+	 * @param draftGame Taken in to get all requirements for the game
 	 */
 	public ListGamePanel() {
 
@@ -116,13 +116,15 @@ implements TreeSelectionListener {
 				final GetGamesController gamesController = new GetGamesController();
 				gamesController.initializeTable();
 				RequirementManagerFacade.getInstance().getPreStoredRequirements();
-
 			}
 		}
 
 		catch(RuntimeException exception){
 		}
 		
+	}
+	
+	public void updateTree(){
 		//makes a starting node
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 
 		games = PlanningPokerModel.getInstance().getAllGames();

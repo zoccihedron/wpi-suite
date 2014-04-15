@@ -359,8 +359,11 @@ public class UserPreferencesPanel extends JPanel {
 
 		});
 
-		this.addComponentListener(new ComponentListener() {
+		Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
+		request.send();
 
+<<<<<<< HEAD
 			@Override
 			public void componentShown(ComponentEvent e) {
 				Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
@@ -400,6 +403,10 @@ public class UserPreferencesPanel extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 		
+=======
+
+
+>>>>>>> f049813027a935fb078b19d2f48878ea8c687612
 
 	}
 

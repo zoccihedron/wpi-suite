@@ -189,7 +189,6 @@ public class GameSummaryPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				final MainViewTabController mvt = MainViewTabController.getInstance();
  				mvt.playGameTab(game);
-				
 			}
 
  		});
