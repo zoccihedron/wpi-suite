@@ -73,8 +73,9 @@ public class EndGameManuallyController implements ActionListener {
 	 */
 	public void returnGame(Game returnGame) {
 		endedGame = returnGame;
-		view.reportSuccess("Game ended successfully!");
 		OverviewPanelController.getInstance().refreshListGames();
+		OverviewPanelController.getInstance().updateGameSummary(endedGame);
+		view.reportSuccess("Game ended successfully!");
 	}
 
 	/**

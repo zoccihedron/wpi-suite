@@ -61,85 +61,113 @@ public class GameSummaryPanel extends JPanel {
 		
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridBagLayout());
-
-		reportMessage = new JLabel();
-		reportMessage.setText("     ");
-		reportMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		reportMessage.setVisible(true);
+		
+		JPanel extraPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 1;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 0);
-		buttonsPanel.add(reportMessage, constraints);
-		
-		editGameButton = new JButton("Edit");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.gridx = 2;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 0);
-		buttonsPanel.add(editGameButton, constraints);
-		
-		playGameButton = new JButton("Play");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.gridx = 3;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 0);
-		buttonsPanel.add(playGameButton, constraints);
-		
-		endGameButton = new JButton("End Game");
-		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 0);
-		buttonsPanel.add(endGameButton, constraints);
+		buttonsPanel.add(extraPanel1, constraints);
 		
-		endGameButton.setVisible(false);
-		endGameButton.setEnabled(false);
+		editGameButton = new JButton("Edit");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 0, 0, 0);
+		buttonsPanel.add(editGameButton, constraints);
 		
-		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		playGameButton = new JButton("Play");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 20);
+		buttonsPanel.add(playGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		
 		infoPanel = new GameSummaryInfoPanel();
-		infoPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
+		infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
 		
 		reqPanel = new GameSummaryReqPanel();
 		reqPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_START;
-		constraints.gridwidth = 6;
+		constraints.gridwidth = 4;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.5;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
+		constraints.ipadx = 0;
+		constraints.ipady = 0;
 		add(infoPanel, constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_END;
-		constraints.gridwidth = 6;
+		constraints.gridwidth = 4;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.5;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
+		constraints.ipadx = 20;
+		constraints.ipady = 20;
 		add(reqPanel, constraints);
 		
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.SOUTHEAST;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.EAST;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 5;
+		constraints.gridx = 3;
 		constraints.gridy = 2;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
+		constraints.ipadx = 0;
+		constraints.ipady = 0;
 		add(buttonsPanel, constraints);
+		
+		
+		reportMessage = new JLabel();
+		reportMessage.setText("     ");
+		reportMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
+		reportMessage.setVisible(true);
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 1;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		add(reportMessage, constraints);
+		
+		JPanel extraPanel2 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		add(extraPanel2, constraints);
+		
+		endGameButton = new JButton("End Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(endGameButton, constraints);
+		
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
 		
 		
 		editGameButton.addActionListener(new ActionListener () {
@@ -219,6 +247,7 @@ public class GameSummaryPanel extends JPanel {
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
 
+		reportMessage.setText("");
 	}
 	
 	public Game getGameObject() {
