@@ -115,6 +115,7 @@ implements TreeSelectionListener {
 			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 				final GetGamesController gamesController = new GetGamesController();
 				gamesController.initializeTable();
+				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 			}
 		}
 

@@ -189,7 +189,9 @@ public class EstimationPane extends JPanel {
 			req = getRequirementFromId();
 			requirementName.setText(req.getName());
 			descriptionText.setText(req.getDescription());
+			deckPanel.clearCardsSelected();
 			deckPanel.displayOldEstimate(game, reqid);
+			message.setText(" ");
 		}
 		catch(NotFoundException exception){
 			this.message.setText("Exception: Requirement Not Found");
@@ -214,10 +216,16 @@ public class EstimationPane extends JPanel {
 
 	/**
 	 * This method checks if the estimation is of the correct value (An interger) And updates the
-	 * display to show an error if the value is wrong.
+	 * display to show an error if the value is wrong. It also checks that a deck is selected in the deck version
 	 * @return True if everything is all set, return false if the value is incorrect
 	 */
 	public boolean checkField() {
+		
+		if(!deckPanel.hasDeckSelected()) {
+			reportError("<html>Error: Select a card.</html>");
+			return false;
+		}
+		
 		final int estimate;
 		try{
 			estimate = Integer.parseInt(deckPanel.getEstimateField());
