@@ -93,7 +93,6 @@ public class Mailer {
 				User[] users = User.fromJsonArray(response.getBody());
 				for(User u : users)
 				{
-					System.out.println("Number of Users in project: " + users.length);
 					String message = "";
 					if(u.isAllowEmail())
 					{
@@ -109,13 +108,11 @@ public class Mailer {
 			
 			@Override
 			public void responseError(IRequest iReq) {
-				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
 			public void fail(IRequest iReq, Exception exception) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -148,7 +145,7 @@ public class Mailer {
 
 			// Send message
 			Transport.send(message);
-			System.out.println("Sent message to " + sendToEmail + " successfully....");
+			System.out.println("Sent message to " + sendToEmail + " successfully!");
 		}
 		catch (MessagingException mex) 
 		{
