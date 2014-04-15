@@ -99,16 +99,27 @@ public class GameSummaryPanel extends JPanel {
 		
 		sendReqsButton = new JButton("Send Estimates");
 		sendReqsButton.setToolTipText("Update estimates in the Requirement Manager");
-		constraints.anchor = GridBagConstraints.EAST;
+//		constraints.anchor = GridBagConstraints.EAST;
+//		constraints.fill = GridBagConstraints.NONE;
+//		constraints.weightx = 0.0;
+//		constraints.weighty = 0.0;
+//		constraints.gridx = 3;
+//		constraints.gridy = 0;
+//		constraints.gridwidth = 1;
+//		constraints.insets = new Insets(0, 10, 0, 20);
+//		buttonsPanel.add(sendReqsButton, constraints);
+		
 		constraints.fill = GridBagConstraints.NONE;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 3;
-		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 20);
-		buttonsPanel.add(sendReqsButton, constraints);
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(sendReqsButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
+		
+		
+
 		
 		infoPanel = new GameSummaryInfoPanel();
 		infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
