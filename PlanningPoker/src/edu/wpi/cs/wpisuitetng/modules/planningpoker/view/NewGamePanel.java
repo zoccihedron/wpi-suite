@@ -106,6 +106,9 @@ public class NewGamePanel extends JSplitPane {
 		    
 		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
 		    btnCancel.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("start-icon.png"));
+		    btnStart.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
