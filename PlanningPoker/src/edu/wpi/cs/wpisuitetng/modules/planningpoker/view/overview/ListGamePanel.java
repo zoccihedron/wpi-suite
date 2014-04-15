@@ -48,7 +48,7 @@ implements TreeSelectionListener {
 	
 	/**
 	 * Constructs the panel
-	 * @param game Taken in to get all requirements for the game
+	 * @param draftGame Taken in to get all requirements for the game
 	 */
 	public ListGamePanel() {
 
@@ -115,14 +115,15 @@ implements TreeSelectionListener {
 			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
 				final GetGamesController gamesController = new GetGamesController();
 				gamesController.initializeTable();
-				RequirementManagerFacade.getInstance().getPreStoredRequirements();
-
 			}
 		}
 
 		catch(RuntimeException exception){
 		}
 		
+	}
+	
+	public void updateTree(){
 		//makes a starting node
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 
 		games = PlanningPokerModel.getInstance().getAllGames();

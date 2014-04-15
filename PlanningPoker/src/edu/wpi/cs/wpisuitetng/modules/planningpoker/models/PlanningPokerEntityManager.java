@@ -98,7 +98,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throw new NotFoundException("There are no games in the list");
 		}
 		if ((games[0].getStatus() == Game.GameStatus.DRAFT)
-				&& games[0].getGameCreator().equals(s.getUsername())) {
+				&& ! games[0].getGameCreator().equals(s.getUsername())) {
 			throw new NotFoundException("Permission denied.");
 		}
 
@@ -208,7 +208,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			}
 		}
 
-		System.out.println("id count:" + id_count);
 		model.setId(id_count);
 		id_count++;
 		if (!db.save(model, s.getProject())) {

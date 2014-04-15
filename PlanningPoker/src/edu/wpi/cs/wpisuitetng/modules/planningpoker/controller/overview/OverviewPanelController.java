@@ -63,7 +63,7 @@ public class OverviewPanelController {
 	}
 	
 	public void refreshListGames(){
-		listGamePanel.refresh();
+		listGamePanel.updateTree();
 	}
 	
 
