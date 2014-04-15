@@ -223,5 +223,9 @@ public class DeckPanel extends JScrollPane {
 		}
 		
 	}
+	
+	public JTextField getEstimateFieldComponent() {
+		return estimateField;
+	}
 
 }

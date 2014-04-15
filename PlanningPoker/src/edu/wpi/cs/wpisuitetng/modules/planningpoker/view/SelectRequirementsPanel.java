@@ -13,11 +13,15 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -223,6 +227,19 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 3;
 		this.add(requirementsToAddTablePanel, constraints);
 
+		try {
+		    Image img = ImageIO.read(getClass().getResource("downArrow.png"));
+		    btnAddSelectedReq.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("upArrow.png"));
+		    btnRemoveSelectedReq.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("refresh_icon.png"));
+		    btnNewRequirement.setIcon(new ImageIcon(img));   
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 	}
 
 
@@ -390,6 +407,19 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 3;
 		this.add(requirementsToAddTablePanel, constraints);
 
+		try {
+		    Image img = ImageIO.read(getClass().getResource("downArrow.png"));
+		    btnAddSelectedReq.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("upArrow.png"));
+		    btnRemoveSelectedReq.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("refresh_icon.png"));
+		    btnNewRequirement.setIcon(new ImageIcon(img));   
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 	}
 	
 	/**
