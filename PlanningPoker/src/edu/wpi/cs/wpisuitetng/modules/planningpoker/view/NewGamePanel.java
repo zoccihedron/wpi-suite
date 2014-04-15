@@ -47,7 +47,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 @SuppressWarnings({"serial"})
 public class NewGamePanel extends JSplitPane {
 	private final CreateGameInfoPanel createGameInfoPanel;
-	private final JTabbedPane tabPane;
 	private final SelectRequirementsPanel selectRequirementsPanel;
 	private final JButton btnSave;
 	private final JButton btnCancel;
@@ -63,12 +62,10 @@ public class NewGamePanel extends JSplitPane {
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		
-		tabPane = new JTabbedPane();
-		tabPane.addTab("Requirements", selectRequirementsPanel);
 		
 		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
-		topPanel.setRightComponent(tabPane);
+		topPanel.setRightComponent(selectRequirementsPanel);
 		topPanel.setDividerLocation(300);
 		this.setTopComponent(topPanel);
 		final JPanel bottomPanel = new JPanel();
@@ -144,12 +141,10 @@ public class NewGamePanel extends JSplitPane {
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		
-		tabPane = new JTabbedPane();
-		tabPane.addTab("Requirements", selectRequirementsPanel);
 		
 		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
-		topPanel.setRightComponent(tabPane);
+		topPanel.setRightComponent(selectRequirementsPanel);
 		topPanel.setDividerLocation(300);
 		topPanel.setEnabled(false);
 		this.setTopComponent(topPanel);

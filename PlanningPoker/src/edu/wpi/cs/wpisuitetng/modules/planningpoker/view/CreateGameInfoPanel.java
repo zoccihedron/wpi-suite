@@ -17,6 +17,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,7 +33,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.Border;
-
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -83,10 +83,10 @@ public class CreateGameInfoPanel extends JPanel {
 		this.setLayout(new GridBagLayout());
 
 		// Adds the fields and button to the main panel.
+		Date now = new Date();
 		gameNameText = new JTextField();
-
+		gameNameText.setText("Game " + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(now));
 		final Border jtextFieldBorder = gameNameText.getBorder();
-
 		description = new JTextArea();
 		description.setBorder(jtextFieldBorder);
 
@@ -98,17 +98,26 @@ public class CreateGameInfoPanel extends JPanel {
 
 		// creates a date picker and sets its position
 		final UtilDateModel model = new UtilDateModel();
+		
+		final Calendar tempCalendar = new GregorianCalendar();
+		tempCalendar.setTime(now);
+		model.setDate(tempCalendar.get(Calendar.YEAR),
+				tempCalendar.get(Calendar.MONTH),
+				tempCalendar.get(Calendar.DATE) + 1);
+		model.setSelected(true);
 		final JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
 
 		final String[] hours = { "01", "02", "03", "04", "05", "06", "07",
 				"08", "09", "10", "11", "12" };
 		hourSelector = new JComboBox(hours);
-
+		hourSelector.setSelectedItem(getHourStringFromCalendar(tempCalendar
+				.get(Calendar.HOUR)));
 		final String[] minutes = { "00", "15", "30", "45" };
 
 		minuteSelector = new JComboBox(minutes);
-
+		minuteSelector.setSelectedItem(getMinuteStringFromCalendar(tempCalendar
+				.get(Calendar.MINUTE)));
 		lblTime = new JLabel("Time:");
 
 		AMPMSelection = new ButtonGroup();
@@ -117,6 +126,13 @@ public class CreateGameInfoPanel extends JPanel {
 		rdbtnAm.setSelected(true);
 		AMPMSelection.add(rdbtnAm);
 		AMPMSelection.add(rdbtnPm);
+		if (tempCalendar.get(Calendar.AM_PM) == Calendar.PM) {
+			rdbtnAm.setSelected(false);
+			rdbtnPm.setSelected(true);
+		} else {
+			rdbtnAm.setSelected(true);
+			rdbtnPm.setSelected(false);
+		}
 
 		lblDeck = new JLabel("Deck:");
 
@@ -127,7 +143,6 @@ public class CreateGameInfoPanel extends JPanel {
 		chckbxDeadline.addActionListener(
 			new ChangeDeadlineVisibilityController(this));
 		chckbxDeadline.setSelected(true);
-
 		lblDescription = new JLabel("Description:");
 		panelSetup();
 	}
@@ -176,6 +191,7 @@ public class CreateGameInfoPanel extends JPanel {
 		model.setDate(tempCalendar.get(Calendar.YEAR),
 				tempCalendar.get(Calendar.MONTH),
 				tempCalendar.get(Calendar.DATE));
+		
 		model.setSelected(true);
 		final JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);

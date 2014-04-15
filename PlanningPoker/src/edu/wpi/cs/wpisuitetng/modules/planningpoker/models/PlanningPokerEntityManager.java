@@ -24,6 +24,7 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 
+
 /**
  * This is the entity manager for the game sessions in the PlanningPoker module
  * 
@@ -176,12 +177,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		updatedGame.setGameCreator(s.getUsername());
 		// copy values to old Game and fill in our changeset appropriately
 		existingGame.copyFrom(updatedGame);
-		if (updatedGame.getEstimates().size() == 0) {
-			existingGame.setUsers(db.retrieveAll(new User()));
-		} else {
-			existingGame.setEstimates(updatedGame.getEstimates());
-
-		}
+		
+		existingGame.setUsers(db.retrieveAll(new User()));
 
 		if (!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
@@ -317,5 +314,15 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 */
 	public int getIdCount() {
 		return id_count;
+	}
+	
+	/**
+	 * Returns all users that are on the same project
+	 * 
+	 * @return List<User> a list of all users
+	 */
+	public List<Class<User>> getAllUsers()
+	{
+		return db.retrieveAll(User.class);
 	}
 }

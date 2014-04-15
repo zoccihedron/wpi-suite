@@ -355,34 +355,10 @@ public class UserPreferencesPanel extends JPanel {
 
 		});
 
-		this.addComponentListener(new ComponentListener() {
+		Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
+		request.send();
 
-			@Override
-			public void componentShown(ComponentEvent e) {
-				Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
-				request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
-				request.send();
-
-			}
-
-			@Override
-			public void componentResized(ComponentEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void componentHidden(ComponentEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
 
 
 
