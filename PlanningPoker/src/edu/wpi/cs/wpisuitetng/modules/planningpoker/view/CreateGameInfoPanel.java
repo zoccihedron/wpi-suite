@@ -150,8 +150,7 @@ public class CreateGameInfoPanel extends JPanel {
 		lblTitle = new JLabel("Game Information");
 
 		lblName = new JLabel("Name:       ");
-		gameNameText = new JTextField(" ");
-		gameNameText.setText(editingGame.getName());
+		gameNameText = new JTextField(editingGame.getName());
 
 		final Border jtextFieldBorder = gameNameText.getBorder();
 
@@ -166,8 +165,8 @@ public class CreateGameInfoPanel extends JPanel {
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline
-				.addActionListener(new ChangeDeadlineVisibilityController(this));
+		chckbxDeadline.addActionListener(
+			new ChangeDeadlineVisibilityController(this));
 		lblDeadline = new JLabel("Deadline:");
 
 		// creates a date picker and sets its position
@@ -208,8 +207,8 @@ public class CreateGameInfoPanel extends JPanel {
 
 		ForceEnableOrDisableDeadline(editingGame.isHasDeadline());
 
-		chckbxDeadline
-				.addActionListener(new ChangeDeadlineVisibilityController(this));
+		chckbxDeadline.addActionListener(
+			new ChangeDeadlineVisibilityController(this));
 		panelSetup();
 	}
 
