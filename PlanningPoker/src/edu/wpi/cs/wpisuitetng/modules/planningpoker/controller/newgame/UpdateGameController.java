@@ -70,12 +70,9 @@ public class UpdateGameController implements ActionListener {
 			final Game currentGame = view.getGameObject();
 
 			if(startingGame){
-				System.out.println("starting game");
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
 				m = new Mailer(currentGame);
-				System.out.println("created mailer");
 				m.notifyStart();
-				System.out.println("notified start");
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);
