@@ -208,7 +208,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			}
 		}
 
-		System.out.println("id count:" + id_count);
 		model.setId(id_count);
 		id_count++;
 		if (!db.save(model, s.getProject())) {
