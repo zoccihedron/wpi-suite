@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -122,7 +123,7 @@ public class RequirementManagerFacade {
 				@Override
 				public void responseSuccess(IRequest iReq) {
 					// TODO Auto-generated method stub
-					
+					GetRequirementsController.getInstance().retrieveRequirements();
 				}
 
 				@Override
