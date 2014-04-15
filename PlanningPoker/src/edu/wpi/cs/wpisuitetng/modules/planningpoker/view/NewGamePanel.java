@@ -161,11 +161,13 @@ public class NewGamePanel extends JSplitPane {
 		
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
-		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
+		btnCancel.addActionListener(
+				new CloseNewGameTabController(createGameInfoPanel));
 		bottomPanel.add(btnCancel); 
 		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
-		btnStart.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, true));
+		btnStart.addActionListener(
+				new UpdateGameController(createGameInfoPanel, editingGame, true));
 		
 		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
@@ -217,6 +219,15 @@ public class NewGamePanel extends JSplitPane {
 		setDividerLocation(this.getHeight() - 35);
 	}
 	
+	/**
+	 * Will disable or enable the save and start buttons
+	 * @param check
+	 */
+	public void disableOrEnableButtons(boolean check){
+		btnStart.setEnabled(check);
+		btnSave.setEnabled(check);
+	}
+	
 	/**Fills the text box with a red warning based on the error Message
 	 * 
 	 * @param error the message to be printed, should be in <html>text</html> format
@@ -252,21 +263,21 @@ public class NewGamePanel extends JSplitPane {
 	public JLabel getMessageField(){
 		return lblMessage;
 	}
-
+	
+	/**
+	 * Runs a pop up window when closing a game
+	 * @return boolean if it's ready to close
+	 */
 	public boolean isReadyToClose() {
-		Object options[] = {"Yes", "No"};
-		int i = JOptionPane.showOptionDialog(this, 
+		final Object options[] = {"Yes", "No"};
+		final int i = JOptionPane.showOptionDialog(this, 
 				"Any unsaved changes will be lost, would you like to exit anyways?",
 				"Exit?",
 				JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
 				null, options, options[1]);
 		
-		if(i == 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return i == 0;
 	}
 	
 }

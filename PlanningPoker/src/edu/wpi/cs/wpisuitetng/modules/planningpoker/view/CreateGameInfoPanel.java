@@ -15,6 +15,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +31,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -87,7 +90,6 @@ public class CreateGameInfoPanel extends JPanel {
 		description = new JTextArea();
 		description.setBorder(jtextFieldBorder);
 
-
 		lblTitle = new JLabel("Game Information");
 
 		lblName = new JLabel("Name:       ");
@@ -138,7 +140,8 @@ public class CreateGameInfoPanel extends JPanel {
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline.addActionListener(new ChangeDeadlineVisibilityController(this));
+		chckbxDeadline.addActionListener(
+			new ChangeDeadlineVisibilityController(this));
 		chckbxDeadline.setSelected(true);
 		lblDescription = new JLabel("Description:");
 		panelSetup();
@@ -162,11 +165,9 @@ public class CreateGameInfoPanel extends JPanel {
 		lblTitle = new JLabel("Game Information");
 
 		lblName = new JLabel("Name:       ");
-		gameNameText = new JTextField();
-		gameNameText.setText(editingGame.getName());
+		gameNameText = new JTextField(editingGame.getName());
 
 		final Border jtextFieldBorder = gameNameText.getBorder();
-
 
 		lblDescription = new JLabel("Description:");
 		description = new JTextArea();
@@ -179,7 +180,8 @@ public class CreateGameInfoPanel extends JPanel {
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
-		chckbxDeadline.addActionListener(new ChangeDeadlineVisibilityController(this));
+		chckbxDeadline.addActionListener(
+			new ChangeDeadlineVisibilityController(this));
 		lblDeadline = new JLabel("Deadline:");
 
 		// creates a date picker and sets its position
@@ -221,7 +223,8 @@ public class CreateGameInfoPanel extends JPanel {
 
 		ForceEnableOrDisableDeadline(editingGame.isHasDeadline());
 
-		chckbxDeadline.addActionListener(new ChangeDeadlineVisibilityController(this));
+		chckbxDeadline.addActionListener(
+			new ChangeDeadlineVisibilityController(this));
 		panelSetup();
 	}
 
@@ -408,6 +411,15 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridy = 8;
 		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(rdbtnPm, constraints);
+
+		final Timer verificationChecker = new Timer(1000, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				parentPanel.disableOrEnableButtons(checkFields());
+			}
+		});
+		verificationChecker.start();
 	}
 
 	/**
@@ -460,22 +472,25 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return check - true if the fields are selected properly, otherwise false
 	 */
 	public boolean checkFields() {
+
+		reportError(" ");
 		boolean result = true;
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*Error: Please choose a name!</html>");
 			result = false;
 		}
-		if (chckbxDeadline.isSelected()) {
+
+		if (chckbxDeadline.isSelected() && result) {
 			if (datePicker.getModel().getValue() == null) {
 				reportError("<html>*Error: Please choose a date or turn off the deadline.</html>");
 				result = false;
-			}
-			if (getDeadline().compareTo(new Date()) <= 0) {
+			} else if (getDeadline().compareTo(new Date()) <= 0) {
 				reportError("<html>*Error: The deadline must not be in the past.</html>");
 				result = false;
 			}
 		}
-		if (parentPanel.getGameRequirements().size() == 0) {
+
+		if (parentPanel.getGameRequirements().size() == 0 && result) {
 			reportError("<html>*Error: Pick at least one requirement.</html>");
 			result = false;
 		}
@@ -612,11 +627,11 @@ public class CreateGameInfoPanel extends JPanel {
 	 */
 	public int getHour() {
 		final String hourString = (String) hourSelector.getSelectedItem();
-		final int hourInt = Integer.parseInt(hourString);
+		int hourInt = Integer.parseInt(hourString);
 
 		if (rdbtnPm.isSelected()) {
-			return hourInt + 12;
-		} 
+			hourInt += 12;
+		}
 
 		return hourInt;
 	}
