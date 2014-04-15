@@ -59,17 +59,5 @@ public class MailerTest {
 
 		g.setProject(p);
 	}
-	
-
-	@Test
-	public void testEmail()
-	{
-		Mailer mailer = new Mailer(g);
-		mailer.notifyStart();
-	}
-	
-	
-
-	
-
+	// TODO: Add tests for the mailer.
 }

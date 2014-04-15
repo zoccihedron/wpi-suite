@@ -25,17 +25,13 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-<<<<<<< HEAD
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
-import edu.wpi.cs.wpisuitetng.network.Response;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
-=======
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
->>>>>>> 23e062412255bb0f2da5712595be31422b7d3b30
+
 
 /**
  * This class is used to send emails to notify users
@@ -88,16 +84,16 @@ public class Mailer {
 	public void notifyStart()
 	{
 		//users = game.getProject().getTeam();
-		Request request = Network.getInstance().makeRequest("core/project/" + ConfigManager.getInstance().getConfig().getProjectName(), HttpMethod.GET);
+		Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
 		request.addObserver(new RequestObserver() {
 			
 			@Override
 			public void responseSuccess(IRequest iReq) {
 				ResponseModel response = iReq.getResponse();
-				Project project = Project.fromJSON(response.getBody().substring(1, response.getBody().length() - 2));
-				User[] users = project.getTeam();
+				User[] users = User.fromJsonArray(response.getBody());
 				for(User u : users)
 				{
+					System.out.println("Number of Users in project: " + users.length);
 					String message = "";
 					if(u.isAllowEmail())
 					{
@@ -123,17 +119,7 @@ public class Mailer {
 				
 			}
 		});
-
-//		for(User u : users)
-//		{
-//			if(u.isAllowEmail())
-//			{
-//				message = "Hello, " + u.getName() + 
-//						"\n Your game: " + game.getName() + " has started";
-//				
-//				sendEmail(u.getEmail(), message);
-//			}
-//		}
+		request.send();
 	}
 
 	/**
