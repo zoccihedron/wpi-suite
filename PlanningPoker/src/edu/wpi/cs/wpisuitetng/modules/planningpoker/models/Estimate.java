@@ -185,11 +185,12 @@ public class Estimate {
 			}
 		}
 		if(count != 0){
-			this.mean = (double)sum / (double)count;
-			return mean;
+			mean = (double)sum / (double)count;
 			
-		} else return 0;
-		
+		} else {
+			mean = 0;
+		}
+		return mean;
 		
 	}
 	
