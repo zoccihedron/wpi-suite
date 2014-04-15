@@ -25,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+<<<<<<< HEAD
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -32,6 +33,9 @@ import edu.wpi.cs.wpisuitetng.network.Response;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
+=======
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
+>>>>>>> 23e062412255bb0f2da5712595be31422b7d3b30
 
 /**
  * This class is used to send emails to notify users
