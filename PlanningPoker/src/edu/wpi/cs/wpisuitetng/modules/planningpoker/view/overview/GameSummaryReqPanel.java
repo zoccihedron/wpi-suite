@@ -95,12 +95,15 @@ public class GameSummaryReqPanel extends JPanel {
 			if(reqIDs.contains(req.getId())){
 				int meanEstimate;
 				try{
+					System.out.println("get mean");
 					meanEstimate = (int)game.findEstimate(req.getId()).getMean();
 				}
 				catch(NullPointerException e){
 					System.out.println(e.getMessage());
 				}
 				finally{
+					System.out.println("mean estimate is 0");
+
 					meanEstimate = 0;
 				}
 				modelReqs.addRow(new Object[] {
