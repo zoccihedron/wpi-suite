@@ -481,6 +481,15 @@ public class UserPreferencesPanel extends JPanel {
 		else btnSubmit.setEnabled(false);
 	}
 
+	/**
+	 * Sets the current Email and IM for the user, and displays the current values in the 
+	 * textfields and the checkboxes.
+	 *
+	 * @param currentEmail the user's current stored email
+	 * @param currentIM the user's current stored IM
+	 * @param allowEmail the user's current stored email preference
+	 * @param allowIM the user's current stored IM preferences
+	 */
 	public void setCurrentEmailAndIM(String currentEmail, String currentIM, boolean allowEmail, boolean allowIM){
 		emailField.setText(currentEmail);
 		initEmail = currentEmail;
@@ -492,8 +501,16 @@ public class UserPreferencesPanel extends JPanel {
 		initAllowIM = allowIM;
 	}
 
+	/**
+	 * Checks if the preference tab is ready to close, using a popup if there
+	 * are unsaved changes on the panel in the text fields
+	 *
+	 * @return whether the tab is ready to close or not.
+	 */
 	public boolean isReadyToClose() {
-		if(initEmail.equals(emailField.getText()) && initIM.equals(imField.getText())
+		if(initEmail != null && initIM != null 
+				&& initEmail.equals(emailField.getText()) 
+				&& initIM.equals(imField.getText())
 				&& initAllowEmail == checkBoxEmail.isSelected()
 				&& initAllowIM == checkBoxIM.isSelected()){
 			return true;
@@ -513,38 +530,6 @@ public class UserPreferencesPanel extends JPanel {
 				return false;
 			}
 		}
-	}
-
-	public String getInitEmail() {
-		return initEmail;
-	}
-
-	public void setInitEmail(String initEmail) {
-		this.initEmail = initEmail;
-	}
-
-	public String getInitIM() {
-		return initIM;
-	}
-
-	public void setInitIM(String initIM) {
-		this.initIM = initIM;
-	}
-
-	public boolean isInitAllowEmail() {
-		return initAllowEmail;
-	}
-
-	public void setInitAllowEmail(boolean initAllowEmail) {
-		this.initAllowEmail = initAllowEmail;
-	}
-
-	public boolean isInitAllowIM() {
-		return initAllowIM;
-	}
-
-	public void setInitAllowIM(boolean initAllowIM) {
-		this.initAllowIM = initAllowIM;
 	}
 
 }
