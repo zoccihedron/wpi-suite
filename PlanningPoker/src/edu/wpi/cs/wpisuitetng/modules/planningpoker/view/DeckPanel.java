@@ -169,5 +169,9 @@ public class DeckPanel extends JScrollPane {
 	public void setCurrentEstimate(String estimate){
 		currentEstimate = estimate;
 	}
+	
+	public String getCurrentEstimate(){
+		return currentEstimate;
+	}
 
 }

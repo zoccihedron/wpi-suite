@@ -68,23 +68,26 @@ public class PlayGamePanel extends JPanel{
 	}
 
 	public boolean isReadyToClose() {
-		if(estimationPane.getDeckPanel().isOldEstimate()){
-			return true;
-		}
-		else{
-			Object options[] = {"Yes", "No"};
-			int i = JOptionPane.showOptionDialog(this, 
-					"Any unsaved changes will be lost, would you like to exit anyways?",
-					"Exit?",
-					JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE,
-					null, options, options[1]);
-
-			if(i == 0) {
+		if(estimationPane.getDeckPanel().getCurrentEstimate() != null){
+			if(estimationPane.getDeckPanel().isOldEstimate()){
 				return true;
-			} else {
-				return false;
+			}
+			else{
+				Object options[] = {"Yes", "No"};
+				int i = JOptionPane.showOptionDialog(this, 
+						"Any unsaved changes will be lost, would you like to exit anyways?",
+						"Exit?",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null, options, options[1]);
+
+				if(i == 0) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
+		else return true;
 	}
 }
