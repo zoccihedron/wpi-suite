@@ -124,6 +124,13 @@ public class CreateGameInfoPanel extends JPanel {
 		rdbtnAm.setSelected(true);
 		AMPMSelection.add(rdbtnAm);
 		AMPMSelection.add(rdbtnPm);
+		if (tempCalendar.get(Calendar.AM_PM) == Calendar.PM) {
+			rdbtnAm.setSelected(false);
+			rdbtnPm.setSelected(true);
+		} else {
+			rdbtnAm.setSelected(true);
+			rdbtnPm.setSelected(false);
+		}
 
 		lblDeck = new JLabel("Deck:");
 
@@ -133,7 +140,6 @@ public class CreateGameInfoPanel extends JPanel {
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(new ChangeDeadlineVisibilityController(this));
 		chckbxDeadline.setSelected(true);
-		EnableOrDisableDeadline();
 		lblDescription = new JLabel("Description:");
 		panelSetup();
 	}
