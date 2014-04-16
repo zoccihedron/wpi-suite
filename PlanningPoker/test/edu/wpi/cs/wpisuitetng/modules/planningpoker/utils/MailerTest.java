@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -40,8 +40,8 @@ public class MailerTest {
 	static Project p;
 	
 	
-	@BeforeClass
-	public static void setUp() throws WPISuiteException{
+	@Before
+	public void setUp() throws WPISuiteException{
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
