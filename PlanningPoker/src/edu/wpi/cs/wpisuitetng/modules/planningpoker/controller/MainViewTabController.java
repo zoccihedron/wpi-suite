@@ -104,6 +104,7 @@ public class MainViewTabController {
 	public void userPreferencesTab() {
 		for(int i = 0; i < mainView.getTabCount(); i++){
 			if(mainView.getComponentAt(i).getClass() == UserPreferencesPanel.class){
+				mainView.setSelectedComponent(mainView.getComponentAt(i));
 				return;
 			}
 		}
