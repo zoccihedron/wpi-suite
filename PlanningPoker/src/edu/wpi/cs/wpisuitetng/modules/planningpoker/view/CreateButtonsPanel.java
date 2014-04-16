@@ -53,6 +53,7 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		
 		buttonPanel.add(crtGameBtn);
 		buttonPanel.add(crtDeckBtn);
+		crtDeckBtn.setVisible(false);
 		buttonPanel.add(userPrefBtn);
 		buttonPanel.add(Box.createHorizontalStrut(50));
 		

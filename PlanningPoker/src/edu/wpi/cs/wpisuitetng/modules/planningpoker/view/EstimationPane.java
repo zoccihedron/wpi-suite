@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -33,7 +32,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
@@ -139,7 +139,7 @@ public class EstimationPane extends JPanel {
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
-		constraints.weightx = Integer.MAX_VALUE;//200.0;
+		constraints.weightx = Integer.MAX_VALUE;
 		constraints.weighty = 0.0;
 		constraints.gridx = 1;
 		constraints.gridy = 1;
@@ -184,16 +184,38 @@ public class EstimationPane extends JPanel {
 		constraints.insets = new Insets(10, 20, 0, 20);
 		add(deckPanel, constraints);
 		
-		// RESPONSE MESSAGE
+		// adds listener for live validation of the Estimate Field
+		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkField();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkField();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkField(); 
+			}
+			
+		});
+
+		//error message
 		message = new JLabel();
 		message.setText("    ");
 		message.setFont(new Font("Dialog", Font.ITALIC, 12));
 		message.setVisible(true);
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 13;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 3;
+		constraints.ipadx = 300;
+		constraints.anchor = GridBagConstraints.CENTER;
 		add(message, constraints);
 		
 		// VOTE BUTTON
@@ -201,9 +223,11 @@ public class EstimationPane extends JPanel {
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 13;
+		constraints.gridy = 16;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 3;
+		constraints.ipadx = 50;
+		constraints.insets = new Insets(0, 0, 0, 0);
 		add(voteButton, constraints);
 		voteButton.setEnabled(false);
 
@@ -249,8 +273,6 @@ public class EstimationPane extends JPanel {
 
 	}
 
-
-
 	private Requirement getRequirementFromId() throws NotFoundException{
 		List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement req: reqs){
@@ -275,6 +297,7 @@ public class EstimationPane extends JPanel {
 		
 		final int estimate;
 		try{
+			reportError("<html></html>");
 			estimate = Integer.parseInt(deckPanel.getEstimateField());
 
 		} catch (NumberFormatException e){
