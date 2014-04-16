@@ -57,6 +57,7 @@ public class VoteActionController implements ActionListener {
 				
 			final String name = ConfigManager.getInstance().getConfig().getUserName();
 			estimateValue = view.getEstimate();
+			view.getDeckPanel().setCurrentEstimate(Integer.toString(estimateValue));
 			
 			final Estimate oldEstimate = game.findEstimate(view.getReqID());
 			oldEstimate.makeEstimate(name, estimateValue);

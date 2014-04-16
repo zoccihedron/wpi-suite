@@ -363,8 +363,9 @@ public class EstimationPane extends JPanel {
 	public void refresh(){
 		listReqPanel.refresh();
 	}
-
-
-
+	
+	public DeckPanel getDeckPanel(){
+		return deckPanel;
+	}
 
 }
