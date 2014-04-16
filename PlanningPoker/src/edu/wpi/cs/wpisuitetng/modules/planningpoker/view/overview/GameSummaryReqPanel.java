@@ -12,10 +12,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -39,6 +41,7 @@ public class GameSummaryReqPanel extends JPanel {
 	private JTable requirementsTable = null;
 	private DefaultTableModel modelReqs;
 	private String[] columnNames = { "ID", "Name", "Description", "Mean"};
+	private JLabel lblRequirements;
 	private Object[][] data = new Object[][] {};
 
 	/**
@@ -46,7 +49,7 @@ public class GameSummaryReqPanel extends JPanel {
 	 * 
 	 */
 	public GameSummaryReqPanel() {
-		
+				
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.anchor = GridBagConstraints.NORTHWEST;
@@ -65,12 +68,24 @@ public class GameSummaryReqPanel extends JPanel {
 		
 		final JScrollPane requirementsTablePanel = new JScrollPane(requirementsTable);
 		
+
+		lblRequirements = new JLabel("Requirements to Estimate:");
+		lblRequirements.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.ipady = 5;
+		add(lblRequirements, constraints);
+		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = 1;
 		add(requirementsTablePanel, constraints);
 
 	}

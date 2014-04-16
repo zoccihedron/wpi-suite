@@ -13,7 +13,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Color;
-import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -49,9 +48,6 @@ public class GameSummaryInfoPanel extends JPanel {
 	private final JLabel lblDescription;
 	private final JScrollPane descriptionScroll;
 
-	/**
-	 * 
-	 */
 	public GameSummaryInfoPanel() {
 		
 		setBounds(5, 5, 307, 393);
@@ -85,7 +81,7 @@ public class GameSummaryInfoPanel extends JPanel {
 
 		lblName = new JLabel("Name:       ");
 
-		lblDeadline = new JLabel("Deadline:");
+		lblDeadline = new JLabel("Deadline:");		
 
 		lblDescription = new JLabel("Description:");
 		infoPanelSetup();
@@ -142,7 +138,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 10;
-		lblDescription.setBorder(new EmptyBorder(10, 0, 10, 0));
+		//lblDescription.setBorder(new EmptyBorder(0, 0, 5, 0));
 		add(lblDescription, constraints);
 
 				
@@ -160,6 +156,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 11;
 		add(scrollPane, constraints);
+	
 
 		// DEADLINE LABEL
 		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
