@@ -29,6 +29,10 @@ public class User extends AbstractModel
 	private String username;
 	private int idNum;
 	private Role role;
+	private String email = "";
+	private String IM = "";
+	private boolean allowEmail = false;
+	private boolean allowIM = false;
 	
 	transient private String password; // excluded from serialization, still stored.
 	
@@ -45,6 +49,11 @@ public class User extends AbstractModel
 		this.password = password;
 		this.idNum = idNum;
 		this.role = Role.USER;
+	}
+	
+	public User()
+	{
+		
 	}
 	
 	@Override
@@ -150,6 +159,10 @@ public class User extends AbstractModel
 		return json;	
 	}
 	
+	public String toJsonArray(){
+		return "[" + this.toJSON() + "]";
+	}
+	
 	/**
 	 * Static method offering comma-delimited JSON
 	 * 	serializing of User lists
@@ -233,6 +246,39 @@ public class User extends AbstractModel
 	{
 		this.role = r;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getIM() {
+		return IM;
+	}
+	
+	public void setIM(String iM) {
+		IM = iM;
+	}
+
+	public boolean isAllowEmail() {
+		return allowEmail;
+	}
+
+	public void setAllowEmail(boolean allowEmail) {
+		this.allowEmail = allowEmail;
+	}
+
+	public boolean isAllowIM() {
+		return allowIM;
+	}
+
+	public void setAllowIM(boolean allowIM) {
+		this.allowIM = allowIM;
+	}
+
 
 	
 	public static User fromJSON(String json) {
@@ -244,6 +290,17 @@ public class User extends AbstractModel
 		gson = builder.create();
 		
 		return gson.fromJson(json, User.class);
+	}
+	
+	public static User[] fromJsonArray(String json)
+	{
+		Gson gson;
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(User.class, new UserDeserializer());
+
+		gson = builder.create();
+		
+		return gson.fromJson(json, User[].class);
 	}
 
 	@Override

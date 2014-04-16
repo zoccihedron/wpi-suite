@@ -10,8 +10,11 @@
 		<pathelement path="../Network/build"/>
 		<pathelement path="../Core/WPISuite-Interfaces/build"/>
 		<fileset dir="${core-lib}">
-			<include name="gson-*.jar"/>
+			<include name="*.jar"/>
 		</fileset>
+		<fileset dir="../PlanningPoker/lib">
+			<include name="*.jar"/>
+	  	</fileset>
 		<pathelement path="build"/>
 	</path>
 
@@ -27,6 +30,9 @@
 				debuglevel="lines,vars,source" includeantruntime="false">
 			<classpath refid="classpath"/>
 		</javac>
+		<copy todir="build">
+				    <fileset dir="src" includes="**/*.png" />
+		</copy>
 	</target>
 
 	<!-- Janeway and the Core need to load jars containing our module -->
@@ -44,7 +50,15 @@
 		</jar>
 	</target>
 
-	<target name="compile" depends="janeway-jar, core-jar"/>
+	<target name="compile" depends="janeway-jar, core-jar">
+		<!--hackaround to adding jars... -->
+		<!-- Causing issues... need to fix later... -->
+		<unzip dest="../Janeway/bin">
+			<fileset dir="../PlanningPoker/lib">
+				<include name="*.jar"/>
+			</fileset>
+		</unzip> 
+	</target>
 
 	<target name="compile-test" depends="compile-base">
 		<mkdir dir="build-test"/>

@@ -10,6 +10,9 @@ javadoc
 test-results
 dist
 
+# Javadoc Files #
+PlanningPoker/doc/
+
 # Package Files #
 *.war
 *.ear
@@ -45,3 +48,6 @@ Janeway/janeway.conf
 
 RequirementManager/build
 RequirementManager/bin
+
+PlanningPoker/build
+PlanningPoker/bin
