@@ -29,6 +29,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
@@ -47,7 +51,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class EstimationPane extends JPanel {
 	private final JTextArea requirementName;
 	private final JTextArea descriptionText;
-	private final Box blankBox;
 	private final DeckPanel deckPanel;
 	private final JLabel message;
 	private final JButton voteButton;
@@ -68,39 +71,48 @@ public class EstimationPane extends JPanel {
 		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
-
-		final JLabel nameLabel = new JLabel("Name:");
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 5, 0, 10);
+		final Border jtextFieldBorder = new JTextField().getBorder();
+		
+		final JLabel reqInfoLabel = new JLabel("Requirement Information");
+		reqInfoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		reqInfoLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
+		constraints.ipadx = 10;
+		constraints.ipady = 10;
+		add(reqInfoLabel, constraints);
+		
+		final JLabel nameLabel = new JLabel("Requirement Name:");
+		nameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(10, 15, 0, 10);
+		constraints.gridx = 0;
+		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		add(nameLabel, constraints);
+		
 
 		requirementName = new JTextArea();
 		requirementName.setEditable(false);
+		requirementName.setBorder(jtextFieldBorder);
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
+		constraints.insets = new Insets(10, 0, 0, 0);
 		constraints.gridx = 1;
-		constraints.gridy = 0;
+		constraints.gridy = 1;
 		constraints.weightx = 0.66;
-		constraints.gridwidth = 1;
+//		constraints.gridwidth = 1;
 		add(requirementName, constraints);
 
-		blankBox = new Box(1);
+		final JLabel descriptionLabel = new JLabel("Requirement Description:");
+		descriptionLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
-		constraints.gridx = 2;
-		constraints.gridy = 0;
-		constraints.weightx = 0.33;
-		constraints.gridwidth = 1;
-		add(blankBox, constraints);
-
-		final JLabel descriptionLabel = new JLabel("Description:");
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(5, 5, 0, 5);
+		constraints.insets = new Insets(5, 15, 0, 5);
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 2;
 		constraints.gridwidth = 3;
 		add(descriptionLabel, constraints);
 
@@ -110,12 +122,13 @@ public class EstimationPane extends JPanel {
 
 		descriptionText.setEditable(false);
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 5, 0, 5);
+		constraints.insets = new Insets(5, 15, 0, 5);
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.gridwidth = 3;
+
 		add(descriptionText, constraints);
 
 		final JLabel temp = new JLabel();
@@ -126,7 +139,7 @@ public class EstimationPane extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 4;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 3;
 		constraints.weighty = 1.5;
@@ -136,7 +149,7 @@ public class EstimationPane extends JPanel {
 		final JPanel voteButtonPanel = new JPanel();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
 		constraints.gridwidth = 3;
@@ -154,17 +167,17 @@ public class EstimationPane extends JPanel {
 		message.setVisible(true);
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = 1;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 50, 0);
 		voteButtonPanel.add(message, constraints);
 		
-		voteButton = new JButton("Vote");
+		voteButton = new JButton("");
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 2;
 		constraints.weightx = 1.0;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
