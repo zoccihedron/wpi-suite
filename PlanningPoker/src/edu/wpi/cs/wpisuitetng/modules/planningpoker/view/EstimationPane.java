@@ -23,12 +23,15 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -47,12 +50,15 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @version 0.1
  */
 public class EstimationPane extends JPanel {
+	private final JLabel titleLabel;
+	private final JLabel nameLabel;
+	private final JLabel descriptionLabel;
+	private final JScrollPane descriptionScroll;
 	private final JTextArea requirementName;
 	private final JTextArea descriptionText;
-	private final Box blankBox;
-	private final DeckPanel deckPanel;
-	private final JLabel message;
-	private final JButton voteButton;
+	private DeckPanel deckPanel;
+	private JLabel message;
+	private JButton voteButton;
 	private int reqid;
 	private ListRequirementsPanel listReqPanel;
 	private Game game;
@@ -64,74 +70,118 @@ public class EstimationPane extends JPanel {
 	 * @param reqid The req to vote on
 	 * @param draftGame The game the vote is going towards
 	 */
-	public EstimationPane(ListRequirementsPanel listReqPanel){
-
+	public EstimationPane(ListRequirementsPanel listReqPanel) {
+		
 		this.listReqPanel = listReqPanel;
 		
+		setBounds(5, 5, 307, 393);
 		this.setLayout(new GridBagLayout());
-		final GridBagConstraints constraints = new GridBagConstraints();
 
-		final JLabel nameLabel = new JLabel("Name:");
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 5, 0, 10);
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		add(nameLabel, constraints);
-
+		final Border jtextFieldBorder = new JTextField().getBorder();
+		
+		// Adds the fields and button to the main panel.
 		requirementName = new JTextArea();
 		requirementName.setEditable(false);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
-		constraints.gridx = 1;
-		constraints.gridy = 0;
-		constraints.weightx = 0.66;
-		constraints.gridwidth = 1;
-		add(requirementName, constraints);
+		requirementName.setEnabled(true);
+		requirementName.setBorder(jtextFieldBorder);
+		
+		descriptionText = new JTextArea();
+		descriptionText.setBorder(jtextFieldBorder);
+		descriptionText.setEditable(false);
+		descriptionText.setAutoscrolls(true);
+		
+		descriptionScroll = new JScrollPane();
+		descriptionScroll.add(descriptionText);
 
-		blankBox = new Box(1);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
-		constraints.gridx = 2;
-		constraints.gridy = 0;
-		constraints.weightx = 0.33;
-		constraints.gridwidth = 1;
-		add(blankBox, constraints);
+		titleLabel = new JLabel("Game Information");
 
-		final JLabel descriptionLabel = new JLabel("Description:");
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(5, 5, 0, 5);
+		nameLabel = new JLabel("Name:");
+
+		descriptionLabel = new JLabel("Description:");
+		infoPanelSetup();
+	}
+
+	
+	/**
+	 * Sets all the grid components for either constructor
+	 */
+	public void infoPanelSetup() {
+		// DEFINE CONSTAINTS
+		final GridBagConstraints constraints = new GridBagConstraints();
+
+
+
+		// GAME INFORMATION LABEL
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.ipadx = 10;
+		constraints.ipady = 10;
+		add(titleLabel, constraints);
+
+		// NAME LABEL
+		nameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(nameLabel, constraints);
+		//nameLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		// NAME FIELD
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
+		constraints.weightx = Integer.MAX_VALUE;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		constraints.insets = new Insets(0, 20, 0, 20);
+		add(requirementName, constraints);
+
+		// DESCRIPTION LABEL
+		descriptionLabel.setFont(new Font("Dialog", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 5;
 		add(descriptionLabel, constraints);
 
-		constraints.insets = new Insets(0, 0, 0, 0);
-
-		descriptionText = new JTextArea();
-
+		
+		JScrollPane scrollPane = new JScrollPane(descriptionText); 
 		descriptionText.setEditable(false);
+		
+		// DESCRIPTION
+		descriptionText.setLineWrap(true);
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 5, 0, 5);
-		constraints.gridx = 0;
-		constraints.gridy = 2;
+		
+		// DESCRIPTION SCROLL
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
-		constraints.gridwidth = 3;
-		add(descriptionText, constraints);
-
-		final JLabel temp = new JLabel();
-		temp.setText("temp");
-
-
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		constraints.insets = new Insets(0, 20, 10, 20);
+		add(scrollPane, constraints);
+		
+		// DECK PANEL
 		deckPanel = new DeckPanel();
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 12;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 3;
 		constraints.weighty = 1.5;
+		constraints.insets = new Insets(10, 20, 0, 20);
 		add(deckPanel, constraints);
 		
 		// adds listener for live validation of the Estimate Field
@@ -154,21 +204,6 @@ public class EstimationPane extends JPanel {
 			
 		});
 
-
-		final JPanel voteButtonPanel = new JPanel();
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		constraints.weightx = 1;
-		constraints.weighty = 1;
-		constraints.gridwidth = 3;
-		constraints.gridheight = 2;
-		constraints.insets = new Insets(0, 0, 20, 0);
-		constraints.anchor = GridBagConstraints.PAGE_END;
-		add(voteButtonPanel, constraints);
-
-		voteButtonPanel.setLayout(new GridBagLayout());
-
 		//error message
 		message = new JLabel();
 		message.setText("    ");
@@ -176,21 +211,24 @@ public class EstimationPane extends JPanel {
 		message.setVisible(true);
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = 13;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 0, 50, 0);
-		voteButtonPanel.add(message, constraints);
+		constraints.gridwidth = 3;
+		constraints.ipadx = 300;
+		constraints.anchor = GridBagConstraints.CENTER;
+		add(message, constraints);
 		
-		voteButton = new JButton("Vote");
+		// VOTE BUTTON
+		voteButton = new JButton("");
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 16;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 3;
+		constraints.ipadx = 50;
 		constraints.insets = new Insets(0, 0, 0, 0);
-		voteButtonPanel.add(voteButton, constraints);
+		add(voteButton, constraints);
 		voteButton.setEnabled(false);
 
 		try {
@@ -234,8 +272,6 @@ public class EstimationPane extends JPanel {
 
 
 	}
-
-
 
 	private Requirement getRequirementFromId() throws NotFoundException{
 		List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
