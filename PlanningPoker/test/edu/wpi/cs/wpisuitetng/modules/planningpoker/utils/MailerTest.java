@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.Session;
