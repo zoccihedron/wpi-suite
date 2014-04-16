@@ -52,6 +52,7 @@ public class NewGamePanel extends JSplitPane {
 	private final JButton btnCancel;
 	private final JButton btnStart;
 	private final JLabel lblMessage;
+	private boolean changesSaved = false;
 	
 	/**
 	 * Use this constructor when starting a new game panel from scratch
@@ -278,15 +279,15 @@ public class NewGamePanel extends JSplitPane {
 	 * @return boolean if it's ready to close
 	 */
 	public boolean isReadyToClose() {
-		final Object options[] = {"Yes", "No"};
+		/*final Object options[] = {"Yes", "No"};
 		final int i = JOptionPane.showOptionDialog(this, 
 				"Any unsaved changes will be lost, would you like to exit anyways?",
 				"Exit?",
 				JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
-				null, options, options[1]);
+				null, options, options[1]);*/
 		
-		return i == 0;
+		return true;
 	}
 	
 }
