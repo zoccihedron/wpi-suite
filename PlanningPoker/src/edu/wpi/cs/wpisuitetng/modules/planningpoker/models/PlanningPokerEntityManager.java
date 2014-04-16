@@ -23,6 +23,7 @@ import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
 
 /**
@@ -285,6 +286,18 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					throw new WPISuiteException("Save was not successful");
 				}
 				returnString = "true";
+			}
+			else if( string.equals("end") ){
+				
+				final Game endedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(endedGame.getId()))[0];
+				
+				game.setStatus(GameStatus.ENDED);
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = game.toJSON();
 			}
 			return returnString;
 	}

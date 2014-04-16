@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -37,7 +38,7 @@ public class GameSummaryReqPanel extends JPanel {
 
 	private JTable requirementsTable = null;
 	private DefaultTableModel modelReqs;
-	private String[] columnNames = { "ID", "Name", "Description"};
+	private String[] columnNames = { "ID", "Name", "Description", "Mean"};
 	private Object[][] data = new Object[][] {};
 
 	/**
@@ -89,16 +90,28 @@ public class GameSummaryReqPanel extends JPanel {
 		// Hide the column with IDs
 		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
 	
+		if (game.getStatus() != GameStatus.ENDED) {
+			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(2));
+		}
+		
 		modelReqs = (DefaultTableModel) requirementsTable.getModel();
 		List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
 			if(reqIDs.contains(req.getId())){
+				int meanEstimate = 0;
+				try{
+					meanEstimate = (int)game.findEstimate(req.getId()).getMean();
+				}
+				catch(NullPointerException e){
+					System.out.println(e.getMessage());
+				}
+
 				modelReqs.addRow(new Object[] {
 						Integer.toString(req.getId()), req.getName(),
-						req.getDescription()});
+						req.getDescription(),
+						meanEstimate});
 			}
 		}
-		
 	}
 	
 	

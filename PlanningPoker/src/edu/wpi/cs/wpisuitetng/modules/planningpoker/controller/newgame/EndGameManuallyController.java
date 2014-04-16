@@ -57,7 +57,7 @@ public class EndGameManuallyController implements ActionListener {
 
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest
-					("planningpoker/game", HttpMethod.POST);
+					("Advanced/planningpoker/game/end", HttpMethod.POST);
 			// put the updated game in the body of the request
 			request.setBody(currentGame.toJSON());
 			// add an observer to process the response
