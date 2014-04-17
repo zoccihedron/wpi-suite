@@ -594,10 +594,18 @@ public class Game extends AbstractModel {
 		}
 	}
 	
+	/**
+	 * Gets whether the game was voted on or not
+	 * @return if the game was voted on or not
+	 */
 	public boolean isHasBeenEstimated() {
 		return hasBeenEstimated;
 	}
 
+	/**
+	 * Sets whether the game was voted on or not
+	 * @param hasBeenEstimated if the game was voted on or not
+	 */
 	public void setHasBeenEstimated(boolean hasBeenEstimated) {
 		this.hasBeenEstimated = hasBeenEstimated;
 	}
