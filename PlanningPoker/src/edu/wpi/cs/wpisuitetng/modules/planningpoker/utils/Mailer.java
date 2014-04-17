@@ -83,7 +83,6 @@ public class Mailer {
 	 */
 	public void notifyStart()
 	{
-		//users = game.getProject().getTeam();
 		Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
 		request.addObserver(new RequestObserver() {
 			
@@ -99,7 +98,48 @@ public class Mailer {
 						message = "Hello, " + u.getName() + 
 								"\n Your game: " + game.getName() + " has started";
 						
-						sendEmail(u.getEmail(), message);
+						sendEmail(u.getEmail(), message, true);
+					}
+				}
+				
+				
+			}
+			
+			@Override
+			public void responseError(IRequest iReq) {
+				
+			}
+			
+			@Override
+			public void fail(IRequest iReq, Exception exception) {
+				
+			}
+		});
+		request.send();
+	}
+	
+	/**
+	 * Function which notifies users that 
+	 * the game has ended
+	 */
+	public void notifyEnd()
+	{
+		Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
+		request.addObserver(new RequestObserver() {
+			
+			@Override
+			public void responseSuccess(IRequest iReq) {
+				ResponseModel response = iReq.getResponse();
+				User[] users = User.fromJsonArray(response.getBody());
+				for(User u : users)
+				{
+					String message = "";
+					if(u.isAllowEmail())
+					{
+						message = "Hello, " + u.getName() + 
+								"\n Your game: " + game.getName() + " has ended";
+						
+						sendEmail(u.getEmail(), message, false);
 					}
 				}
 				
@@ -123,8 +163,9 @@ public class Mailer {
 	 * Function that sends an email to the given address
 	 * @param sendToEmail email address we want to send mail to
 	 * @param messageText message sent to the email given
+	 * @param isStarting indicates whether the game is starting or ending
 	 */
-	public void sendEmail(String sendToEmail, String messageText)
+	public void sendEmail(String sendToEmail, String messageText, boolean isStarting)
 	{
 		try
 		{
@@ -138,7 +179,14 @@ public class Mailer {
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
 
 			// Set Subject: header field
-			message.setSubject(game.getName() + " has started!");
+			if(isStarting)
+			{
+				message.setSubject(game.getName() + " has started!");
+			} 
+			else
+			{
+				message.setSubject(game.getName() + " has ended!");
+			}
 
 			// Now set the actual message
 			message.setText(messageText);
@@ -152,4 +200,6 @@ public class Mailer {
 			mex.printStackTrace();
 		}
 	}
+	
+	
 }
