@@ -25,10 +25,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.CloseNewGameTabController;
@@ -48,10 +46,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 public class NewGamePanel extends JSplitPane {
 	private final CreateGameInfoPanel createGameInfoPanel;
 	private final SelectRequirementsPanel selectRequirementsPanel;
-	private final JButton btnSave;
-	private final JButton btnCancel;
-	private final JButton btnStart;
-	private final JLabel lblMessage;
+	private JButton btnSave;
+	private JButton btnCancel;
+	private JButton btnStart;
+	private JLabel lblMessage;
 	private boolean changesSaved = false;
 	
 	/**
@@ -59,10 +57,43 @@ public class NewGamePanel extends JSplitPane {
 	 */
 	public NewGamePanel() {
 		super(JSplitPane.VERTICAL_SPLIT);
+		
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		
+		setUpPanel();
+		
+		// Maps Create Game button to AddGameController class
+		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
+		btnStart.addActionListener(new AddGameController(createGameInfoPanel, true, false));
+		
+	}
+	
+	/**
+	 * Use this constructor when you want to edit an existing game
+	 * @param editingGame the game to be updated
+	 */
+	public NewGamePanel(Game editingGame) {
+		super(JSplitPane.VERTICAL_SPLIT);
+		
+		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
+		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
+		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
+		
+		setUpPanel();
+		
+		// Maps Create Game button to AddGameController class
+		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
+		
+		btnStart.addActionListener(
+				new UpdateGameController(createGameInfoPanel, editingGame, true));
+	}
+	
+	/**
+	 * Sets up constraints on panel that are shared for each constructor
+	 */
+	private void setUpPanel(){
 		
 		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
@@ -77,9 +108,6 @@ public class NewGamePanel extends JSplitPane {
 		btnSave.setBounds(141, 5, 118, 25);
 		bottomPanel.add(btnSave);
 		
-		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
-		
 				
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
@@ -87,7 +115,6 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.add(btnCancel); 
 		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
-		btnStart.addActionListener(new AddGameController(createGameInfoPanel, true, false));
 		
 		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
@@ -138,89 +165,6 @@ public class NewGamePanel extends JSplitPane {
 		});
 	}
 	
-	/**
-	 * Use this constructor when you want to edit an existing game
-	 * @param editingGame the game to be updated
-	 */
-	public NewGamePanel(Game editingGame) {
-		super(JSplitPane.VERTICAL_SPLIT);
-		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
-		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
-		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
-		
-		
-		final JSplitPane topPanel = new JSplitPane();
-		topPanel.setLeftComponent(createGameInfoPanel);
-		topPanel.setRightComponent(selectRequirementsPanel);
-		topPanel.setDividerLocation(300);
-		topPanel.setEnabled(false);
-		this.setTopComponent(topPanel);
-		final JPanel bottomPanel = new JPanel();
-		bottomPanel.setLayout(null);
-		
-		
-		btnSave = new JButton("Update");
-		btnSave.setBounds(141, 5, 118, 25);
-		bottomPanel.add(btnSave);
-		
-		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
-		
-		btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(269, 5, 118, 25);
-		btnCancel.addActionListener(
-				new CloseNewGameTabController(createGameInfoPanel));
-		bottomPanel.add(btnCancel); 
-		btnStart = new JButton("Start");
-		btnStart.setBounds(12, 5, 118, 25);
-		btnStart.addActionListener(
-				new UpdateGameController(createGameInfoPanel, editingGame, true));
-		
-		lblMessage = new JLabel("*Error");
-		lblMessage.setBounds(395, 8, 457, 18);
-		lblMessage.setForeground(Color.RED);
-		lblMessage.setVisible(false);
-		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
-		bottomPanel.add(lblMessage);
-		
-		bottomPanel.add(btnStart);
-		
-		try {
-		    Image img = ImageIO.read(getClass().getResource("start-icon.png"));
-		    btnStart.setIcon(new ImageIcon(img));
-		    
-		    img = ImageIO.read(getClass().getResource("save-icon.png"));
-		    btnSave.setIcon(new ImageIcon(img));
-		    
-		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
-		    btnCancel.setIcon(new ImageIcon(img));
-		} catch (IOException ex) {
-			System.err.println(ex.getMessage());
-		}
-		
-		this.setBottomComponent(bottomPanel); 
-		this.setDividerSize(0);
-		this.setEnabled(false);
-		resetDividerLocation();
-		this.addComponentListener(new ComponentListener() {
-			public void componentResized(ComponentEvent e){
-				resetDividerLocation();
-				selectRequirementsPanel.fillTable();
-			}
-			public void componentHidden(ComponentEvent e){
-				resetDividerLocation();
-				selectRequirementsPanel.fillTable();
-			}
-			public void componentShown(ComponentEvent e){
-				resetDividerLocation();
-				selectRequirementsPanel.fillTable();
-			}
-			public void componentMoved(ComponentEvent e){
-				resetDividerLocation();
-				selectRequirementsPanel.fillTable();
-			}
-		});
-	}
 
 	/**
 	 * resets the location of the divider
