@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -92,6 +93,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
+		existingRequirementsLabel.setBorder(new EmptyBorder(0,10,0,0));
 		this.add(existingRequirementsLabel, constraints);
 
 		final JButton btnNewRequirement = new JButton("Refresh");
@@ -142,8 +144,7 @@ public class SelectRequirementsPanel extends JPanel {
 		});
 		
 
-		final JScrollPane existingRequirementsTablePanel = new JScrollPane(
-				existingRequirementsTable);
+		final JScrollPane existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
@@ -153,14 +154,14 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(existingRequirementsTablePanel, constraints);
 
 		// Bottom section of panel
-		final JLabel lblRequirementsToEstimate = new JLabel(
-				"Requirements Selected");
+		final JLabel lblRequirementsToEstimate = new JLabel("Requirements Selected");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
+		lblRequirementsToEstimate.setBorder(new EmptyBorder(0,10,0,0));
 		this.add(lblRequirementsToEstimate, constraints);
 		
 		final JPanel emptyPanel = new JPanel();
