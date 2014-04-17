@@ -258,14 +258,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		add(extraPanel2, constraints);
 		
-		
-		
-		
-		
-		
-		
-		
-
 		try {
 		    Image img = ImageIO.read(getClass().getResource("yield.png"));
 		    editGameButton.setIcon(new ImageIcon(img));

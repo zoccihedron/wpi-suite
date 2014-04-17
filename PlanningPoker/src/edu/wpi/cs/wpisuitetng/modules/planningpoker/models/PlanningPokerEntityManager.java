@@ -263,7 +263,16 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws NotImplementedException {
 		throw new NotImplementedException();
 	}
-
+	
+	/**
+	 * If the content string is "vote", the game will try to update the database with the vote.
+	 * 
+	 * If the content string is "end", the game will be set to ENDED in the database.
+	 * 
+	 * If the content string is "edit", the game will be set to DRAFT if it has not been voted on.
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(edu.wpi.cs.wpisuitetng.Session, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String advancedPost(Session s, String string, String content) 
 			throws NotFoundException, WPISuiteException{
