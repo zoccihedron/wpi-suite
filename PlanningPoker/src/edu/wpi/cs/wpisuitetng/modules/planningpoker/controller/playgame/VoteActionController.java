@@ -88,5 +88,9 @@ public class VoteActionController implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void reportError(String errorText) {
+		view.reportError(errorText);
+	}
 
 }

@@ -319,7 +319,7 @@ public class EstimationPane extends JPanel {
 
 
 
-	private void reportError(String string) {
+	public void reportError(String string) {
 		message.setText(string);
 		message.setForeground(Color.RED);
 	}

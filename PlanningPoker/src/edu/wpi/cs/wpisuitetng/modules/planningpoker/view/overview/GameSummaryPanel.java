@@ -32,9 +32,13 @@ import javax.swing.border.EmptyBorder;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * GameSummaryPanel is a class which displays the summary of a game that can be
@@ -89,7 +93,13 @@ public class GameSummaryPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				final MainViewTabController mvt = MainViewTabController.getInstance();
  				mvt.createGameTab(game);
-				
+ 				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
+	 				
+	 				final Request request = Network.getInstance().makeRequest
+	 						("Advanced/planningpoker/game/edit", HttpMethod.POST);
+	 				request.setBody(game.toJSON());
+	 				request.send();
+ 				}
 			}
  			
  		});

@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame;
 
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * The VoteActionObserver tells the controller to update the 
@@ -38,8 +39,15 @@ public class VoteActionObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// TODO Auto-generated method stub
-		
-		controller.reportSuccess();
+		ResponseModel response = iReq.getResponse();
+		String message = response.getBody();
+		if(message.equals("true"))
+		{
+			controller.reportSuccess();
+		}
+		else
+		{
+			controller.reportError(message);		}
 	}
 
 	@Override

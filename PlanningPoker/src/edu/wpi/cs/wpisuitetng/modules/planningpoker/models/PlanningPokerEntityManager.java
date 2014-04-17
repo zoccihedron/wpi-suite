@@ -273,23 +273,34 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				
 				final Estimate estimate = Estimate.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
-				final Estimate gameEst = game.findEstimate(estimate.getReqID());
-				gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
-				
-				final List<Estimate> newEstimates = new ArrayList<Estimate>();
-				for(Estimate e: game.getEstimates()){
-					Estimate tempEst = e.getCopy();
-					newEstimates.add(tempEst);
+				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
+					final Estimate gameEst = game.findEstimate(estimate.getReqID());
+					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+					
+					final List<Estimate> newEstimates = new ArrayList<Estimate>();
+					for(Estimate e: game.getEstimates()){
+						Estimate tempEst = e.getCopy();
+						newEstimates.add(tempEst);
+					}
+					game.setEstimates(newEstimates);
+					game.endIfAllEstimated();
+					
+					game.setHasBeenEstimated(true);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
 				}
-				game.setEstimates(newEstimates);
-				game.endIfAllEstimated();
-				
-				game.setHasBeenEstimated(true);
-				
-				if(!db.save(game, s.getProject())) {
-					throw new WPISuiteException("Save was not successful");
+				else if(game.getStatus().equals(GameStatus.DRAFT)){
+					returnString = "*Error: This game is currently being edited!";
 				}
-				returnString = "true";
+				else if(game.getStatus().equals(GameStatus.ENDED)){
+					returnString = "*Error: This game has ended!";
+				}
+				else {
+					returnString = "*Error: Vote was not saved!";
+				}
 			}
 			else if( string.equals("end") ){
 				
@@ -297,6 +308,18 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				final Game game = getEntity(s, Integer.toString(endedGame.getId()))[0];
 				
 				game.setStatus(GameStatus.ENDED);
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = game.toJSON();
+			}
+			else if( string.equals("edit") ){
+				
+				final Game editedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
+				
+				game.setStatus(GameStatus.DRAFT);
 				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
