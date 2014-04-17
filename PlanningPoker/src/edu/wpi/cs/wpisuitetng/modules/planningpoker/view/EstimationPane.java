@@ -67,11 +67,12 @@ public class EstimationPane extends JPanel {
 	
 	/**
 	 * Constructor for panel
+	 * @param game 
 	 * @param reqid The req to vote on
 	 * @param draftGame The game the vote is going towards
 	 */
-	public EstimationPane(ListRequirementsPanel listReqPanel) {
-		
+	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
+		this.game = game;
 		this.listReqPanel = listReqPanel;
 		
 		setBounds(5, 5, 307, 393);
@@ -175,7 +176,7 @@ public class EstimationPane extends JPanel {
 		add(scrollPane, constraints);
 		
 		// DECK PANEL
-		deckPanel = new DeckPanel();
+		deckPanel = new DeckPanel(game.getDeck());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 12;

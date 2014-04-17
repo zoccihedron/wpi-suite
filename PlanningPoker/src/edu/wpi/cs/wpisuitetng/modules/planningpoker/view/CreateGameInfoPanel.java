@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
@@ -136,7 +137,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		lblDeck = new JLabel("Deck:");
 
-		final String[] decks = { "default" };
+		final String[] decks = { "default" , "text entry"};
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
@@ -176,9 +177,10 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 
 		lblDeck = new JLabel("Deck:");
-		final String[] decks = { "default" };
+		final String[] decks = { "default", "text entry"};
 		deck = new JComboBox(decks);
-
+		deck.setSelectedItem(editingGame.getDeck());
+		//TODO if deck is deleted we need a fail case
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
 			new ChangeDeadlineVisibilityController(this));
@@ -580,11 +582,12 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date());
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), "default");
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
-
+		newGame.setDeck((String) deck.getSelectedItem());
+		
 		if (chckbxDeadline.isSelected()) {
 			newGame.setHasDeadline(true);
 			newGame.setEnd(getDeadline());

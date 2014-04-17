@@ -54,10 +54,28 @@ public class DeckPanel extends JScrollPane {
 	
 	/**
 	 * Constructs the DeckPanel
-	 * 
+	 * Right now the default deck is constructed here, this should move when
+	 * decks are fully implemented
 	 */
-	public DeckPanel() {
-		this.setViewportView(textVersion());
+	public DeckPanel(String deck) {
+		if(deck.equals("default")){
+
+			ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
+			defaultDeckCards.add(0);
+			defaultDeckCards.add(1);
+			defaultDeckCards.add(1);
+			defaultDeckCards.add(2);
+			defaultDeckCards.add(3);
+			defaultDeckCards.add(5);
+			defaultDeckCards.add(8);
+			defaultDeckCards.add(13);
+			
+			Deck defaultDeck = new Deck("default", true, defaultDeckCards);
+			this.setViewportView(deckVersion(defaultDeck));
+		}
+		else {
+			this.setViewportView(textVersion());
+		}
 	}
 
 	public String getEstimateField() {
