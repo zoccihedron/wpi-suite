@@ -14,13 +14,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ListEstimatedRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsPanel;
 
@@ -38,6 +36,7 @@ public class ViewResultsPanel extends JPanel{
 	private final ListEstimatedRequirementsPanel listRequirementsPanel;
 	private final ResultsPanel resultsPanel;
 	private final JSplitPane splitPane;
+	private ViewResultsController controller;
 
 	/**
 	 * Constructs the PlayGamePanel with the given game
@@ -47,18 +46,22 @@ public class ViewResultsPanel extends JPanel{
 	public ViewResultsPanel(Game game)
 	{
 		setLayout(new BorderLayout());
-
-		listRequirementsPanel = new ListEstimatedRequirementsPanel(game);
+		
+		controller = new ViewResultsController();
+		listRequirementsPanel = new ListEstimatedRequirementsPanel(game, controller);
 		Dimension minimumSize = new Dimension(250, 300);
 		listRequirementsPanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
 		resultsPanel = new ResultsPanel(listRequirementsPanel);
 		splitPane.setRightComponent(resultsPanel);
-
+		controller.setResultsPanel(resultsPanel);
+		
 		add(splitPane, BorderLayout.CENTER);
 
 	}
-
+	public boolean isReadyToClose() {
+		return true;
+	}
 	
 }

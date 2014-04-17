@@ -25,6 +25,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -44,15 +45,17 @@ implements TreeSelectionListener {
 	private JTree tree;
 	private final Game game;
 	private PlayGameController playGameController;
+	private ViewResultsController controller;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
 	 */
-	public ListEstimatedRequirementsPanel(final Game game) {
+	public ListEstimatedRequirementsPanel(final Game game, ViewResultsController controller) {
 
 		this.game = game;
+		this.controller = controller;
 		this.setViewportView(tree);
-		this.refresh();  		
+		this.refresh();  
 
 		//Create the nodes.
 		this.addComponentListener(new ComponentListener()
@@ -95,7 +98,7 @@ implements TreeSelectionListener {
 		if(node.isLeaf()){
 			if(nodeInfo instanceof Requirement){
 				final Requirement req = (Requirement)nodeInfo;
-				//TODO refresh the results panel with the current requirement
+				controller.updateResultsInfo(req.getId(), game);
 			}
 		}
 	}
