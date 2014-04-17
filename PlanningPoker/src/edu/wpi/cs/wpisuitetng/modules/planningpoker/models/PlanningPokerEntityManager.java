@@ -63,6 +63,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		final Game newGame = Game.fromJson(content);
 		newGame.setGameCreator(s.getUsername());
 		newGame.setUsers(db.retrieveAll(new User()));
+		newGame.setHasBeenEstimated(false);
 		save(s, newGame);
 		return db.retrieve(Game.class, "id", newGame.getId(), s.getProject())
 				.toArray(new Game[0])[0];
@@ -180,7 +181,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		existingGame.copyFrom(updatedGame);
 		
 		existingGame.setUsers(db.retrieveAll(new User()));
-
+		existingGame.setHasBeenEstimated(false);
+		
 		if (!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
 		}
@@ -281,6 +283,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				}
 				game.setEstimates(newEstimates);
 				game.endIfAllEstimated();
+				
+				game.setHasBeenEstimated(true);
 				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");

@@ -34,9 +34,11 @@ public class Game extends AbstractModel {
 	private String gameCreator = "";
 	private boolean hasDeadline = false;
 	private Date start = new Date();
+
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
+	private boolean hasBeenEstimated = false;
 
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
@@ -590,6 +592,14 @@ public class Game extends AbstractModel {
 				e.addUser(u.getUsername());
 			}
 		}
+	}
+	
+	public boolean isHasBeenEstimated() {
+		return hasBeenEstimated;
+	}
+
+	public void setHasBeenEstimated(boolean hasBeenEstimated) {
+		this.hasBeenEstimated = hasBeenEstimated;
 	}
 
 }

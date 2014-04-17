@@ -262,7 +262,7 @@ public class GameSummaryPanel extends JPanel {
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				playGameButton.setEnabled(true);
-				editGameButton.setEnabled(false);
+				editGameButton.setEnabled(!game.isHasBeenEstimated());
 				endGameButton.setEnabled(true);
 				sendReqsButton.setVisible(false);
 			}
