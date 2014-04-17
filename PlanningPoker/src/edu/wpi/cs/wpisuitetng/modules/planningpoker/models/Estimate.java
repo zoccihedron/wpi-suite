@@ -278,4 +278,13 @@ public class Estimate {
 	public void setReqID(int reqID) {
 		this.reqID = reqID;
 	}
+
+
+	/**
+	 * @return if the estimation has been sent to the requirement manager
+	 */
+	//TODO make it so this checks if an estimate has been sent to the requirement manager
+	public boolean estimationHasBeenSent() {
+		return false;
+	}
 }
