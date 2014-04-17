@@ -9,8 +9,12 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -24,6 +28,8 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
+import edu.wpi.cs.wpisuitetng.network.Network;
 
 
 /**
@@ -50,6 +56,28 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 */
 	public PlanningPokerEntityManager(Data db) {
 		this.db = db;
+		final Data temp_db = db;
+		
+		final ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<Game> games = temp_db.retrieveAll(new Game());
+				for(Game g : games)
+				{
+					GameStatus status = g.getStatus();
+					g.updateStatus();
+					if((!status.equals(GameStatus.ENDED)) && g.getStatus().equals(GameStatus.ENDED))
+					{
+						Mailer mailer = new Mailer(g, temp_db.retrieveAll(new User("", "", "", 0)));
+						mailer.notifyEnd();
+						temp_db.save(g);
+					}
+				}
+			}
+		};
+		
+		Timer timer = new Timer(60000*5 , actionListener);
+		timer.start();
 	}
 
 	/**
@@ -64,6 +92,13 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		newGame.setGameCreator(s.getUsername());
 		newGame.setUsers(db.retrieveAll(new User()));
 		save(s, newGame);
+		
+		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
+		{
+			Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)));
+			mailer.notifyStart();
+		}
+		
 		return db.retrieve(Game.class, "id", newGame.getId(), s.getProject())
 				.toArray(new Game[0])[0];
 	}
@@ -122,6 +157,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				.toArray(new Game[0]);
 		final ArrayList<Game> gamesViewableByUser = new ArrayList<Game>();
 		for (Game game : allGames) {
+			game.updateStatus();
 			if (game.getStatus() == Game.GameStatus.DRAFT) {
 				if (game.getGameCreator().equals(s.getUsername())) {
 					gamesViewableByUser.add(game);
@@ -185,6 +221,12 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throw new WPISuiteException("Save was not successful");
 		}
 
+		if(existingGame.getStatus().equals(GameStatus.IN_PROGRESS))
+		{
+			Mailer mailer = new Mailer(existingGame, db.retrieveAll(new User("", "", "", 0)));
+			mailer.notifyStart();
+		}
+		
 		return existingGame;
 	}
 
@@ -282,6 +324,12 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				game.setEstimates(newEstimates);
 				game.endIfAllEstimated();
 				
+				if(game.getStatus().equals(GameStatus.ENDED))
+				{
+					Mailer mailer = new Mailer(game, db.retrieveAll(new User("", "", "", 0)));
+					mailer.notifyEnd();
+				}
+				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
 				}
@@ -293,6 +341,12 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				final Game game = getEntity(s, Integer.toString(endedGame.getId()))[0];
 				
 				game.setStatus(GameStatus.ENDED);
+				
+				if(game.getStatus().equals(GameStatus.ENDED))
+				{
+					Mailer mailer = new Mailer(game, db.retrieveAll(new User("", "", "", 0)));
+					mailer.notifyEnd();
+				}
 				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");

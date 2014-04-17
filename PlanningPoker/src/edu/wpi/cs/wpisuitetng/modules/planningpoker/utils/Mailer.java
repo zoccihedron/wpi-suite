@@ -11,6 +11,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -21,16 +23,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.RequestObserver;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 
 /**
@@ -42,7 +36,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 public class Mailer {
 	private Game game;
-	private User[] users;
+	private List<User> users;
 	private Properties properties;
 	private Session session;
 	private final String from = "codonbleu@gmail.com";
@@ -52,9 +46,10 @@ public class Mailer {
 	 * Constructor for Mailer
 	 * @param game the game from which we get the info
 	 */
-	public Mailer(Game game)
+	public Mailer(Game game, List<User> users)
 	{
 		this.game = game;
+		this.users = users;
 
 		// Get system properties
         properties = System.getProperties();
@@ -83,39 +78,18 @@ public class Mailer {
 	 */
 	public void notifyStart()
 	{
-		Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
-		request.addObserver(new RequestObserver() {
-			
-			@Override
-			public void responseSuccess(IRequest iReq) {
-				ResponseModel response = iReq.getResponse();
-				User[] users = User.fromJsonArray(response.getBody());
-				for(User u : users)
-				{
-					String message = "";
-					if(u.isAllowEmail())
-					{
-						message = "Hello, " + u.getName() + 
-								"\n Your game: " + game.getName() + " has started";
-						
-						sendEmail(u.getEmail(), message, true);
-					}
-				}
-				
-				
+		for(User u : users)
+		{
+			String message = "";
+			if(u.isAllowEmail())
+			{
+				message = "Hello, " + u.getName() + 
+						"\n Your game: " + game.getName() + " has started";
+
+				sendEmail(u.getEmail(), message, true);
 			}
-			
-			@Override
-			public void responseError(IRequest iReq) {
+		}
 				
-			}
-			
-			@Override
-			public void fail(IRequest iReq, Exception exception) {
-				
-			}
-		});
-		request.send();
 	}
 	
 	/**
@@ -124,39 +98,17 @@ public class Mailer {
 	 */
 	public void notifyEnd()
 	{
-		Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
-		request.addObserver(new RequestObserver() {
-			
-			@Override
-			public void responseSuccess(IRequest iReq) {
-				ResponseModel response = iReq.getResponse();
-				User[] users = User.fromJsonArray(response.getBody());
-				for(User u : users)
-				{
-					String message = "";
-					if(u.isAllowEmail())
-					{
-						message = "Hello, " + u.getName() + 
-								"\n Your game: " + game.getName() + " has ended";
-						
-						sendEmail(u.getEmail(), message, false);
-					}
-				}
-				
-				
+		for(User u : users)
+		{
+			String message = "";
+			if(u.isAllowEmail())
+			{
+				message = "Hello, " + u.getName() + 
+						"\n Your game: " + game.getName() + " has ended";
+
+				sendEmail(u.getEmail(), message, false);
 			}
-			
-			@Override
-			public void responseError(IRequest iReq) {
-				
-			}
-			
-			@Override
-			public void fail(IRequest iReq, Exception exception) {
-				
-			}
-		});
-		request.send();
+		}
 	}
 
 	/**

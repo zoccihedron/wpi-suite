@@ -37,7 +37,6 @@ public class UpdateGameController implements ActionListener {
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
 	private final boolean startingGame;
-	private Mailer m;
 
 	 
 	/**
@@ -71,8 +70,6 @@ public class UpdateGameController implements ActionListener {
 
 			if(startingGame){
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
-				m = new Mailer(currentGame);
-				m.notifyStart();
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);

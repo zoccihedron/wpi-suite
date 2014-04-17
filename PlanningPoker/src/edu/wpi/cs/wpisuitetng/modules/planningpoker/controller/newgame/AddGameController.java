@@ -41,7 +41,6 @@ public class AddGameController implements ActionListener {
 	private static User[] users = {};
 	private boolean startingGame = false;
 	private boolean endingGame = false;
-	private Mailer m;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
@@ -69,8 +68,6 @@ public class AddGameController implements ActionListener {
 			final Game currentGame = view.getGameObject();
 			
 			if(startingGame){
-				m = new Mailer(currentGame);
-				m.notifyStart();
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
 			}
 			else if(endingGame){
