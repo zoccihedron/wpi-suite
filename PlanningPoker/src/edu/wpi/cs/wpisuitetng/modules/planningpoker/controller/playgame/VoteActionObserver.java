@@ -24,9 +24,9 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @version Apr 9, 2014
  */
 public class VoteActionObserver implements RequestObserver{
-	
+
 	private final VoteActionController controller;
-	
+
 	/**
 	 * Constructs the VoteActionObserver
 	 *
@@ -41,13 +41,15 @@ public class VoteActionObserver implements RequestObserver{
 		// TODO Auto-generated method stub
 		ResponseModel response = iReq.getResponse();
 		String message = response.getBody();
-		if(message.equals("true"))
+		System.out.println("Message:" + message + "<<<");
+		if(message.trim().equals("true"))
 		{
 			controller.reportSuccess();
 		}
 		else
 		{
-			controller.reportError(message);		}
+			controller.reportError(message);
+		}
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class VoteActionObserver implements RequestObserver{
 	public void fail(IRequest iReq, Exception exception) {
 		// TODO Auto-generated method stub
 		System.err.println("The request to update a vote failed.");
-		
+
 	}
 
 }

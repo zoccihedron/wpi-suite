@@ -318,13 +318,17 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				
 				final Game editedGame = Game.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
-				
-				game.setStatus(GameStatus.DRAFT);
-				
-				if(!db.save(game, s.getProject())) {
-					throw new WPISuiteException("Save was not successful");
+				if(!game.isHasBeenEstimated()){
+					game.setStatus(GameStatus.DRAFT);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
 				}
-				returnString = game.toJSON();
+				else{
+					returnString = "*Error: This game has been voted on.";
+				}
 			}
 			return returnString;
 	}
