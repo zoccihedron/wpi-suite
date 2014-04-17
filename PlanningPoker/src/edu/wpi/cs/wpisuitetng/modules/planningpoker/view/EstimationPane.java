@@ -20,6 +20,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -351,9 +352,10 @@ public class EstimationPane extends JPanel {
 
 	/**
 	 * This function updates the display to report a success message.
+	 * @param value is the numerical value of the vote
 	 */
-	public void reportSuccess() {
-		message.setText("<html>Success: Vote Updated!</html>");
+	public void reportSuccess(int value) {
+		message.setText("<html>Success: Vote Updated! You voted " + value + "</html>");
 		message.setForeground(Color.BLUE);
 
 	}
@@ -367,6 +369,15 @@ public class EstimationPane extends JPanel {
 	
 	public DeckPanel getDeckPanel(){
 		return deckPanel;
+	}
+
+
+	public ArrayList<Boolean> getCardSelection() {
+		if(!deckPanel.isDeckView()){
+			return null;
+		} else{
+			return deckPanel.getCardSelection();
+		}
 	}
 
 }
