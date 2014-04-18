@@ -12,6 +12,7 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -413,7 +414,7 @@ public class CreateGameInfoPanel extends JPanel {
 		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(rdbtnPm, constraints);
 
-		final Timer verificationChecker = new Timer(1000, new ActionListener() {
+		final Timer verificationChecker = new Timer(500, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -478,7 +479,10 @@ public class CreateGameInfoPanel extends JPanel {
 		boolean result = true;
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*Error: Please choose a name!</html>");
+			gameNameText.setBackground(Color.PINK);
 			result = false;
+		}else{
+			gameNameText.setBackground(Color.WHITE);
 		}
 
 		if (chckbxDeadline.isSelected() && result) {
