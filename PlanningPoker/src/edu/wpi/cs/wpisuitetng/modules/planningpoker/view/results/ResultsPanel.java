@@ -36,6 +36,10 @@ public class ResultsPanel extends JPanel{
 
 
 
+	/**
+	 * Constructor for results panel
+	 * @param listRequirementsPanel is the tree of requirements for the ended game
+	 */
 	public ResultsPanel(ListEstimatedRequirementsPanel listRequirementsPanel) {
 
 		this.listReqPanel = listReqPanel;
@@ -154,6 +158,12 @@ public class ResultsPanel extends JPanel{
 		add(resultsDisplayPanel, constraints);
 	}
 
+	/**
+	 * Update the panel with information from the Estimate in a game that 
+	 * corresponds to the passed requirement
+	 * @param reqid is the id of the requirement in req manager
+	 * @param game is the game the estimate is in
+	 */
 	public void updateDisplay(int reqid, Game game){
 		this.game = game;
 

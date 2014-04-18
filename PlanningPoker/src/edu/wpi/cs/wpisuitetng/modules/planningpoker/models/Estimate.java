@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.gson.Gson;
 
@@ -210,6 +211,9 @@ public class Estimate {
 		Collections.sort(estimates);
 		final int length = estimates.size();
 		double median = 0;
+		if(length == 0){
+			return median;
+		}
 		if(length % 2 == 0){
 			median = ((double) estimates.get(length / 2) + 
 					(double)estimates.get((length / 2) - 1)) / 2.0;

@@ -114,7 +114,7 @@ public class GameSummaryPanel extends JPanel {
  				mvt.playGameTab(game);
 			}
  		});
-		viewResultsButton = new JButton("viewResults");
+		viewResultsButton = new JButton("View Results");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;

@@ -23,8 +23,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ListEstimatedRe
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsPanel;
 
 /**
- * This class constructs the PlayGamePanel, which displays information about the game,
- * its requirements, and creates the estimation pane.
+ * This class constructs the ViewResultsPanel, which displays results of the requirement,
+ * and information about the requirement
  * @author Codon Bleu
  * @version 1.0
  *
@@ -39,7 +39,7 @@ public class ViewResultsPanel extends JPanel{
 	private ViewResultsController controller;
 
 	/**
-	 * Constructs the PlayGamePanel with the given game
+	 * Constructs the ViewResultsPanel with the given game
 	 *
 	 * @param game the game to construct the panel
 	 */
@@ -60,6 +60,10 @@ public class ViewResultsPanel extends JPanel{
 		add(splitPane, BorderLayout.CENTER);
 
 	}
+	/**
+	 * Check to see if the tab is ready to be closed.
+	 * @return that the tab is always ready to close as data is never saved
+	 */
 	public boolean isReadyToClose() {
 		return true;
 	}

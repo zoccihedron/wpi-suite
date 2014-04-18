@@ -33,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 
 /**
- * This class is used to create a requirements tree which will be displayed in the play game panel
+ * This class is used to create a requirements tree which will be displayed in the view results panel
  * 
  * @author Codon Bleu
  * @version 1.0
