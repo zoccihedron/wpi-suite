@@ -134,6 +134,7 @@ implements TreeSelectionListener {
 		final DefaultMutableTreeNode gameInProgressCategory = new DefaultMutableTreeNode("In Progress");
 		final DefaultMutableTreeNode gameEndedCategory = new DefaultMutableTreeNode("Ended");
 		final DefaultMutableTreeNode gameDraftCategory = new DefaultMutableTreeNode("Draft");
+		final DefaultMutableTreeNode gameClosedCategory = new DefaultMutableTreeNode("Archive");
 		
 		for(Game game: games){
 
@@ -149,11 +150,15 @@ implements TreeSelectionListener {
 				case ENDED: 
 					gameEndedCategory.add(gameNode);
 					break;
+				case CLOSED:
+					gameClosedCategory.add(gameNode);
+					break;
 			}
 
 			top.add(gameDraftCategory);
 			top.add(gameInProgressCategory);
 			top.add(gameEndedCategory);
+			top.add(gameClosedCategory);
 		}
 		
 		//create the tree with the top node as the top

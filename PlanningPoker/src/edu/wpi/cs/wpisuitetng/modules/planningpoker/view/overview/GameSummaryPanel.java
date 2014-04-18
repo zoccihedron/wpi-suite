@@ -57,6 +57,7 @@ public class GameSummaryPanel extends JPanel {
 	private final JButton editGameButton;
 	private final JButton playGameButton;
 	private final JButton endGameButton;
+	private final JButton closeGameButton;
 	private final JButton sendReqsButton;
 	private final JLabel reportMessage;
 	private final GameSummaryPanel  gameSummaryPanel= this;
@@ -188,6 +189,16 @@ public class GameSummaryPanel extends JPanel {
 		endGameButton.setEnabled(false);
 		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
+		closeGameButton = new JButton("Close Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(closeGameButton, constraints);
+		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
 		
 		JPanel extraPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -292,6 +303,7 @@ public class GameSummaryPanel extends JPanel {
 				editGameButton.setEnabled(true);
 				endGameButton.setEnabled(false);
 				sendReqsButton.setVisible(false);
+				closeGameButton.setVisible(false);
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
@@ -299,14 +311,28 @@ public class GameSummaryPanel extends JPanel {
 				editGameButton.setEnabled(!game.isHasBeenEstimated());
 				endGameButton.setEnabled(true);
 				sendReqsButton.setVisible(false);
+				closeGameButton.setVisible(false);
 			}
 			// If the game is ended.
+			else if(game.getStatus().equals(GameStatus.ENDED)){
+				playGameButton.setEnabled(false);
+				editGameButton.setEnabled(false);
+				endGameButton.setEnabled(false);
+				endGameButton.setVisible(false);
+				sendReqsButton.setVisible(false);
+				closeGameButton.setVisible(true);
+				closeGameButton.setEnabled(true);
+			}
+			// If the game is closed.
 			else {
 				playGameButton.setEnabled(false);
 				editGameButton.setEnabled(false);
 				endGameButton.setEnabled(false);
 				endGameButton.setVisible(false);
-				sendReqsButton.setVisible(true);
+				sendReqsButton.setVisible(false);
+				closeGameButton.setVisible(false);
+				closeGameButton.setEnabled(false);
+				
 			}
 		}
 		// If the user is not the game creator.
@@ -317,6 +343,8 @@ public class GameSummaryPanel extends JPanel {
 			endGameButton.setVisible(false);
 			endGameButton.setEnabled(false);
 			sendReqsButton.setVisible(false);
+			closeGameButton.setVisible(false);
+			closeGameButton.setEnabled(false);
 			
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.

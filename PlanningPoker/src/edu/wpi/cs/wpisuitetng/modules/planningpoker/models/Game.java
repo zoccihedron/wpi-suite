@@ -41,7 +41,7 @@ public class Game extends AbstractModel {
 	private boolean hasBeenEstimated = false;
 	private String deck = "";
 	public enum GameStatus {
-		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
+		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
 		private final String text;
 
