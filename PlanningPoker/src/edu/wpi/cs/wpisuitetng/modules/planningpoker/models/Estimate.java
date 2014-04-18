@@ -37,6 +37,7 @@ public class Estimate {
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
 	private int finalEstimate = 0;
+	private HashMap<String, List<Boolean>> userCardSelection;
 	
 	/**
 	 * Constructor for an estimate object
@@ -47,6 +48,7 @@ public class Estimate {
 		reqID = r;
 		this.gameID = gameID;
 		userWithEstimate = new HashMap<String,Integer>();
+		userCardSelection = new HashMap<String, List<Boolean>>();
 	}
 	
 	
@@ -315,5 +317,13 @@ public class Estimate {
 	
 	public void setFinalEstimate(int finalEstimate) {
 		this.finalEstimate = finalEstimate;
+	}
+
+	public List<Boolean> getUserCardSelection(String user) {
+		return userCardSelection.get(user);
+	}
+
+	public void setUserCardSelection(String user, List<Boolean> userCardSelection) {
+		this.userCardSelection.put(user, userCardSelection);
 	}
 }

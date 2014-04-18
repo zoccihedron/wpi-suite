@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame;
 
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * The VoteActionObserver tells the controller to update the 
@@ -23,9 +24,9 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @version Apr 9, 2014
  */
 public class VoteActionObserver implements RequestObserver{
-	
+
 	private final VoteActionController controller;
-	
+
 	/**
 	 * Constructs the VoteActionObserver
 	 *
@@ -38,8 +39,17 @@ public class VoteActionObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// TODO Auto-generated method stub
-		
-		controller.reportSuccess();
+		ResponseModel response = iReq.getResponse();
+		String message = response.getBody();
+		System.out.println("Message:" + message + "<<<");
+		if(message.trim().equals("true"))
+		{
+			controller.reportSuccess();
+		}
+		else
+		{
+			controller.reportError(message);
+		}
 	}
 
 	@Override
@@ -52,7 +62,7 @@ public class VoteActionObserver implements RequestObserver{
 	public void fail(IRequest iReq, Exception exception) {
 		// TODO Auto-generated method stub
 		System.err.println("The request to update a vote failed.");
-		
+
 	}
 
 }

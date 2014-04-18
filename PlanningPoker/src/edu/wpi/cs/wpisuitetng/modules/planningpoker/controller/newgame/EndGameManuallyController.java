@@ -43,7 +43,6 @@ public class EndGameManuallyController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// 		if (view.checkFields())
 		{
 
 			final Game currentGame = view.getGameObject();

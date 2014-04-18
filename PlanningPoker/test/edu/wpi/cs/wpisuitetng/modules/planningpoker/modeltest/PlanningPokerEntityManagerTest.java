@@ -62,9 +62,9 @@ public class PlanningPokerEntityManagerTest {
 		
 		dummyUser.setRole(Role.ADMIN);
 		
-		draftGame = new Game("game", start, end);
-		draftGameYouCreated = new Game("game2", start, end);
-		inProgressGame = new Game("game3", start, end);
+		draftGame = new Game("game", start, end, "default");
+		draftGameYouCreated = new Game("game2", start, end, "default");
+		inProgressGame = new Game("game3", start, end, "default");
 		
 		inProgressGame.setStatus(Game.GameStatus.IN_PROGRESS);
 		
