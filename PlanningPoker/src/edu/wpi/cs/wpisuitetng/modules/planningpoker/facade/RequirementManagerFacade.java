@@ -62,7 +62,7 @@ public class RequirementManagerFacade {
 	 * Constructor for the RequirementManagerFacade
 	 */
 	private RequirementManagerFacade() {
-		
+
 		// Creates an ActionListener to be used by the timer 
 		// to update requirements every few seconds
 		final ActionListener actionListener = new ActionListener() {
@@ -90,7 +90,7 @@ public class RequirementManagerFacade {
 		GetRequirementsControllerFacade.getInstance().retrieveRequirements();
 
 	}
-	
+
 	/**
 	 * Gets locally stored requirements
 	 * @return requirements
@@ -104,48 +104,56 @@ public class RequirementManagerFacade {
 		// TODO Auto-generated method stub
 		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
 	}
-	
+
 	/**
 	 * Sends average of estimations to requirement manager 
 	 * Updates estimates in those requirements
 	 * @param estimates to send
 	 */
 	public void sendEstimates(List<Estimate> estimates, final GameSummaryPanel view){
+
+		List<Integer> selectedRequirements = view.getSelectedRequirements();
+
 		for(Estimate estimate : estimates){
 			Requirement req = requirements.get(estimate.getReqID());
 			System.out.println("Req name: "+req.getName()+" Req Mean: "+estimate.getMean());
-			
-			req.setEstimate((int)estimate.getMean());
-			
-			Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
-			request.setBody(req.toJSON()); 
-			request.addObserver(new RequestObserver(){
 
-				@Override
-				public void responseSuccess(IRequest iReq) {
-					// TODO Auto-generated method stub
-					GetRequirementsController.getInstance().retrieveRequirements();
-					view.reportSuccess("Estimates sent!");
-				}
-
-				@Override
-				public void responseError(IRequest iReq) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void fail(IRequest iReq, Exception exception) {
-					// TODO Auto-generated method stub
-					
-				}
+			// if the requirement is selected
+//			if(selectedRequirements.contains(estimate.getReqID())) {
 				
-			});
-			request.send(); 
-			
-			
-			System.out.println("Check: requ name: "+ req.getName() + " est " + req.getEstimate());
-		}
+				req.setEstimate((int)estimate.getMean());
+
+				Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+				request.setBody(req.toJSON()); 
+				request.addObserver(new RequestObserver(){
+
+					@Override
+					public void responseSuccess(IRequest iReq) {
+						// TODO Auto-generated method stub
+						GetRequirementsController.getInstance().retrieveRequirements();
+						view.reportSuccess("Estimates sent!");
+					}
+
+					@Override
+					public void responseError(IRequest iReq) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void fail(IRequest iReq, Exception exception) {
+						// TODO Auto-generated method stub
+
+					}
+
+				});
+				request.send(); 
+
+
+				System.out.println("Check: requ name: "+ req.getName() + " est " + req.getEstimate());
+			}
+
+//		}
 	}
 
 }

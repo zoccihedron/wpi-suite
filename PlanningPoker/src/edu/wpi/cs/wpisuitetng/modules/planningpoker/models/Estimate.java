@@ -35,6 +35,9 @@ public class Estimate {
 	private int reqID;
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
+	private boolean isEstimationSent = false;
+	private boolean isFinalEstimateSet = false;
+	private int finalEstimate;
 	
 	/**
 	 * Constructor for an estimate object
@@ -277,5 +280,45 @@ public class Estimate {
 	 */
 	public void setReqID(int reqID) {
 		this.reqID = reqID;
+	}
+	
+	public void setIsEstimationSent(boolean isSent)
+	{
+		this.isEstimationSent = isSent;
+	}
+	
+	/**
+	 * @return true the estimation has been sent to the requirement manager
+	 */
+	public boolean estimationHasBeenSent() {
+		
+		return isEstimationSent;
+	}
+
+
+	public boolean getIsFinalEstimateSet() {
+		return isFinalEstimateSet;
+	}
+
+
+	public void setFinalEstimate(boolean isFinalEstimateSet) {
+		this.isFinalEstimateSet = isFinalEstimateSet;
+	}
+
+
+	public int getFinalEstimate() {
+		
+		// if final estimate is not set, set it as the mean
+		if(!isFinalEstimateSet) {
+			finalEstimate = (int) mean;
+		}
+		return finalEstimate;
+	}
+
+
+	public void setFinalEstimate(int finalEstimate) {
+		
+		setFinalEstimate(true);
+		this.finalEstimate = finalEstimate;
 	}
 }
