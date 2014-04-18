@@ -21,6 +21,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -33,6 +34,7 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -58,7 +60,7 @@ public class GameSummaryPanel extends JPanel {
 	private final JButton playGameButton;
 	private final JButton endGameButton;
 	private final JButton viewResultsButton;
-	private final JButton sendReqsButton;
+
 	private final JLabel reportMessage;
 	private final GameSummaryPanel  gameSummaryPanel= this;
 	JPanel buttonsPanel;
@@ -176,23 +178,6 @@ public class GameSummaryPanel extends JPanel {
  		});
 		
 		
-		// Button to send requirements to requirement manager
-		sendReqsButton = new JButton("Send Estimates");
-		sendReqsButton.setToolTipText("Update estimates in the Requirement Manager");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 0, 0);
-		add(sendReqsButton, constraints);
-		constraints.insets = new Insets(0, 0, 0, 0);
-		sendReqsButton.addActionListener(new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(),gameSummaryPanel);				
-			}
- 		});
 		
 		// Button to end game manually
 		endGameButton = new JButton("End Game");
@@ -310,16 +295,16 @@ public class GameSummaryPanel extends JPanel {
 				playGameButton.setEnabled(false);
 				editGameButton.setEnabled(true);
 				endGameButton.setEnabled(false);
-				sendReqsButton.setVisible(false);
 				viewResultsButton.setEnabled(false);
+
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				playGameButton.setEnabled(true);
 				editGameButton.setEnabled(!game.isHasBeenEstimated());
 				endGameButton.setEnabled(true);
-				sendReqsButton.setVisible(false);
 				viewResultsButton.setEnabled(false);
+
 			}
 			// If the game is ended.
 			else {
@@ -327,9 +312,9 @@ public class GameSummaryPanel extends JPanel {
 				editGameButton.setEnabled(false);
 				endGameButton.setEnabled(false);
 				endGameButton.setVisible(false);
-				sendReqsButton.setVisible(true);
 				viewResultsButton.setEnabled(true);
 				
+
 			}
 		}
 		// If the user is not the game creator.
@@ -339,7 +324,6 @@ public class GameSummaryPanel extends JPanel {
 			editGameButton.setEnabled(false);
 			endGameButton.setVisible(false);
 			endGameButton.setEnabled(false);
-			sendReqsButton.setVisible(false);
 			viewResultsButton.setEnabled(false);
 			
 			// Users cannot see the drafts of other users.
@@ -377,6 +361,10 @@ public class GameSummaryPanel extends JPanel {
 	public void reportSuccess(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.BLUE);
+	}
+	
+	public List<Integer> getSelectedRequirements(){
+		return reqPanel.getSelectedRequirements();
 	}
 	
 }

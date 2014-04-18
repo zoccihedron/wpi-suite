@@ -36,6 +36,8 @@ public class Estimate {
 	private int reqID;
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
+	private boolean isEstimationSent = false;
+	private int finalEstimate = 0;
 	private HashMap<String, List<Boolean>> userCardSelection;
 	
 	/**
@@ -258,6 +260,9 @@ public class Estimate {
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
 		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		copyEst.isEstimationSent = isEstimationSent;
+		copyEst.mean = mean;
+		copyEst.finalEstimate = finalEstimate;
 		return copyEst;
 	}
 	
@@ -283,6 +288,39 @@ public class Estimate {
 	 */
 	public void setReqID(int reqID) {
 		this.reqID = reqID;
+	}
+	
+	/**
+	 * set isEstimationSent, call this function 
+	 * and pass true as parameter 
+	 * before sending this estimation to requirement manager
+	 */
+	public void estimationSent(boolean send)
+	{
+		this.isEstimationSent = send;
+	}
+	
+	/**
+	 * @return true the estimation has been sent to the requirement manager
+	 */
+	public boolean estimationHasBeenSent() {
+		
+		return isEstimationSent;
+	}
+
+	
+	public boolean isFinalEstimateSet() {
+		return (finalEstimate != 0);
+	}
+
+	public int getFinalEstimate() {
+
+		return finalEstimate;
+	}
+
+	
+	public void setFinalEstimate(int finalEstimate) {
+		this.finalEstimate = finalEstimate;
 	}
 
 
