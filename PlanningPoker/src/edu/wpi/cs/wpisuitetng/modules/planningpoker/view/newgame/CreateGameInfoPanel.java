@@ -137,7 +137,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		lblDeck = new JLabel("Deck:");
 
-		final String[] decks = { "default" };
+		final String[] decks = { "default", "text entry"};
 		deck = new JComboBox(decks);
 
 		chckbxDeadline = new JCheckBox("Deadline?");
@@ -177,8 +177,9 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 
 		lblDeck = new JLabel("Deck:");
-		final String[] decks = { "default" };
+		final String[] decks = { "default", "text entry"};
 		deck = new JComboBox(decks);
+		deck.setSelectedItem(editingGame.getDeck());
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
@@ -581,10 +582,11 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date(), "");
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), "default");
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
+		newGame.setDeck((String) deck.getSelectedItem());
 
 		if (chckbxDeadline.isSelected()) {
 			newGame.setHasDeadline(true);
