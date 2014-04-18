@@ -45,10 +45,10 @@ public class GameTest {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
 		Date end = endTime.getTime();
-		game1 = new Game(game1name,start,end);
+		game1 = new Game(game1name,start,end, "default");
 		
 		String game2name = "Game2";
-		game2 = new Game(game2name,start,end);
+		game2 = new Game(game2name,start,end, "default");
 
 		dummyUser = new User("Bob", "bob", "abc123", 1);
 
