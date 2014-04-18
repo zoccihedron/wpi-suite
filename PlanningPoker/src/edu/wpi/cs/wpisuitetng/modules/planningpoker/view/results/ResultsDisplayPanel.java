@@ -24,6 +24,7 @@ public class ResultsDisplayPanel extends JPanel{
 	private JLabel median;
 	private JTextField finalEstimate;
 	private JButton saveFinalEstimateBtn;
+	private Game game;
 	
 	/**
 	 * Initialize the labels for displaying information about the game
@@ -33,14 +34,14 @@ public class ResultsDisplayPanel extends JPanel{
 		this.median = new JLabel();
 		this.finalEstimate = new JTextField();
 		this.saveFinalEstimateBtn = new JButton();
+		this.game = null;
 		//TODO !!! add action listener
-		/*this.saveFinalEstimateBtn.addActionListener(new ActionListener () {
+		this.saveFinalEstimateBtn.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				mvt.playGameTab(game);
+				game.setFinalEstimate(Integer.parseInt(finalEstimate.getText()));
 			}
- 		});*/
+ 		});
 		
 		this.saveFinalEstimateBtn.setEnabled(false);
 		this.add(mean);
@@ -56,6 +57,7 @@ public class ResultsDisplayPanel extends JPanel{
 	 * @param game is the game the estimate is in
 	 */
 	public void updateData(int reqid, Game game) {
+		this.game = game;
 		Estimate estimate = game.findEstimate(reqid);
 		
 		if(estimate.isSent()){
