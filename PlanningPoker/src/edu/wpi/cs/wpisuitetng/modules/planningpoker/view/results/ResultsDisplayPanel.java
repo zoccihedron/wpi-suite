@@ -7,15 +7,23 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 public class ResultsDisplayPanel extends JPanel{
 	private JLabel mean;
 	private JLabel median;
+	private JTextField finalEstimate;
+	private JButton saveFinalEstimateBtn;
 	
 	/**
 	 * Initialize the labels for displaying information about the game
@@ -23,8 +31,22 @@ public class ResultsDisplayPanel extends JPanel{
 	public ResultsDisplayPanel(){
 		this.mean = new JLabel();
 		this.median = new JLabel();
+		this.finalEstimate = new JTextField();
+		this.saveFinalEstimateBtn = new JButton();
+		//TODO !!! add action listener
+		/*this.saveFinalEstimateBtn.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+ 				mvt.playGameTab(game);
+			}
+ 		});*/
+		
+		this.saveFinalEstimateBtn.setEnabled(false);
 		this.add(mean);
 		this.add(median);
+		this.add(finalEstimate);
+		this.add(saveFinalEstimateBtn);
 	}
 
 	/**
@@ -34,12 +56,17 @@ public class ResultsDisplayPanel extends JPanel{
 	 * @param game is the game the estimate is in
 	 */
 	public void updateData(int reqid, Game game) {
-		mean.setText("");
-		median.setText("");
 		Estimate estimate = game.findEstimate(reqid);
+		
+		if(estimate.isSent()){
+			this.saveFinalEstimateBtn.setEnabled(false);
+		} else{
+			this.saveFinalEstimateBtn.setEnabled(true);
+		}
+		
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
 		median.setText("Median: " + Double.toString(estimate.getMedian()));
-		
+		finalEstimate.setText("" + estimate.getFinalEstimate());
 	}
 
 }
