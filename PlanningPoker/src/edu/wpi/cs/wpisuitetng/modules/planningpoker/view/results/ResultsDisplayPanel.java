@@ -39,7 +39,7 @@ public class ResultsDisplayPanel extends JPanel{
 		this.saveFinalEstimateBtn.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				game.setFinalEstimate(Integer.parseInt(finalEstimate.getText()));
+				//game.setFinalEstimate(Integer.parseInt(finalEstimate.getText()));
 			}
  		});
 		
@@ -60,7 +60,7 @@ public class ResultsDisplayPanel extends JPanel{
 		this.game = game;
 		Estimate estimate = game.findEstimate(reqid);
 		
-		if(estimate.isSent()){
+		if(estimate.isFinalEstimateSet()){
 			this.saveFinalEstimateBtn.setEnabled(false);
 		} else{
 			this.saveFinalEstimateBtn.setEnabled(true);
