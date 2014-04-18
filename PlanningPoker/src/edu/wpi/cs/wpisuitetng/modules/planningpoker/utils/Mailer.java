@@ -11,7 +11,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -35,16 +34,17 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
  * @version 1.0
  */
 public class Mailer {
-	private Game game;
-	private List<User> users;
-	private Properties properties;
-	private Session session;
+	private final Game game;
+	private final List<User> users;
+	private final Properties properties;
+	private final Session session;
 	private final String from = "codonbleu@gmail.com";
 	private final String host = "smtp.gmail.com";
 
 	/**
 	 * Constructor for Mailer
 	 * @param game the game from which we get the info
+	 * @param users the list of users to which we send
 	 */
 	public Mailer(Game game, List<User> users)
 	{
@@ -121,16 +121,10 @@ public class Mailer {
 	{
 		try
 		{
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
-
-			// Set From: header field of the header.
+			final MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
-
-			// Set To: header field of the header.
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
 
-			// Set Subject: header field
 			if(isStarting)
 			{
 				message.setSubject(game.getName() + " has started!");

@@ -29,7 +29,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
-import edu.wpi.cs.wpisuitetng.network.Network;
 
 
 /**
@@ -61,7 +60,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		final ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<Game> games = temp_db.retrieveAll(new Game());
+				final List<Game> games = temp_db.retrieveAll(new Game());
 				for(Game g : games)
 				{
 					GameStatus status = g.getStatus();
@@ -76,7 +75,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			}
 		};
 		
-		Timer timer = new Timer(60000*5 , actionListener);
+		final Timer timer = new Timer(60000 * 5, actionListener);
 		timer.start();
 	}
 
@@ -95,7 +94,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		
 		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
-			Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)));
+			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)));
 			mailer.notifyStart();
 		}
 		
@@ -223,7 +222,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 
 		if(existingGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
-			Mailer mailer = new Mailer(existingGame, db.retrieveAll(new User("", "", "", 0)));
+			final Mailer mailer = new Mailer(
+					existingGame, db.retrieveAll(new User("", "", "", 0)));
 			mailer.notifyStart();
 		}
 		
@@ -326,7 +326,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				
 				if(game.getStatus().equals(GameStatus.ENDED))
 				{
-					Mailer mailer = new Mailer(game, db.retrieveAll(new User("", "", "", 0)));
+					final Mailer mailer = new Mailer(
+							game, db.retrieveAll(new User("", "", "", 0)));
 					mailer.notifyEnd();
 				}
 				
@@ -344,7 +345,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				
 				if(game.getStatus().equals(GameStatus.ENDED))
 				{
-					Mailer mailer = new Mailer(game, db.retrieveAll(new User("", "", "", 0)));
+					final Mailer mailer = new Mailer(
+							game, db.retrieveAll(new User("", "", "", 0)));
 					mailer.notifyEnd();
 				}
 				
