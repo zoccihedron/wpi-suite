@@ -21,7 +21,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.Overview
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
