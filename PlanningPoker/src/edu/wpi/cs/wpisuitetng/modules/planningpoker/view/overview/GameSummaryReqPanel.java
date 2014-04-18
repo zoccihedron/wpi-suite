@@ -100,11 +100,6 @@ public class GameSummaryReqPanel extends JPanel {
 		// Set to new empty model to empty table
 		requirementsTable.setModel(new DefaultTableModel(data,columnNames) {
 			public boolean isCellEditable(int row, int column){
-				
-				// set Final Estimate column to editable
-				if(column == 4 && game.isCreator(currentUser)){
-					return true;
-				}
 				return false;
 			}
 		});

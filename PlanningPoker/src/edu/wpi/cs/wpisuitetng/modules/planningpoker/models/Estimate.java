@@ -36,8 +36,7 @@ public class Estimate {
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
-	private boolean isFinalEstimateSet = false;
-	private int finalEstimate = -1;
+	private int finalEstimate = 0;
 	
 	/**
 	 * Constructor for an estimate object
@@ -256,7 +255,6 @@ public class Estimate {
 		final Estimate copyEst = new Estimate(reqID, gameID);
 		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
 		copyEst.isEstimationSent = isEstimationSent;
-		copyEst.isFinalEstimateSet = isFinalEstimateSet;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
 		return copyEst;
@@ -305,31 +303,17 @@ public class Estimate {
 	}
 
 	
-	public boolean getIsFinalEstimateSet() {
-		return isFinalEstimateSet;
+	public boolean isFinalEstimateSet() {
+		return (finalEstimate != 0);
 	}
 
-
-	public void setFinalEstimate(boolean isFinalEstimateSet) {
-		this.isFinalEstimateSet = isFinalEstimateSet;
-	}
-
-
-	/**
-	 *  if final estimate is not set, set it as the mean
-	 * @return final estimate
-	 */
 	public int getFinalEstimate() {
 
-		if(!isFinalEstimateSet) {
-			finalEstimate = (int) mean;
-		}
 		return finalEstimate;
 	}
 
 	
 	public void setFinalEstimate(int finalEstimate) {
-		setFinalEstimate(true);
 		this.finalEstimate = finalEstimate;
 	}
 }
