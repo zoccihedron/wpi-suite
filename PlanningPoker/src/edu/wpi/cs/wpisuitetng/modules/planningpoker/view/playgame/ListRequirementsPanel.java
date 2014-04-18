@@ -58,7 +58,6 @@ implements TreeSelectionListener {
 		this.refresh();  
 		this.playGameController = playGameController;
 		
-
 		//Create the nodes.
 		this.addComponentListener(new ComponentListener()
 		{
@@ -86,8 +85,6 @@ implements TreeSelectionListener {
 			}
 		});
 		
-		DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode)tree.getModel().getRoot()).getFirstLeaf();
-		tree.setSelectionPath(new TreePath(firstLeaf.getPath()));
 	}
 
 	/** Required by TreeSelectionListener interface. */

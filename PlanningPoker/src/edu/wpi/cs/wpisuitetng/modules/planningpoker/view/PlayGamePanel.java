@@ -48,8 +48,6 @@ public class PlayGamePanel extends JPanel{
 	{
 		setLayout(new BorderLayout());
 
-		//gameInfoPanel = new GameInfoPanel();
-
 		PlayGameController playGameController = new PlayGameController();
 		listRequirementsPanel = new ListRequirementsPanel(game, playGameController);
 		Dimension minimumSize = new Dimension(250, 300);
@@ -60,9 +58,6 @@ public class PlayGamePanel extends JPanel{
 		playGameController.setEstimationPane(estimationPane);
 		splitPane.setRightComponent(estimationPane);
 
-		//PlayGameController.getInstance().setGameInfoPanel(gameInfoPanel);
-
-		//add(gameInfoPanel);
 		add(splitPane, BorderLayout.CENTER);
 
 	}

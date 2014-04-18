@@ -136,7 +136,6 @@ public class EstimationPane extends JPanel {
 		constraints.gridy = 1;
 		constraints.insets = new Insets(0, 20, 0, 0);
 		add(nameLabel, constraints);
-		//nameLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -268,7 +267,7 @@ public class EstimationPane extends JPanel {
 			message.setText(" ");
 		}
 		catch(NotFoundException exception){
-			this.message.setText("Exception: Requirement Not Found");
+			message.setText("Exception: Requirement Not Found");
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
