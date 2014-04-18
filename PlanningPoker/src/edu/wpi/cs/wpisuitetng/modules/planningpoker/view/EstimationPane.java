@@ -209,15 +209,15 @@ public class EstimationPane extends JPanel {
 		//error message
 		message = new JLabel();
 		message.setText("    ");
-		message.setFont(new Font("Dialog", Font.ITALIC, 12));
+		message.setFont(new Font("Dialog", Font.ITALIC, 16));
 		message.setVisible(true);
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
 		constraints.gridy = 13;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 3;
-		constraints.ipadx = 300;
-		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.gridwidth = 1;
+		constraints.ipadx = 240;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
 		add(message, constraints);
 		
 		// VOTE BUTTON
@@ -225,11 +225,12 @@ public class EstimationPane extends JPanel {
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 16;
+		constraints.gridy = 13;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 3;
-		constraints.ipadx = 50;
-		constraints.insets = new Insets(0, 0, 0, 0);
+		constraints.gridwidth = 4;
+		constraints.ipadx = 80;
+		constraints.anchor = GridBagConstraints.NORTHEAST;
+		constraints.insets = new Insets(2, 0, 0, 21);
 		add(voteButton, constraints);
 		voteButton.setEnabled(false);
 
