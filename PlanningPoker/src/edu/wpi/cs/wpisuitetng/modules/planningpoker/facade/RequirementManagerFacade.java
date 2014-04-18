@@ -117,11 +117,13 @@ public class RequirementManagerFacade {
 		for(Estimate estimate : estimates){
 			Requirement req = requirements.get(estimate.getReqID());
 			System.out.println("Req name: "+req.getName()+" Req Mean: "+estimate.getMean());
+			
+			
 
 			// if the requirement is selected
-//			if(selectedRequirements.contains(estimate.getReqID())) {
+			if(selectedRequirements.contains(estimate.getReqID())) {
 				
-				req.setEstimate((int)estimate.getMean());
+				req.setEstimate((int)estimate.getFinalEstimate());
 
 				Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
 				request.setBody(req.toJSON()); 
@@ -131,7 +133,7 @@ public class RequirementManagerFacade {
 					public void responseSuccess(IRequest iReq) {
 						// TODO Auto-generated method stub
 						GetRequirementsController.getInstance().retrieveRequirements();
-						view.reportSuccess("Estimates sent!");
+						view.reportSuccess("Selected estimates sent!");
 					}
 
 					@Override
@@ -149,11 +151,9 @@ public class RequirementManagerFacade {
 				});
 				request.send(); 
 
-
-				System.out.println("Check: requ name: "+ req.getName() + " est " + req.getEstimate());
 			}
 
-//		}
+		}
 	}
 
 }

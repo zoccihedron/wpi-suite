@@ -295,7 +295,7 @@ public class Estimate {
 		return isEstimationSent;
 	}
 
-
+	
 	public boolean getIsFinalEstimateSet() {
 		return isFinalEstimateSet;
 	}
@@ -306,18 +306,20 @@ public class Estimate {
 	}
 
 
+	/**
+	 *  if final estimate is not set, set it as the mean
+	 * @return final estimate
+	 */
 	public int getFinalEstimate() {
-		
-		// if final estimate is not set, set it as the mean
+
 		if(!isFinalEstimateSet) {
 			finalEstimate = (int) mean;
 		}
 		return finalEstimate;
 	}
 
-
+	
 	public void setFinalEstimate(int finalEstimate) {
-		
 		setFinalEstimate(true);
 		this.finalEstimate = finalEstimate;
 	}

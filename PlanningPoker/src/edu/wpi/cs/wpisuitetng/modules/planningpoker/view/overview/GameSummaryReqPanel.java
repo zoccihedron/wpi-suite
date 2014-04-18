@@ -26,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
@@ -153,11 +152,12 @@ public class GameSummaryReqPanel extends JPanel {
 	
 	public ArrayList<Integer> getSelectedRequirements(){
 		int[] selectedRows = requirementsTable.getSelectedRows();
-		List<Estimate> estimates = new ArrayList<Estimate>();
 		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
 		
 		for (int row: selectedRows){
-			reqIDs.add((Integer) requirementsTable.getModel().getValueAt(row,0));
+			String reqid = (String) requirementsTable.getModel().getValueAt(row,0);
+			Integer reqIdNum = Integer.parseInt(reqid);
+			reqIDs.add(reqIdNum);
 			
 		}
 		
