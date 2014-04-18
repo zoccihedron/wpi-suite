@@ -11,9 +11,9 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame;
 
-import java.awt.AWTEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
@@ -55,16 +55,20 @@ public class VoteActionController implements ActionListener {
 		
 		if(view.checkField()) {
 				
+			
 			final String name = ConfigManager.getInstance().getConfig().getUserName();
 			estimateValue = view.getEstimate();
+			ArrayList<Boolean> selection = view.getCardSelection();
 			view.getDeckPanel().setCurrentEstimate(Integer.toString(estimateValue));
 			
 			final Estimate oldEstimate = game.findEstimate(view.getReqID());
 			oldEstimate.makeEstimate(name, estimateValue);
+			oldEstimate.setUserCardSelection(name, selection);
 			final Estimate estimate = new Estimate(view.getReqID(), game.getId());
 			estimate.addUser(name);
 			estimate.makeEstimate(name, estimateValue);
-			
+						
+			estimate.setUserCardSelection(name, selection);
 			// Send a request to the core to update this game
 			final Request request = Network.getInstance().makeRequest(
 					"Advanced/planningpoker/game/vote", 
@@ -84,9 +88,18 @@ public class VoteActionController implements ActionListener {
 	public void reportSuccess() {
 		view.refresh();
 		OverviewPanelController.getInstance().refreshListGames();
-		view.reportSuccess();
+		view.reportSuccess(estimateValue);
 		// TODO Auto-generated method stub
 		
+	}
+	
+	/**
+	 * Reports the error that was encountered in the Estimation Pane.
+	 * @param errorText
+	 * 					The error text to display.
+	 */
+	public void reportError(String errorText) {
+		view.reportError(errorText);
 	}
 
 }

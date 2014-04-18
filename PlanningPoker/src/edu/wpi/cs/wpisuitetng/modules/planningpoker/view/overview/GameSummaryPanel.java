@@ -35,6 +35,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameMa
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * GameSummaryPanel is a class which displays the summary of a game that can be
@@ -89,8 +95,44 @@ public class GameSummaryPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				mvt.createGameTab(game);
-				
+ 				
+ 				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
+	 				
+	 				final Request request = Network.getInstance().makeRequest
+	 						("Advanced/planningpoker/game/edit", HttpMethod.POST);
+	 				request.setBody(game.toJSON());
+	 				request.addObserver(new RequestObserver() {
+						
+						@Override
+						public void responseSuccess(IRequest iReq) {
+							ResponseModel response = iReq.getResponse();
+							String message = response.getBody();
+							if(message.trim().equals("true")){
+								mvt.createGameTab(game);
+							}
+							else{
+								gameSummaryPanel.reportError(message);
+								editGameButton.setEnabled(false);
+							}
+						}
+						
+						@Override
+						public void responseError(IRequest iReq) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void fail(IRequest iReq, Exception exception) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+	 				request.send();
+ 				}
+ 				else{
+ 					mvt.createGameTab(game);
+ 				}
 			}
  			
  		});
@@ -235,14 +277,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		add(extraPanel2, constraints);
 		
-		
-		
-		
-		
-		
-		
-		
-
 		try {
 		    Image img = ImageIO.read(getClass().getResource("yield.png"));
 		    editGameButton.setIcon(new ImageIcon(img));
@@ -282,7 +316,7 @@ public class GameSummaryPanel extends JPanel {
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				playGameButton.setEnabled(true);
-				editGameButton.setEnabled(false);
+				editGameButton.setEnabled(!game.isHasBeenEstimated());
 				endGameButton.setEnabled(true);
 				sendReqsButton.setVisible(false);
 				viewResultsButton.setEnabled(false);

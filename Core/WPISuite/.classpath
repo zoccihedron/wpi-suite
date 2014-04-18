@@ -22,6 +22,7 @@
 	<classpathentry kind="lib" path="/PostBoard/src"/>
 	<classpathentry kind="lib" path="/RequirementManager/src"/>
 	<classpathentry kind="lib" path="/WPISuite-Interfaces/src"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.mail.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PlanningPoker"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
