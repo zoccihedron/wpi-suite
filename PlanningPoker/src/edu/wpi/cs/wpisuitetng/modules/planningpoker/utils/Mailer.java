@@ -83,7 +83,6 @@ public class Mailer {
 	 */
 	public void notifyStart()
 	{
-		//users = game.getProject().getTeam();
 		Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
 		request.addObserver(new RequestObserver() {
 			

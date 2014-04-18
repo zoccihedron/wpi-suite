@@ -120,6 +120,7 @@ implements TreeSelectionListener {
 		}
 
 		catch(RuntimeException exception){
+			exception.printStackTrace();
 		}
 		
 	}
