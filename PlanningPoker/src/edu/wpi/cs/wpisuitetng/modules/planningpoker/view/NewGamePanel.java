@@ -25,10 +25,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
-import javax.swing.JTabbedPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.CloseNewGameTabController;
@@ -52,7 +50,6 @@ public class NewGamePanel extends JSplitPane {
 	private final JButton btnCancel;
 	private final JButton btnStart;
 	private final JLabel lblMessage;
-	private boolean changesSaved = false;
 	
 	/**
 	 * Use this constructor when starting a new game panel from scratch
