@@ -54,10 +54,28 @@ public class DeckPanel extends JScrollPane {
 	
 	/**
 	 * Constructs the DeckPanel
-	 * 
+	 * Right now the default deck is constructed here, this should move when
+	 * decks are fully implemented
 	 */
-	public DeckPanel() {
-		this.setViewportView(textVersion());
+	public DeckPanel(String deck) {
+		if(deck.equals("default")){
+
+			ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
+			defaultDeckCards.add(0);
+			defaultDeckCards.add(1);
+			defaultDeckCards.add(1);
+			defaultDeckCards.add(2);
+			defaultDeckCards.add(3);
+			defaultDeckCards.add(5);
+			defaultDeckCards.add(8);
+			defaultDeckCards.add(13);
+			
+			Deck defaultDeck = new Deck("default", true, defaultDeckCards);
+			this.setViewportView(deckVersion(defaultDeck));
+		}
+		else {
+			this.setViewportView(textVersion());
+		}
 	}
 
 	public String getEstimateField() {
@@ -207,6 +225,13 @@ public class DeckPanel extends JScrollPane {
 		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
 		System.out.println("--------old estimate value: " + oldEstimate);
 		if (oldEstimate > 0) {
+			if(isDeckView){
+				ArrayList<Boolean> selected = (ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
+				for(int i = 0; i < selected.size(); i++)
+				{
+					listOfButtons.get(i).setSelected(selected.get(i));
+				}
+			}
 			estimateField.setText(Integer.toString(oldEstimate));
 			currentEstimate = Integer.toString(oldEstimate);
 			System.out.println("--------reached ");
@@ -242,6 +267,18 @@ public class DeckPanel extends JScrollPane {
 	
 	public JTextField getEstimateFieldComponent() {
 		return estimateField;
+	}
+
+	public boolean isDeckView() {
+		return isDeckView;
+	}
+
+	public ArrayList<Boolean> getCardSelection() {
+		ArrayList<Boolean> selection = new ArrayList<Boolean>();
+		for(JToggleButton button: listOfButtons){
+			selection.add(button.isSelected());
+		}
+		return selection;
 	}
 
 }
