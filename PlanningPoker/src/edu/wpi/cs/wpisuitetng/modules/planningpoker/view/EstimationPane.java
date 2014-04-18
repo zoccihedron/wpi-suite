@@ -112,7 +112,6 @@ public class EstimationPane extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 
 
-
 		// GAME INFORMATION LABEL
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -136,15 +135,18 @@ public class EstimationPane extends JPanel {
 		constraints.gridy = 1;
 		constraints.insets = new Insets(0, 20, 0, 0);
 		add(nameLabel, constraints);
-
-		// NAME FIELD
+		
+		// RequirementName FIELD
+		requirementName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
-		constraints.weightx = Integer.MAX_VALUE;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 1;
+		constraints.ipadx = 40;
 		constraints.insets = new Insets(0, 20, 0, 20);
+		requirementName.setColumns(3);
 		add(requirementName, constraints);
 
 		// DESCRIPTION LABEL
@@ -155,6 +157,7 @@ public class EstimationPane extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 5;
+		constraints.insets = new Insets(0, 20, 0, 0);
 		add(descriptionLabel, constraints);
 
 		
@@ -185,6 +188,36 @@ public class EstimationPane extends JPanel {
 		constraints.insets = new Insets(10, 20, 0, 20);
 		add(deckPanel, constraints);
 		
+		//error message
+		message = new JLabel();
+		message.setText("");
+		message.setFont(new Font("Dialog", Font.ITALIC, 15));
+		message.setVisible(true);
+		message.setMinimumSize(new Dimension(80, 15));
+		message.setMaximumSize(new Dimension(80, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 0;
+		constraints.gridy = 13;
+		constraints.weightx = 0.0;
+		constraints.gridwidth = 1;
+		constraints.ipadx = 200;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+		add(message, constraints);
+
+		// VOTE BUTTON
+		voteButton = new JButton("");
+		voteButton.setPreferredSize(new Dimension(140, 40));
+		constraints.fill = GridBagConstraints.CENTER;
+		constraints.gridx = 0;
+		constraints.gridy = 13;
+		constraints.weightx = 1.0;
+		constraints.gridwidth = 4;
+		constraints.ipadx = 80;
+		constraints.anchor = GridBagConstraints.NORTHEAST;
+		constraints.insets = new Insets(2, 0, 0, 21);
+		add(voteButton, constraints);
+		voteButton.setEnabled(false);
+		
 		// adds listener for live validation of the Estimate Field
 		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(new DocumentListener() {
 
@@ -205,33 +238,7 @@ public class EstimationPane extends JPanel {
 			
 		});
 
-		//error message
-		message = new JLabel();
-		message.setText("    ");
-		message.setFont(new Font("Dialog", Font.ITALIC, 16));
-		message.setVisible(true);
-		constraints.fill = GridBagConstraints.CENTER;
-		constraints.gridx = 0;
-		constraints.gridy = 13;
-		constraints.weightx = 1.0;
-		constraints.gridwidth = 1;
-		constraints.ipadx = 240;
-		constraints.anchor = GridBagConstraints.NORTHWEST;
-		add(message, constraints);
 		
-		// VOTE BUTTON
-		voteButton = new JButton("");
-		voteButton.setPreferredSize(new Dimension(140, 40));
-		constraints.fill = GridBagConstraints.CENTER;
-		constraints.gridx = 0;
-		constraints.gridy = 13;
-		constraints.weightx = 1.0;
-		constraints.gridwidth = 4;
-		constraints.ipadx = 80;
-		constraints.anchor = GridBagConstraints.NORTHEAST;
-		constraints.insets = new Insets(2, 0, 0, 21);
-		add(voteButton, constraints);
-		voteButton.setEnabled(false);
 
 		try {
 		    Image img = ImageIO.read(getClass().getResource("vote.png"));
@@ -261,9 +268,12 @@ public class EstimationPane extends JPanel {
 		try{
 			req = getRequirementFromId();
 			requirementName.setText(req.getName());
+			
 			descriptionText.setText(req.getDescription());
+			
 			deckPanel.clearCardsSelected();
 			deckPanel.displayOldEstimate(game, reqid);
+			
 			message.setText(" ");
 		}
 		catch(NotFoundException exception){
