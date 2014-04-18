@@ -307,9 +307,14 @@ public class EstimationPane extends JPanel {
 			return false;
 		}
 
-		if(estimate <= 0) {
+		if(estimate < 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
 			return false;
+		}
+		
+		if(estimate == 0){
+			reportInfo("<html>0 indicates that you are enable to estimate this requirement. </html>");
+			return true;
 		}
 		
 		if(game.getStatus() == GameStatus.ENDED){
@@ -348,6 +353,15 @@ public class EstimationPane extends JPanel {
 
 	public int getReqID(){
 		return reqid;
+	}
+	
+	/**
+	 * This function updates the display to report an information message.
+	 * @param value is the string
+	 */
+	public void reportInfo(String string){
+		message.setText(string);
+		message.setForeground(Color.BLUE);
 	}
 
 	/**
