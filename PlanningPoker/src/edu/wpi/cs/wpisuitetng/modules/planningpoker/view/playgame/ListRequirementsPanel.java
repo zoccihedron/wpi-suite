@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.DropMode;
@@ -22,6 +23,7 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -83,6 +85,9 @@ implements TreeSelectionListener {
 
 			}
 		});
+		
+		DefaultMutableTreeNode firstLeaf = ((DefaultMutableTreeNode)tree.getModel().getRoot()).getFirstLeaf();
+		tree.setSelectionPath(new TreePath(firstLeaf.getPath()));
 	}
 
 	/** Required by TreeSelectionListener interface. */
@@ -102,7 +107,6 @@ implements TreeSelectionListener {
 				playGameController.updateEstimationPane(req.getId(), game);
 			}
 		}
-		//TODO: see about implementing DoublieClick to send data to estimate panel
 	}
 
 
