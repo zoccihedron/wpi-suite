@@ -40,6 +40,10 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @author Code On Bleu
  * @version 1.0
  */
+/**
+ * @author yyan
+ *
+ */
 public class RequirementManagerFacade {
 
 	static RequirementManagerFacade instance;
@@ -116,9 +120,6 @@ public class RequirementManagerFacade {
 
 		for(Estimate estimate : estimates){
 			Requirement req = requirements.get(estimate.getReqID());
-			System.out.println("Req name: "+req.getName()+" Req Mean: "+estimate.getMean());
-			
-			
 
 			// if the requirement is selected
 			if(selectedRequirements.contains(estimate.getReqID())) {
@@ -154,6 +155,44 @@ public class RequirementManagerFacade {
 			}
 
 		}
+	}
+	
+	
+	/**
+	 * Send the final estimate value of a single requirement to 
+	 * the requirement panel
+	 * This method is called in review results panel only
+	 * @param estimate to sent
+	 */
+	public void sendSingleEstimate(Estimate estimate){
+		Requirement req = requirements.get(estimate.getReqID());
+		req.setEstimate((int)estimate.getFinalEstimate());
+
+		Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+		request.setBody(req.toJSON()); 
+		request.addObserver(new RequestObserver(){
+
+			@Override
+			public void responseSuccess(IRequest iReq) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void responseError(IRequest iReq) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void fail(IRequest iReq, Exception exception) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+		request.send(); 
+
+		
 	}
 
 }
