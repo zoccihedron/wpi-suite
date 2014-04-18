@@ -34,10 +34,12 @@ public class Game extends AbstractModel {
 	private String gameCreator = "";
 	private boolean hasDeadline = false;
 	private Date start = new Date();
+
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
-
+	private boolean hasBeenEstimated = false;
+	private String deck = "";
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
 
@@ -70,12 +72,13 @@ public class Game extends AbstractModel {
 	 *            end time of the game
 	 * 
 	 */
-	public Game(String name, Date startTime, Date endTime) {
+	public Game(String name, Date startTime, Date endTime, String deckName) {
 		// TODO: whether a session could be add to the parameter of game's
 		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
+		this.setDeck(deckName);
 	}
 
 	/**
@@ -590,6 +593,36 @@ public class Game extends AbstractModel {
 				e.addUser(u.getUsername());
 			}
 		}
+	}
+	
+	/**
+	 * Gets whether the game was voted on or not
+	 * @return if the game was voted on or not
+	 */
+	public boolean isHasBeenEstimated() {
+		return hasBeenEstimated;
+	}
+
+	/**
+	 * Sets whether the game was voted on or not
+	 * @param hasBeenEstimated if the game was voted on or not
+	 */
+	public void setHasBeenEstimated(boolean hasBeenEstimated) {
+		this.hasBeenEstimated = hasBeenEstimated;
+	}
+
+	/**
+	 * @return the deck
+	 */
+	public String getDeck() {
+		return deck;
+	}
+
+	/**
+	 * @param deck the deck to set
+	 */
+	public void setDeck(String deck) {
+		this.deck = deck;
 	}
 
 }

@@ -581,7 +581,7 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date());
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), "");
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
