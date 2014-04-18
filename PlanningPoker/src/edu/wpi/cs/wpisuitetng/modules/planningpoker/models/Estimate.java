@@ -324,13 +324,6 @@ public class Estimate {
 	}
 
 
-	/**
-	 * @return if the estimation has been sent to the requirement manager
-	 */
-	//TODO make it so this checks if an estimate has been sent to the requirement manager
-	public boolean estimationHasBeenSent() {
-		return false;
-	}
 	public List<Boolean> getUserCardSelection(String user) {
 		return userCardSelection.get(user);
 	}
