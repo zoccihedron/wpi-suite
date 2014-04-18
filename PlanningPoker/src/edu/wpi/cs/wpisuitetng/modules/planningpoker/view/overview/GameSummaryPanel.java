@@ -63,21 +63,17 @@ public class GameSummaryPanel extends JPanel {
 	 */
 	public GameSummaryPanel() {
 		
+		// Set up layout constraints
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
 		
+		
+		// Panel for buttons that apply to all games
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridBagLayout());
 		
-		JPanel extraPanel1 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		buttonsPanel.add(extraPanel1, constraints);
 		
+		// Button to edit game
 		editGameButton = new JButton("Edit");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
@@ -88,7 +84,17 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		buttonsPanel.add(editGameButton, constraints);
+		editGameButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+ 				mvt.createGameTab(game);
+				
+			}
+ 			
+ 		});
 		
+		// Button to play game
 		playGameButton = new JButton("Play");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
@@ -100,10 +106,18 @@ public class GameSummaryPanel extends JPanel {
 		constraints.insets = new Insets(0, 10, 0, 20);
 		buttonsPanel.add(playGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
+		playGameButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+ 				mvt.playGameTab(game);
+			}
+ 		});
 		
+		
+		// Button to send requirements to requirement manager
 		sendReqsButton = new JButton("Send Estimates");
 		sendReqsButton.setToolTipText("Update estimates in the Requirement Manager");
-
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
@@ -112,16 +126,39 @@ public class GameSummaryPanel extends JPanel {
 		constraints.insets = new Insets(0, 20, 0, 0);
 		add(sendReqsButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
+		sendReqsButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(),gameSummaryPanel);				
+			}
+ 		});
+		
+		// Button to end game manually
+		endGameButton = new JButton("End Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(endGameButton, constraints);
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
 		
-
+		JPanel extraPanel1 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		buttonsPanel.add(extraPanel1, constraints);
 		
+		// Panel that contains summary of game information
 		infoPanel = new GameSummaryInfoPanel();
 		infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
-		
-		reqPanel = new GameSummaryReqPanel();
-		reqPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
-		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_START;
 		constraints.gridwidth = 4;
@@ -133,6 +170,9 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipady = 0;
 		add(infoPanel, constraints);
 		
+		// Panel that contains requirements in game
+		reqPanel = new GameSummaryReqPanel();
+		reqPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_END;
 		constraints.gridwidth = 4;
@@ -176,48 +216,13 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		add(extraPanel2, constraints);
 		
-		endGameButton = new JButton("End Game");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 0, 0);
-		add(endGameButton, constraints);
-		
-		endGameButton.setVisible(false);
-		endGameButton.setEnabled(false);
-		
-		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
 		
 		
-		editGameButton.addActionListener(new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				mvt.createGameTab(game);
-				
-			}
- 			
- 		});
 		
-		playGameButton.addActionListener(new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				mvt.playGameTab(game);
-			}
-
- 		});
 		
-		sendReqsButton.addActionListener(new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(),gameSummaryPanel);				
-			}
-
- 		});
+		
+		
 
 		try {
 		    Image img = ImageIO.read(getClass().getResource("yield.png"));
