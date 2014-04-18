@@ -92,5 +92,14 @@ public class VoteActionController implements ActionListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * Reports the error that was encountered in the Estimation Pane.
+	 * @param errorText
+	 * 					The error text to display.
+	 */
+	public void reportError(String errorText) {
+		view.reportError(errorText);
+	}
 
 }

@@ -90,6 +90,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		final Game newGame = Game.fromJson(content);
 		newGame.setGameCreator(s.getUsername());
 		newGame.setUsers(db.retrieveAll(new User()));
+		newGame.setHasBeenEstimated(false);
 		save(s, newGame);
 		
 		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
@@ -215,7 +216,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		existingGame.copyFrom(updatedGame);
 		
 		existingGame.setUsers(db.retrieveAll(new User()));
-
+		existingGame.setHasBeenEstimated(false);
+		
 		if (!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
 		}
@@ -303,7 +305,16 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws NotImplementedException {
 		throw new NotImplementedException();
 	}
-
+	
+	/**
+	 * If the content string is "vote", the game will try to update the database with the vote.
+	 * 
+	 * If the content string is "end", the game will be set to ENDED in the database.
+	 * 
+	 * If the content string is "edit", the game will be set to DRAFT if it has not been voted on.
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(edu.wpi.cs.wpisuitetng.Session, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String advancedPost(Session s, String string, String content) 
 			throws NotFoundException, WPISuiteException{
@@ -313,13 +324,24 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				
 				final Estimate estimate = Estimate.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
-				final Estimate gameEst = game.findEstimate(estimate.getReqID());
-				gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
-				
 				final List<Estimate> newEstimates = new ArrayList<Estimate>();
-				for(Estimate e: game.getEstimates()){
-					Estimate tempEst = e.getCopy();
-					newEstimates.add(tempEst);
+				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
+					final Estimate gameEst = game.findEstimate(estimate.getReqID());
+					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+					
+					for(Estimate e: game.getEstimates()){
+						Estimate tempEst = e.getCopy();
+						newEstimates.add(tempEst);
+					}
+					game.setEstimates(newEstimates);
+					game.endIfAllEstimated();
+					
+					game.setHasBeenEstimated(true);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
 				}
 				game.setEstimates(newEstimates);
 				game.endIfAllEstimated();
@@ -334,7 +356,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
 				}
-				returnString = "true";
 			}
 			else if( string.equals("end") ){
 				
@@ -354,6 +375,22 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					throw new WPISuiteException("Save was not successful");
 				}
 				returnString = game.toJSON();
+			}
+			else if( string.equals("edit") ){
+				
+				final Game editedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
+				if(!game.isHasBeenEstimated()){
+					game.setStatus(GameStatus.DRAFT);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
+				}
+				else{
+					returnString = "*Error: This game has been voted on.";
+				}
 			}
 			return returnString;
 	}

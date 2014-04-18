@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -44,7 +43,6 @@ public class EndGameManuallyController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// 		if (view.checkFields())
 		{
 
 			final Game currentGame = view.getGameObject();
