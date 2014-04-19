@@ -313,7 +313,7 @@ public class EstimationPane extends JPanel {
 		}
 		
 		if(estimate == 0){
-			reportInfo("<html>0 indicates that you are enable to estimate this requirement. </html>");
+			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
 			return true;
 		}
 		
