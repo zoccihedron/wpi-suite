@@ -18,8 +18,7 @@ import java.awt.event.ActionListener;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -37,7 +36,6 @@ public class UpdateGameController implements ActionListener {
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
 	private final boolean startingGame;
-	private Mailer m;
 
 	 
 	/**
@@ -45,9 +43,9 @@ public class UpdateGameController implements ActionListener {
 	 * @param updatedGame the updated game
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 * @param startingGame whether the game will be started or not
-	 * @param endingGame whether the game will be ended or not
 	 */
-	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, Game updatedGame, boolean startingGame) {
+	public UpdateGameController(CreateGameInfoPanel createGameInfoPanel, 
+			Game updatedGame, boolean startingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
 		this.updatedGame = updatedGame;
@@ -66,13 +64,12 @@ public class UpdateGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
-
+			view.disableOrEnableButtonsOnParent(false);
+			view.setDefaults();
 			final Game currentGame = view.getGameObject();
 
 			if(startingGame){
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
-				m = new Mailer(currentGame);
-				m.notifyStart();
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);

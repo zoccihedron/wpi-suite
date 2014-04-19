@@ -52,13 +52,12 @@ implements TreeSelectionListener {
 	 * @param game Taken in to get all requirements for the game
 	 */
 	public ListRequirementsPanel(final Game game, PlayGameController playGameController) {
-
+		
 		this.game = game;
 		this.setViewportView(tree);
 		this.refresh();  
 		this.playGameController = playGameController;
 		
-		//Create the nodes.
 		this.addComponentListener(new ComponentListener()
 		{
 
@@ -104,6 +103,7 @@ implements TreeSelectionListener {
 				playGameController.updateEstimationPane(req.getId(), game);
 			}
 		}
+		
 	}
 
 
@@ -146,26 +146,24 @@ implements TreeSelectionListener {
 
 		top.add(notVotedCategory);
 		top.add(votedCategory);
-
-
+		
 		tree = new JTree(top); //create the tree with the top node as the top
 		for(int i = 0; i < tree.getRowCount(); i++) tree.expandRow(i);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-						//tell it that it can only select one thing at a time
+		
+		//tell it that it can only select one thing at a time
 		tree.setToggleClickCount(0);
 
 		tree.setCellRenderer(new CustomTreeCellRenderer());
-						//set to custom cell renderer so that icons make sense
+		
+		//set to custom cell renderer so that icons make sense
 		tree.addTreeSelectionListener(this);
-		
-		
-
 		tree.setDragEnabled(true);
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); //make panel display the tree
 
-		System.out.println("finished refreshing the tree");
+		System.out.println("Finished Refreshing JTree:ListRequirementsPanel");
 	}
 	
 	

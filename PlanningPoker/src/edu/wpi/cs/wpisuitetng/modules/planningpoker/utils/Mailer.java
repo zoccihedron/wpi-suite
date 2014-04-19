@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -21,16 +22,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.RequestObserver;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 
 /**
@@ -40,22 +33,45 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * @author Team Code On Bleu
  * @version 1.0
  */
-public class Mailer {
-	private Game game;
-	private User[] users;
+public class Mailer implements Runnable{
+	private final Game game;
+	private Thread thread = null;
+	private final List<User> users;
 	private Properties properties;
 	private Session session;
+	private final Notification method;
 	private final String from = "codonbleu@gmail.com";
 	private final String host = "smtp.gmail.com";
+	public enum Notification {
+		STARTED("Started"), ENDED("Ended");
+
+		private final String text;
+
+		private Notification(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+	}
 
 	/**
 	 * Constructor for Mailer
 	 * @param game the game from which we get the info
+	 * @param users the list of users to which we send
 	 */
-	public Mailer(Game game)
+	public Mailer(Game game, List<User> users, Notification method)
 	{
 		this.game = game;
-
+		this.users = users;
+		this.method = method;
+	}
+	
+	@Override
+	public void run()
+	{
 		// Get system properties
         properties = System.getProperties();
 
@@ -73,8 +89,14 @@ public class Mailer {
       			}
       		  });
 		
-		
-		session.setDebug(true);
+        if(method.equals(Notification.STARTED))
+        {
+        	notifyStart();
+        } 
+        else if (method.equals(Notification.ENDED))
+        {
+        	notifyEnd();
+        }
 	}
 
 	/**
@@ -83,61 +105,63 @@ public class Mailer {
 	 */
 	public void notifyStart()
 	{
-		Request request = Network.getInstance().makeRequest("core/user", HttpMethod.GET);
-		request.addObserver(new RequestObserver() {
-			
-			@Override
-			public void responseSuccess(IRequest iReq) {
-				ResponseModel response = iReq.getResponse();
-				User[] users = User.fromJsonArray(response.getBody());
-				for(User u : users)
-				{
-					String message = "";
-					if(u.isAllowEmail())
-					{
-						message = "Hello, " + u.getName() + 
-								"\n Your game: " + game.getName() + " has started";
-						
-						sendEmail(u.getEmail(), message);
-					}
-				}
-				
-				
+		for(User u : users)
+		{
+			String message = "";
+			if(u.isAllowEmail())
+			{
+				message = "Hello, " + u.getName() + 
+						"\nThe game: " + game.getName() + " has started\n"
+						+ game.getDescription();
+
+				sendEmail(u.getEmail(), message, true);
 			}
-			
-			@Override
-			public void responseError(IRequest iReq) {
+		}
 				
+	}
+	
+	/**
+	 * Function which notifies users that 
+	 * the game has ended
+	 */
+	public void notifyEnd()
+	{
+		for(User u : users)
+		{
+			String message = "";
+			if(u.isAllowEmail())
+			{
+				message = "Hello, " + u.getName() + 
+						"\nThe game: " + game.getName() + " has ended\n"
+						+ game.getDescription();
+
+				sendEmail(u.getEmail(), message, false);
 			}
-			
-			@Override
-			public void fail(IRequest iReq, Exception exception) {
-				
-			}
-		});
-		request.send();
+		}
 	}
 
 	/**
 	 * Function that sends an email to the given address
 	 * @param sendToEmail email address we want to send mail to
 	 * @param messageText message sent to the email given
+	 * @param isStarting indicates whether the game is starting or ending
 	 */
-	public void sendEmail(String sendToEmail, String messageText)
+	public void sendEmail(String sendToEmail, String messageText, boolean isStarting)
 	{
 		try
 		{
-			// Create a default MimeMessage object.
-			MimeMessage message = new MimeMessage(session);
-
-			// Set From: header field of the header.
+			final MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
-
-			// Set To: header field of the header.
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(sendToEmail));
 
-			// Set Subject: header field
-			message.setSubject(game.getName() + " has started!");
+			if(isStarting)
+			{
+				message.setSubject(game.getName() + " has started!");
+			} 
+			else
+			{
+				message.setSubject(game.getName() + " has ended!");
+			}
 
 			// Now set the actual message
 			message.setText(messageText);
@@ -151,4 +175,14 @@ public class Mailer {
 			mex.printStackTrace();
 		}
 	}
+
+	public void start() {
+		if(thread == null)
+		{
+			thread = new Thread(this, "Mailer");
+			thread.start();
+		}
+	}
+	
+	
 }
