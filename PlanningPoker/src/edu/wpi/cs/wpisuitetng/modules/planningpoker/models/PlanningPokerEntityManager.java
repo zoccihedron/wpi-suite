@@ -328,6 +328,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
 					final Estimate gameEst = game.findEstimate(estimate.getReqID());
 					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+					gameEst.setUserCardSelection(s.getUsername(), estimate.getUserCardSelection(s.getUsername()));
 					
 					for(Estimate e: game.getEstimates()){
 						Estimate tempEst = e.getCopy();
