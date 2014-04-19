@@ -64,7 +64,7 @@ public class UpdateGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
-
+			view.disableOrEnableButtonsOnParent(false);
 			view.setDefaults();
 			final Game currentGame = view.getGameObject();
 

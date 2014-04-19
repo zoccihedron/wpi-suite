@@ -72,6 +72,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private Game editingGame;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
+	private Timer verificationChecker;
 	
 	//Saved fields for checking page editing
 	private String defaultName;
@@ -434,7 +435,7 @@ public class CreateGameInfoPanel extends JPanel {
 		rdbtnPm.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		add(rdbtnPm, constraints);
 
-		final Timer verificationChecker = new Timer(1000, new ActionListener() {
+		verificationChecker = new Timer(1000, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -444,6 +445,20 @@ public class CreateGameInfoPanel extends JPanel {
 		verificationChecker.start();
 		setDefaults();
 		checkFields();
+	}
+	
+	/**
+	 * Calls the function for changing the buttons' enabled status on the parent.
+	 * Also stops if false and starts if true the timer from changing the status of the buttons.
+	 * @param check true to enable; false to disable
+	 */
+	public void disableOrEnableButtonsOnParent(boolean check){
+		if (check) {
+			verificationChecker.start();
+		}else{
+			verificationChecker.stop();
+		}
+		parentPanel.disableOrEnableButtons(check);
 	}
 
 	/**
