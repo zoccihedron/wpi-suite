@@ -172,12 +172,8 @@ public class GameSummaryPanel extends JPanel {
 		viewResultsButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-<<<<<<< HEAD
 				final MainViewTabController mvt = MainViewTabController.getInstance();
  				mvt.viewResultsTab(game);
-=======
-				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(), gameSummaryPanel);
->>>>>>> b2a7cd0bc6f6c1e31991d8fb3830540c02892ffb
 			}
  		});
 		
