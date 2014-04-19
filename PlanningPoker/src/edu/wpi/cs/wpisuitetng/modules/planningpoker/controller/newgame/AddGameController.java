@@ -69,8 +69,8 @@ public class AddGameController implements ActionListener {
 			final Game currentGame = view.getGameObject();
 			
 			if(startingGame){
-				m = new Mailer(currentGame);
-				m.notifyStart();
+				//m = new Mailer(currentGame);
+				//m.notifyStart();
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
 			}
 			else if(endingGame){
