@@ -193,8 +193,8 @@ public class EstimationPane extends JPanel {
 		message.setText("");
 		message.setFont(new Font("Dialog", Font.ITALIC, 15));
 		message.setVisible(true);
-		message.setMinimumSize(new Dimension(80, 15));
-		message.setMaximumSize(new Dimension(80, 15));
+		message.setMinimumSize(new Dimension(200, 25));
+		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
 		constraints.gridy = 13;
