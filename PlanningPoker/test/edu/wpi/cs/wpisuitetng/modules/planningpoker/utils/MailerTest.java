@@ -70,8 +70,7 @@ public class MailerTest {
 	
 	@Test
 	public void testConstructor(){
-		assertNotNull(new Mailer(g, users));
+		assertNotNull(new Mailer(g, users, Mailer.Notification.STARTED));
 	}
 	
-	@Test
 }
