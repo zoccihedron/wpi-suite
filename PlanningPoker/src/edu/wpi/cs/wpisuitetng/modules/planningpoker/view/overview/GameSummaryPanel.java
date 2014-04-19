@@ -171,7 +171,7 @@ public class GameSummaryPanel extends JPanel {
 		sendReqsButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(),gameSummaryPanel);				
+				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(), gameSummaryPanel);
 			}
  		});
 		
@@ -212,7 +212,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
 		add(infoPanel, constraints);
-		//TODO
 		
 		// Panel that contains requirements in game
 		reqPanel = new GameSummaryReqPanel();
@@ -238,7 +237,6 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
 		add(buttonsPanel, constraints);
-		//TODO
 		
 		
 		reportMessage = new JLabel();
@@ -269,7 +267,10 @@ public class GameSummaryPanel extends JPanel {
 		    endGameButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("greenCircle.png"));
-		    playGameButton.setIcon(new ImageIcon(img));   
+		    playGameButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("checkmark.png"));
+		    sendReqsButton.setIcon(new ImageIcon(img));   
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
@@ -313,7 +314,7 @@ public class GameSummaryPanel extends JPanel {
 			}
 		}
 		// If the user is not the game creator.
-		else {			
+		else {
 			// disable all instances of edit and end game
 			editGameButton.setVisible(false);
 			editGameButton.setEnabled(false);
