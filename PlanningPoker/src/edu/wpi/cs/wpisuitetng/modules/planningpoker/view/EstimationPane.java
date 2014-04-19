@@ -20,6 +20,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -67,11 +68,12 @@ public class EstimationPane extends JPanel {
 	
 	/**
 	 * Constructor for panel
+	 * @param game 
 	 * @param reqid The req to vote on
 	 * @param draftGame The game the vote is going towards
 	 */
-	public EstimationPane(ListRequirementsPanel listReqPanel) {
-		
+	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
+		this.game = game;
 		this.listReqPanel = listReqPanel;
 		
 		setBounds(5, 5, 307, 393);
@@ -134,7 +136,6 @@ public class EstimationPane extends JPanel {
 		constraints.gridy = 1;
 		constraints.insets = new Insets(0, 20, 0, 0);
 		add(nameLabel, constraints);
-		//nameLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -175,7 +176,7 @@ public class EstimationPane extends JPanel {
 		add(scrollPane, constraints);
 		
 		// DECK PANEL
-		deckPanel = new DeckPanel();
+		deckPanel = new DeckPanel(game.getDeck());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 12;
@@ -207,15 +208,15 @@ public class EstimationPane extends JPanel {
 		//error message
 		message = new JLabel();
 		message.setText("    ");
-		message.setFont(new Font("Dialog", Font.ITALIC, 12));
+		message.setFont(new Font("Dialog", Font.ITALIC, 16));
 		message.setVisible(true);
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
 		constraints.gridy = 13;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 3;
-		constraints.ipadx = 300;
-		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.gridwidth = 1;
+		constraints.ipadx = 240;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
 		add(message, constraints);
 		
 		// VOTE BUTTON
@@ -223,11 +224,12 @@ public class EstimationPane extends JPanel {
 		voteButton.setPreferredSize(new Dimension(140, 40));
 		constraints.fill = GridBagConstraints.CENTER;
 		constraints.gridx = 0;
-		constraints.gridy = 16;
+		constraints.gridy = 13;
 		constraints.weightx = 1.0;
-		constraints.gridwidth = 3;
-		constraints.ipadx = 50;
-		constraints.insets = new Insets(0, 0, 0, 0);
+		constraints.gridwidth = 4;
+		constraints.ipadx = 80;
+		constraints.anchor = GridBagConstraints.NORTHEAST;
+		constraints.insets = new Insets(2, 0, 0, 21);
 		add(voteButton, constraints);
 		voteButton.setEnabled(false);
 
@@ -265,7 +267,7 @@ public class EstimationPane extends JPanel {
 			message.setText(" ");
 		}
 		catch(NotFoundException exception){
-			this.message.setText("Exception: Requirement Not Found");
+			message.setText("Exception: Requirement Not Found");
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
@@ -319,7 +321,7 @@ public class EstimationPane extends JPanel {
 
 
 
-	private void reportError(String string) {
+	public void reportError(String string) {
 		message.setText(string);
 		message.setForeground(Color.RED);
 	}
@@ -350,9 +352,10 @@ public class EstimationPane extends JPanel {
 
 	/**
 	 * This function updates the display to report a success message.
+	 * @param value is the numerical value of the vote
 	 */
-	public void reportSuccess() {
-		message.setText("<html>Success: Vote Updated!</html>");
+	public void reportSuccess(int value) {
+		message.setText("<html>Success: Vote Updated! You voted " + value + "</html>");
 		message.setForeground(Color.BLUE);
 
 	}
@@ -366,6 +369,15 @@ public class EstimationPane extends JPanel {
 	
 	public DeckPanel getDeckPanel(){
 		return deckPanel;
+	}
+
+
+	public ArrayList<Boolean> getCardSelection() {
+		if(!deckPanel.isDeckView()){
+			return null;
+		} else{
+			return deckPanel.getCardSelection();
+		}
 	}
 
 }

@@ -138,7 +138,6 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 10;
-		//lblDescription.setBorder(new EmptyBorder(0, 0, 5, 0));
 		add(lblDescription, constraints);
 
 				
