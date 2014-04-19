@@ -70,7 +70,7 @@ public class GameSummaryReqPanel extends JPanel {
 		final JScrollPane requirementsTablePanel = new JScrollPane(requirementsTable);
 		
 
-		lblRequirements = new JLabel("Requirements to Estimate:");
+		lblRequirements = new JLabel("Requirements in Game:");
 		lblRequirements.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 1;

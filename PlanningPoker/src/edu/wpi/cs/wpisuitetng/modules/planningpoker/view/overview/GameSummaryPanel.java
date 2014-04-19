@@ -62,7 +62,7 @@ public class GameSummaryPanel extends JPanel {
 	private final JButton viewResultsButton;
 
 	private final JLabel reportMessage;
-	private final GameSummaryPanel  gameSummaryPanel= this;
+	private final GameSummaryPanel  gameSummaryPanel = this;
 	JPanel buttonsPanel;
 	Game game;
 	
@@ -172,8 +172,12 @@ public class GameSummaryPanel extends JPanel {
 		viewResultsButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+<<<<<<< HEAD
 				final MainViewTabController mvt = MainViewTabController.getInstance();
  				mvt.viewResultsTab(game);
+=======
+				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(), gameSummaryPanel);
+>>>>>>> b2a7cd0bc6f6c1e31991d8fb3830540c02892ffb
 			}
  		});
 		
@@ -188,6 +192,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 20, 0, 0);
 		add(endGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		endGameButton.setVisible(false);
 		endGameButton.setEnabled(false);
 		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
@@ -270,7 +275,10 @@ public class GameSummaryPanel extends JPanel {
 		    endGameButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("greenCircle.png"));
-		    playGameButton.setIcon(new ImageIcon(img));   
+		    playGameButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("checkmark.png"));
+		    sendReqsButton.setIcon(new ImageIcon(img));   
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
@@ -318,7 +326,7 @@ public class GameSummaryPanel extends JPanel {
 			}
 		}
 		// If the user is not the game creator.
-		else {			
+		else {
 			// disable all instances of edit and end game
 			editGameButton.setVisible(false);
 			editGameButton.setEnabled(false);
