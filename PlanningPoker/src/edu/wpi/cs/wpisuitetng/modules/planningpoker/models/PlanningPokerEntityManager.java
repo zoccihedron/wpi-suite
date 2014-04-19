@@ -285,6 +285,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
 					final Estimate gameEst = game.findEstimate(estimate.getReqID());
 					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+					gameEst.setUserCardSelection(s.getUsername(), estimate.getUserCardSelection(s.getUsername()));
 					
 					final List<Estimate> newEstimates = new ArrayList<Estimate>();
 					for(Estimate e: game.getEstimates()){

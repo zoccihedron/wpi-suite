@@ -254,6 +254,7 @@ public class Estimate {
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
 		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
 		return copyEst;
 	}
 	
