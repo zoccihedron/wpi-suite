@@ -107,11 +107,13 @@ public class SelectRequirementsPanel extends JPanel {
 		existingRequirementsTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 			@Override
+			
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(existingRequirementsTable.getSelectedRow() == - 1){
 					btnAddSelectedReq.setEnabled(DISABLED);
 				}
 				else {
+					requirementsToAddTable.clearSelection();
 					btnAddSelectedReq.setEnabled(ENABLED);
 				}
 			}
@@ -241,6 +243,7 @@ public class SelectRequirementsPanel extends JPanel {
 					btnRemoveSelectedReq.setEnabled(DISABLED);
 				}
 				else {
+					existingRequirementsTable.clearSelection();
 					btnRemoveSelectedReq.setEnabled(ENABLED);
 				}
 			}
