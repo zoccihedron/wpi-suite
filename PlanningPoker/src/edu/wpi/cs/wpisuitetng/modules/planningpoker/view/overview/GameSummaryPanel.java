@@ -59,7 +59,7 @@ public class GameSummaryPanel extends JPanel {
 	private final JButton endGameButton;
 	private final JButton sendReqsButton;
 	private final JLabel reportMessage;
-	private final GameSummaryPanel  gameSummaryPanel= this;
+	private final GameSummaryPanel  gameSummaryPanel = this;
 	JPanel buttonsPanel;
 	Game game;
 	
@@ -184,6 +184,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 20, 0, 0);
 		add(endGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		endGameButton.setVisible(false);
 		endGameButton.setEnabled(false);
 		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
@@ -211,6 +212,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
 		add(infoPanel, constraints);
+		//TODO
 		
 		// Panel that contains requirements in game
 		reqPanel = new GameSummaryReqPanel();
@@ -236,6 +238,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
 		add(buttonsPanel, constraints);
+		//TODO
 		
 		
 		reportMessage = new JLabel();
