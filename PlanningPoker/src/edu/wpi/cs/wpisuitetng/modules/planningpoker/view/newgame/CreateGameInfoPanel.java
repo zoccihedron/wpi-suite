@@ -485,13 +485,9 @@ public class CreateGameInfoPanel extends JPanel {
 		reportError(" ");
 		boolean result = true;
 		
-		gameNameText.setBorder(null);
-		if (gameNameText.getText().trim().isEmpty()) {
-			reportError("<html>*Error: Please choose a name!</html>");
-			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+		if (parentPanel.getGameRequirements().size() == 0 && result) {
+			reportError("<html>*Error: Pick at least one requirement.</html>");
 			result = false;
-		}else{
-			//gameNameText.setBackground(Color.WHITE);
 		}
 		
 		datePicker.setBorder(null);
@@ -506,11 +502,16 @@ public class CreateGameInfoPanel extends JPanel {
 				result = false;
 			}
 		}
-
-		if (parentPanel.getGameRequirements().size() == 0 && result) {
-			reportError("<html>*Error: Pick at least one requirement.</html>");
+		
+		gameNameText.setBorder(null);
+		if (gameNameText.getText().trim().isEmpty()) {
+			reportError("<html>*Error: Please choose a name!</html>");
+			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
 			result = false;
+		}else{
+			//gameNameText.setBackground(Color.WHITE);
 		}
+		
 		return result;
 	}
 
