@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -70,6 +71,14 @@ public class CreateGameInfoPanel extends JPanel {
 	private Game editingGame;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
+	
+	//Saved fields for checking page editing
+	private String defaultName;
+	private String defaultDescription;
+	private Date defaultDate;
+	private boolean defaultDeadlineCheck;
+	private List<Integer> defaultReqs;
+	private String defaultDeck;
 
 	/**
 	 * This constructor is to be used when starting from a new game
@@ -422,6 +431,8 @@ public class CreateGameInfoPanel extends JPanel {
 			}
 		});
 		verificationChecker.start();
+		setDefaults();
+		checkFields();
 	}
 
 	/**
@@ -478,25 +489,66 @@ public class CreateGameInfoPanel extends JPanel {
 		reportError(" ");
 		boolean result = true;
 		if (gameNameText.getText().trim().isEmpty()) {
-			reportError("<html>*Error: Please choose a name!</html>");
+			reportError("<html>*A name is required.</html>");
 			result = false;
 		}
 
 		if (chckbxDeadline.isSelected() && result) {
 			if (datePicker.getModel().getValue() == null) {
-				reportError("<html>*Error: Please choose a date or turn off the deadline.</html>");
+				reportError("<html>*Please choose a date or turn off the deadline.</html>");
 				result = false;
 			} else if (getDeadline().compareTo(new Date()) <= 0) {
-				reportError("<html>*Error: The deadline must not be in the past.</html>");
+				reportError("<html>*The deadline must not be in the past.</html>");
 				result = false;
 			}
 		}
 
 		if (parentPanel.getGameRequirements().size() == 0 && result) {
-			reportError("<html>*Error: Pick at least one requirement.</html>");
+			reportError("<html>*Pick at least one requirement.</html>");
 			result = false;
 		}
 		return result;
+	}
+	
+	/**
+	 * Sets the defaults for the fields at game start up.
+	 */
+	public void setDefaults(){
+		//Saved fields for checking page editing
+		defaultName = gameNameText.getText();
+		defaultDescription = description.getText();
+		defaultDeadlineCheck = chckbxDeadline.isSelected();
+		if(defaultDeadlineCheck){
+			if (datePicker.getModel().getValue() == null) {
+				defaultDate = null;
+			} else{
+				defaultDate = getDeadline();
+			}
+		} else {
+			defaultDate = null;
+		}
+		defaultReqs = parentPanel.getGameRequirements();
+		defaultDeck = (String) deck.getSelectedItem();
+	}
+	
+	/**
+	 * Checks to see if the page has changed
+	 * @return true if the page has changed
+	 */
+	public boolean isPageEdited(){
+		boolean result = defaultName.equals(gameNameText.getText());
+		result &= defaultDescription.equals(description.getText());
+		result &= (defaultDeadlineCheck == chckbxDeadline.isSelected());
+		Date tempDate = null;
+		if(result && defaultDeadlineCheck){
+			if(!(datePicker.getModel().getValue() == null)){
+				tempDate = getDeadline();
+			}
+		}
+		result &= defaultDate.equals(tempDate);
+		result &= defaultDeck.equals(deck.getSelectedItem());
+		result &= defaultReqs.equals(parentPanel.getGameRequirements());
+		return !result;		
 	}
 
 	/**

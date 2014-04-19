@@ -65,6 +65,7 @@ public class UpdateGameController implements ActionListener {
 		if (view.checkFields())
 		{
 
+			view.setDefaults();
 			final Game currentGame = view.getGameObject();
 
 			if(startingGame){
