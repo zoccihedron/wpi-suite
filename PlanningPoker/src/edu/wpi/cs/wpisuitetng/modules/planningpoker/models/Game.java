@@ -391,12 +391,11 @@ public class Game extends AbstractModel {
 	}
 
 	/**
-	 * Checks if the game end time has been reached
+	 * Returns the status of the game
 	 * 
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
 	public GameStatus getStatus() {
-		updateStatus();
 		return status;
 	}
 

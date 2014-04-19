@@ -263,6 +263,7 @@ public class Estimate {
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
+		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
 		return copyEst;
 	}
 	

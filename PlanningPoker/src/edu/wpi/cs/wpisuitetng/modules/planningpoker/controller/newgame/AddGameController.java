@@ -20,7 +20,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.CreateGameInfoPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -41,14 +40,15 @@ public class AddGameController implements ActionListener {
 	private static User[] users = {};
 	private boolean startingGame = false;
 	private boolean endingGame = false;
-	private Mailer m;
 	
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param createGameInfoPanel the view where the user enters new messages
 	 * @param startingGame whether the game is being started or not
+	 * @param endingGame whether or not the game is ending
 	 */
-	public AddGameController(CreateGameInfoPanel createGameInfoPanel, boolean startingGame, boolean endingGame) {
+	public AddGameController(CreateGameInfoPanel createGameInfoPanel, 
+			boolean startingGame, boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = createGameInfoPanel;
 		this.startingGame = startingGame;
@@ -69,8 +69,6 @@ public class AddGameController implements ActionListener {
 			final Game currentGame = view.getGameObject();
 			
 			if(startingGame){
-				m = new Mailer(currentGame);
-				m.notifyStart();
 				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
 			}
 			else if(endingGame){
@@ -116,7 +114,7 @@ public class AddGameController implements ActionListener {
 		users = project.getTeam();
 	}
 	
-	public User[] getUsers()
+	public static User[] getUsers()
 	{
 		return users;
 	}

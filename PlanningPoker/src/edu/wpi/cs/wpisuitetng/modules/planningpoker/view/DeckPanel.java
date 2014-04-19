@@ -227,10 +227,13 @@ public class DeckPanel extends JScrollPane {
 		if (oldEstimate > 0) {
 			if(isDeckView){
 				ArrayList<Boolean> selected = (ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
-				for(int i = 0; i < selected.size(); i++)
-				{
-					listOfButtons.get(i).setSelected(selected.get(i));
+				if(selected != null){
+					for(int i = 0; i < selected.size(); i++)
+					{
+						listOfButtons.get(i).setSelected(selected.get(i));
+					}
 				}
+				
 			}
 			estimateField.setText(Integer.toString(oldEstimate));
 			currentEstimate = Integer.toString(oldEstimate);
