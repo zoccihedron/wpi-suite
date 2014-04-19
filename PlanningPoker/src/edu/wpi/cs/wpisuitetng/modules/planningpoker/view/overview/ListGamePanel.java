@@ -53,7 +53,6 @@ implements TreeSelectionListener {
 	public ListGamePanel() {
 
 		this.setViewportView(tree);
-		this.refresh();
 		
 
 		//Create the nodes.
