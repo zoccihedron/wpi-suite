@@ -76,11 +76,7 @@ public class PlayGamePanel extends JPanel{
 						JOptionPane.QUESTION_MESSAGE,
 						null, options, options[1]);
 
-				if(i == 0) {
-					return true;
-				} else {
-					return false;
-				}
+				return (i == 0);
 			}
 		}
 		else return true;

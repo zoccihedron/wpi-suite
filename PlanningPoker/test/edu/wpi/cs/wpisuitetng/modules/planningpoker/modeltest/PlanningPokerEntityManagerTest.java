@@ -9,16 +9,19 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
@@ -28,8 +31,6 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
-
-import java.util.Date;
 
 /**
  * Entity Manager testing class for Planning Poker
@@ -96,10 +97,9 @@ public class PlanningPokerEntityManagerTest {
 		
 		boolean PermissionDenied = false;
 		String exceptionMessage = "";
-		Game[] retrievedGames;
 		
 		try{
-			retrievedGames = manager.getEntity(s2, "" + draftGame.getId());
+			manager.getEntity(s2, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			exceptionMessage=e.getMessage();
@@ -110,10 +110,11 @@ public class PlanningPokerEntityManagerTest {
 		
 		boolean PermissionAllowed = true;
 		try{
-			retrievedGames = manager.getEntity(s1, "" + draftGame.getId());
+			manager.getEntity(s1, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			PermissionAllowed = false;
+			System.err.println(e.getMessage());
 		}
 		assertTrue(PermissionAllowed);
 	}
@@ -125,17 +126,19 @@ public class PlanningPokerEntityManagerTest {
 		boolean successfulRetrievalByNotOwner = true;
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s1,"" + inProgressGame.getId());
+			manager.getEntity(s1,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByOwner = false;
+			System.err.println(e.getMessage());
 		}
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s2,"" + inProgressGame.getId());
+			manager.getEntity(s2,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByNotOwner = false;
+			System.err.println(e.getMessage());
 		}
 		
 		assertTrue(successfulRetrievalByOwner);
@@ -159,7 +162,7 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void retrieveAllExcludingDraftsYouDidntCreateTest() throws WPISuiteException{
-		Game[] retrievedGames  = (Game[])manager.getAll(s2);
+		Game[] retrievedGames  = manager.getAll(s2);
 		
 		boolean containedDraftNotOwnedByUser = false;
 		boolean containedGames = false;
@@ -180,7 +183,7 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void retrieveAllIncludingDraftsYouDidCreateTest() throws WPISuiteException{
-		Game[] retrievedGames  = (Game[])manager.getAll(s1);
+		Game[] retrievedGames  = manager.getAll(s1);
 		
 		boolean containedDraftsOwnedByUser = false;
 		boolean containedGames = false;
@@ -201,14 +204,14 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void getHighestIdTest() throws WPISuiteException{
-		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		Game[] retrievedGames = manager.getAll(s1);
 		int largestId = manager.getGameWithLargestId(retrievedGames);
 		assertEquals(largestId, retrievedGames.length);
 	}
 	
 	@Test
 	public void autoIncrementGameIdTest() throws WPISuiteException{
-		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		Game[] retrievedGames = manager.getAll(s1);
 		for(Game game : retrievedGames){
 			if (game.getName().equals("game")){
 				assertEquals(1, game.getId());
