@@ -53,6 +53,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JButton btnAddSelectedReq;
 	private DefaultTableModel modelExisting;
 	private DefaultTableModel modelAdded;
+	private JPanel buttonsPanel;
 	private GridBagConstraints constraints = new GridBagConstraints();
 	
 	private Game game;
@@ -74,13 +75,20 @@ public class SelectRequirementsPanel extends JPanel {
 	 * Sets up shared constraints between both constructors
 	 */
 	public void setUpPanel(){
+		// set layout
 		this.setLayout(new GridBagLayout());
+	
 		
-		// Top section of panel
+		/*---------------------------------------------------------------------
+		 *                   EXISTING REQUIREMENTS TABLE
+		 * --------------------------------------------------------------------
+		 */
+		
+		// Columns and data for table
 		final String[] columnNames = { "ID", "Name", "Description" };
-
 		final Object[][] data = {};
-
+	
+		// Label
 		final JLabel existingRequirementsLabel = new JLabel("Existing Requirements");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.0;
@@ -88,21 +96,15 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		this.add(existingRequirementsLabel, constraints);
-
-		final JButton btnNewRequirement = new JButton("Refresh");
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 3;
-		constraints.gridy = 0;
-		this.add(btnNewRequirement, constraints);
-
+		
+		// Table
 		existingRequirementsTable = new JTable(new DefaultTableModel(data,columnNames) {
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
 		});
 		
+		// Set buttons to respond to selection on table
 		existingRequirementsTable.getSelectionModel().addListSelectionListener(
 				new ListSelectionListener() {
 			@Override
@@ -122,21 +124,9 @@ public class SelectRequirementsPanel extends JPanel {
 
 		// Filling with some initial data for testing
 		modelExisting = (DefaultTableModel) existingRequirementsTable.getModel();
-		
-		btnNewRequirement.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// Initially populates the existingReqs Table
-				
-				fillTable();
-				
-			}
 
-		});
-		
-
+		// Put in scroll pane for overflow
 		final JScrollPane existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
-				
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
@@ -144,27 +134,50 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.add(existingRequirementsTablePanel, constraints);
-
-		// Bottom section of panel
-		final JLabel lblRequirementsToEstimate = new JLabel("Requirements to Estimate");
+					
+		/*---------------------------------------------------------------------
+		 *                         BUTTONS PANEL
+		 * --------------------------------------------------------------------
+		 */
+		
+		// Panel to hold add, remove, and new requirement buttons in center
+		buttonsPanel = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		this.add(lblRequirementsToEstimate, constraints);
-		
-		final JPanel emptyPanel = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 1;
-		constraints.gridy = 2;
-		this.add(emptyPanel, constraints);
+		this.add(buttonsPanel, constraints);
 
+		// Add requirement button
 		btnAddSelectedReq = new JButton("Add");
 		btnAddSelectedReq.setEnabled(DISABLED);
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		buttonsPanel.add(btnAddSelectedReq, constraints);
+		
+		final JButton btnNewRequirement = new JButton("Refresh");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		buttonsPanel.add(btnNewRequirement, constraints);
+		
+		
+		// Remove requirement button
+		final JButton btnRemoveSelectedReq = new JButton("Remove");
+		btnRemoveSelectedReq.setEnabled(DISABLED);
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		buttonsPanel.add(btnRemoveSelectedReq, constraints);
+		
 		btnAddSelectedReq.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -173,15 +186,7 @@ public class SelectRequirementsPanel extends JPanel {
 				btnAddSelectedReq.setEnabled(DISABLED);
 			}
 		});
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 2;
-		constraints.gridy = 2;
-		this.add(btnAddSelectedReq, constraints);
-
-		final JButton btnRemoveSelectedReq = new JButton("Remove");
-		btnRemoveSelectedReq.setEnabled(DISABLED);
+		
 		btnRemoveSelectedReq.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -191,23 +196,45 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 
 		});
+		
+		// TODO Make this button actually be able to create a requirement
+		btnNewRequirement.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// Initially populates the existingReqs Table
+				fillTable();
+			}
+
+		});
+	
+		/*---------------------------------------------------------------------
+		 *                   SELECTED REQUIREMENTS TABLE
+		 * --------------------------------------------------------------------
+		 */	
+	
+		// Label
+		final JLabel lblRequirementsToEstimate = new JLabel("Requirements to Estimate");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 3;
-		constraints.gridy = 2;
-		this.add(btnRemoveSelectedReq, constraints);
-
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		this.add(lblRequirementsToEstimate, constraints);
+		
+		// columns and data for table
 		final String[] addColumnNames = { "ID", "Name", "Description" };
 		final Object[][] addData = {};
 
+		// Table
 		requirementsToAddTable = new JTable(new DefaultTableModel(addData,
 				addColumnNames){
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
 		});
-
+		
+		// Set up buttons to interact with table selection
 		requirementsToAddTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -225,6 +252,7 @@ public class SelectRequirementsPanel extends JPanel {
 		requirementsToAddTable.removeColumn(requirementsToAddTable
 				.getColumnModel().getColumn(0));
 
+		// Add to scroll pane for overflow
 		final JScrollPane requirementsToAddTablePanel = new JScrollPane(
 				requirementsToAddTable);
 		constraints.fill = GridBagConstraints.BOTH;
@@ -233,9 +261,15 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weightx = 1;
 		constraints.weighty = 0.5;
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 4;
 		this.add(requirementsToAddTablePanel, constraints);
 
+		
+		/*---------------------------------------------------------------------
+		 *                   	      ICONS
+		 * --------------------------------------------------------------------
+		 */	
+	
 		try {
 		    Image img = ImageIO.read(getClass().getResource("downArrow.png"));
 		    btnAddSelectedReq.setIcon(new ImageIcon(img));
@@ -250,6 +284,7 @@ public class SelectRequirementsPanel extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 		
+				
 		fillTable();
 	}
 

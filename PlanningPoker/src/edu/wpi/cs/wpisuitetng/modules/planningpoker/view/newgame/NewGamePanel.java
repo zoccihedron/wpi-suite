@@ -111,7 +111,7 @@ public class NewGamePanel extends JSplitPane {
 		btnSave = new JButton("Save");
 		btnSave.setBounds(141, 5, 118, 25);
 		bottomPanel.add(btnSave);
-		
+	
 				
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
