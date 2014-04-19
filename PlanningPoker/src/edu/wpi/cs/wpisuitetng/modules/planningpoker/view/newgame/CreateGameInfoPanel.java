@@ -13,9 +13,11 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -351,6 +354,8 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblDeadline, constraints);
 
 		// DATE PICKER
+		datePicker.setMaximumSize(new Dimension(100, 23));
+		datePicker.setMinimumSize(new Dimension(100, 23));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
@@ -379,6 +384,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridy = 7;
 		constraints.ipadx = 2;
 		constraints.ipady = 2;
+		constraints.insets = new Insets(2, 0, 0, 0);
 		add(hourSelector, constraints);
 
 		// MINUTE SELECTOR
@@ -391,6 +397,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridy = 7;
 		constraints.ipadx = 2;
 		constraints.ipady = 2;
+		constraints.insets = new Insets(2, 0, 0, 0);
 		constraints.anchor = GridBagConstraints.WEST;
 		add(minuteSelector, constraints);
 
@@ -477,19 +484,24 @@ public class CreateGameInfoPanel extends JPanel {
 
 		reportError(" ");
 		boolean result = true;
+		
+		gameNameText.setBorder(null);
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*Error: Please choose a name!</html>");
-			gameNameText.setBackground(Color.PINK);
+			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
 			result = false;
 		}else{
-			gameNameText.setBackground(Color.WHITE);
+			//gameNameText.setBackground(Color.WHITE);
 		}
-
-		if (chckbxDeadline.isSelected() && result) {
+		
+		datePicker.setBorder(null);
+		if (chckbxDeadline.isSelected()) {
 			if (datePicker.getModel().getValue() == null) {
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
 				reportError("<html>*Error: Please choose a date or turn off the deadline.</html>");
 				result = false;
 			} else if (getDeadline().compareTo(new Date()) <= 0) {
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
 				reportError("<html>*Error: The deadline must not be in the past.</html>");
 				result = false;
 			}
