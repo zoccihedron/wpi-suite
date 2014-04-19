@@ -14,7 +14,7 @@ public class ViewResultsController {
 	public void setResultsPanel(ResultsPanel resultsPanel){
 		this.resultsPanel = resultsPanel;
 	}
-	public void updateResultsInfo(int reqid, Game game){
-		this.resultsPanel.updateDisplay(reqid, game);
+	public void updateResultsInfo(int reqid){
+		this.resultsPanel.updateDisplay(reqid);
 	}
 }

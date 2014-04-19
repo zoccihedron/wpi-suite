@@ -39,9 +39,11 @@ public class ResultsPanel extends JPanel{
 	/**
 	 * Constructor for results panel
 	 * @param listRequirementsPanel is the tree of requirements for the ended game
+	 * @param is the game to view results of
 	 */
-	public ResultsPanel(ListEstimatedRequirementsPanel listRequirementsPanel) {
-
+	public ResultsPanel(ListEstimatedRequirementsPanel listRequirementsPanel, Game game) {
+		this.game = game;
+		
 		this.listReqPanel = listReqPanel;
 
 		setBounds(5, 5, 307, 393);
@@ -147,8 +149,7 @@ public class ResultsPanel extends JPanel{
 		add(scrollPane, constraints);
 
 		// DISPLAY PANEL 
-		// TODO make this GUI BEAUTIFUL
-		resultsDisplayPanel = new ResultsDisplayPanel();
+		resultsDisplayPanel = new ResultsDisplayPanel(game);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 12;
@@ -164,15 +165,13 @@ public class ResultsPanel extends JPanel{
 	 * @param reqid is the id of the requirement in req manager
 	 * @param game is the game the estimate is in
 	 */
-	public void updateDisplay(int reqid, Game game){
-		this.game = game;
-
+	public void updateDisplay(int reqid){
 		this.reqid = reqid;
 		try{
 			req = getRequirementFromId();
 			requirementName.setText(req.getName());
 			descriptionText.setText(req.getDescription());
-			resultsDisplayPanel.updateData(reqid, game);
+			resultsDisplayPanel.updateData(reqid);
 		}
 		catch(NotFoundException exception){
 			System.err.println("Exception: Requirement Not Found");

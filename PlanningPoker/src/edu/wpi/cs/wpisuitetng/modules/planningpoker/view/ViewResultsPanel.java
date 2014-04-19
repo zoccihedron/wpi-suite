@@ -36,6 +36,7 @@ public class ViewResultsPanel extends JPanel{
 	private final ListEstimatedRequirementsPanel listRequirementsPanel;
 	private final ResultsPanel resultsPanel;
 	private final JSplitPane splitPane;
+	private Game game;
 	private ViewResultsController controller;
 
 	/**
@@ -45,6 +46,7 @@ public class ViewResultsPanel extends JPanel{
 	 */
 	public ViewResultsPanel(Game game)
 	{
+		this.game = game;
 		setLayout(new BorderLayout());
 		
 		controller = new ViewResultsController();
@@ -53,7 +55,7 @@ public class ViewResultsPanel extends JPanel{
 		listRequirementsPanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
-		resultsPanel = new ResultsPanel(listRequirementsPanel);
+		resultsPanel = new ResultsPanel(listRequirementsPanel, game);
 		splitPane.setRightComponent(resultsPanel);
 		controller.setResultsPanel(resultsPanel);
 		

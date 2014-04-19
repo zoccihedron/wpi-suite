@@ -98,7 +98,7 @@ implements TreeSelectionListener {
 		if(node.isLeaf()){
 			if(nodeInfo instanceof Requirement){
 				final Requirement req = (Requirement)nodeInfo;
-				controller.updateResultsInfo(req.getId(), game);
+				controller.updateResultsInfo(req.getId());
 			}
 		}
 	}
