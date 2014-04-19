@@ -44,7 +44,7 @@ public class ResultsPanel extends JPanel{
 	public ResultsPanel(ListEstimatedRequirementsPanel listRequirementsPanel, Game game) {
 		this.game = game;
 		
-		this.listReqPanel = listReqPanel;
+		this.listReqPanel = listRequirementsPanel;
 
 		setBounds(5, 5, 307, 393);
 		this.setLayout(new GridBagLayout());

@@ -10,6 +10,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,7 +35,7 @@ public class ResultsDisplayPanel extends JPanel{
 	/**
 	 * Initialize the labels for displaying information about the game
 	 */
-	public ResultsDisplayPanel(Game game){
+	public ResultsDisplayPanel(final Game game){
 		this.game = game;
 		this.mean = new JLabel();
 		this.median = new JLabel();
@@ -49,6 +50,18 @@ public class ResultsDisplayPanel extends JPanel{
 		this.add(finalEstimate);
 		this.add(saveFinalEstimateBtn);
 		this.add(message);
+		
+//		saveFinalEstimateBtn.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				
+//				// Save final estimate
+//				int est = Integer.parseInt(finalEstimate.getText());
+//				game.findEstimate(reqid).setFinalEstimate(est);
+//				
+//			}
+//		});
 		
 	}
 

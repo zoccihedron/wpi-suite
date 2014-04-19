@@ -381,6 +381,29 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				returnString = "true";
 				
 			}
+			
+			else if(string.equals("sendFinalEstimate"))
+			{
+				final Estimate oldEst = Estimate.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+				final Estimate newEst = game.findEstimate(oldEst.getReqID());
+				
+				newEst.setFinalEstimate(oldEst.getFinalEstimate());
+				
+				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+				for(Estimate e: game.getEstimates()){
+					Estimate tempEst = e.getCopy();
+					newEstimates.add(tempEst);
+				}
+				game.setEstimates(newEstimates);
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = "true";
+				
+			}
+			
 			else if( string.equals("end") ){
 				
 				final Game endedGame = Game.fromJson(content);

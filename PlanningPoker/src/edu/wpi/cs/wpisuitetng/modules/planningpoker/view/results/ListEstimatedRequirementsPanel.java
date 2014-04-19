@@ -115,10 +115,15 @@ implements TreeSelectionListener {
 				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		DefaultMutableTreeNode reqNode = null;
 
-		DefaultMutableTreeNode notSentCategory = null;
+		DefaultMutableTreeNode notSelectedCategory = null;
+		DefaultMutableTreeNode selectedCategory = null;
 		DefaultMutableTreeNode sentCategory = null;
-		notSentCategory = new DefaultMutableTreeNode("Estimate not sent");
+		
+		
+		notSelectedCategory = new DefaultMutableTreeNode("Estimate not selected");
+		selectedCategory = new DefaultMutableTreeNode("Estimate selected");
 		sentCategory = new DefaultMutableTreeNode("Estimate sent");
+		
 		String user = ConfigManager.getInstance().getConfig().getUserName();
 		for(Requirement req: requirements){
 
@@ -127,11 +132,15 @@ implements TreeSelectionListener {
 				for(Estimate e : game.getEstimates())
 				{
 					if(e.getReqID() == req.getId()){
-						if(!e.estimationHasBeenSent()){
+						if(!e.estimationHasBeenSent() && e.getFinalEstimate() == 0){
 							reqNode = new DefaultMutableTreeNode(req);
-							notSentCategory.add(reqNode);
+							notSelectedCategory.add(reqNode);
 						}
-						else{
+						else if(!e.estimationHasBeenSent() && e.getFinalEstimate() != 0){
+							reqNode = new DefaultMutableTreeNode(req);
+							selectedCategory.add(reqNode);
+						}
+						else{ // estimation is sent
 							reqNode = new DefaultMutableTreeNode(req);
 							sentCategory.add(reqNode);
 						}
@@ -141,9 +150,9 @@ implements TreeSelectionListener {
 			}
 		}
 
-		top.add(notSentCategory);
+		top.add(notSelectedCategory);
+		top.add(selectedCategory);
 		top.add(sentCategory);
-
 
 		tree = new JTree(top); //create the tree with the top node as the top
 		for(int i = 0; i < tree.getRowCount(); i++) tree.expandRow(i);
