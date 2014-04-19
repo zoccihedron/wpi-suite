@@ -33,24 +33,45 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
  * @author Team Code On Bleu
  * @version 1.0
  */
-public class Mailer {
+public class Mailer implements Runnable{
 	private final Game game;
+	private Thread thread = null;
 	private final List<User> users;
-	private final Properties properties;
-	private final Session session;
+	private Properties properties;
+	private Session session;
+	private final Notification method;
 	private final String from = "codonbleu@gmail.com";
 	private final String host = "smtp.gmail.com";
+	public enum Notification {
+		STARTED("Started"), ENDED("Ended");
+
+		private final String text;
+
+		private Notification(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public String toString() {
+			return text;
+		}
+	}
 
 	/**
 	 * Constructor for Mailer
 	 * @param game the game from which we get the info
 	 * @param users the list of users to which we send
 	 */
-	public Mailer(Game game, List<User> users)
+	public Mailer(Game game, List<User> users, Notification method)
 	{
 		this.game = game;
 		this.users = users;
-
+		this.method = method;
+	}
+	
+	@Override
+	public void run()
+	{
 		// Get system properties
         properties = System.getProperties();
 
@@ -68,8 +89,14 @@ public class Mailer {
       			}
       		  });
 		
-		
-		session.setDebug(true);
+        if(method.equals(Notification.STARTED))
+        {
+        	notifyStart();
+        } 
+        else if (method.equals(Notification.ENDED))
+        {
+        	notifyEnd();
+        }
 	}
 
 	/**
@@ -84,7 +111,8 @@ public class Mailer {
 			if(u.isAllowEmail())
 			{
 				message = "Hello, " + u.getName() + 
-						"\n Your game: " + game.getName() + " has started";
+						"\nThe game: " + game.getName() + " has started\n"
+						+ game.getDescription();
 
 				sendEmail(u.getEmail(), message, true);
 			}
@@ -104,7 +132,8 @@ public class Mailer {
 			if(u.isAllowEmail())
 			{
 				message = "Hello, " + u.getName() + 
-						"\n Your game: " + game.getName() + " has ended";
+						"\nThe game: " + game.getName() + " has ended\n"
+						+ game.getDescription();
 
 				sendEmail(u.getEmail(), message, false);
 			}
@@ -144,6 +173,14 @@ public class Mailer {
 		catch (MessagingException mex) 
 		{
 			mex.printStackTrace();
+		}
+	}
+
+	public void start() {
+		if(thread == null)
+		{
+			thread = new Thread(this, "Mailer");
+			thread.start();
 		}
 	}
 	
