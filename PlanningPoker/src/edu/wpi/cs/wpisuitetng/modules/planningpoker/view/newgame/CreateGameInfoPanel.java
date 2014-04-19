@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
@@ -334,8 +335,9 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 5;
+		chckbxDeadline.setBorder(new EmptyBorder(0,10,0,0));
 		add(chckbxDeadline, constraints);
 
 		// DEADLINE LABEL
