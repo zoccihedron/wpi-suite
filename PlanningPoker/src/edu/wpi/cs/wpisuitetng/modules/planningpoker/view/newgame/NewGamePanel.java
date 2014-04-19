@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.border.EmptyBorder;
@@ -59,9 +60,11 @@ public class NewGamePanel extends JSplitPane {
 	public NewGamePanel() {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
+		lblMessage = new JLabel("*Error");
+
+		selectRequirementsPanel = new SelectRequirementsPanel();
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
-		selectRequirementsPanel = new SelectRequirementsPanel();
 		
 		setUpPanel();
 		
@@ -78,13 +81,15 @@ public class NewGamePanel extends JSplitPane {
 	public NewGamePanel(Game editingGame) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
+		lblMessage = new JLabel("*Error");
+
+		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
-		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		
 		setUpPanel();
 		
-		// Maps Create Game button to AddGameController class
+		// Maps Create Game button to UpdateGameController class
 		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
 		
 		btnStart.addActionListener(
@@ -110,6 +115,7 @@ public class NewGamePanel extends JSplitPane {
 		
 		btnSave = new JButton("Save");
 		btnSave.setBounds(141, 5, 118, 25);
+		btnSave.setEnabled(false);
 		bottomPanel.add(btnSave);
 	
 				
@@ -120,9 +126,9 @@ public class NewGamePanel extends JSplitPane {
 		
 		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
+		btnStart.setEnabled(false);
 		bottomPanel.add(btnStart);
 		
-		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
@@ -228,15 +234,20 @@ public class NewGamePanel extends JSplitPane {
 	 * @return boolean if it's ready to close
 	 */
 	public boolean isReadyToClose() {
-		/*final Object options[] = {"Yes", "No"};
-		final int i = JOptionPane.showOptionDialog(this, 
-				"Any unsaved changes will be lost, would you like to exit anyways?",
-				"Exit?",
-				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE,
-				null, options, options[1]);*/
-		
-		return true;
+		boolean result;
+		if(createGameInfoPanel.isPageEdited()){
+			final Object options[] = {"Yes", "No"};
+			final int i = JOptionPane.showOptionDialog(this, 
+					"Any unsaved changes will be lost, would you like to exit anyways?",
+					"Exit?",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null, options, options[1]);
+			result = (i == 0);
+		} else {
+			result = true;
+		}
+		return result;
 	}
 	
 }

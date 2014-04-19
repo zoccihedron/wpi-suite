@@ -65,7 +65,7 @@ public class AddGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
-			
+			view.setDefaults();
 			final Game currentGame = view.getGameObject();
 			
 			if(startingGame){
