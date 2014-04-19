@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.CloseNewGameTabController;
@@ -99,6 +100,9 @@ public class NewGamePanel extends JSplitPane {
 	 * Sets up constraints on panel that are shared for each constructor
 	 */
 	private void setUpPanel(){
+
+		// Add some lovely padding to the requirements tables and labels
+		selectRequirementsPanel.setBorder(new EmptyBorder(10,10,10,10));
 		
 		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
@@ -113,15 +117,17 @@ public class NewGamePanel extends JSplitPane {
 		btnSave.setBounds(141, 5, 118, 25);
 		btnSave.setEnabled(false);
 		bottomPanel.add(btnSave);
-		
+	
 				
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
 		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
 		bottomPanel.add(btnCancel); 
+		
 		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
 		btnStart.setEnabled(false);
+		bottomPanel.add(btnStart);
 		
 		lblMessage.setBounds(395, 8, 457, 18);
 		lblMessage.setForeground(Color.RED);
@@ -129,7 +135,6 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
 		bottomPanel.add(lblMessage);
 		
-		bottomPanel.add(btnStart);
 		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("start-icon.png"));
