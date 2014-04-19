@@ -31,11 +31,13 @@ public class ResultsDisplayPanel extends JPanel{
 	private Game game;
 	private int reqid;
 	private JLabel message;
+	private EstimateTreePanel treePanel;
 	
 	/**
 	 * Initialize the labels for displaying information about the game
 	 */
-	public ResultsDisplayPanel(final Game game){
+	public ResultsDisplayPanel(final Game game, EstimateTreePanel treePanel){
+		this.treePanel = treePanel;
 		this.game = game;
 		this.mean = new JLabel();
 		this.median = new JLabel();
@@ -51,17 +53,6 @@ public class ResultsDisplayPanel extends JPanel{
 		this.add(saveFinalEstimateBtn);
 		this.add(message);
 		
-//		saveFinalEstimateBtn.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				
-//				// Save final estimate
-//				int est = Integer.parseInt(finalEstimate.getText());
-//				game.findEstimate(reqid).setFinalEstimate(est);
-//				
-//			}
-//		});
 		
 	}
 
@@ -141,6 +132,10 @@ public class ResultsDisplayPanel extends JPanel{
 	 */
 	public int getReqid() {
 		return reqid;
+	}
+	
+	public void refresh(){
+		treePanel.refresh();
 	}
 
 }

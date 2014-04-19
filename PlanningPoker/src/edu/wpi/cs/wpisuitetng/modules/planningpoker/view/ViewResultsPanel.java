@@ -19,6 +19,7 @@ import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.EstimateTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ListEstimatedRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsPanel;
 
@@ -33,7 +34,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsPanel;
 @SuppressWarnings("serial")
 public class ViewResultsPanel extends JPanel{
 
-	private final ListEstimatedRequirementsPanel listRequirementsPanel;
+	private final EstimateTreePanel estimateTreePanel;
 	private final ResultsPanel resultsPanel;
 	private final JSplitPane splitPane;
 	private Game game;
@@ -50,12 +51,12 @@ public class ViewResultsPanel extends JPanel{
 		setLayout(new BorderLayout());
 		
 		controller = new ViewResultsController();
-		listRequirementsPanel = new ListEstimatedRequirementsPanel(game, controller);
+		estimateTreePanel = new EstimateTreePanel(game, controller);
 		Dimension minimumSize = new Dimension(250, 300);
-		listRequirementsPanel.setMinimumSize(minimumSize);
+		estimateTreePanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
-		splitPane.setLeftComponent(listRequirementsPanel);
-		resultsPanel = new ResultsPanel(listRequirementsPanel, game);
+		splitPane.setLeftComponent(estimateTreePanel);
+		resultsPanel = new ResultsPanel(estimateTreePanel, game);
 		splitPane.setRightComponent(resultsPanel);
 		controller.setResultsPanel(resultsPanel);
 		

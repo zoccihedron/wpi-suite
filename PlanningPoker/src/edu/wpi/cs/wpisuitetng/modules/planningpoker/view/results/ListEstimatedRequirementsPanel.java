@@ -13,9 +13,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DropMode;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -46,6 +48,7 @@ implements TreeSelectionListener {
 	private final Game game;
 	private PlayGameController playGameController;
 	private ViewResultsController controller;
+	private JButton sendSelectedRequirement;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
@@ -137,12 +140,14 @@ implements TreeSelectionListener {
 							notSelectedCategory.add(reqNode);
 						}
 						else if(!e.estimationHasBeenSent() && e.getFinalEstimate() != 0){
+							System.out.println("---------add element to selected");
 							reqNode = new DefaultMutableTreeNode(req);
 							selectedCategory.add(reqNode);
 						}
 						else{ // estimation is sent
 							reqNode = new DefaultMutableTreeNode(req);
 							sentCategory.add(reqNode);
+							System.out.println("-----------add element to sent");
 						}
 					}
 				}
@@ -172,6 +177,17 @@ implements TreeSelectionListener {
 		this.setViewportView(tree); //make panel display the tree
 
 		System.out.println("finished refreshing the tree");
+	}
+	
+	public ArrayList<Estimate> getSelectedEstimates(){
+		ArrayList<Estimate> estimates = new ArrayList<Estimate>();
+		for(Estimate e: game.getEstimates()){
+			if(!e.estimationHasBeenSent() && e.getFinalEstimate() != 0){
+				estimates.add(e);
+				
+			}
+		}
+		return estimates;
 	}
 	
 	

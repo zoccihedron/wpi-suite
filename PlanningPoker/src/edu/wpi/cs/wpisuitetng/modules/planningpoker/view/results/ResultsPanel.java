@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class ResultsPanel extends JPanel{
 
 	private Game game;
-	private ListEstimatedRequirementsPanel listReqPanel;
+	private EstimateTreePanel estimateTreePanel;
 	private final JLabel titleLabel;
 	private final JLabel nameLabel;
 	private final JLabel descriptionLabel;
@@ -41,10 +41,10 @@ public class ResultsPanel extends JPanel{
 	 * @param listRequirementsPanel is the tree of requirements for the ended game
 	 * @param is the game to view results of
 	 */
-	public ResultsPanel(ListEstimatedRequirementsPanel listRequirementsPanel, Game game) {
+	public ResultsPanel(EstimateTreePanel estimateTreePanel, Game game) {
 		this.game = game;
 		
-		this.listReqPanel = listRequirementsPanel;
+		this.estimateTreePanel = estimateTreePanel;
 
 		setBounds(5, 5, 307, 393);
 		this.setLayout(new GridBagLayout());
@@ -149,7 +149,7 @@ public class ResultsPanel extends JPanel{
 		add(scrollPane, constraints);
 
 		// DISPLAY PANEL 
-		resultsDisplayPanel = new ResultsDisplayPanel(game);
+		resultsDisplayPanel = new ResultsDisplayPanel(game,estimateTreePanel);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 12;
@@ -193,7 +193,7 @@ public class ResultsPanel extends JPanel{
 	 * Refreshes the list requirements panel
 	 */
 	public void refresh(){
-		listReqPanel.refresh();
+		estimateTreePanel.refresh();
 	}
 	
 }
