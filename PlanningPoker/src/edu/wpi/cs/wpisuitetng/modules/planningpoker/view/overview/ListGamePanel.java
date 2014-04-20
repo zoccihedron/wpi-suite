@@ -163,8 +163,11 @@ implements TreeSelectionListener {
 		
 		//create the tree with the top node as the top
 		tree = new JTree(top); 
-		//have all of the nodes expand automatically after refreshing
-		for(int i = 0; i < tree.getRowCount(); i++) tree.expandRow(i);
+		//have all of the nodes expand automatically after refreshing, except for the
+		//last row, which stores the closed (archived) games
+		for(int i = 0; i < tree.getRowCount() - 1; i++) {
+			tree.expandRow(i);
+		}
 		//tell it that it can only select one thing at a time
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); 
 		tree.setToggleClickCount(0);
