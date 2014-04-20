@@ -171,7 +171,8 @@ public class GameSummaryPanel extends JPanel {
 		sendReqsButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(), gameSummaryPanel);
+				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(),
+																		gameSummaryPanel);
 			}
  		});
 		

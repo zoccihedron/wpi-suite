@@ -117,7 +117,8 @@ public class RequirementManagerFacade {
 			
 			req.setEstimate((int)estimate.getMean());
 			
-			Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+			Request request =
+					Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST);
 			request.setBody(req.toJSON()); 
 			request.addObserver(new RequestObserver(){
 

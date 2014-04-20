@@ -28,7 +28,9 @@ public class EndGameManuallyController implements ActionListener {
 	private final boolean endingGame;
 
 	
-	public EndGameManuallyController(GameSummaryPanel gameSummaryPanel, Game endedGame, boolean endingGame) {
+	public EndGameManuallyController(GameSummaryPanel gameSummaryPanel,
+										Game endedGame,
+										boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = gameSummaryPanel;
 		this.endedGame = endedGame;

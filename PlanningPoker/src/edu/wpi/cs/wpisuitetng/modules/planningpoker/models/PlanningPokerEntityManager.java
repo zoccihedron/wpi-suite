@@ -68,7 +68,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					g.updateStatus();
 					if((!status.equals(GameStatus.ENDED)) && g.getStatus().equals(GameStatus.ENDED))
 					{
-						Mailer mailer = new Mailer(g, temp_db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+						Mailer mailer = new Mailer(g, temp_db.retrieveAll(new User("", "", "", 0)),
+																			Notification.ENDED);
 						mailer.start();
 						temp_db.save(g);
 					}
@@ -96,7 +97,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		
 		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
-			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)),
+																		Notification.ENDED);
 			mailer.start();
 		}
 		
@@ -329,7 +331,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
 					final Estimate gameEst = game.findEstimate(estimate.getReqID());
 					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
-					gameEst.setUserCardSelection(s.getUsername(), estimate.getUserCardSelection(s.getUsername()));
+					gameEst.setUserCardSelection(s.getUsername(),
+												estimate.getUserCardSelection(s.getUsername()));
 					
 					for(Estimate e: game.getEstimates()){
 						Estimate tempEst = e.getCopy();

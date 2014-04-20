@@ -127,7 +127,8 @@ public class SelectRequirementsPanel extends JPanel {
 		modelExisting = (DefaultTableModel) existingRequirementsTable.getModel();
 
 		// Put in scroll pane for overflow
-		final JScrollPane existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
+		final JScrollPane existingRequirementsTablePanel =
+				new JScrollPane(existingRequirementsTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
