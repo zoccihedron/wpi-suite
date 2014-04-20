@@ -278,7 +278,6 @@ public class UserPreferencesPanel extends JPanel {
 					imField.setEnabled(false);
 					lblIMCheck.setVisible(false);
 					imVerified = true;
-					//configSubmitButton();
 				}
 
 			}
@@ -300,7 +299,6 @@ public class UserPreferencesPanel extends JPanel {
 					emailField.setEnabled(false);
 					lblEmailCheck.setVisible(false);
 					emailVerified = true;
-					//configSubmitButton();
 				}
 
 			}
