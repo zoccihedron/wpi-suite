@@ -97,44 +97,45 @@ public class GameSummaryPanel extends JPanel {
 		editGameButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				
- 				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
-	 				
-	 				final Request request = Network.getInstance().makeRequest
-	 						("Advanced/planningpoker/game/edit", HttpMethod.POST);
-	 				request.setBody(game.toJSON());
-	 				request.addObserver(new RequestObserver() {
-						
+				final MainViewTabController mvt = MainViewTabController
+						.getInstance();
+
+				if (game.getStatus().equals(GameStatus.IN_PROGRESS)) {
+
+					final Request request = Network.getInstance()
+							.makeRequest("Advanced/planningpoker/game/edit",
+									HttpMethod.POST);
+					request.setBody(game.toJSON());
+					request.addObserver(new RequestObserver() {
+
 						@Override
 						public void responseSuccess(IRequest iReq) {
 							ResponseModel response = iReq.getResponse();
 							String message = response.getBody();
-							if(message.trim().equals("true")){
-								mvt.createGameTab(game);
-							}
-							else{
+							if (message.trim().equals("true")) {
+								mvt.createGameTab(game, true);
+							} else {
 								gameSummaryPanel.reportError(message);
 								editGameButton.setEnabled(false);
 							}
 						}
-						
+
 						@Override
 						public void responseError(IRequest iReq) {
 							// TODO Auto-generated method stub
-							
+
 						}
-						
+
 						@Override
 						public void fail(IRequest iReq, Exception exception) {
 							// TODO Auto-generated method stub
-							
+
 						}
 					});
-	 				request.send();
- 				}
+					request.send();
+				}
  				else{
- 					mvt.createGameTab(game);
+ 					mvt.createGameTab(game, false);
  				}
 			}
  			
@@ -306,7 +307,8 @@ public class GameSummaryPanel extends JPanel {
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameButton.setEnabled(true);
+				
+				playGameButton.setEnabled(!game.isEditing());
 				editGameButton.setEnabled(!game.isHasBeenEstimated());
 				endGameButton.setEnabled(true);
 				viewResultsButton.setEnabled(false);
