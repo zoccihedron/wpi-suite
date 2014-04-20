@@ -97,7 +97,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(existingRequirementsLabel, constraints);
 		
 		// Table
-		existingRequirementsTable = new JTable(new DefaultTableModel(data,columnNames) {
+		existingRequirementsTable = new JTable(new DefaultTableModel(data, columnNames) {
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}

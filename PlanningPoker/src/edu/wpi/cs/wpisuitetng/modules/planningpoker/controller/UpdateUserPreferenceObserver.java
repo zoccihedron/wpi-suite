@@ -11,6 +11,13 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
+
+import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
+
 /**
  * This observer is called when a response is received from a request
  * to the server to update a user preference.
@@ -18,12 +25,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
  * @author Code On Bleu
  * @version 1.0
  */
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
-import edu.wpi.cs.wpisuitetng.network.RequestObserver;
-import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
-
 public class UpdateUserPreferenceObserver implements RequestObserver {
 	
 	private UserPreferencesPanel userPreferencePanel;

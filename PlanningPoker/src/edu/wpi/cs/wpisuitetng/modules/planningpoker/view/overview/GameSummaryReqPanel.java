@@ -55,7 +55,7 @@ public class GameSummaryReqPanel extends JPanel {
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		
 				
-		requirementsTable = new JTable(new DefaultTableModel(data,columnNames) {
+		requirementsTable = new JTable(new DefaultTableModel(data, columnNames) {
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -97,7 +97,7 @@ public class GameSummaryReqPanel extends JPanel {
 	private void fillRequirementsTable(Game game){
 
 		// Set to new empty model to empty table
-		requirementsTable.setModel(new DefaultTableModel(data,columnNames) {
+		requirementsTable.setModel(new DefaultTableModel(data, columnNames) {
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}

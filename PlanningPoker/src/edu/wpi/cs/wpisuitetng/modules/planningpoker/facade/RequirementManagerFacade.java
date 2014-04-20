@@ -14,19 +14,16 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.facade;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Timer;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -113,7 +110,7 @@ public class RequirementManagerFacade {
 	public void sendEstimates(List<Estimate> estimates, final GameSummaryPanel view){
 		for(Estimate estimate : estimates){
 			Requirement req = requirements.get(estimate.getReqID());
-			System.out.println("Req name: "+req.getName()+" Req Mean: "+estimate.getMean());
+			System.out.println("Req name: " + req.getName() + " Req Mean: " + estimate.getMean());
 			
 			req.setEstimate((int)estimate.getMean());
 			
@@ -145,7 +142,7 @@ public class RequirementManagerFacade {
 			request.send(); 
 			
 			
-			System.out.println("Check: requ name: "+ req.getName() + " est " + req.getEstimate());
+			System.out.println("Check: requ name: " + req.getName() + " est " + req.getEstimate());
 		}
 	}
 
