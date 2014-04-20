@@ -153,9 +153,7 @@ public class RequirementManagerFacade {
 
 					@Override
 					public void responseSuccess(IRequest iReq) {
-						// TODO Auto-generated method stub
 						GetRequirementsController.getInstance().retrieveRequirements();
-						//view.reportSuccess("Selected estimates sent!");
 						System.out.println("Selected estimates sent!");
 					}
 
