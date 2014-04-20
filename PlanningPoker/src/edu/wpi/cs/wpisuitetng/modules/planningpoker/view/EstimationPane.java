@@ -278,6 +278,7 @@ public class EstimationPane extends JPanel {
 		}
 		catch(NotFoundException exception){
 			message.setText("Exception: Requirement Not Found");
+			System.err.println(exception.getMessage());
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
@@ -319,6 +320,7 @@ public class EstimationPane extends JPanel {
 
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
+			System.err.println(e.getMessage());
 			voteButton.setEnabled(false);
 			return false;
 		}
@@ -365,7 +367,7 @@ public class EstimationPane extends JPanel {
 
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
-
+			System.err.println(e.getMessage());
 		}
 		return 0;
 
