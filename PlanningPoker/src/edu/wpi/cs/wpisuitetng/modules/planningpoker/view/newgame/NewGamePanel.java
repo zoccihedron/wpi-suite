@@ -81,7 +81,6 @@ public class NewGamePanel extends JSplitPane {
 	public NewGamePanel(Game editingGame, boolean isInProgress) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
-		final Game original = editingGame;
 		lblMessage = new JLabel("*Error");
 
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
@@ -93,9 +92,6 @@ public class NewGamePanel extends JSplitPane {
 		// Maps Create Game button to UpdateGameController class
 		if(isInProgress){
 			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, true));
-			
-			btnCancel.addActionListener(
-			new UpdateGameController(createGameInfoPanel, original, true));	
 		}
 		else{
 		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
