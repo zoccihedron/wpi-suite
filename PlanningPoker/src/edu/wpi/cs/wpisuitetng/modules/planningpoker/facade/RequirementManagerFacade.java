@@ -14,22 +14,16 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.facade;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.Timer;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.EstimateTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -105,7 +99,6 @@ public class RequirementManagerFacade {
 	}
 
 	public void setRequirements(Requirement[] requirements) {
-		// TODO Auto-generated method stub
 		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
 	}
 
@@ -139,29 +132,25 @@ public class RequirementManagerFacade {
 				public void responseError(IRequest iReq) {
 				}
 
-				@Override
-				public void fail(IRequest iReq, Exception exception) {
-				}
+					@Override
+					public void fail(IRequest iReq, Exception exception) {
+					}
+					
+				}); 
+				request.send();
 				
-			}); 
-			request.send();
-			
-			
-			
-			//update information in requirement manager
-			req.setEstimate((int)estimate.getFinalEstimate());
+				//update information in requirement manager
+				req.setEstimate((int)estimate.getFinalEstimate());
 
-			Request requestForReq = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
-			requestForReq.setBody(req.toJSON()); 
-			requestForReq.addObserver(new RequestObserver(){
+				Request requestForReq = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+				requestForReq.setBody(req.toJSON()); 
+				requestForReq.addObserver(new RequestObserver(){
 
-				@Override
-				public void responseSuccess(IRequest iReq) {
-					// TODO Auto-generated method stub
-					GetRequirementsController.getInstance().retrieveRequirements();
-					//view.reportSuccess("Selected estimates sent!");
-					System.out.println("Selected estimates sent!");
-				}
+					@Override
+					public void responseSuccess(IRequest iReq) {
+						GetRequirementsController.getInstance().retrieveRequirements();
+						System.out.println("Selected estimates sent!");
+					}
 
 				@Override
 				public void responseError(IRequest iReq) {
@@ -180,7 +169,6 @@ public class RequirementManagerFacade {
 			
 
 		}
-
 	
 	}
 	
