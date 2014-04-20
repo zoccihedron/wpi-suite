@@ -242,7 +242,7 @@ public class EstimationPane extends JPanel {
 
 		try {
 		    Image img = ImageIO.read(getClass().getResource("vote.png"));
-		    voteButton.setIcon(new ImageIcon(img));		    
+		    voteButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -300,7 +300,8 @@ public class EstimationPane extends JPanel {
 
 	/**
 	 * This method checks if the estimation is of the correct value (An interger) And updates the
-	 * display to show an error if the value is wrong. It also checks that a deck is selected in the deck version
+	 * display to show an error if the value is wrong. It also checks that a deck is selected in
+	 * the deck version
 	 * @return True if everything is all set, return false if the value is incorrect
 	 */
 	public boolean checkField() {
