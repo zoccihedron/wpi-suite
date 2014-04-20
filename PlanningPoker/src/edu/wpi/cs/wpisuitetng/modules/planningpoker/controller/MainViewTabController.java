@@ -76,8 +76,8 @@ public class MainViewTabController {
 	 * Creates a createGameTab given a game
 	 * @param game the info with which to populate the tab
 	 */
-	public void createGameTab(Game game) {
-		final NewGamePanel newGamePanel = new NewGamePanel(game);
+	public void createGameTab(Game game, boolean isInProgress) {
+		final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
 		mainView.insertTab(game.getName(), newGamePanel, mainView.getTabCount());
 		mainView.invalidate();
 		mainView.repaint();

@@ -107,7 +107,7 @@ public class GameSummaryPanel extends JPanel {
 							ResponseModel response = iReq.getResponse();
 							String message = response.getBody();
 							if(message.trim().equals("true")){
-								mvt.createGameTab(game);
+								mvt.createGameTab(game, true);
 							}
 							else{
 								gameSummaryPanel.reportError(message);
@@ -130,7 +130,7 @@ public class GameSummaryPanel extends JPanel {
 	 				request.send();
  				}
  				else{
- 					mvt.createGameTab(game);
+ 					mvt.createGameTab(game, false);
  				}
 			}
  			

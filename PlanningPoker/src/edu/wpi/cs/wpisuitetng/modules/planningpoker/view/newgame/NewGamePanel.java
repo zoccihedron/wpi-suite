@@ -66,7 +66,7 @@ public class NewGamePanel extends JSplitPane {
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
 		
-		setUpPanel();
+		setUpPanel(false);
 		
 		// Maps Create Game button to AddGameController class
 		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
@@ -78,28 +78,37 @@ public class NewGamePanel extends JSplitPane {
 	 * Use this constructor when you want to edit an existing game
 	 * @param editingGame the game to be updated
 	 */
-	public NewGamePanel(Game editingGame) {
+	public NewGamePanel(Game editingGame, boolean isInProgress) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
+		final Game original = editingGame;
 		lblMessage = new JLabel("*Error");
 
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		
-		setUpPanel();
+		setUpPanel(isInProgress);
 		
 		// Maps Create Game button to UpdateGameController class
+		if(isInProgress){
+			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, true));
+			
+			btnCancel.addActionListener(
+			new UpdateGameController(createGameInfoPanel, original, true));	
+		}
+		else{
 		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
 		
 		btnStart.addActionListener(
 				new UpdateGameController(createGameInfoPanel, editingGame, true));
+		}
 	}
 	
 	/**
 	 * Sets up constraints on panel that are shared for each constructor
 	 */
-	private void setUpPanel(){
+	private void setUpPanel(boolean isInProgress){
 
 		// Add some lovely padding to the requirements tables and labels
 		selectRequirementsPanel.setBorder(new EmptyBorder(10,10,10,10));
@@ -128,7 +137,10 @@ public class NewGamePanel extends JSplitPane {
 		btnStart.setBounds(12, 5, 118, 25);
 		btnStart.setEnabled(false);
 		bottomPanel.add(btnStart);
-		
+		if(isInProgress){
+			
+			btnStart.setVisible(false);
+		}
 		lblMessage.setBounds(395, 8, 457, 18);
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
