@@ -264,13 +264,13 @@ public class GameSummaryPanel extends JPanel {
 		add(extraPanel2, constraints);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("yield.png"));
+		    Image img = ImageIO.read(getClass().getResource("editIcon.png"));
 		    editGameButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("stop.png"));
 		    endGameButton.setIcon(new ImageIcon(img));
 		    
-		    img = ImageIO.read(getClass().getResource("greenCircle.png"));
+		    img = ImageIO.read(getClass().getResource("playIcon.png"));
 		    playGameButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("checkmark.png"));
