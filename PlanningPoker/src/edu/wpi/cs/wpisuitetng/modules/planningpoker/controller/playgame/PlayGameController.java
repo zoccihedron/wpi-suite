@@ -54,7 +54,8 @@ public class PlayGameController {
 	 * @param game the game
 	 */
 	public void updateEstimationPane(int id, Game game) {
-		 estimationPane.setGameAndRequirement(id, game);
+		estimationPane.getDeckPanel().enableVoting();
+		estimationPane.setGameAndRequirement(id, game);
 	}
 	
 	
