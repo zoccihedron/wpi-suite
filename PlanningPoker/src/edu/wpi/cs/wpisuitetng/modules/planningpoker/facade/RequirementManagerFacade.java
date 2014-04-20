@@ -22,6 +22,7 @@ import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.EstimateTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.controller.GetRequirementsController;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -98,7 +99,6 @@ public class RequirementManagerFacade {
 	}
 
 	public void setRequirements(Requirement[] requirements) {
-		// TODO Auto-generated method stub
 		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
 	}
 
@@ -111,7 +111,6 @@ public class RequirementManagerFacade {
 
 		for(Estimate estimate : estimates){
 			Requirement req = requirements.get(estimate.getReqID());
-<<<<<<< HEAD
 
 			// if the requirement is selected
 			
@@ -133,23 +132,6 @@ public class RequirementManagerFacade {
 					public void responseSuccess(IRequest iReq) {
 						System.out.println("Mark this estimate as sent-----------");
 					}
-=======
-			System.out.println("Req name: " + req.getName() + " Req Mean: " + estimate.getMean());
-			
-			req.setEstimate((int)estimate.getMean());
-			
-			Request request =
-					Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST);
-			request.setBody(req.toJSON()); 
-			request.addObserver(new RequestObserver(){
-
-				@Override
-				public void responseSuccess(IRequest iReq) {
-					// TODO Auto-generated method stub
-					GetRequirementsController.getInstance().retrieveRequirements();
-					view.reportSuccess("Estimates sent!");
-				}
->>>>>>> 6bd58eb3b73645c907e79db6ab4fb6d7be2d702c
 
 					@Override
 					public void responseError(IRequest iReq) {
@@ -161,9 +143,6 @@ public class RequirementManagerFacade {
 					
 				}); 
 				request.send();
-				
-<<<<<<< HEAD
-				
 				
 				//update information in requirement manager
 				req.setEstimate((int)estimate.getFinalEstimate());
@@ -196,15 +175,7 @@ public class RequirementManagerFacade {
 				requestForReq.send(); 
 			}
 
-=======
-			});
-			request.send(); 
-			
-			
-			System.out.println("Check: requ name: " + req.getName() + " est " + req.getEstimate());
->>>>>>> 6bd58eb3b73645c907e79db6ab4fb6d7be2d702c
 		}
-
 	
 	}
 	
