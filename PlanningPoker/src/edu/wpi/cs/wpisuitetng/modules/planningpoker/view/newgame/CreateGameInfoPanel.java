@@ -570,8 +570,12 @@ public class CreateGameInfoPanel extends JPanel {
 			if(!(datePicker.getModel().getValue() == null)){
 				tempDate = getDeadline();
 			}
+			
+			if (defaultDate != null){
+				result &= defaultDate.equals(tempDate);
+			}
 		}
-		result &= defaultDate.equals(tempDate);
+
 		result &= defaultDeck.equals(deck.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
 		return !result;		
