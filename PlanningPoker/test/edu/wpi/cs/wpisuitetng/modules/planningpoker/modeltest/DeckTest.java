@@ -20,10 +20,9 @@ public class DeckTest {
 		ArrayList<Integer> cards = new ArrayList<Integer>();
 		cards.add(5);
 		cards.add(2);
-		Deck testDeck = new Deck("Test Deck", false, cards);
+		Deck testDeck = new Deck("Test Deck", cards);
 		assertNotNull(testDeck);
 		assertTrue(testDeck.getName().equals("Test Deck"));
-		assertFalse(testDeck.canSelectMultipleCards());
 		assertEquals(5, (int) testDeck.getCards().get(1));
 	}
 	
@@ -32,7 +31,7 @@ public class DeckTest {
 		ArrayList<Integer> cards = new ArrayList<Integer>();
 		cards.add(5);
 		cards.add(2);
-		Deck testDeck = new Deck("Test Deck", false, cards);
+		Deck testDeck = new Deck("Test Deck", cards);
 		testDeck.removeCard(5);
 		assertTrue(testDeck.getCards().size() == 1);
 	}
@@ -42,7 +41,7 @@ public class DeckTest {
 		ArrayList<Integer> cards = new ArrayList<Integer>();
 		cards.add(5);
 		cards.add(2);
-		Deck testDeck = new Deck("Test Deck", false, cards);
+		Deck testDeck = new Deck("Test Deck", cards);
 		testDeck.addCard(5);
 		assertTrue(testDeck.getCards().size() == 3);
 	}
