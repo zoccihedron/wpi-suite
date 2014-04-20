@@ -18,6 +18,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewResultsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 
 
@@ -112,6 +113,17 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(userPrefPanel);
 	}
+	/**
+	 * Creates a view results tab given a game
+	 * @param game the game to be viewed
+	 */
+	public void viewResultsTab(Game game) {
+		final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
+		mainView.insertTab(game.getName(), resultsPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(resultsPanel);
+	}
 	
 	/**
 	 * Closes a given tab
@@ -128,6 +140,10 @@ public class MainViewTabController {
 			}
 		} else if(tabToClose instanceof UserPreferencesPanel) {
 			if(((UserPreferencesPanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
+		} else if(tabToClose instanceof ViewResultsPanel){
+			if(((ViewResultsPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
 		}

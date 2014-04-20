@@ -323,14 +323,17 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	@Override
 	public String advancedPost(Session s, String string, String content) 
 			throws NotFoundException, WPISuiteException{
-		
+			
 			String returnString = "false";
-			if( string.equals("vote") ){
+			if( string.equals("vote")){
 				
 				final Estimate estimate = Estimate.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
+
 				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+
 				if(game.getStatus().equals(GameStatus.IN_PROGRESS) && !game.isEditing()){
+
 					final Estimate gameEst = game.findEstimate(estimate.getReqID());
 					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
 					gameEst.setUserCardSelection(s.getUsername(),
@@ -357,6 +360,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					}
 					returnString = "true";
 				}
+
 				else if (game.isEditing()){
 					returnString = "*Voting is not currently allowed: The game is being edited.";
 				}
@@ -367,10 +371,50 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					returnString = "*Voting is not currently allowed.";
 				}
 
+			} 
+			else if(string.equals("send")){
+				final Estimate oldEst = Estimate.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+				final Estimate newEst = game.findEstimate(oldEst.getReqID());
 				
-
-
+				newEst.estimationSent(true);
+				
+				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+				for(Estimate e: game.getEstimates()){
+					Estimate tempEst = e.getCopy();
+					newEstimates.add(tempEst);
+				}
+				game.setEstimates(newEstimates);
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = "true";
+				
 			}
+			
+			else if(string.equals("sendFinalEstimate"))
+			{
+				final Estimate oldEst = Estimate.fromJson(content);
+				System.out.println(content);
+				final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+				final Estimate newEst = game.findEstimate(oldEst.getReqID());
+				
+				newEst.setFinalEstimate(oldEst.getFinalEstimate());
+				
+				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+				for(Estimate e: game.getEstimates()){
+					Estimate tempEst = e.getCopy();
+					newEstimates.add(tempEst);
+				}
+				game.setEstimates(newEstimates);
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = "true";
+			}
+			
 			else if( string.equals("end") ){
 				
 				final Game endedGame = Game.fromJson(content);

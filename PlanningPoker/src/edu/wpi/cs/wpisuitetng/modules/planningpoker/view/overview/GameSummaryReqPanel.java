@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -23,6 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -40,10 +42,10 @@ public class GameSummaryReqPanel extends JPanel {
 
 	private JTable requirementsTable = null;
 	private DefaultTableModel modelReqs;
-	private String[] columnNames = { "ID", "Name", "Description", "Mean"};
+	private String[] columnNames = { "ID", "Name", "Description", "Mean", "Final Estimate"};
 	private JLabel lblRequirements;
 	private Object[][] data = new Object[][] {};
-
+	private String currentUser = ConfigManager.getInstance().getConfig().getUserName();
 	/**
 	 * This constructor is to be used when starting from a new game
 	 * 
@@ -64,7 +66,6 @@ public class GameSummaryReqPanel extends JPanel {
 
 		// Hide the column with IDs
 		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
-		
 		
 		final JScrollPane requirementsTablePanel = new JScrollPane(requirementsTable);
 		
@@ -94,7 +95,7 @@ public class GameSummaryReqPanel extends JPanel {
 	 * fills the requirements table in this GameSummaryReqPanel
 	 * @param game to get requirements from
 	 */
-	private void fillRequirementsTable(Game game){
+	private void fillRequirementsTable(final Game game){
 
 		// Set to new empty model to empty table
 		requirementsTable.setModel(new DefaultTableModel(data, columnNames) {
@@ -106,6 +107,7 @@ public class GameSummaryReqPanel extends JPanel {
 		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
 	
 		if (game.getStatus() != GameStatus.ENDED) {
+			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(3));
 			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(2));
 		}
 		
@@ -122,9 +124,11 @@ public class GameSummaryReqPanel extends JPanel {
 				}
 
 				modelReqs.addRow(new Object[] {
-						Integer.toString(req.getId()), req.getName(),
+						Integer.toString(req.getId()), 
+						req.getName(),
 						req.getDescription(),
-						meanEstimate});
+						meanEstimate,
+						game.findEstimate(req.getId()).getFinalEstimate()});
 			}
 		}
 	}
@@ -137,6 +141,22 @@ public class GameSummaryReqPanel extends JPanel {
 	public void updateReqSummary(Game game){
 		
 		fillRequirementsTable(game);
+		
+	}
+	
+	
+	public ArrayList<Integer> getSelectedRequirements(){
+		int[] selectedRows = requirementsTable.getSelectedRows();
+		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
+		
+		for (int row: selectedRows){
+			String reqid = (String) requirementsTable.getModel().getValueAt(row,0);
+			Integer reqIdNum = Integer.parseInt(reqid);
+			reqIDs.add(reqIdNum);
+			
+		}
+		
+		return reqIDs;
 		
 	}
 	
