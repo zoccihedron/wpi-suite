@@ -406,6 +406,22 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					returnString = "*This game has been recently voted on. Editing is no longer available";
 				}
 			}
+			else if( string.equals("endEdit") ){
+				
+				final Game editedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
+				if(!game.isHasBeenEstimated()){
+					game.setEditing(false);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
+				}
+				else{
+					returnString = "*This game has been recently voted on. Editing is no longer available";
+				}
+			}
 			return returnString;
 	}
 

@@ -34,6 +34,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.AddGameCo
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.CloseNewGameTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 
 
@@ -54,6 +60,7 @@ public class NewGamePanel extends JSplitPane {
 	private JLabel lblMessage;
 	private boolean changesSaved = false;
 	private boolean isInProgress;
+	private Game game;
 	/**
 	 * Use this constructor when starting a new game panel from scratch
 	 */
@@ -84,6 +91,8 @@ public class NewGamePanel extends JSplitPane {
 		
 		lblMessage = new JLabel("*Error");
 		this.isInProgress = isInProgress;
+		this.game = editingGame;
+		
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
@@ -92,21 +101,16 @@ public class NewGamePanel extends JSplitPane {
 		setUpPanel();
 		
 		// Maps Create Game button to UpdateGameController class
-<<<<<<< HEAD
+
 		if(isInProgress){
 			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, true));
 		}
 		else{
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
-=======
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel,
-															editingGame,
-															false));
->>>>>>> f713801493cfda14035b08ce2e04720b0689b377
+			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
+		}
 		
 		btnStart.addActionListener(
 				new UpdateGameController(createGameInfoPanel, editingGame, true));
-		}
 	}
 	
 	/**
@@ -253,6 +257,7 @@ public class NewGamePanel extends JSplitPane {
 	 * @return boolean if it's ready to close
 	 */
 	public boolean isReadyToClose() {
+		
 		boolean result;
 		if(createGameInfoPanel.isPageEdited()){
 			final Object options[] = {
@@ -267,6 +272,13 @@ public class NewGamePanel extends JSplitPane {
 			result = (i == 0);
 		} else {
 			result = true;
+		}
+		if (this.isInProgress && result) {
+			final Request request = Network.getInstance()
+					.makeRequest("Advanced/planningpoker/game/endEdit",
+							HttpMethod.POST);
+			request.setBody(game.toJSON());
+			request.send();
 		}
 		return result;
 	}
