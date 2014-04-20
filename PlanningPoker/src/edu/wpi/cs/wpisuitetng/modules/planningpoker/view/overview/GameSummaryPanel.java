@@ -33,8 +33,6 @@ import javax.swing.border.EmptyBorder;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -54,24 +52,57 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 @SuppressWarnings({ "serial" })
 public class GameSummaryPanel extends JPanel {
 
-	private final GameSummaryInfoPanel infoPanel;
-	private final GameSummaryReqPanel reqPanel;
-	private final JButton editGameButton;
-	private final JButton playGameButton;
-	private final JButton endGameButton;
-	private final JButton viewResultsButton;
-
-	private final JLabel reportMessage;
-	private final GameSummaryPanel  gameSummaryPanel = this;
+	private GameSummaryInfoPanel infoPanel;
+	private GameSummaryReqPanel reqPanel;
+	private JButton editGameButton;
+	private JButton playGameButton;
+	private JButton endGameButton;
+	private JButton viewResultsButton;
+	private JLabel helpTitle;
+	private JLabel helpText;
+	private JLabel reportMessage;
+	private GameSummaryPanel  gameSummaryPanel = this;
 	JPanel buttonsPanel;
 	Game game;
-	
 
 	/**
 	 * 
 	 */
 	public GameSummaryPanel() {
 		
+		setUpHelpPanel();
+
+	}
+	 /**
+	  * sets up help panel to show before a game has been selected
+	  */
+	private void setUpHelpPanel(){
+		// Set up layout constraints
+		this.setLayout(new GridBagLayout());
+		final GridBagConstraints constraints = new GridBagConstraints();
+				
+		helpTitle = new JLabel();
+		helpText = new JLabel();
+		
+		helpTitle.setText("Games Overview");
+		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		
+		helpText.setText("To begin, please select a game from the tree on the left.");
+		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(helpTitle,constraints);
+		
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		this.add(helpText, constraints);
+	}
+	
+	/**
+	 * shows this panel once a game has been selected
+	 */
+	private void setUpGameSummaryPanel(){
 		// Set up layout constraints
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -282,7 +313,6 @@ public class GameSummaryPanel extends JPanel {
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-
 	}
 	
 	/**
@@ -291,6 +321,8 @@ public class GameSummaryPanel extends JPanel {
 	 */
 	public void updateSummary(Game game){
 		this.game = game;
+		this.removeAll();
+		setUpGameSummaryPanel();
 		
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
 			//make all buttons visible
