@@ -578,7 +578,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		result &= defaultDeck.equals(deck.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
-		return !result;		
+		return !result;
 	}
 
 	/**

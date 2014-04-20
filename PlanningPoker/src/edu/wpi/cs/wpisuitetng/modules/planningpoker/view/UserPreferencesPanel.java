@@ -331,7 +331,8 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setAllowEmail(checkBoxEmail.isSelected());
 				dummyUser.setAllowIM(checkBoxIM.isSelected());
 				final Request request =
-						Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
+						Network.getInstance().makeRequest("Advanced/core/user/changeInPreference",
+															HttpMethod.POST);
 				request.setBody(dummyUser.toJSON());
 				request.addObserver(new RequestObserver(){
 

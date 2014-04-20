@@ -27,7 +27,7 @@ public class EndGameManuallyController implements ActionListener {
 	private Game endedGame;
 	private final boolean endingGame;
 
-	
+
 	public EndGameManuallyController(GameSummaryPanel gameSummaryPanel,
 										Game endedGame,
 										boolean endingGame) {
@@ -40,13 +40,11 @@ public class EndGameManuallyController implements ActionListener {
 	
 	
 	
-	/* (non-Javadoc)
+	/* (not Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		{
-
 			final Game currentGame = view.getGameObject();
 			
 			if(endingGame) {
@@ -64,8 +62,6 @@ public class EndGameManuallyController implements ActionListener {
 			// add an observer to process the response
 			request.addObserver(new EndGameManuallyRequestObserver(this));
 			request.send(); // send the request
-		}
-
 	}
 
 	/**
