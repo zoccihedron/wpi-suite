@@ -96,7 +96,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		
 		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
-			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
 			mailer.start();
 		}
 		
@@ -226,7 +226,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if(existingGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
 			final Mailer mailer = new Mailer(
-					existingGame, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+					existingGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
 			mailer.start();
 		}
 		
