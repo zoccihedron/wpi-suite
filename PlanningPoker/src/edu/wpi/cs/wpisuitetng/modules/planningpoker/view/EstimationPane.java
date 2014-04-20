@@ -242,7 +242,7 @@ public class EstimationPane extends JPanel {
 
 		try {
 		    Image img = ImageIO.read(getClass().getResource("vote.png"));
-		    voteButton.setIcon(new ImageIcon(img));		    
+		    voteButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}

@@ -58,7 +58,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private Game game;
 	
 	public SelectRequirementsPanel() {
-		setUpPanel();		
+		setUpPanel();
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(existingRequirementsTablePanel, constraints);
 					
 		/*---------------------------------------------------------------------
-		 *                         BUTTONS PANEL
+		 *                       - BUTTONS PANEL -
 		 * --------------------------------------------------------------------
 		 */
 		

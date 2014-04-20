@@ -90,7 +90,9 @@ public class NewGamePanel extends JSplitPane {
 		setUpPanel();
 		
 		// Maps Create Game button to UpdateGameController class
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
+		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel,
+															editingGame,
+															false));
 		
 		btnStart.addActionListener(
 				new UpdateGameController(createGameInfoPanel, editingGame, true));
