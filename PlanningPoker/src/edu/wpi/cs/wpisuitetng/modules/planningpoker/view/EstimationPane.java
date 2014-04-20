@@ -281,6 +281,9 @@ public class EstimationPane extends JPanel {
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
+		
+		checkField();
+		message.setText("<html></html>");
 
 
 	}
@@ -304,6 +307,7 @@ public class EstimationPane extends JPanel {
 		
 		if(!deckPanel.hasDeckSelected()) {
 			reportError("<html>Error: Select a card.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 		
@@ -314,23 +318,28 @@ public class EstimationPane extends JPanel {
 
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 
 		if(estimate < 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 		
 		if(estimate == 0){
 			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
+			voteButton.setEnabled(true);
 			return true;
 		}
 		
 		if(game.getStatus() == GameStatus.ENDED){
 			reportError("<html>Error: Game has ended</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
+		voteButton.setEnabled(true);
 		return true;
 	}
 
