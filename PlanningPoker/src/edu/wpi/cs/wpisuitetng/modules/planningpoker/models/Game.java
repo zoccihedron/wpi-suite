@@ -56,6 +56,7 @@ public class Game extends AbstractModel {
 	}
 
 	private GameStatus status = GameStatus.DRAFT;
+	private boolean editing = false;
 
 	// TODO: timestamp, countdown or time for deadline, estimate, boolean for
 	// termination
@@ -622,6 +623,14 @@ public class Game extends AbstractModel {
 	 */
 	public void setDeck(String deck) {
 		this.deck = deck;
+	}
+
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+	}
+
+	public boolean isEditing() {
+		return editing;
 	}
 
 }
