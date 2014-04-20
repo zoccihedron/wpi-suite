@@ -41,6 +41,7 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.ChangeDeadlineVisibilityController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.ChangeMultiSelectVisibilityController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 /**
@@ -69,6 +70,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private final JLabel lblDeck;
 	private final JComboBox deck;
 	private final JCheckBox chckbxDeadline;
+	private final JCheckBox chckbxMultiSelection;
 	private Game editingGame;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
@@ -152,7 +154,12 @@ public class CreateGameInfoPanel extends JPanel {
 
 		final String[] decks = { "default", "text entry"};
 		deck = new JComboBox(decks);
-
+		deck.addActionListener(
+				new ChangeMultiSelectVisibilityController(this));
+		//Creates multi deck selection
+		chckbxMultiSelection = new JCheckBox("Multi-Card?");
+		chckbxMultiSelection.setSelected(false);	
+		 
 		// creates deadline checkbox
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
@@ -199,11 +206,19 @@ public class CreateGameInfoPanel extends JPanel {
 		deck = new JComboBox(decks);
 		deck.setSelectedItem(editingGame.getDeck());
 
+		deck.addActionListener(
+				new ChangeMultiSelectVisibilityController(this));
+		
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
 			new ChangeDeadlineVisibilityController(this));
 		lblDeadline = new JLabel("Deadline:");
 
+		//Creates multi deck selection
+		chckbxMultiSelection = new JCheckBox("Multi-Card?");
+		chckbxMultiSelection.setSelected(editingGame.canSelectMultipleCards());	
+		enableOrDisableMultiSelect();
+		
 		// creates a date picker and sets its position
 		final UtilDateModel model = new UtilDateModel();
 		final Calendar tempCalendar = new GregorianCalendar();
@@ -317,7 +332,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 1;
-		constraints.gridy = 10;
+		constraints.gridy = 11;
 		add(lblDescription, constraints);
 
 		// DESCRIPTION
@@ -327,7 +342,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.weightx = 0.90;
 		constraints.weighty = 0.90;
 		constraints.gridx = 1;
-		constraints.gridy = 11;
+		constraints.gridy = 12;
 		add(description, constraints);
 
 		// DECK LABEL
@@ -350,11 +365,21 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridy = 9;
 		add(deck, constraints);
 
-		// DEADLINE CHECKBOX
+			 
+		//MULTISELECT CHECKBOX
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 10;
+		chckbxMultiSelection.setBorder(new EmptyBorder(0,10,0,0));
+		add(chckbxMultiSelection, constraints);
+		
+		// DEADLINE CHECKBOX
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 5;
 		chckbxDeadline.setBorder(new EmptyBorder(0, 10, 0, 0));
@@ -660,12 +685,13 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date(), "default");
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), "default", false );
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
 		newGame.setDeck((String) deck.getSelectedItem());
-
+		newGame.setCanSelectMultipleCards(chckbxMultiSelection.isSelected());
+		
 		if (chckbxDeadline.isSelected()) {
 			newGame.setHasDeadline(true);
 			newGame.setEnd(getDeadline());
@@ -726,5 +752,16 @@ public class CreateGameInfoPanel extends JPanel {
 		final String minuteString = (String) minuteSelector.getSelectedItem();
 		final int minuteInt = Integer.parseInt(minuteString);
 		return minuteInt;
+	}
+
+	public void enableOrDisableMultiSelect() {
+		if(deck.getSelectedItem().equals("text entry")){
+			chckbxMultiSelection.setSelected(false);
+			chckbxMultiSelection.setVisible(false);
+		}
+		else {
+			chckbxMultiSelection.setVisible(true);
+		}
+		
 	}
 }

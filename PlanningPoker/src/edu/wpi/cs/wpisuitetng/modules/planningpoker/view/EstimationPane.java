@@ -179,7 +179,7 @@ public class EstimationPane extends JPanel {
 		add(scrollPane, constraints);
 		
 		// DECK PANEL
-		deckPanel = new DeckPanel(game.getDeck());
+		deckPanel = new DeckPanel(game.getDeck(), game.canSelectMultipleCards());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 12;

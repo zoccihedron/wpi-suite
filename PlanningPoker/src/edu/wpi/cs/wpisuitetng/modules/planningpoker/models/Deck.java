@@ -27,7 +27,6 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  */
 public class Deck extends AbstractModel{
 	private String name = "";
-	private boolean canSelectMultipleCards = false;
 	private List<Integer> cardValues = new ArrayList<Integer>();
 	
 	/**
@@ -36,9 +35,8 @@ public class Deck extends AbstractModel{
 	 * @param canSelectMultipleCards A falg that allows or disallows selection of multiple cards
 	 * @param cardValues A list of each card value
 	 */
-	public Deck (String name, boolean canSelectMultipleCards, List<Integer> cardValues){
+	public Deck (String name, List<Integer> cardValues){
 		this.name = name;
-		this.canSelectMultipleCards = canSelectMultipleCards;
 		this.cardValues = cardValues;
 		Collections.sort(this.cardValues);
 	}
@@ -135,21 +133,5 @@ public class Deck extends AbstractModel{
 	 */
 	public List<Integer> getCards(){
 		return cardValues;
-	}
-	
-	/**
-	 * Getter for canSelectMultipleCards 
-	 * @return canSelectMultipleCards 
-	 */
-	public boolean canSelectMultipleCards(){
-		return canSelectMultipleCards;
-	}
-	
-	/**
-	 * Setter for canSelectMultipleCards
-	 * @param newValue value to set boolean to 
-	 */
-	public void setCanSelectMultipleCards(boolean newValue){
-		canSelectMultipleCards = newValue;
 	}
 }

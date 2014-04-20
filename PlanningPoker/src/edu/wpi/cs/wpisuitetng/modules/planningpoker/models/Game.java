@@ -40,6 +40,7 @@ public class Game extends AbstractModel {
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
 	private String deck = "";
+	private boolean canSelectMultipleCards = false;
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
 
@@ -72,13 +73,14 @@ public class Game extends AbstractModel {
 	 *            end time of the game
 	 * 
 	 */
-	public Game(String name, Date startTime, Date endTime, String deckName) {
+	public Game(String name, Date startTime, Date endTime, String deckName, boolean canSelectMultipleCards) {
 		// TODO: whether a session could be add to the parameter of game's
 		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
 		this.setDeck(deckName);
+		this.setCanSelectMultipleCards(canSelectMultipleCards);
 	}
 
 	/**
@@ -622,6 +624,20 @@ public class Game extends AbstractModel {
 	 */
 	public void setDeck(String deck) {
 		this.deck = deck;
+	}
+
+	/**
+	 * @return the canSelectMultipleCards
+	 */
+	public boolean canSelectMultipleCards() {
+		return canSelectMultipleCards;
+	}
+
+	/**
+	 * @param canSelectMultipleCards the canSelectMultipleCards to set
+	 */
+	public void setCanSelectMultipleCards(boolean canSelectMultipleCards) {
+		this.canSelectMultipleCards = canSelectMultipleCards;
 	}
 
 }

@@ -14,8 +14,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,18 +44,19 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.Scrol
 public class DeckPanel extends JScrollPane {
 	private JTextField estimateField = new JTextField();
 	private ImageIcon img = null;
-	private final int CARD_WIDTH = 100;
-	private final int CARD_HEIGHT = 128;
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
+	private boolean canSelectMultipleCards;
 	
 	/**
 	 * Constructs the DeckPanel
 	 * Right now the default deck is constructed here, this should move when
 	 * decks are fully implemented
 	 */
-	public DeckPanel(String deck) {
+	public DeckPanel(String deck,  boolean canSelectMultipleCards) {
+		this.canSelectMultipleCards = canSelectMultipleCards;
+		
 		if(deck.equals("default")){
 
 			ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
@@ -70,7 +69,7 @@ public class DeckPanel extends JScrollPane {
 			defaultDeckCards.add(8);
 			defaultDeckCards.add(13);
 			
-			Deck defaultDeck = new Deck("default", true, defaultDeckCards);
+			Deck defaultDeck = new Deck("default", defaultDeckCards);
 			this.setViewportView(deckVersion(defaultDeck));
 		}
 		else {
@@ -173,7 +172,7 @@ public class DeckPanel extends JScrollPane {
 			cardToAdd.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent arg0) {
-					if(!deck.canSelectMultipleCards()){
+					if(!canSelectMultipleCards){
 						clearPrevious(cardToAdd);
 					}
 					calculateSum();
