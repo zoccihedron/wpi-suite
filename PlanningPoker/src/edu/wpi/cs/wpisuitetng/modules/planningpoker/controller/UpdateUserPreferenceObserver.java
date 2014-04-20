@@ -40,6 +40,8 @@ public class UpdateUserPreferenceObserver implements RequestObserver {
 		final User[] user = User.fromJsonArray(response.getBody());
 		userPreferencePanel.setCurrentEmailAndIM(user[0].getEmail(), user[0].getIM(),
 				user[0].isAllowEmail(), user[0].isAllowIM());
+		
+		userPreferencePanel.btnSubmit.setEnabled(false);
 
 	}
 
