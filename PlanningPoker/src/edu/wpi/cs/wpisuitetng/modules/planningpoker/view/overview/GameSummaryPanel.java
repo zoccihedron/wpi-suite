@@ -93,6 +93,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		buttonsPanel.add(editGameButton, constraints);
+		editGameButton.setEnabled(false);
 		editGameButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -151,6 +152,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.insets = new Insets(0, 10, 0, 20);
 		buttonsPanel.add(playGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
+		playGameButton.setEnabled(false);
 		playGameButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -355,6 +357,11 @@ public class GameSummaryPanel extends JPanel {
 	
 	public Game getGameObject() {
 		return game;
+	}
+	
+	public void disableOrEnableButtons(boolean check){
+		playGameButton.setEnabled(check);
+		editGameButton.setEnabled(check);
 	}
 
 	public void reportError(String string) {
