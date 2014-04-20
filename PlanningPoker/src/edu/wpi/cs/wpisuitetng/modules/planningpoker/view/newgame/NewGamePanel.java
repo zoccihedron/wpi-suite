@@ -53,7 +53,7 @@ public class NewGamePanel extends JSplitPane {
 	private JButton btnStart;
 	private JLabel lblMessage;
 	private boolean changesSaved = false;
-	
+	private boolean isInProgress;
 	/**
 	 * Use this constructor when starting a new game panel from scratch
 	 */
@@ -61,12 +61,13 @@ public class NewGamePanel extends JSplitPane {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
 		lblMessage = new JLabel("*Error");
-
+		this.isInProgress = false;
+		
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
 		
-		setUpPanel(false);
+		setUpPanel();
 		
 		// Maps Create Game button to AddGameController class
 		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
@@ -82,12 +83,13 @@ public class NewGamePanel extends JSplitPane {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
 		lblMessage = new JLabel("*Error");
-
+		this.isInProgress = isInProgress;
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		
-		setUpPanel(isInProgress);
+		
+		setUpPanel();
 		
 		// Maps Create Game button to UpdateGameController class
 		if(isInProgress){
@@ -104,7 +106,7 @@ public class NewGamePanel extends JSplitPane {
 	/**
 	 * Sets up constraints on panel that are shared for each constructor
 	 */
-	private void setUpPanel(boolean isInProgress){
+	private void setUpPanel(){
 
 		// Add some lovely padding to the requirements tables and labels
 		selectRequirementsPanel.setBorder(new EmptyBorder(10,10,10,10));
@@ -133,10 +135,7 @@ public class NewGamePanel extends JSplitPane {
 		btnStart.setBounds(12, 5, 118, 25);
 		btnStart.setEnabled(false);
 		bottomPanel.add(btnStart);
-		if(isInProgress){
-			
-			btnStart.setVisible(false);
-		}
+		
 		lblMessage.setBounds(395, 8, 457, 18);
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
@@ -197,8 +196,14 @@ public class NewGamePanel extends JSplitPane {
 	 * @param check
 	 */
 	public void disableOrEnableButtons(boolean check){
-		btnStart.setEnabled(check);
-		btnSave.setEnabled(check);
+		if(this.isInProgress){
+			btnStart.setEnabled(false);
+			btnSave.setEnabled(check);
+		}
+		else{
+			btnStart.setEnabled(check);
+			btnSave.setEnabled(check);
+		}
 	}
 	
 	/**Fills the text box with a red warning based on the error Message
