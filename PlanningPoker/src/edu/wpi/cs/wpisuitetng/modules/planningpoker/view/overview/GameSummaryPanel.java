@@ -21,6 +21,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -32,7 +33,6 @@ import javax.swing.border.EmptyBorder;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -52,23 +52,57 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 @SuppressWarnings({ "serial" })
 public class GameSummaryPanel extends JPanel {
 
-	private final GameSummaryInfoPanel infoPanel;
-	private final GameSummaryReqPanel reqPanel;
-	private final JButton editGameButton;
-	private final JButton playGameButton;
-	private final JButton endGameButton;
-	private final JButton sendReqsButton;
-	private final JLabel reportMessage;
-	private final GameSummaryPanel  gameSummaryPanel = this;
+	private GameSummaryInfoPanel infoPanel;
+	private GameSummaryReqPanel reqPanel;
+	private JButton editGameButton;
+	private JButton playGameButton;
+	private JButton endGameButton;
+	private JButton viewResultsButton;
+	private JLabel helpTitle;
+	private JLabel helpText;
+	private JLabel reportMessage;
+	private GameSummaryPanel  gameSummaryPanel = this;
 	JPanel buttonsPanel;
 	Game game;
-	
 
 	/**
 	 * 
 	 */
 	public GameSummaryPanel() {
 		
+		setUpHelpPanel();
+
+	}
+	 /**
+	  * sets up help panel to show before a game has been selected
+	  */
+	private void setUpHelpPanel(){
+		// Set up layout constraints
+		this.setLayout(new GridBagLayout());
+		final GridBagConstraints constraints = new GridBagConstraints();
+				
+		helpTitle = new JLabel();
+		helpText = new JLabel();
+		
+		helpTitle.setText("Games Overview");
+		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		
+		helpText.setText("To begin, please select a game from the tree on the left.");
+		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(helpTitle,constraints);
+		
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		this.add(helpText, constraints);
+	}
+	
+	/**
+	 * shows this panel once a game has been selected
+	 */
+	private void setUpGameSummaryPanel(){
 		// Set up layout constraints
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -94,44 +128,45 @@ public class GameSummaryPanel extends JPanel {
 		editGameButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				
- 				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
-	 				
-	 				final Request request = Network.getInstance().makeRequest
-	 						("Advanced/planningpoker/game/edit", HttpMethod.POST);
-	 				request.setBody(game.toJSON());
-	 				request.addObserver(new RequestObserver() {
-						
+				final MainViewTabController mvt = MainViewTabController
+						.getInstance();
+
+				if (game.getStatus().equals(GameStatus.IN_PROGRESS)) {
+
+					final Request request = Network.getInstance()
+							.makeRequest("Advanced/planningpoker/game/edit",
+									HttpMethod.POST);
+					request.setBody(game.toJSON());
+					request.addObserver(new RequestObserver() {
+
 						@Override
 						public void responseSuccess(IRequest iReq) {
 							ResponseModel response = iReq.getResponse();
 							String message = response.getBody();
-							if(message.trim().equals("true")){
-								mvt.createGameTab(game);
-							}
-							else{
+							if (message.trim().equals("true")) {
+								mvt.createGameTab(game, true);
+							} else {
 								gameSummaryPanel.reportError(message);
 								editGameButton.setEnabled(false);
 							}
 						}
-						
+
 						@Override
 						public void responseError(IRequest iReq) {
 							// TODO Auto-generated method stub
-							
+
 						}
-						
+
 						@Override
 						public void fail(IRequest iReq, Exception exception) {
 							// TODO Auto-generated method stub
-							
+
 						}
 					});
-	 				request.send();
- 				}
+					request.send();
+				}
  				else{
- 					mvt.createGameTab(game);
+ 					mvt.createGameTab(game, false);
  				}
 			}
  			
@@ -157,27 +192,26 @@ public class GameSummaryPanel extends JPanel {
  				mvt.playGameTab(game);
 			}
  		});
-		
-		
-		// Button to send requirements to requirement manager
-		sendReqsButton = new JButton("Send Estimates");
-		sendReqsButton.setToolTipText("Update estimates in the Requirement Manager");
+		viewResultsButton = new JButton("View Results");
+		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 0, 0);
-		add(sendReqsButton, constraints);
+		constraints.insets = new Insets(0, 10, 0, 20);
+		buttonsPanel.add(viewResultsButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
-		sendReqsButton.setEnabled(false);
-		sendReqsButton.addActionListener(new ActionListener () {
+		viewResultsButton.addActionListener(new ActionListener () {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				RequirementManagerFacade.getInstance().sendEstimates(game.getEstimates(),
-																		gameSummaryPanel);
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+ 				mvt.viewResultsTab(game);
 			}
  		});
+		
+		
 		
 		// Button to end game manually
 		endGameButton = new JButton("End Game");
@@ -274,12 +308,11 @@ public class GameSummaryPanel extends JPanel {
 		    playGameButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("checkmark.png"));
-		    sendReqsButton.setIcon(new ImageIcon(img));   
+		    viewResultsButton.setIcon(new ImageIcon(img));   
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-
 	}
 	
 	/**
@@ -288,6 +321,8 @@ public class GameSummaryPanel extends JPanel {
 	 */
 	public void updateSummary(Game game){
 		this.game = game;
+		this.removeAll();
+		setUpGameSummaryPanel();
 		
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
 			//make all buttons visible
@@ -299,14 +334,17 @@ public class GameSummaryPanel extends JPanel {
 				playGameButton.setEnabled(false);
 				editGameButton.setEnabled(true);
 				endGameButton.setEnabled(false);
-				sendReqsButton.setVisible(false);
+				viewResultsButton.setEnabled(false);
+
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameButton.setEnabled(true);
+				
+				playGameButton.setEnabled(!game.isEditing());
 				editGameButton.setEnabled(!game.isHasBeenEstimated());
 				endGameButton.setEnabled(true);
-				sendReqsButton.setVisible(false);
+				viewResultsButton.setEnabled(false);
+
 			}
 			// If the game is ended.
 			else {
@@ -314,7 +352,9 @@ public class GameSummaryPanel extends JPanel {
 				editGameButton.setEnabled(false);
 				endGameButton.setEnabled(false);
 				endGameButton.setVisible(false);
-				sendReqsButton.setVisible(true);
+				viewResultsButton.setEnabled(true);
+				
+
 			}
 		}
 		// If the user is not the game creator.
@@ -324,17 +364,19 @@ public class GameSummaryPanel extends JPanel {
 			editGameButton.setEnabled(false);
 			endGameButton.setVisible(false);
 			endGameButton.setEnabled(false);
-			sendReqsButton.setVisible(false);
+			viewResultsButton.setEnabled(false);
 			
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
 			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				playGameButton.setEnabled(true);
+				viewResultsButton.setEnabled(false);
 
 			}
 			// If the game is ended.
 			else {
 				playGameButton.setEnabled(false);
+				viewResultsButton.setEnabled(true);
 			}
 		}
 		
@@ -364,6 +406,10 @@ public class GameSummaryPanel extends JPanel {
 	public void reportSuccess(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.BLUE);
+	}
+	
+	public List<Integer> getSelectedRequirements(){
+		return reqPanel.getSelectedRequirements();
 	}
 	
 }

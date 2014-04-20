@@ -213,6 +213,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_btnSubmit.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSubmit.gridx = 2;
 		gbc_btnSubmit.gridy = 5;
+		btnSubmit.setEnabled(false);
 		preferencesPanel.add(btnSubmit, gbc_btnSubmit);
 
 		btnCancel = new JButton("Cancel");
@@ -275,7 +276,6 @@ public class UserPreferencesPanel extends JPanel {
 					imField.setEnabled(false);
 					lblIMCheck.setVisible(false);
 					imVerified = true;
-					configSubmitButton();
 				}
 
 			}
@@ -297,7 +297,6 @@ public class UserPreferencesPanel extends JPanel {
 					emailField.setEnabled(false);
 					lblEmailCheck.setVisible(false);
 					emailVerified = true;
-					configSubmitButton();
 				}
 
 			}

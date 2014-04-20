@@ -93,12 +93,12 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		newGame.setGameCreator(s.getUsername());
 		newGame.setUsers(db.retrieveAll(new User()));
 		newGame.setHasBeenEstimated(false);
+		newGame.setEditing(false);
 		save(s, newGame);
 		
 		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
-			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)),
-																		Notification.ENDED);
+			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
 			mailer.start();
 		}
 		
@@ -220,6 +220,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		
 		existingGame.setUsers(db.retrieveAll(new User()));
 		existingGame.setHasBeenEstimated(false);
+		existingGame.setEditing(false);
 		
 		if (!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
@@ -228,7 +229,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if(existingGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
 			final Mailer mailer = new Mailer(
-					existingGame, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+					existingGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
 			mailer.start();
 		}
 		
@@ -321,14 +322,17 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	@Override
 	public String advancedPost(Session s, String string, String content) 
 			throws NotFoundException, WPISuiteException{
-		
+			
 			String returnString = "false";
-			if( string.equals("vote") ){
+			if( string.equals("vote")){
 				
 				final Estimate estimate = Estimate.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
+
 				final List<Estimate> newEstimates = new ArrayList<Estimate>();
-				if(game.getStatus().equals(GameStatus.IN_PROGRESS)){
+
+				if(game.getStatus().equals(GameStatus.IN_PROGRESS) && !game.isEditing()){
+
 					final Estimate gameEst = game.findEstimate(estimate.getReqID());
 					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
 					gameEst.setUserCardSelection(s.getUsername(),
@@ -343,25 +347,73 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					
 					game.setHasBeenEstimated(true);
 					
+					if(game.getStatus().equals(GameStatus.ENDED))
+					{
+						final Mailer mailer = new Mailer(
+								game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+						mailer.start();
+					}
+					
 					if(!db.save(game, s.getProject())) {
 						throw new WPISuiteException("Save was not successful");
 					}
 					returnString = "true";
 				}
-				game.setEstimates(newEstimates);
-				game.endIfAllEstimated();
-				
-				if(game.getStatus().equals(GameStatus.ENDED))
-				{
-					final Mailer mailer = new Mailer(
-							game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
-					mailer.start();
+
+				else if (game.isEditing()){
+					returnString = "*Voting is not currently allowed: The game is being edited.";
 				}
+				else if (game.getStatus().equals(GameStatus.ENDED)){
+					returnString = "*Voting is not currently allowed: The game has ended.";
+				}
+				else {
+					returnString = "*Voting is not currently allowed.";
+				}
+
+			} 
+			else if(string.equals("send")){
+				final Estimate oldEst = Estimate.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+				final Estimate newEst = game.findEstimate(oldEst.getReqID());
+				
+				newEst.estimationSent(true);
+				
+				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+				for(Estimate e: game.getEstimates()){
+					Estimate tempEst = e.getCopy();
+					newEstimates.add(tempEst);
+				}
+				game.setEstimates(newEstimates);
 				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
 				}
+				returnString = "true";
+				
 			}
+			
+			else if(string.equals("sendFinalEstimate"))
+			{
+				final Estimate oldEst = Estimate.fromJson(content);
+				System.out.println(content);
+				final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+				final Estimate newEst = game.findEstimate(oldEst.getReqID());
+				
+				newEst.setFinalEstimate(oldEst.getFinalEstimate());
+				
+				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+				for(Estimate e: game.getEstimates()){
+					Estimate tempEst = e.getCopy();
+					newEstimates.add(tempEst);
+				}
+				game.setEstimates(newEstimates);
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = "true";
+			}
+			
 			else if( string.equals("end") ){
 				
 				final Game endedGame = Game.fromJson(content);
@@ -386,7 +438,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				final Game editedGame = Game.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
 				if(!game.isHasBeenEstimated()){
-					game.setStatus(GameStatus.DRAFT);
+					game.setEditing(true);
 					
 					if(!db.save(game, s.getProject())) {
 						throw new WPISuiteException("Save was not successful");
@@ -394,7 +446,23 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					returnString = "true";
 				}
 				else{
-					returnString = "*Error: This game has been voted on.";
+					returnString = "*This game has been recently voted on. Editing is no longer available";
+				}
+			}
+			else if( string.equals("endEdit") ){
+				
+				final Game editedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
+				if(!game.isHasBeenEstimated()){
+					game.setEditing(false);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
+				}
+				else{
+					returnString = "*This game has been recently voted on. Editing is no longer available";
 				}
 			}
 			return returnString;
