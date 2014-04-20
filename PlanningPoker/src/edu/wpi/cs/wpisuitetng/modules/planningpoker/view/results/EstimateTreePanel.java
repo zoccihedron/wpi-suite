@@ -72,7 +72,6 @@ public class EstimateTreePanel extends JPanel{
 				}
 				RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
 				facade.sendEstimates(estimates,estimateTreePanel);
-				System.out.println("---------------------------------plan to refresh tree");
 				listEstimateReqPanel.refresh();
 			}
 			

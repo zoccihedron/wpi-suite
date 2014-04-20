@@ -40,7 +40,7 @@ public class ResultsDisplayController implements ActionListener{
 			request.addObserver(new RequestObserver(){
 				@Override
 				public void responseSuccess(IRequest iReq) {
-					System.out.println("Mark this estimate as sent-----------");
+					System.out.println("Final estimate has been sent----------");
 				}
 
 				@Override

@@ -119,70 +119,65 @@ public class RequirementManagerFacade {
 		for(Estimate estimate : estimates){
 			Requirement req = requirements.get(estimate.getReqID());
 
-			// if the requirement is selected
 			
-			if(estimate.estimationHasBeenSent()){
-				System.out.println("This estimate has been sent-----------");
+						
+			final Estimate newEstimate = new Estimate(estimate.getReqID(), estimate.getGameID());
+			newEstimate.estimationSent(true);
+								
+			// Send a request to the core to mark this estimate as being sent
+			final Request request = Network.getInstance().makeRequest(
+					"Advanced/planningpoker/game/send", 
+					HttpMethod.POST); // POST is update
+			request.setBody(estimate.toJSON()); 
+			request.addObserver(new RequestObserver(){
+				@Override
+				public void responseSuccess(IRequest iReq) {
+					System.out.println("Mark this estimate as sent-----------");
+				}
+
+				@Override
+				public void responseError(IRequest iReq) {
+				}
+
+				@Override
+				public void fail(IRequest iReq, Exception exception) {
+				}
 				
-			} else {
-							
-				final Estimate newEstimate = new Estimate(estimate.getReqID(), estimate.getGameID());
-				newEstimate.estimationSent(true);
-									
-				// Send a request to the core to mark this estimate as being sent
-				final Request request = Network.getInstance().makeRequest(
-						"Advanced/planningpoker/game/send", 
-						HttpMethod.POST); // POST is update
-				request.setBody(estimate.toJSON()); 
-				request.addObserver(new RequestObserver(){
-					@Override
-					public void responseSuccess(IRequest iReq) {
-						System.out.println("Mark this estimate as sent-----------");
-					}
+			}); 
+			request.send();
+			
+			
+			
+			//update information in requirement manager
+			req.setEstimate((int)estimate.getFinalEstimate());
 
-					@Override
-					public void responseError(IRequest iReq) {
-					}
+			Request requestForReq = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+			requestForReq.setBody(req.toJSON()); 
+			requestForReq.addObserver(new RequestObserver(){
 
-					@Override
-					public void fail(IRequest iReq, Exception exception) {
-					}
-					
-				}); 
-				request.send();
-				
-				
-				
-				//update information in requirement manager
-				req.setEstimate((int)estimate.getFinalEstimate());
+				@Override
+				public void responseSuccess(IRequest iReq) {
+					// TODO Auto-generated method stub
+					GetRequirementsController.getInstance().retrieveRequirements();
+					//view.reportSuccess("Selected estimates sent!");
+					System.out.println("Selected estimates sent!");
+				}
 
-				Request requestForReq = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
-				requestForReq.setBody(req.toJSON()); 
-				requestForReq.addObserver(new RequestObserver(){
+				@Override
+				public void responseError(IRequest iReq) {
+					// TODO Auto-generated method stub
 
-					@Override
-					public void responseSuccess(IRequest iReq) {
-						// TODO Auto-generated method stub
-						GetRequirementsController.getInstance().retrieveRequirements();
-						//view.reportSuccess("Selected estimates sent!");
-						System.out.println("Selected estimates sent!");
-					}
+				}
 
-					@Override
-					public void responseError(IRequest iReq) {
-						// TODO Auto-generated method stub
+				@Override
+				public void fail(IRequest iReq, Exception exception) {
+					// TODO Auto-generated method stub
 
-					}
+				}
 
-					@Override
-					public void fail(IRequest iReq, Exception exception) {
-						// TODO Auto-generated method stub
-
-					}
-
-				});
-				requestForReq.send(); 
-			}
+			});
+			requestForReq.send(); 
+			
 
 		}
 
