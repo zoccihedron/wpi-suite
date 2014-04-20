@@ -345,25 +345,18 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					
 					game.setHasBeenEstimated(true);
 					
+					if(game.getStatus().equals(GameStatus.ENDED))
+					{
+						final Mailer mailer = new Mailer(
+								game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+						mailer.start();
+					}
+					
 					if(!db.save(game, s.getProject())) {
 						throw new WPISuiteException("Save was not successful");
 					}
 					returnString = "true";
 				}
-				game.setEstimates(newEstimates);
-				game.endIfAllEstimated();
-				
-				if(game.getStatus().equals(GameStatus.ENDED))
-				{
-					final Mailer mailer = new Mailer(
-							game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
-					mailer.start();
-				}
-				
-				if(!db.save(game, s.getProject())) {
-					throw new WPISuiteException("Save was not successful");
-				}
-				returnString = "true";
 			} 
 			else if(string.equals("send")){
 				final Estimate oldEst = Estimate.fromJson(content);
