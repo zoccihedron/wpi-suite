@@ -12,9 +12,12 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -23,6 +26,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -357,7 +361,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 5;
-		chckbxDeadline.setBorder(new EmptyBorder(0,10,0,0));
+		chckbxDeadline.setBorder(new EmptyBorder(0, 10, 0, 0));
 		add(chckbxDeadline, constraints);
 
 		// DEADLINE LABEL
@@ -372,6 +376,8 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblDeadline, constraints);
 
 		// DATE PICKER
+		datePicker.setMaximumSize(new Dimension(100, 23));
+		datePicker.setMinimumSize(new Dimension(100, 23));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
@@ -400,6 +406,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridy = 7;
 		constraints.ipadx = 2;
 		constraints.ipady = 2;
+		constraints.insets = new Insets(2, 0, 0, 0);
 		add(hourSelector, constraints);
 
 		// MINUTE SELECTOR
@@ -412,6 +419,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridy = 7;
 		constraints.ipadx = 2;
 		constraints.ipady = 2;
+		constraints.insets = new Insets(2, 0, 0, 0);
 		constraints.anchor = GridBagConstraints.WEST;
 		add(minuteSelector, constraints);
 
@@ -514,25 +522,34 @@ public class CreateGameInfoPanel extends JPanel {
 
 		reportError(" ");
 		boolean result = true;
-		if (gameNameText.getText().trim().isEmpty()) {
-			reportError("<html>*A name is required.</html>");
-			result = false;
-		}
-
-		if (chckbxDeadline.isSelected() && result) {
-			if (datePicker.getModel().getValue() == null) {
-				reportError("<html>*Please choose a date or turn off the deadline.</html>");
-				result = false;
-			} else if (getDeadline().compareTo(new Date()) <= 0) {
-				reportError("<html>*The deadline must not be in the past.</html>");
-				result = false;
-			}
-		}
-
+		
 		if (parentPanel.getGameRequirements().size() == 0 && result) {
 			reportError("<html>*Pick at least one requirement.</html>");
 			result = false;
 		}
+		
+		datePicker.setBorder(null);
+		if (chckbxDeadline.isSelected()) {
+			if (datePicker.getModel().getValue() == null) {
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				reportError("<html>*Please choose a date or turn off the deadline.</html>");
+				result = false;
+			} else if (getDeadline().compareTo(new Date()) <= 0) {
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				reportError("<html>*The deadline must not be in the past.</html>");
+				result = false;
+			}
+		}
+		
+		gameNameText.setBorder(null);
+		if (gameNameText.getText().trim().isEmpty()) {
+			reportError("<html>*A name is required.</html>");
+			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+			result = false;
+		}else{
+			//gameNameText.setBackground(Color.WHITE);
+		}
+		
 		return result;
 	}
 	
@@ -570,11 +587,15 @@ public class CreateGameInfoPanel extends JPanel {
 			if(!(datePicker.getModel().getValue() == null)){
 				tempDate = getDeadline();
 			}
+			
+			if (defaultDate != null){
+				result &= defaultDate.equals(tempDate);
+			}
 		}
-		result &= defaultDate.equals(tempDate);
+
 		result &= defaultDeck.equals(deck.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
-		return !result;		
+		return !result;
 	}
 
 	/**

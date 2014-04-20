@@ -19,8 +19,6 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -308,7 +306,8 @@ public class UserPreferencesPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mainViewTabController = MainViewTabController.getInstance();
+				final MainViewTabController mainViewTabController =
+						MainViewTabController.getInstance();
 				mainViewTabController.closeTab(userPreferencesPane);
 
 			}
@@ -330,7 +329,9 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setIM(imField.getText());
 				dummyUser.setAllowEmail(checkBoxEmail.isSelected());
 				dummyUser.setAllowIM(checkBoxIM.isSelected());
-				final Request request = Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
+				final Request request =
+						Network.getInstance().makeRequest("Advanced/core/user/changeInPreference",
+															HttpMethod.POST);
 				request.setBody(dummyUser.toJSON());
 				request.addObserver(new RequestObserver(){
 

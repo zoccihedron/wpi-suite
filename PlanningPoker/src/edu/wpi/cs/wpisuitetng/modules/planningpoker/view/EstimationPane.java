@@ -242,7 +242,7 @@ public class EstimationPane extends JPanel {
 
 		try {
 		    Image img = ImageIO.read(getClass().getResource("vote.png"));
-		    voteButton.setIcon(new ImageIcon(img));		    
+		    voteButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -281,6 +281,9 @@ public class EstimationPane extends JPanel {
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
+		
+		checkField();
+		message.setText("<html></html>");
 
 
 	}
@@ -297,13 +300,15 @@ public class EstimationPane extends JPanel {
 
 	/**
 	 * This method checks if the estimation is of the correct value (An interger) And updates the
-	 * display to show an error if the value is wrong. It also checks that a deck is selected in the deck version
+	 * display to show an error if the value is wrong. It also checks that a deck is selected in
+	 * the deck version
 	 * @return True if everything is all set, return false if the value is incorrect
 	 */
 	public boolean checkField() {
 		
 		if(!deckPanel.hasDeckSelected()) {
 			reportError("<html>Error: Select a card.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 		
@@ -314,23 +319,28 @@ public class EstimationPane extends JPanel {
 
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 
 		if(estimate < 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 		
 		if(estimate == 0){
 			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
+			voteButton.setEnabled(true);
 			return true;
 		}
 		
 		if(game.getStatus() == GameStatus.ENDED){
 			reportError("<html>Error: Game has ended</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
+		voteButton.setEnabled(true);
 		return true;
 	}
 
