@@ -58,7 +58,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private Game game;
 	
 	public SelectRequirementsPanel() {
-		setUpPanel();		
+		setUpPanel();
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(existingRequirementsLabel, constraints);
 		
 		// Table
-		existingRequirementsTable = new JTable(new DefaultTableModel(data,columnNames) {
+		existingRequirementsTable = new JTable(new DefaultTableModel(data, columnNames) {
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
@@ -127,7 +127,8 @@ public class SelectRequirementsPanel extends JPanel {
 		modelExisting = (DefaultTableModel) existingRequirementsTable.getModel();
 
 		// Put in scroll pane for overflow
-		final JScrollPane existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
+		final JScrollPane existingRequirementsTablePanel =
+				new JScrollPane(existingRequirementsTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
@@ -137,7 +138,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(existingRequirementsTablePanel, constraints);
 					
 		/*---------------------------------------------------------------------
-		 *                         BUTTONS PANEL
+		 *                       - BUTTONS PANEL -
 		 * --------------------------------------------------------------------
 		 */
 		

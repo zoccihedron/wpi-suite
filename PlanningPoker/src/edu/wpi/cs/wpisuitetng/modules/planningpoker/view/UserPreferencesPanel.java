@@ -307,7 +307,8 @@ public class UserPreferencesPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mainViewTabController = MainViewTabController.getInstance();
+				final MainViewTabController mainViewTabController =
+						MainViewTabController.getInstance();
 				mainViewTabController.closeTab(userPreferencesPane);
 
 			}
@@ -329,7 +330,9 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setIM(imField.getText());
 				dummyUser.setAllowEmail(checkBoxEmail.isSelected());
 				dummyUser.setAllowIM(checkBoxIM.isSelected());
-				final Request request = Network.getInstance().makeRequest("Advanced/core/user/changeInPreference", HttpMethod.POST);
+				final Request request =
+						Network.getInstance().makeRequest("Advanced/core/user/changeInPreference",
+															HttpMethod.POST);
 				request.setBody(dummyUser.toJSON());
 				request.addObserver(new RequestObserver(){
 

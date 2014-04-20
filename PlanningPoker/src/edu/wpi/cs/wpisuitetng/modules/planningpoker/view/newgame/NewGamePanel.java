@@ -90,7 +90,9 @@ public class NewGamePanel extends JSplitPane {
 		setUpPanel();
 		
 		// Maps Create Game button to UpdateGameController class
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
+		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel,
+															editingGame,
+															false));
 		
 		btnStart.addActionListener(
 				new UpdateGameController(createGameInfoPanel, editingGame, true));
@@ -102,7 +104,7 @@ public class NewGamePanel extends JSplitPane {
 	private void setUpPanel(){
 
 		// Add some lovely padding to the requirements tables and labels
-		selectRequirementsPanel.setBorder(new EmptyBorder(10,10,10,10));
+		selectRequirementsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
@@ -236,7 +238,9 @@ public class NewGamePanel extends JSplitPane {
 	public boolean isReadyToClose() {
 		boolean result;
 		if(createGameInfoPanel.isPageEdited()){
-			final Object options[] = {"Yes", "No"};
+			final Object options[] = {
+					"Yes", "No"
+					};
 			final int i = JOptionPane.showOptionDialog(this, 
 					"Any unsaved changes will be lost, would you like to exit anyways?",
 					"Exit?",

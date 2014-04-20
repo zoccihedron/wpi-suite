@@ -110,11 +110,13 @@ public class RequirementManagerFacade {
 	public void sendEstimates(List<Estimate> estimates, final GameSummaryPanel view){
 		for(Estimate estimate : estimates){
 			Requirement req = requirements.get(estimate.getReqID());
-			System.out.println("Req name: "+req.getName()+" Req Mean: "+estimate.getMean());
+			System.out.println("Req name: " + req.getName() + " Req Mean: " + estimate.getMean());
 			
 			req.setEstimate((int)estimate.getMean());
 			
-			Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+			Request request =
+					Network.getInstance().makeRequest("requirementmanager/requirement",
+														HttpMethod.POST);
 			request.setBody(req.toJSON()); 
 			request.addObserver(new RequestObserver(){
 
@@ -141,7 +143,7 @@ public class RequirementManagerFacade {
 			request.send(); 
 			
 			
-			System.out.println("Check: requ name: "+ req.getName() + " est " + req.getEstimate());
+			System.out.println("Check: requ name: " + req.getName() + " est " + req.getEstimate());
 		}
 	}
 

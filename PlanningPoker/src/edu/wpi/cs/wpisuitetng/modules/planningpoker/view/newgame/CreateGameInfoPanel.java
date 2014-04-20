@@ -357,7 +357,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 5;
-		chckbxDeadline.setBorder(new EmptyBorder(0,10,0,0));
+		chckbxDeadline.setBorder(new EmptyBorder(0, 10, 0, 0));
 		add(chckbxDeadline, constraints);
 
 		// DEADLINE LABEL
@@ -574,7 +574,7 @@ public class CreateGameInfoPanel extends JPanel {
 		result &= defaultDate.equals(tempDate);
 		result &= defaultDeck.equals(deck.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
-		return !result;		
+		return !result;
 	}
 
 	/**

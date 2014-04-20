@@ -68,7 +68,9 @@ public class PlayGamePanel extends JPanel{
 				return true;
 			}
 			else{
-				Object options[] = {"Yes", "No"};
+				Object options[] = {
+						"Yes", "No"
+						};
 				int i = JOptionPane.showOptionDialog(this, 
 						"Any unsaved changes will be lost, would you like to exit anyways?",
 						"Exit?",
