@@ -76,6 +76,7 @@ public class DeckPanel extends JScrollPane {
 		else {
 			this.setViewportView(textVersion());
 		}
+		disableVoting();
 	}
 
 	public String getEstimateField() {
@@ -283,6 +284,17 @@ public class DeckPanel extends JScrollPane {
 			selection.add(button.isSelected());
 		}
 		return selection;
+	}
+	
+	public void disableVoting(){
+		if(isDeckView){
+			this.getViewport().setVisible(false);
+		}
+	}
+	public void enableVoting(){
+		if(isDeckView){
+			this.getViewport().setVisible(true);
+		}
 	}
 
 }
