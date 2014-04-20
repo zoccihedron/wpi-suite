@@ -25,13 +25,21 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.AddGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.CloseNewGameTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 
 
@@ -51,16 +59,20 @@ public class NewGamePanel extends JSplitPane {
 	private JButton btnStart;
 	private JLabel lblMessage;
 	private boolean changesSaved = false;
-	
+	private boolean isInProgress;
+	private Game game;
 	/**
 	 * Use this constructor when starting a new game panel from scratch
 	 */
 	public NewGamePanel() {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
+		lblMessage = new JLabel("*Error");
+		this.isInProgress = false;
+		
+		selectRequirementsPanel = new SelectRequirementsPanel();
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
-		selectRequirementsPanel = new SelectRequirementsPanel();
 		
 		setUpPanel();
 		
@@ -74,17 +86,28 @@ public class NewGamePanel extends JSplitPane {
 	 * Use this constructor when you want to edit an existing game
 	 * @param editingGame the game to be updated
 	 */
-	public NewGamePanel(Game editingGame) {
+	public NewGamePanel(Game editingGame, boolean isInProgress) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
+		lblMessage = new JLabel("*Error");
+		this.isInProgress = isInProgress;
+		this.game = editingGame;
+		
+		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
-		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
+		
 		
 		setUpPanel();
 		
-		// Maps Create Game button to AddGameController class
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
+		// Maps Create Game button to UpdateGameController class
+
+		if(isInProgress){
+			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, true));
+		}
+		else{
+			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
+		}
 		
 		btnStart.addActionListener(
 				new UpdateGameController(createGameInfoPanel, editingGame, true));
@@ -94,6 +117,9 @@ public class NewGamePanel extends JSplitPane {
 	 * Sets up constraints on panel that are shared for each constructor
 	 */
 	private void setUpPanel(){
+
+		// Add some lovely padding to the requirements tables and labels
+		selectRequirementsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		final JSplitPane topPanel = new JSplitPane();
 		topPanel.setLeftComponent(createGameInfoPanel);
@@ -106,24 +132,26 @@ public class NewGamePanel extends JSplitPane {
 		
 		btnSave = new JButton("Save");
 		btnSave.setBounds(141, 5, 118, 25);
+		btnSave.setEnabled(false);
 		bottomPanel.add(btnSave);
-		
+	
 				
 		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
 		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
 		bottomPanel.add(btnCancel); 
+		
 		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
+		btnStart.setEnabled(false);
+		bottomPanel.add(btnStart);
 		
-		lblMessage = new JLabel("*Error");
 		lblMessage.setBounds(395, 8, 457, 18);
 		lblMessage.setForeground(Color.RED);
 		lblMessage.setVisible(false);
 		lblMessage.setFont(new Font("Dialog", Font.ITALIC, 12));
 		bottomPanel.add(lblMessage);
 		
-		bottomPanel.add(btnStart);
 		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("start-icon.png"));
@@ -178,8 +206,14 @@ public class NewGamePanel extends JSplitPane {
 	 * @param check
 	 */
 	public void disableOrEnableButtons(boolean check){
-		btnStart.setEnabled(check);
-		btnSave.setEnabled(check);
+		if(this.isInProgress){
+			btnStart.setEnabled(false);
+			btnSave.setEnabled(check);
+		}
+		else{
+			btnStart.setEnabled(check);
+			btnSave.setEnabled(check);
+		}
 	}
 	
 	/**Fills the text box with a red warning based on the error Message
@@ -223,15 +257,30 @@ public class NewGamePanel extends JSplitPane {
 	 * @return boolean if it's ready to close
 	 */
 	public boolean isReadyToClose() {
-		/*final Object options[] = {"Yes", "No"};
-		final int i = JOptionPane.showOptionDialog(this, 
-				"Any unsaved changes will be lost, would you like to exit anyways?",
-				"Exit?",
-				JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE,
-				null, options, options[1]);*/
 		
-		return true;
+		boolean result;
+		if(createGameInfoPanel.isPageEdited()){
+			final Object options[] = {
+					"Yes", "No"
+					};
+			final int i = JOptionPane.showOptionDialog(this, 
+					"Any unsaved changes will be lost, would you like to exit anyways?",
+					"Exit?",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE,
+					null, options, options[1]);
+			result = (i == 0);
+		} else {
+			result = true;
+		}
+		if (this.isInProgress && result) {
+			final Request request = Network.getInstance()
+					.makeRequest("Advanced/planningpoker/game/endEdit",
+							HttpMethod.POST);
+			request.setBody(game.toJSON());
+			request.send();
+		}
+		return result;
 	}
 	
 }

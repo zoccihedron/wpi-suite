@@ -53,7 +53,6 @@ implements TreeSelectionListener {
 	public ListGamePanel() {
 
 		this.setViewportView(tree);
-		this.refresh();
 		
 
 		//Create the nodes.
@@ -131,7 +130,8 @@ implements TreeSelectionListener {
 		games = PlanningPokerModel.getInstance().getAllGames();
 		DefaultMutableTreeNode gameNode = null;
 
-		final DefaultMutableTreeNode gameInProgressCategory = new DefaultMutableTreeNode("In Progress");
+		final DefaultMutableTreeNode gameInProgressCategory =
+				new DefaultMutableTreeNode("In Progress");
 		final DefaultMutableTreeNode gameEndedCategory = new DefaultMutableTreeNode("Ended");
 		final DefaultMutableTreeNode gameDraftCategory = new DefaultMutableTreeNode("Draft");
 		final DefaultMutableTreeNode gameClosedCategory = new DefaultMutableTreeNode("Archive");

@@ -76,6 +76,7 @@ public class DeckPanel extends JScrollPane {
 		else {
 			this.setViewportView(textVersion());
 		}
+		disableVoting();
 	}
 
 	public String getEstimateField() {
@@ -226,11 +227,15 @@ public class DeckPanel extends JScrollPane {
 		System.out.println("--------old estimate value: " + oldEstimate);
 		if (oldEstimate > 0) {
 			if(isDeckView){
-				ArrayList<Boolean> selected = (ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
-				for(int i = 0; i < selected.size(); i++)
-				{
-					listOfButtons.get(i).setSelected(selected.get(i));
+				ArrayList<Boolean> selected =
+						(ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
+				if(selected != null){
+					for(int i = 0; i < selected.size(); i++)
+					{
+						listOfButtons.get(i).setSelected(selected.get(i));
+					}
 				}
+				
 			}
 			estimateField.setText(Integer.toString(oldEstimate));
 			currentEstimate = Integer.toString(oldEstimate);
@@ -279,6 +284,17 @@ public class DeckPanel extends JScrollPane {
 			selection.add(button.isSelected());
 		}
 		return selection;
+	}
+	
+	public void disableVoting(){
+		if(isDeckView){
+			this.getViewport().setVisible(false);
+		}
+	}
+	public void enableVoting(){
+		if(isDeckView){
+			this.getViewport().setVisible(true);
+		}
 	}
 
 }
