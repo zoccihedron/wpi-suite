@@ -19,6 +19,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +72,7 @@ public class UserPreferencesPanel extends JPanel {
 	private final JLabel lblIM;
 	private final JCheckBox checkBoxEmail;
 	private final JCheckBox checkBoxIM;
-	private final JButton btnSubmit;
+	public final JButton btnSubmit;
 	private final JButton btnCancel;
 	private Pattern pattern;
 	private Matcher matcher;
@@ -224,6 +226,11 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_btnCancel.gridx = 3;
 		gbc_btnCancel.gridy = 5;
 		preferencesPanel.add(btnCancel, gbc_btnCancel);
+		
+		
+		Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
+		request.send();
 
 
 
@@ -264,10 +271,17 @@ public class UserPreferencesPanel extends JPanel {
 			}
 		});
 
-		checkBoxIM.addChangeListener(new ChangeListener() {
+		
+		/*
+		 * Set up an action listern for IM checkbox that will
+		 * enable and disable IM text field depending on if it is selected.
+		 * Use ItemListener so that when the mouse hovers over the checkbox,
+		 * it would not be called.
+		 */
+		checkBoxIM.addItemListener(new ItemListener(){
 
 			@Override
-			public void stateChanged(ChangeEvent e) {
+			public void itemStateChanged(ItemEvent e) {
 				if(checkBoxIM.isSelected()){
 					imField.setEnabled(true);
 					reportIMValidation(imField.getText());
@@ -276,19 +290,22 @@ public class UserPreferencesPanel extends JPanel {
 					imField.setEnabled(false);
 					lblIMCheck.setVisible(false);
 					imVerified = true;
-				}
-
+					configSubmitButton();
+				}				
 			}
+			
 		});
 
 		/*
 		 * Set up an action listener for the Email checkbox that will
 		 * enable and disable the email textfeld depending on if it is selected.
+		 * Use ItemListener so that when the mouse hovers over the checkbox,
+		 * it would not be called.
 		 */
-		checkBoxEmail.addChangeListener(new ChangeListener() {
+		checkBoxEmail.addItemListener(new ItemListener() {
 
 			@Override
-			public void stateChanged(ChangeEvent e) {
+			public void itemStateChanged(ItemEvent e) {
 				if(checkBoxEmail.isSelected()){
 					emailField.setEnabled(true);
 					reportEmailValidation(emailField.getText());
@@ -297,6 +314,7 @@ public class UserPreferencesPanel extends JPanel {
 					emailField.setEnabled(false);
 					lblEmailCheck.setVisible(false);
 					emailVerified = true;
+					configSubmitButton();
 				}
 
 			}
@@ -337,25 +355,23 @@ public class UserPreferencesPanel extends JPanel {
 
 					@Override
 					public void responseSuccess(IRequest iReq) {
-						// TODO Auto-generated method stub
-
+						System.out.println("submit button clicked");
 					}
 
 					@Override
 					public void responseError(IRequest iReq) {
-						// TODO Auto-generated method stub
 
 					}
 
 					@Override
 					public void fail(IRequest iReq, Exception exception) {
-						// TODO Auto-generated method stub
-
+						
 					}
 
 				});
 				request.send();
-				userPreferencesPane.setCurrentEmailAndIM(emailField.getText(), 
+				userPreferencesPane.setCurrentEmailAndIM(
+						emailField.getText(), 
 						imField.getText(), 
 						checkBoxEmail.isSelected(), 
 						checkBoxIM.isSelected());
@@ -364,9 +380,7 @@ public class UserPreferencesPanel extends JPanel {
 
 		});
 
-		Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
-		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
-		request.send();
+		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("submit.png"));
 		    btnSubmit.setIcon(new ImageIcon(img));
@@ -377,6 +391,11 @@ public class UserPreferencesPanel extends JPanel {
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
+		
+		
+
+		
+		
 	}
 
 	/**
@@ -466,10 +485,15 @@ public class UserPreferencesPanel extends JPanel {
 	 *
 	 */
 	private void configSubmitButton(){
-		if(emailVerified && imVerified){
-			btnSubmit.setEnabled(true);
+		if(!changeHasBeenMade()){
+			btnSubmit.setEnabled(false);
+		} else {
+			if(emailVerified && imVerified){
+				btnSubmit.setEnabled(true);
+			}
+			else btnSubmit.setEnabled(false);
+
 		}
-		else btnSubmit.setEnabled(false);
 	}
 
 	/**
@@ -485,10 +509,11 @@ public class UserPreferencesPanel extends JPanel {
 			String currentIM, 
 			boolean allowEmail, 
 			boolean allowIM){
-		emailField.setText(currentEmail);
+		
 		initEmail = currentEmail;
-		imField.setText(currentIM);
+		emailField.setText(currentEmail);
 		initIM = currentIM;
+		imField.setText(currentIM);
 		checkBoxEmail.setSelected(allowEmail);
 		initAllowEmail = allowEmail;
 		checkBoxIM.setSelected(allowIM);
@@ -502,11 +527,7 @@ public class UserPreferencesPanel extends JPanel {
 	 * @return whether the tab is ready to close or not.
 	 */
 	public boolean isReadyToClose() {
-		if(initEmail != null && initIM != null 
-				&& initEmail.equals(emailField.getText()) 
-				&& initIM.equals(imField.getText())
-				&& initAllowEmail == checkBoxEmail.isSelected()
-				&& initAllowIM == checkBoxIM.isSelected()){
+		if(!changeHasBeenMade()){
 			return true;
 		}
 		else{
@@ -522,4 +543,45 @@ public class UserPreferencesPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * @param initEmail the initEmail to set
+	 */
+	public void setInitEmail(String initEmail) {
+		this.initEmail = initEmail;
+	}
+
+	/**
+	 * @param initIM the initIM to set
+	 */
+	public void setInitIM(String initIM) {
+		this.initIM = initIM;
+	}
+
+	/**
+	 * @param initAllowEmail the initAllowEmail to set
+	 */
+	public void setInitAllowEmail(boolean initAllowEmail) {
+		this.initAllowEmail = initAllowEmail;
+	}
+
+	/**
+	 * @param initAllowIM the initAllowIM to set
+	 */
+	public void setInitAllowIM(boolean initAllowIM) {
+		this.initAllowIM = initAllowIM;
+	}
+	
+	/**
+	 * 
+	 * @return true if any change has been made
+	 */
+	public boolean changeHasBeenMade(){
+		return (!(initEmail != null && initIM != null 
+				&& initEmail.equals(emailField.getText()) 
+				&& initIM.equals(imField.getText())
+				&& initAllowEmail == checkBoxEmail.isSelected()
+				&& initAllowIM == checkBoxIM.isSelected()));
+	}
+	
+	
 }
