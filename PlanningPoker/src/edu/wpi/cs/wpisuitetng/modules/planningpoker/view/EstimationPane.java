@@ -82,7 +82,7 @@ public class EstimationPane extends JPanel {
 		fldReqName = new JTextField();
 		lblReqDescription = new JLabel();
 		fldReqDescription = new JTextArea();
-		scrollDescription = new JScrollPane();
+		scrollDescription = new JScrollPane(fldReqDescription);
 		message = new JLabel();
 		voteButton = new JButton();
 		
@@ -94,7 +94,7 @@ public class EstimationPane extends JPanel {
 		fldReqName.setBackground(Color.WHITE);
 		fldReqDescription.setBorder(new JTextField().getBorder());
 		fldReqDescription.setEditable(false);
-		fldReqDescription.setEnabled(true);
+		fldReqDescription.setLineWrap(true);
 		
 		deckPanel = new DeckPanel(game.getDeck());
 		
@@ -131,7 +131,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		add(lblReqName, constraints);
-		lblReqName.setBorder(new EmptyBorder(0, 0, 10, 10));
+		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 10));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -149,25 +149,23 @@ public class EstimationPane extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
-		constraints.gridy = 10;
-		lblReqDescription.setBorder(new EmptyBorder(0, 0, 10, 0));
+		constraints.gridy = 2;
+		lblReqDescription.setBorder(new EmptyBorder(5, 0, 5, 0));
 		add(lblReqDescription, constraints);
 
-						
+								
 		// DESCRIPTION
 		constraints.fill = GridBagConstraints.BOTH;
-		scrollDescription.add(fldReqDescription, constraints);
+	
 		
 		// DESCRIPTION SCROLL
-		scrollDescription.add(fldReqDescription, constraints);
+		//scrollDescription.add(fldReqDescription);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.4;
 		constraints.gridx = 0;
-		constraints.gridy = 11;
-		fldReqDescription.setVisible(true);
-		scrollDescription.setVisible(true);
+		constraints.gridy = 3;
 		scrollDescription.setBorder(new EmptyBorder(0, 0, 10, 0));
 		add(scrollDescription, constraints);
 		
@@ -177,7 +175,7 @@ public class EstimationPane extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.6;
 		constraints.gridx = 0;
-		constraints.gridy = 12;
+		constraints.gridy = 4;
 		add(deckPanel, constraints);
 		
 		// VOTE BUTTON
@@ -188,7 +186,7 @@ public class EstimationPane extends JPanel {
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
-		constraints.gridy = 13;
+		constraints.gridy = 5;
 		constraints.ipadx = 40;
 		add(voteButton, constraints);
 		
@@ -201,7 +199,7 @@ public class EstimationPane extends JPanel {
 		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 14;
+		constraints.gridy = 6;
 		constraints.weightx = 0.0;
 		constraints.gridwidth = 3;
 		add(message, constraints);
