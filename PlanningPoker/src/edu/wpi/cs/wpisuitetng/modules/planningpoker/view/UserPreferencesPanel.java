@@ -12,6 +12,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -34,8 +35,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -68,11 +67,12 @@ public class UserPreferencesPanel extends JPanel {
 	private final JLabel lblUserInfo;
 	private final JLabel lblEmailCheck;
 	private final JLabel lblIMCheck;
+	private final JLabel lblPrefstatus;
 	private final JLabel lblEmail;
 	private final JLabel lblIM;
 	private final JCheckBox checkBoxEmail;
 	private final JCheckBox checkBoxIM;
-	public final JButton btnSubmit;
+	private final JButton btnSubmit;
 	private final JButton btnCancel;
 	private Pattern pattern;
 	private Matcher matcher;
@@ -116,8 +116,9 @@ public class UserPreferencesPanel extends JPanel {
 		lblTitle = new JLabel("User Preferences");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titlePanel.add(lblTitle);
-		
-		lblUserInfo = new JLabel("User name: " + ConfigManager.getInstance().getConfig().getUserName());
+
+		lblUserInfo = new JLabel("User name: " + 
+				ConfigManager.getInstance().getConfig().getUserName());
 		lblUserInfo.setVerticalAlignment(SwingConstants.BOTTOM);
 		final GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
 		gbc_lblUserInfo.insets = new Insets(0, 0, 5, 5);
@@ -226,9 +227,19 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_btnCancel.gridx = 3;
 		gbc_btnCancel.gridy = 5;
 		preferencesPanel.add(btnCancel, gbc_btnCancel);
-		
-		
-		Request request = Network.getInstance().makeRequest("core/user/" + ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+
+		lblPrefstatus = new JLabel("");
+		final GridBagConstraints gbc_lblPrefstatus = new GridBagConstraints();
+		gbc_lblPrefstatus.gridwidth = 4;
+		gbc_lblPrefstatus.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPrefstatus.gridx = 1;
+		gbc_lblPrefstatus.gridy = 6;
+		gbc_lblPrefstatus.anchor = GridBagConstraints.WEST;
+		preferencesPanel.add(lblPrefstatus, gbc_lblPrefstatus);
+
+
+		final Request request = Network.getInstance().makeRequest("core/user/" + 
+				ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
 		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 		request.send();
 
@@ -271,7 +282,7 @@ public class UserPreferencesPanel extends JPanel {
 			}
 		});
 
-		
+
 		/*
 		 * Set up an action listern for IM checkbox that will
 		 * enable and disable IM text field depending on if it is selected.
@@ -291,9 +302,9 @@ public class UserPreferencesPanel extends JPanel {
 					lblIMCheck.setVisible(false);
 					imVerified = true;
 					configSubmitButton();
-				}				
+				}
 			}
-			
+
 		});
 
 		/*
@@ -349,7 +360,7 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setAllowIM(checkBoxIM.isSelected());
 				final Request request =
 						Network.getInstance().makeRequest("Advanced/core/user/changeInPreference",
-															HttpMethod.POST);
+								HttpMethod.POST);
 				request.setBody(dummyUser.toJSON());
 				request.addObserver(new RequestObserver(){
 
@@ -365,7 +376,7 @@ public class UserPreferencesPanel extends JPanel {
 
 					@Override
 					public void fail(IRequest iReq, Exception exception) {
-						
+
 					}
 
 				});
@@ -375,27 +386,27 @@ public class UserPreferencesPanel extends JPanel {
 						imField.getText(), 
 						checkBoxEmail.isSelected(), 
 						checkBoxIM.isSelected());
+				lblPrefstatus.setText("Success! Your notification preferences have been udpated.");
+				lblPrefstatus.setBackground(Color.BLUE);
 
 			}
 
 		});
 
-		
+
 		try {
-		    Image img = ImageIO.read(getClass().getResource("submit.png"));
-		    btnSubmit.setIcon(new ImageIcon(img));
-		    
-		    img = ImageIO.read(getClass().getResource("redX.png"));
-		    btnCancel.setIcon(new ImageIcon(img));
+			Image img = ImageIO.read(getClass().getResource("submit.png"));
+			btnSubmit.setIcon(new ImageIcon(img));
+
+			img = ImageIO.read(getClass().getResource("redX.png"));
+			btnCancel.setIcon(new ImageIcon(img));
+
+
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-		
-		
 
-		
-		
 	}
 
 	/**
@@ -435,6 +446,7 @@ public class UserPreferencesPanel extends JPanel {
 			lblEmailCheck.setVisible(true);
 			emailVerified = false;
 			configSubmitButton();
+			printStatus();
 			return;
 		}
 		if(!isCorrectEmailFormat(email)){
@@ -442,12 +454,14 @@ public class UserPreferencesPanel extends JPanel {
 			lblEmailCheck.setVisible(true);
 			emailVerified = false;
 			configSubmitButton();
+			printStatus();
 		}
 		else{
 			lblEmailCheck.setText("");
 			lblEmailCheck.setVisible(false);
 			emailVerified = true;
 			configSubmitButton();
+			printStatus();
 		}
 	}
 
@@ -463,6 +477,7 @@ public class UserPreferencesPanel extends JPanel {
 			lblIMCheck.setVisible(true);
 			imVerified = false;
 			configSubmitButton();
+			printStatus();
 			return;
 		}
 		if(!isCorrectIMFormat(IM)){
@@ -470,12 +485,14 @@ public class UserPreferencesPanel extends JPanel {
 			lblIMCheck.setVisible(true);
 			imVerified = false;
 			configSubmitButton();
+			printStatus();
 		}
 		else{
 			lblIMCheck.setText("");
 			lblIMCheck.setVisible(false);
 			imVerified = true;
 			configSubmitButton();
+			printStatus();
 		}
 	}
 
@@ -509,7 +526,7 @@ public class UserPreferencesPanel extends JPanel {
 			String currentIM, 
 			boolean allowEmail, 
 			boolean allowIM){
-		
+
 		initEmail = currentEmail;
 		emailField.setText(currentEmail);
 		initIM = currentIM;
@@ -527,10 +544,7 @@ public class UserPreferencesPanel extends JPanel {
 	 * @return whether the tab is ready to close or not.
 	 */
 	public boolean isReadyToClose() {
-		if(!changeHasBeenMade()){
-			return true;
-		}
-		else{
+		if(changeHasBeenMade()){
 			final Object[] options = {"Yes", "No"};
 			final int i = JOptionPane.showOptionDialog(this, 
 					"Any unsaved changes will be lost, would you like to exit anyways?",
@@ -540,6 +554,10 @@ public class UserPreferencesPanel extends JPanel {
 					null, options, options[1]);
 
 			return i == 0;
+		}
+		else{
+			return true;
+
 		}
 	}
 
@@ -570,7 +588,7 @@ public class UserPreferencesPanel extends JPanel {
 	public void setInitAllowIM(boolean initAllowIM) {
 		this.initAllowIM = initAllowIM;
 	}
-	
+
 	/**
 	 * 
 	 * @return true if any change has been made
@@ -582,6 +600,25 @@ public class UserPreferencesPanel extends JPanel {
 				&& initAllowEmail == checkBoxEmail.isSelected()
 				&& initAllowIM == checkBoxIM.isSelected()));
 	}
-	
-	
+
+	/**
+	 * Changes the status label for the panel, to indicate if you can
+	 * save changes or not. This will also indicate if changes were
+	 * made.
+	 */
+	public void printStatus(){
+		if(changeHasBeenMade()){
+			if(emailVerified && imVerified){
+				lblPrefstatus.setText("");
+			}
+			else {
+				lblPrefstatus.setText("<html>Please correct changes to your preferences</html>");
+				lblPrefstatus.setBackground(Color.RED);
+			}
+		}
+		else {
+			lblPrefstatus.setText("<html>You have made no changes to your preferences.</html>");
+			lblPrefstatus.setBackground(Color.BLUE);
+		}
+	}
 }
