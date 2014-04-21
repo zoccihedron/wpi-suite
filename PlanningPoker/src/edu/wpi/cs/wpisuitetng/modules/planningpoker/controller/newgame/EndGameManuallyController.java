@@ -17,7 +17,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 /**
  * This controller responds when the user clicks the End Game button by
  * sending the contents of the fields to the server as an Ended Game.
- * @author Codon Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class EndGameManuallyController implements ActionListener {

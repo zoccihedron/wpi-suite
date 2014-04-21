@@ -22,7 +22,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  * This observer is called when a response is received from a request
  * to the server to update a user preference.
  * 
- * @author Code On Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class UpdateUserPreferenceObserver implements RequestObserver {

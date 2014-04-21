@@ -26,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 /**
  * This is a controller created for the purpose of interfacing with the main view.
  * There is only one instance of MainViewTabController.
- * @author Codon Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class MainViewTabController {
