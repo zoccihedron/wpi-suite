@@ -1,8 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsPanel;
 
+/**
+ * Controller for resultsPanel 
+ * @author Code On Bleu
+ *
+ */
 public class ViewResultsController {
 	
 	private ResultsPanel resultsPanel;

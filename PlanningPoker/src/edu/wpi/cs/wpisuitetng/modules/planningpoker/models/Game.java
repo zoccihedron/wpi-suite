@@ -71,6 +71,8 @@ public class Game extends AbstractModel {
 	 *            start time of the game
 	 * @param endTime
 	 *            end time of the game
+	 * @param deckName
+	 * 			  name of the deck
 	 * 
 	 */
 	public Game(String name, Date startTime, Date endTime, String deckName) {
@@ -335,7 +337,7 @@ public class Game extends AbstractModel {
 	 * Checks if the deadline has passed and updates the status
 	 */
 	public void updateStatus() {
-		if(!getStatus().equals(GameStatus.CLOSED) && !getStatus().equals(GameStatus.ENDED)){
+		if(!status.equals(GameStatus.CLOSED) && !status.equals(GameStatus.ENDED)){
 			if (hasDeadline) {
 				final Date now = Calendar.getInstance().getTime();
 				if (now.compareTo(end) >= 0) {

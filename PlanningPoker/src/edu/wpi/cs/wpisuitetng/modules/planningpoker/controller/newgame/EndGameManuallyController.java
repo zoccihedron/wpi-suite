@@ -29,6 +29,12 @@ public class EndGameManuallyController implements ActionListener {
 
 
 
+	/**
+	 * Constructor for controller
+	 * @param gameSummaryPanel
+	 * @param endedGame
+	 * @param endingGame
+	 */
 	public EndGameManuallyController(GameSummaryPanel gameSummaryPanel,
 			Game endedGame,
 			boolean endingGame) {

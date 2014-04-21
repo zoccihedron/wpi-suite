@@ -1,9 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsDisplayPanel;
@@ -14,8 +25,8 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
- * TODO: Someone familiar with this class should make a comment here.
- * 
+ * Controller for ResultsDisplayPanel, used for
+ * sending final estimates to requirement manager
  * @author Team Code On Bleu
  * @version 1.0
  */
@@ -23,6 +34,11 @@ public class ResultsDisplayController implements ActionListener{
 	private ResultsDisplayPanel view;
 	private Game game;
 	
+	/**
+	 * Constructor for ResultDisplayController
+	 * @param view ResultsDisplayPanel
+	 * @param game
+	 */
 	public ResultsDisplayController(ResultsDisplayPanel view, Game game){
 		this.view = view;
 		this.game = game;
@@ -61,7 +77,6 @@ public class ResultsDisplayController implements ActionListener{
 			request.send();
 			view.refresh();
 			
-			//TODO make it so the tree refreshes itself
 		}
 	}
 

@@ -62,6 +62,9 @@ public class OverviewPanelController {
 		gameSummaryPanel.updateSummary(game);
 	}
 	
+	/**
+	 * Refresh listGamePanel
+	 */
 	public void refreshListGames(){
 		listGamePanel.updateTree();
 	}
