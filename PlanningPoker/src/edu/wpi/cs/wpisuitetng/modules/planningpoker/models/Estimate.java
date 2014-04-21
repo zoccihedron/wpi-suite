@@ -174,6 +174,14 @@ public class Estimate {
 	}
 	
 	/**
+	 * Get estimates of all users
+	 * @return map of users and their estimates
+	 */
+	public HashMap<String,Integer> getUsersAndEstimates(){
+		return userWithEstimate;
+	}
+	
+	/**
 	 * Generates the mean of the estimates for a requirement, and
 	 * ignores any invalid estimates (0).
 	 *
