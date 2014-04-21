@@ -53,6 +53,7 @@ public class DeckPanel extends JScrollPane {
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
+	private JLabel currentVote;
 	
 	/**
 	 * Constructs the DeckPanel
@@ -187,6 +188,7 @@ public class DeckPanel extends JScrollPane {
 						cardToAdd.setBorder(new JToggleButton().getBorder());
 					}
 					calculateSum();
+					
 				}
 			});
 			
@@ -195,6 +197,9 @@ public class DeckPanel extends JScrollPane {
 			listOfButtons.add(cardToAdd);
 			deckPanel.add(cardToAdd, constraints);
 		}
+		
+		currentVote = new JLabel();
+		deckPanel.add(currentVote);
 
 		return deckPanel;
 	}
@@ -216,6 +221,7 @@ public class DeckPanel extends JScrollPane {
 				result += Integer.valueOf(button.getText());
 			}
 		}
+		currentVote.setText("Current Vote: " + result);
 		estimateField.setText(Integer.toString(result));
 	}
 	
