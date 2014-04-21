@@ -1,6 +1,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -31,17 +32,17 @@ public class CardViewPane extends JScrollPane{
 		}
 		
 		currentView = new JPanel();
-		
+		currentView.setLayout(new GridBagLayout());
+		this.setViewportView(currentView);
 	}
 	
 	public JPanel cardView(Deck deck){
-		this.setViewportView(currentView);
-		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
+		constraints.gridx = -1;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
+		constraints.weighty = 1.0;
 		
 		currentView.removeAll();
 
@@ -51,15 +52,19 @@ public class CardViewPane extends JScrollPane{
 			cardToAdd.setHorizontalTextPosition(SwingConstants.CENTER);
 			cardToAdd.setVerticalTextPosition(SwingConstants.CENTER);
 			
-			currentView.add(cardToAdd, constraints); 
 			
-			if(constraints.gridx % (NUM_OF_COLUMNS-1) == 0){
+			if(constraints.gridx % (NUM_OF_COLUMNS-1) == 0 && constraints.gridx != 0){
 				constraints.gridx = 0;
 				constraints.gridy++;
-				constraints.anchor = GridBagConstraints.PAGE_END;
 			}else{
 				constraints.gridx++;
 			}
+			
+			//Set the anchor to be the last row
+			if(constraints.gridy == deck.getCards().size() / NUM_OF_COLUMNS){
+				constraints.anchor = GridBagConstraints.PAGE_END;
+			}
+			currentView.add(cardToAdd, constraints); 
 		}
 		
 		return currentView;
@@ -69,6 +74,7 @@ public class CardViewPane extends JScrollPane{
 	
 	public void updateView(Deck deck){
 		currentView = cardView(deck);
+		this.setViewportView(currentView);
 	}
 
 }

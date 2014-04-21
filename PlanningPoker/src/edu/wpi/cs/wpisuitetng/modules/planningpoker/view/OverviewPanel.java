@@ -50,16 +50,7 @@ public class OverviewPanel extends JSplitPane {
 		OverviewPanelController.getInstance().setListGames(listGamePanel);
 		
 		setLeftComponent(listGamePanel);
-
-		DeckManager deckManager = new DeckManager();
-		ArrayList<Integer> cards = new ArrayList<Integer>();
-		cards.add(4);
-		cards.add(5);
-		cards.add(6);
-		cards.add(7);
-		cards.add(8);
-		deckManager.updateDeck(new Deck("Test", true, cards));
-		setRightComponent(deckManager);
+		setRightComponent(summaryPanel);
 		setDividerLocation(300);
 		
 		
