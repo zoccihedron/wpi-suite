@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.gson.Gson;
 
@@ -33,7 +34,11 @@ public class Estimate {
 	
 	private int gameID;
 	private int reqID;
+	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
+	private boolean isEstimationSent = false;
+	private int finalEstimate = 0;
+	private HashMap<String, List<Boolean>> userCardSelection;
 	
 	/**
 	 * Constructor for an estimate object
@@ -44,6 +49,7 @@ public class Estimate {
 		reqID = r;
 		this.gameID = gameID;
 		userWithEstimate = new HashMap<String,Integer>();
+		userCardSelection = new HashMap<String, List<Boolean>>();
 	}
 	
 	
@@ -168,6 +174,14 @@ public class Estimate {
 	}
 	
 	/**
+	 * Get estimates of all users
+	 * @return map of users and their estimates
+	 */
+	public HashMap<String,Integer> getUsersAndEstimates(){
+		return userWithEstimate;
+	}
+	
+	/**
 	 * Generates the mean of the estimates for a requirement, and
 	 * ignores any invalid estimates (0).
 	 *
@@ -178,13 +192,19 @@ public class Estimate {
 		int sum = 0;
 		int count = 0;
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != 0) {
+			if(temp.getValue() != -1) {
 				count++;
 				sum += temp.getValue();
 			}
 		}
-		final double mean = (double)sum / (double)count;
+		if(count != 0){
+			mean = (double)sum / (double)count;
+			
+		} else {
+			mean = 0;
+		}
 		return mean;
+		
 	}
 	
 	/**
@@ -196,13 +216,16 @@ public class Estimate {
 	public double getMedian() {
 		final List<Integer> estimates = new ArrayList<Integer>();
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != 0) {
+			if(temp.getValue() != -1) {
 				estimates.add(temp.getValue());
 			}
 		}
 		Collections.sort(estimates);
 		final int length = estimates.size();
 		double median = 0;
+		if(length == 0){
+			return median;
+		}
 		if(length % 2 == 0){
 			median = ((double) estimates.get(length / 2) + 
 					(double)estimates.get((length / 2) - 1)) / 2.0;
@@ -245,6 +268,10 @@ public class Estimate {
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
 		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		copyEst.isEstimationSent = isEstimationSent;
+		copyEst.mean = mean;
+		copyEst.finalEstimate = finalEstimate;
+		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
 		return copyEst;
 	}
 	
@@ -270,5 +297,47 @@ public class Estimate {
 	 */
 	public void setReqID(int reqID) {
 		this.reqID = reqID;
+	}
+	
+	/**
+	 * set isEstimationSent, call this function 
+	 * and pass true as parameter 
+	 * before sending this estimation to requirement manager
+	 */
+	public void estimationSent(boolean send)
+	{
+		this.isEstimationSent = send;
+	}
+	
+	/**
+	 * @return true the estimation has been sent to the requirement manager
+	 */
+	public boolean estimationHasBeenSent() {
+		
+		return isEstimationSent;
+	}
+
+	
+	public boolean isFinalEstimateSet() {
+		return (finalEstimate != 0);
+	}
+
+	public int getFinalEstimate() {
+
+		return finalEstimate;
+	}
+
+	
+	public void setFinalEstimate(int finalEstimate) {
+		this.finalEstimate = finalEstimate;
+	}
+
+
+	public List<Boolean> getUserCardSelection(String user) {
+		return userCardSelection.get(user);
+	}
+
+	public void setUserCardSelection(String user, List<Boolean> userCardSelection) {
+		this.userCardSelection.put(user, userCardSelection);
 	}
 }

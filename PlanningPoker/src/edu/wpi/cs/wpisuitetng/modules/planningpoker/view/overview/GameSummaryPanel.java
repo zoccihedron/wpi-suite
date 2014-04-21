@@ -16,10 +16,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +35,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabContro
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * GameSummaryPanel is a class which displays the summary of a game that can be
@@ -40,37 +51,69 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
  */
 @SuppressWarnings({ "serial" })
 public class GameSummaryPanel extends JPanel {
-
-	private final GameSummaryInfoPanel infoPanel;
-	private final GameSummaryReqPanel reqPanel;
-	private final JButton editGameButton;
-	private final JButton playGameButton;
-	private final JButton endGameButton;
-	private final JLabel reportMessage;
+	private GameSummaryInfoPanel infoPanel;
+	private GameSummaryReqPanel reqPanel;
+	private JButton editGameButton;
+	private JButton playGameButton;
+	private JButton endGameButton;
+	private JButton viewResultsButton;
+	private JButton closeGameButton;
+	private JLabel helpTitle;
+	private JLabel helpText;
+	private JLabel reportMessage;
+	private GameSummaryPanel  gameSummaryPanel = this;
 	JPanel buttonsPanel;
 	Game game;
-	
 
 	/**
 	 * 
 	 */
 	public GameSummaryPanel() {
 		
+		setUpHelpPanel();
+
+	}
+	 /**
+	  * sets up help panel to show before a game has been selected
+	  */
+	private void setUpHelpPanel(){
+		// Set up layout constraints
+		this.setLayout(new GridBagLayout());
+		final GridBagConstraints constraints = new GridBagConstraints();
+				
+		helpTitle = new JLabel();
+		helpText = new JLabel();
+		
+		helpTitle.setText("Games Overview");
+		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		
+		helpText.setText("To begin, please select a game from the tree on the left.");
+		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(helpTitle,constraints);
+		
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		this.add(helpText, constraints);
+	}
+	
+	/**
+	 * shows this panel once a game has been selected
+	 */
+	private void setUpGameSummaryPanel(){
+		// Set up layout constraints
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
 		
+		
+		// Panel for buttons that apply to all games
 		buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridBagLayout());
 		
-		JPanel extraPanel1 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		buttonsPanel.add(extraPanel1, constraints);
 		
+		// Button to edit game
 		editGameButton = new JButton("Edit");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
@@ -81,7 +124,55 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		buttonsPanel.add(editGameButton, constraints);
+		editGameButton.setEnabled(false);
+		editGameButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mvt = MainViewTabController
+						.getInstance();
+
+				if (game.getStatus().equals(GameStatus.IN_PROGRESS)) {
+
+					final Request request = Network.getInstance()
+							.makeRequest("Advanced/planningpoker/game/edit",
+									HttpMethod.POST);
+					request.setBody(game.toJSON());
+					request.addObserver(new RequestObserver() {
+
+						@Override
+						public void responseSuccess(IRequest iReq) {
+							ResponseModel response = iReq.getResponse();
+							String message = response.getBody();
+							if (message.trim().equals("true")) {
+								mvt.createGameTab(game, true);
+							} else {
+								gameSummaryPanel.reportError(message);
+								editGameButton.setEnabled(false);
+							}
+						}
+
+						@Override
+						public void responseError(IRequest iReq) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void fail(IRequest iReq, Exception exception) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+					request.send();
+				}
+ 				else{
+ 					mvt.createGameTab(game, false);
+ 				}
+			}
+ 			
+ 		});
 		
+		// Button to play game
 		playGameButton = new JButton("Play");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
@@ -93,13 +184,72 @@ public class GameSummaryPanel extends JPanel {
 		constraints.insets = new Insets(0, 10, 0, 20);
 		buttonsPanel.add(playGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
+		playGameButton.setEnabled(false);
+		playGameButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+ 				mvt.playGameTab(game);
+			}
+ 		});
+		viewResultsButton = new JButton("View Results");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 20);
+		buttonsPanel.add(viewResultsButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		viewResultsButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+ 				mvt.viewResultsTab(game);
+			}
+ 		});
 		
+		
+		
+		// Button to end game manually
+		endGameButton = new JButton("End Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(endGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
+		closeGameButton = new JButton("Close Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(closeGameButton, constraints);
+		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
+		
+		JPanel extraPanel1 = new JPanel();
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		buttonsPanel.add(extraPanel1, constraints);
+		
+		// Panel that contains summary of game information
 		infoPanel = new GameSummaryInfoPanel();
 		infoPanel.setBorder(new EmptyBorder(0, 20, 10, 20));
-		
-		reqPanel = new GameSummaryReqPanel();
-		reqPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
-		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_START;
 		constraints.gridwidth = 4;
@@ -111,6 +261,9 @@ public class GameSummaryPanel extends JPanel {
 		constraints.ipady = 0;
 		add(infoPanel, constraints);
 		
+		// Panel that contains requirements in game
+		reqPanel = new GameSummaryReqPanel();
+		reqPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_END;
 		constraints.gridwidth = 4;
@@ -154,40 +307,22 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		add(extraPanel2, constraints);
 		
-		endGameButton = new JButton("End Game");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 0, 0);
-		add(endGameButton, constraints);
-		
-		endGameButton.setVisible(false);
-		endGameButton.setEnabled(false);
-		
-		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
-		
-		
-		
-		editGameButton.addActionListener(new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				mvt.createGameTab(game);
-				
-			}
- 			
- 		});
-		
-		playGameButton.addActionListener(new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				mvt.playGameTab(game);
-			}
-
- 		});
+		try {
+		    Image img = ImageIO.read(getClass().getResource("editIcon.png"));
+		    editGameButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("stop.png"));
+		    endGameButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("playIcon.png"));
+		    playGameButton.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("checkmark.png"));
+		    viewResultsButton.setIcon(new ImageIcon(img));   
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 	}
 	
 	/**
@@ -196,53 +331,68 @@ public class GameSummaryPanel extends JPanel {
 	 */
 	public void updateSummary(Game game){
 		this.game = game;
+		this.removeAll();
+		setUpGameSummaryPanel();
 		
+		playGameButton.setEnabled(true);
+		viewResultsButton.setEnabled(true);
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
-			//make all buttons visible
-			editGameButton.setVisible(true);
-			endGameButton.setVisible(true);
+			editGameButton.setEnabled(true);
+			endGameButton.setEnabled(true);
+			closeGameButton.setEnabled(true);
 			
 			// If the game is a draft.
 			if(game.getStatus().equals(GameStatus.DRAFT)) {
-				playGameButton.setEnabled(false);
-				editGameButton.setEnabled(true);
-				endGameButton.setEnabled(false);
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(true);
+				endGameButton.setVisible(false);
+				closeGameButton.setVisible(false);
+				viewResultsButton.setVisible(false);
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameButton.setEnabled(true);
-				editGameButton.setEnabled(false);
-				endGameButton.setEnabled(true);
+				
+				playGameButton.setVisible(!game.isEditing());
+				editGameButton.setVisible(!game.isHasBeenEstimated());
+				endGameButton.setVisible(true);
+				closeGameButton.setVisible(false);
+				viewResultsButton.setVisible(false);
 			}
 			// If the game is ended.
+			else if(game.getStatus().equals(GameStatus.ENDED)){
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(false);
+				endGameButton.setVisible(false);
+				closeGameButton.setVisible(true);
+			}
+			// If the game is closed.
 			else {
-				playGameButton.setEnabled(false);
-				editGameButton.setEnabled(false);
-				endGameButton.setEnabled(false);
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(false);
+				endGameButton.setVisible(false);
+				closeGameButton.setVisible(false);
+				viewResultsButton.setVisible(true);
 			}
 		}
 		// If the user is not the game creator.
-		else {			
-			// disable all instances of edit and end game
+		else {
 			editGameButton.setVisible(false);
-			editGameButton.setEnabled(false);
 			endGameButton.setVisible(false);
-			endGameButton.setEnabled(false);
-			
+			closeGameButton.setVisible(false);
+		
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
 			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameButton.setEnabled(true);
+				playGameButton.setVisible(true);
+				viewResultsButton.setVisible(false);
 
 			}
-			// If the game is ended.
+			// If the game is ended/closed.
 			else {
-				playGameButton.setEnabled(false);
+				playGameButton.setVisible(false);
+				viewResultsButton.setVisible(true);
 			}
 		}
-		
-		// play game button is always visible
-		playGameButton.setVisible(true);
 		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
@@ -253,6 +403,11 @@ public class GameSummaryPanel extends JPanel {
 	public Game getGameObject() {
 		return game;
 	}
+	
+	public void disableOrEnableButtons(boolean check){
+		playGameButton.setEnabled(check);
+		editGameButton.setEnabled(check);
+	}
 
 	public void reportError(String string) {
 		reportMessage.setText(string);
@@ -262,6 +417,10 @@ public class GameSummaryPanel extends JPanel {
 	public void reportSuccess(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.BLUE);
+	}
+	
+	public List<Integer> getSelectedRequirements(){
+		return reqPanel.getSelectedRequirements();
 	}
 	
 }

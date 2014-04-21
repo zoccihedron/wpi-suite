@@ -11,16 +11,16 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -48,14 +50,35 @@ public class DeckPanel extends JScrollPane {
 	private ImageIcon img = null;
 	private final int CARD_WIDTH = 100;
 	private final int CARD_HEIGHT = 128;
+	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
+	
 	/**
 	 * Constructs the DeckPanel
-	 * 
+	 * Right now the default deck is constructed here, this should move when
+	 * decks are fully implemented
 	 */
-	public DeckPanel() {
-		this.setViewportView(textVersion());
+	public DeckPanel(String deck) {
+		if(deck.equals("default")){
+
+			ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
+			defaultDeckCards.add(0);
+			defaultDeckCards.add(1);
+			defaultDeckCards.add(1);
+			defaultDeckCards.add(2);
+			defaultDeckCards.add(3);
+			defaultDeckCards.add(5);
+			defaultDeckCards.add(8);
+			defaultDeckCards.add(13);
+			
+			Deck defaultDeck = new Deck("default", true, defaultDeckCards);
+			this.setViewportView(deckVersion(defaultDeck));
+		}
+		else {
+			this.setViewportView(textVersion());
+		}
+		disableVoting();
 	}
 
 	public String getEstimateField() {
@@ -154,13 +177,19 @@ public class DeckPanel extends JScrollPane {
 				public void stateChanged(ChangeEvent arg0) {
 					if(!deck.canSelectMultipleCards()){
 						clearPrevious(cardToAdd);
+						cardToAdd.setBorder(null);
+					}
+					if(cardToAdd.isSelected()){
+						Border border = BorderFactory.createCompoundBorder(new LineBorder(Color.GREEN, 3), new JToggleButton().getBorder());
+						cardToAdd.setBorder(border);
+					}else{
+						cardToAdd.setBorder(new JToggleButton().getBorder());
 					}
 					calculateSum();
 				}
 			});
 			
-				
-			
+			cardToAdd.setBorder(new JToggleButton().getBorder());
 
 			listOfButtons.add(cardToAdd);
 			deckPanel.add(cardToAdd, constraints);
@@ -205,13 +234,38 @@ public class DeckPanel extends JScrollPane {
 		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
 		System.out.println("--------old estimate value: " + oldEstimate);
 		if (oldEstimate > 0) {
+			if(isDeckView){
+				ArrayList<Boolean> selected =
+						(ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
+				if(selected != null){
+					for(int i = 0; i < selected.size(); i++)
+					{
+						listOfButtons.get(i).setSelected(selected.get(i));
+					}
+				}
+				
+			}
 			estimateField.setText(Integer.toString(oldEstimate));
+			currentEstimate = Integer.toString(oldEstimate);
 			System.out.println("--------reached ");
 
 		} else {
 			estimateField.setText("");
+			currentEstimate = "";
 		}
 
+	}
+	
+	public boolean isOldEstimate(){
+		return currentEstimate.equals(estimateField.getText());
+	}
+	
+	public void setCurrentEstimate(String estimate){
+		currentEstimate = estimate;
+	}
+	
+	public String getCurrentEstimate(){
+		return currentEstimate;
 	}
 
 	/**
@@ -222,6 +276,33 @@ public class DeckPanel extends JScrollPane {
 			button.setSelected(false);
 		}
 		
+	}
+	
+	public JTextField getEstimateFieldComponent() {
+		return estimateField;
+	}
+
+	public boolean isDeckView() {
+		return isDeckView;
+	}
+
+	public ArrayList<Boolean> getCardSelection() {
+		ArrayList<Boolean> selection = new ArrayList<Boolean>();
+		for(JToggleButton button: listOfButtons){
+			selection.add(button.isSelected());
+		}
+		return selection;
+	}
+	
+	public void disableVoting(){
+		if(isDeckView){
+			this.getViewport().setVisible(false);
+		}
+	}
+	public void enableVoting(){
+		if(isDeckView){
+			this.getViewport().setVisible(true);
+		}
 	}
 
 }

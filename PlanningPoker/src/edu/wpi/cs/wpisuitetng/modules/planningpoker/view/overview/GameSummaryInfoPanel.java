@@ -12,9 +12,11 @@
 
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,20 +40,14 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 public class GameSummaryInfoPanel extends JPanel {
 
 	private final JLabel lblName;
-	private final JTextArea gameNameText;
+	private final JTextField gameNameText;
 	private final JTextArea description;
-	private final JTextArea deadline;
+	private final JTextField deadline;
 	private final JLabel lblDeadline;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
 	private final JScrollPane descriptionScroll;
 
-	/**
-	 * This constructor is to be used when starting from a new game
-	 * 
-	 * @param parent
-	 *            the parent panel for this panel
-	 */
 	public GameSummaryInfoPanel() {
 		
 		setBounds(5, 5, 307, 393);
@@ -60,9 +56,11 @@ public class GameSummaryInfoPanel extends JPanel {
 		final Border jtextFieldBorder = new JTextField().getBorder();
 		
 		// Adds the fields and button to the main panel.
-		gameNameText = new JTextArea();
+		gameNameText = new JTextField();
 		gameNameText.setEditable(false);
-		gameNameText.setEnabled(true);
+		gameNameText.setBackground(Color.WHITE);
+		gameNameText.setAlignmentX(CENTER_ALIGNMENT);
+		gameNameText.setMargin(new Insets(3, 3, 3, 3));
 		gameNameText.setBorder(jtextFieldBorder);
 		
 		description = new JTextArea();
@@ -73,9 +71,10 @@ public class GameSummaryInfoPanel extends JPanel {
 		descriptionScroll = new JScrollPane();
 		descriptionScroll.add(description);
 
-		deadline = new JTextArea();
+		deadline = new JTextField();
 		deadline.setEditable(false);
-		deadline.setEnabled(true);
+		deadline.setBackground(Color.WHITE);
+		deadline.setMargin(new Insets(3, 3, 3, 3));
 		deadline.setBorder(jtextFieldBorder);
 
 		lblTitle = new JLabel("Game Information");
@@ -93,7 +92,7 @@ public class GameSummaryInfoPanel extends JPanel {
 	 * Sets all the grid components for either constructor
 	 */
 	public void infoPanelSetup() {
-		// DEFINE CONSTAINTS
+		// DEFINE CONSTRAINTS
 		final GridBagConstraints constraints = new GridBagConstraints();
 
 
@@ -105,11 +104,11 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
+		constraints.ipady = 20;
 		add(lblTitle, constraints);
+		constraints.ipady = 0;
 
 		// NAME LABEL
 		lblName.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -117,17 +116,17 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 1;
 		add(lblName, constraints);
-		lblName.setBorder(new EmptyBorder(5, 5, 5, 5));
+		lblName.setBorder(new EmptyBorder(0, 0, 0, 10));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 2;
+		constraints.gridx = 1;
 		constraints.gridy = 1;
 		add(gameNameText, constraints);
 
@@ -137,26 +136,26 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 10;
 		add(lblDescription, constraints);
 
-		
-		JScrollPane scrollPane = new JScrollPane(description); 
-		description.setEditable(false);
-		
+				
 		// DESCRIPTION
 		description.setLineWrap(true);
 		constraints.fill = GridBagConstraints.BOTH;
 		
 		// DESCRIPTION SCROLL
+		JScrollPane scrollPane = new JScrollPane(description); 
+		description.setEditable(false);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 11;
 		add(scrollPane, constraints);
+	
 
 		// DEADLINE LABEL
 		lblDeadline.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -164,18 +163,18 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
+		constraints.gridx = 0;
 		constraints.gridy = 6;
 		constraints.anchor = GridBagConstraints.WEST;
 		add(lblDeadline, constraints);
-		lblDeadline.setBorder(new EmptyBorder(5, 5, 5, 5));
+		lblDeadline.setBorder(new EmptyBorder(10, 0, 10, 0));
 
 		// DEADLINE FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 2;
+		constraints.gridx = 1;
 		constraints.gridy = 6;
 		add(deadline, constraints);
 

@@ -34,12 +34,14 @@ public class Game extends AbstractModel {
 	private String gameCreator = "";
 	private boolean hasDeadline = false;
 	private Date start = new Date();
+
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
-
+	private boolean hasBeenEstimated = false;
+	private String deck = "";
 	public enum GameStatus {
-		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
+		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
 		private final String text;
 
@@ -54,6 +56,7 @@ public class Game extends AbstractModel {
 	}
 
 	private GameStatus status = GameStatus.DRAFT;
+	private boolean editing = false;
 
 	// TODO: timestamp, countdown or time for deadline, estimate, boolean for
 	// termination
@@ -70,12 +73,13 @@ public class Game extends AbstractModel {
 	 *            end time of the game
 	 * 
 	 */
-	public Game(String name, Date startTime, Date endTime) {
+	public Game(String name, Date startTime, Date endTime, String deckName) {
 		// TODO: whether a session could be add to the parameter of game's
 		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
+		this.setDeck(deckName);
 	}
 
 	/**
@@ -331,13 +335,15 @@ public class Game extends AbstractModel {
 	 * Checks if the deadline has passed and updates the status
 	 */
 	public void updateStatus() {
-		if (hasDeadline) {
-			final Date now = Calendar.getInstance().getTime();
-			if (now.compareTo(end) >= 0) {
-				status = GameStatus.ENDED;
+		if(!getStatus().equals(GameStatus.CLOSED) && !getStatus().equals(GameStatus.ENDED)){
+			if (hasDeadline) {
+				final Date now = Calendar.getInstance().getTime();
+				if (now.compareTo(end) >= 0) {
+					status = GameStatus.ENDED;
+				}
 			}
+			endIfAllEstimated();
 		}
-		endIfAllEstimated();
 	}
 
 	/**
@@ -350,7 +356,7 @@ public class Game extends AbstractModel {
 		boolean shouldEnd = true;
 
 		if (status != GameStatus.DRAFT && !estimates.isEmpty()) {
-			
+
 			for (Estimate estimate : estimates) {
 				shouldEnd &= estimate.areAllEstimationsMade();
 			}
@@ -388,12 +394,11 @@ public class Game extends AbstractModel {
 	}
 
 	/**
-	 * Checks if the game end time has been reached
+	 * Returns the status of the game
 	 * 
 	 * @return status of the game (DRAFT,IN_PROGRESS,ENDED)
 	 */
 	public GameStatus getStatus() {
-		updateStatus();
 		return status;
 	}
 
@@ -590,6 +595,44 @@ public class Game extends AbstractModel {
 				e.addUser(u.getUsername());
 			}
 		}
+	}
+
+	/**
+	 * Gets whether the game was voted on or not
+	 * @return if the game was voted on or not
+	 */
+	public boolean isHasBeenEstimated() {
+		return hasBeenEstimated;
+	}
+
+	/**
+	 * Sets whether the game was voted on or not
+	 * @param hasBeenEstimated if the game was voted on or not
+	 */
+	public void setHasBeenEstimated(boolean hasBeenEstimated) {
+		this.hasBeenEstimated = hasBeenEstimated;
+	}
+
+	/**
+	 * @return the deck
+	 */
+	public String getDeck() {
+		return deck;
+	}
+
+	/**
+	 * @param deck the deck to set
+	 */
+	public void setDeck(String deck) {
+		this.deck = deck;
+	}
+
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+	}
+
+	public boolean isEditing() {
+		return editing;
 	}
 
 }

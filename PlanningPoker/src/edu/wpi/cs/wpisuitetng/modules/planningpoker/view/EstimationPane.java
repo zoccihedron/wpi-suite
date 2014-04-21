@@ -17,14 +17,23 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.Image;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
@@ -41,132 +50,192 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @version 0.1
  */
 public class EstimationPane extends JPanel {
-	private final JTextArea requirementName;
-	private final JTextArea descriptionText;
-	private final Box blankBox;
-	private final DeckPanel deckPanel;
-	private final JLabel message;
-	private final JButton voteButton;
+	
+	private final JLabel lblTitle;
+	private final JLabel lblReqName;
+	private final JTextField fldReqName;
+	private final JLabel lblReqDescription;
+	private final JTextArea fldReqDescription;
+	private final JScrollPane scrollDescription;
+	private DeckPanel deckPanel;
+	private JLabel message;
+	private JButton voteButton;
 	private int reqid;
 	private ListRequirementsPanel listReqPanel;
 	private Game game;
-	
 	private Requirement req;
 	
 	/**
 	 * Constructor for panel
+	 * @param game 
 	 * @param reqid The req to vote on
 	 * @param draftGame The game the vote is going towards
 	 */
-	public EstimationPane(ListRequirementsPanel listReqPanel){
-
+	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
+		this.game = game;
 		this.listReqPanel = listReqPanel;
 		
 		this.setLayout(new GridBagLayout());
+
+		lblTitle = new JLabel();
+		lblReqName = new JLabel();
+		fldReqName = new JTextField();
+		lblReqDescription = new JLabel();
+		fldReqDescription = new JTextArea();
+		scrollDescription = new JScrollPane(fldReqDescription);
+		message = new JLabel();
+		voteButton = new JButton();
+		
+		lblReqName.setText("Name:");
+		lblReqDescription.setText("Description:");
+		lblTitle.setText("Requirement Information");
+		
+		fldReqName.setEditable(false);
+		fldReqName.setBackground(Color.WHITE);
+		fldReqDescription.setBorder(new JTextField().getBorder());
+		fldReqDescription.setEditable(false);
+		fldReqDescription.setLineWrap(true);
+		
+		deckPanel = new DeckPanel(game.getDeck());
+		
+		infoPanelSetup();
+	}
+
+	
+	/**
+	 * Sets all the grid components for either constructor
+	 */
+	public void infoPanelSetup() {
+		// DEFINE CONSTAINTS
 		final GridBagConstraints constraints = new GridBagConstraints();
 
-		final JLabel nameLabel = new JLabel("Name:");
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 5, 0, 10);
+		// GAME INFORMATION LABEL
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.gridwidth = 1;
-		add(nameLabel, constraints);
+		constraints.ipady = 20;
+		add(lblTitle, constraints);
+		constraints.ipady = 0;
 
-		requirementName = new JTextArea();
-		requirementName.setEditable(false);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
-		constraints.gridx = 1;
-		constraints.gridy = 0;
-		constraints.weightx = 0.66;
+		// NAME LABEL
+		lblReqName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
-		add(requirementName, constraints);
-
-		blankBox = new Box(1);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
-		constraints.gridx = 2;
-		constraints.gridy = 0;
-		constraints.weightx = 0.33;
-		constraints.gridwidth = 1;
-		add(blankBox, constraints);
-
-		final JLabel descriptionLabel = new JLabel("Description:");
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(5, 5, 0, 5);
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
+		add(lblReqName, constraints);
+		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 10));
+
+		// NAME FIELD
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 2;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
+		add(fldReqName, constraints);
+
+		// DESCRIPTION LABEL
+		lblReqDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
-		add(descriptionLabel, constraints);
-
-		constraints.insets = new Insets(0, 0, 0, 0);
-
-		descriptionText = new JTextArea();
-
-		descriptionText.setEditable(false);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 5, 0, 5);
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
-		constraints.gridwidth = 3;
-		add(descriptionText, constraints);
+		lblReqDescription.setBorder(new EmptyBorder(5, 0, 5, 0));
+		add(lblReqDescription, constraints);
 
-		final JLabel temp = new JLabel();
-		temp.setText("temp");
-
-
-		deckPanel = new DeckPanel();
+								
+		// DESCRIPTION
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(0, 0, 0, 0);
+	
+		
+		// DESCRIPTION SCROLL
+		//scrollDescription.add(fldReqDescription);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.4;
 		constraints.gridx = 0;
 		constraints.gridy = 3;
-		constraints.weightx = 1.0;
-		constraints.gridwidth = 3;
-		constraints.weighty = 1.5;
-		add(deckPanel, constraints);
-
-
-		final JPanel voteButtonPanel = new JPanel();
+		scrollDescription.setBorder(new EmptyBorder(0, 0, 10, 0));
+		add(scrollDescription, constraints);
+		
+		// DECK PANEL
 		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.6;
 		constraints.gridx = 0;
 		constraints.gridy = 4;
-		constraints.weightx = 1;
-		constraints.weighty = 1;
-		constraints.gridwidth = 3;
-		constraints.gridheight = 2;
-		constraints.insets = new Insets(0, 0, 20, 0);
-		constraints.anchor = GridBagConstraints.PAGE_END;
-		add(voteButtonPanel, constraints);
-
-		voteButtonPanel.setLayout(new GridBagLayout());
-
+		add(deckPanel, constraints);
+		
+		// VOTE BUTTON
+		constraints.fill = GridBagConstraints.NONE;
+		voteButton.setAlignmentX(LEFT_ALIGNMENT);
+		constraints.anchor = GridBagConstraints.SOUTHWEST;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 5;
+		constraints.ipadx = 40;
+		add(voteButton, constraints);
+		
 		//error message
 		message = new JLabel();
-		message.setText("    ");
-		message.setFont(new Font("Dialog", Font.ITALIC, 12));
+		message.setText("");
+		message.setFont(new Font("Dialog", Font.ITALIC, 15));
 		message.setVisible(true);
-		constraints.fill = GridBagConstraints.CENTER;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.weightx = 1.0;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 0, 50, 0);
-		voteButtonPanel.add(message, constraints);
+		message.setMinimumSize(new Dimension(200, 25));
+		message.setMaximumSize(new Dimension(200, 25));
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 2;
+		constraints.gridy = 5;
+		constraints.weightx = 0.0;
+		constraints.gridwidth = 3;
+		add(message, constraints);
 		
-		voteButton = new JButton("Vote");
-		voteButton.setPreferredSize(new Dimension(140, 40));
-		constraints.fill = GridBagConstraints.CENTER;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		constraints.weightx = 1.0;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 0, 0, 0);
-		voteButtonPanel.add(voteButton, constraints);
-		voteButton.setEnabled(false);
+		this.setBorder(new EmptyBorder(10,10,10,10));
+	
+		
+		// adds listener for live validation of the Estimate Field
+		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(new DocumentListener() {
 
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkField();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkField();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkField(); 
+			}
+			
+		});
+
+		
+
+		try {
+		    Image img = ImageIO.read(getClass().getResource("vote.png"));
+		    voteButton.setIcon(new ImageIcon(img));
+		} catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
 	}
 
 	/**
@@ -187,22 +256,26 @@ public class EstimationPane extends JPanel {
 		this.reqid = reqid;
 		try{
 			req = getRequirementFromId();
-			requirementName.setText(req.getName());
-			descriptionText.setText(req.getDescription());
+			fldReqName.setText(req.getName());
+			
+			fldReqDescription.setText(req.getDescription());
+			
 			deckPanel.clearCardsSelected();
 			deckPanel.displayOldEstimate(game, reqid);
+			
 			message.setText(" ");
 		}
 		catch(NotFoundException exception){
-			this.message.setText("Exception: Requirement Not Found");
+			message.setText("Exception: Requirement Not Found");
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
+		
+		checkField();
+		message.setText("<html></html>");
 
 
 	}
-
-
 
 	private Requirement getRequirementFromId() throws NotFoundException{
 		List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
@@ -216,40 +289,53 @@ public class EstimationPane extends JPanel {
 
 	/**
 	 * This method checks if the estimation is of the correct value (An interger) And updates the
-	 * display to show an error if the value is wrong. It also checks that a deck is selected in the deck version
+	 * display to show an error if the value is wrong. It also checks that a deck is selected in
+	 * the deck version
 	 * @return True if everything is all set, return false if the value is incorrect
 	 */
 	public boolean checkField() {
 		
 		if(!deckPanel.hasDeckSelected()) {
 			reportError("<html>Error: Select a card.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 		
 		final int estimate;
 		try{
+			reportError("<html></html>");
 			estimate = Integer.parseInt(deckPanel.getEstimateField());
 
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
 
-		if(estimate <= 0) {
+		if(estimate < 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+			voteButton.setEnabled(false);
 			return false;
+		}
+		
+		if(estimate == 0){
+			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
+			voteButton.setEnabled(true);
+			return true;
 		}
 		
 		if(game.getStatus() == GameStatus.ENDED){
 			reportError("<html>Error: Game has ended</html>");
+			voteButton.setEnabled(false);
 			return false;
 		}
+		voteButton.setEnabled(true);
 		return true;
 	}
 
 
 
-	private void reportError(String string) {
+	public void reportError(String string) {
 		message.setText(string);
 		message.setForeground(Color.RED);
 	}
@@ -277,12 +363,22 @@ public class EstimationPane extends JPanel {
 	public int getReqID(){
 		return reqid;
 	}
+	
+	/**
+	 * This function updates the display to report an information message.
+	 * @param value is the string
+	 */
+	public void reportInfo(String string){
+		message.setText(string);
+		message.setForeground(Color.BLUE);
+	}
 
 	/**
 	 * This function updates the display to report a success message.
+	 * @param value is the numerical value of the vote
 	 */
-	public void reportSuccess() {
-		message.setText("<html>Success: Vote Updated!</html>");
+	public void reportSuccess(int value) {
+		message.setText("<html>Success: Vote Updated! You voted " + value + "</html>");
 		message.setForeground(Color.BLUE);
 
 	}
@@ -293,8 +389,18 @@ public class EstimationPane extends JPanel {
 	public void refresh(){
 		listReqPanel.refresh();
 	}
+	
+	public DeckPanel getDeckPanel(){
+		return deckPanel;
+	}
 
 
-
+	public ArrayList<Boolean> getCardSelection() {
+		if(!deckPanel.isDeckView()){
+			return null;
+		} else{
+			return deckPanel.getCardSelection();
+		}
+	}
 
 }

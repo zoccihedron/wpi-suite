@@ -9,11 +9,14 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.utils;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.Session;
@@ -38,15 +41,16 @@ public class MailerTest {
 	static Session s1, s2;
 	static String mockSsid = "abc123";
 	static Project p;
+	static ArrayList<User> users ;
 	
 	
-	@BeforeClass
-	public static void setUp() throws WPISuiteException{
+	@Before
+	public void setUp() throws WPISuiteException{
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
 		Date end = endTime.getTime();
-		g = new Game("Game", start, end);
+		g = new Game("Game", start, end, "default");
 		u1 = new User("Bob", "bob", "abc123", 1);
 		u1.setAllowEmail(true);
 		u1.setEmail("codonbleu@gmail.com");
@@ -58,5 +62,15 @@ public class MailerTest {
 				new String[] {"PlanningPoker", "PostBoard", "RequirementManager"});
 
 		g.setProject(p);
+		
+		users = new ArrayList<User>();
+		users.add(u1);
+		users.add(u2);
 	}
+	
+	@Test
+	public void testConstructor(){
+		assertNotNull(new Mailer(g, users, Mailer.Notification.STARTED));
+	}
+	
 }

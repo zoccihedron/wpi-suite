@@ -14,13 +14,12 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.Component;
 
-import javax.swing.JTabbedPane;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewResultsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 
 
 
@@ -76,8 +75,8 @@ public class MainViewTabController {
 	 * Creates a createGameTab given a game
 	 * @param game the info with which to populate the tab
 	 */
-	public void createGameTab(Game game) {
-		final NewGamePanel newGamePanel = new NewGamePanel(game);
+	public void createGameTab(Game game, boolean isInProgress) {
+		final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
 		mainView.insertTab(game.getName(), newGamePanel, mainView.getTabCount());
 		mainView.invalidate();
 		mainView.repaint();
@@ -104,6 +103,7 @@ public class MainViewTabController {
 	public void userPreferencesTab() {
 		for(int i = 0; i < mainView.getTabCount(); i++){
 			if(mainView.getComponentAt(i).getClass() == UserPreferencesPanel.class){
+				mainView.setSelectedComponent(mainView.getComponentAt(i));
 				return;
 			}
 		}
@@ -112,6 +112,17 @@ public class MainViewTabController {
 		mainView.invalidate();
 		mainView.repaint();
 		mainView.setSelectedComponent(userPrefPanel);
+	}
+	/**
+	 * Creates a view results tab given a game
+	 * @param game the game to be viewed
+	 */
+	public void viewResultsTab(Game game) {
+		final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
+		mainView.insertTab(game.getName(), resultsPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(resultsPanel);
 	}
 	
 	/**
@@ -129,6 +140,10 @@ public class MainViewTabController {
 			}
 		} else if(tabToClose instanceof UserPreferencesPanel) {
 			if(((UserPreferencesPanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
+		} else if(tabToClose instanceof ViewResultsPanel){
+			if(((ViewResultsPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
 		}

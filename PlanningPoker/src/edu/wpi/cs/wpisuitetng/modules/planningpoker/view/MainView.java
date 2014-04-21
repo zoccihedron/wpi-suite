@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.JTabbedPane;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.ClosableTabComponent;
 
 

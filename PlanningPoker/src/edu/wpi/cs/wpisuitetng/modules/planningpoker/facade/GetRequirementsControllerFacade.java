@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.RequirementModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -23,6 +22,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * from the server.
  *
  * @author Code On Bleu
+ * @version 1.0
  */
 public class GetRequirementsControllerFacade implements ActionListener {
 
@@ -60,7 +60,8 @@ public class GetRequirementsControllerFacade implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// Send a request to the core to save this requirement
-		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement",
+																	HttpMethod.GET); // GET is read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}
@@ -69,7 +70,8 @@ public class GetRequirementsControllerFacade implements ActionListener {
 	 * Sends an HTTP request to retrieve all requirements
 	 */
 	public void retrieveRequirements() {
-		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.GET); // GET == read
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement",
+																	HttpMethod.GET); // GET is read
 		request.addObserver(observer); // add an observer to process the response
 		request.send(); // send the request
 	}

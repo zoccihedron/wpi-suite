@@ -18,10 +18,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/DefectTracker"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/PostBoard"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RequirementManager"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PlanningPoker"/>
 	<classpathentry kind="lib" path="/DefectTracker/src"/>
 	<classpathentry kind="lib" path="/PostBoard/src"/>
 	<classpathentry kind="lib" path="/RequirementManager/src"/>
+	<classpathentry kind="lib" path="/PlanningPoker/src"/>
 	<classpathentry kind="lib" path="/WPISuite-Interfaces/src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/PlanningPoker"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
