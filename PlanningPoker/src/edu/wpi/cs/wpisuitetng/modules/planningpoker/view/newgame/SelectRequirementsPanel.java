@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -383,6 +385,19 @@ public class SelectRequirementsPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Either enables or disables a pink border around elements
+	 * on the panel if there is problem with the requirements.
+	 * @param check
+	 */
+	public void displayErrorBorders(boolean check) {
+		if(check){
+			existingRequirementsTable.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+		}
+		else{
+			existingRequirementsTable.setBorder(null);
+		}
+	}
 
 	/**
 	 * This function iterates through the src table requirements and returns the

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -235,6 +236,16 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage.setText(message);
 		lblMessage.setVisible(true);
 	}
+	
+	/**
+	 * Either enables or disables a pink border around elements
+	 * on the panel if there is problem with the requirements.
+	 * @param check
+	 */
+	public void displayErrorBorders(boolean check) {
+		selectRequirementsPanel.displayErrorBorders(check);
+	}
+
 	
 	/**
 	 * Set if the error message is visible or not
