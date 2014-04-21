@@ -522,10 +522,11 @@ public class CreateGameInfoPanel extends JPanel {
 
 		reportError(" ");
 		boolean result = true;
-		
+		parentPanel.displayErrorBorders(false);
 		if (parentPanel.getGameRequirements().size() == 0 && result) {
 			reportError("<html>*Pick at least one requirement.</html>");
 			result = false;
+			parentPanel.displayErrorBorders(true);
 		}
 		
 		datePicker.setBorder(null);
