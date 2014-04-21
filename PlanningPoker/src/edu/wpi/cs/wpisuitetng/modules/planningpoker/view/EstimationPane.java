@@ -180,9 +180,9 @@ public class EstimationPane extends JPanel {
 		
 		// VOTE BUTTON
 		constraints.fill = GridBagConstraints.NONE;
-		voteButton.setAlignmentX(RIGHT_ALIGNMENT);
-		constraints.anchor = GridBagConstraints.SOUTH;
-		constraints.gridwidth = 3;
+		voteButton.setAlignmentX(LEFT_ALIGNMENT);
+		constraints.anchor = GridBagConstraints.SOUTHWEST;
+		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
@@ -198,8 +198,8 @@ public class EstimationPane extends JPanel {
 		message.setMinimumSize(new Dimension(200, 25));
 		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 0;
-		constraints.gridy = 6;
+		constraints.gridx = 2;
+		constraints.gridy = 5;
 		constraints.weightx = 0.0;
 		constraints.gridwidth = 3;
 		add(message, constraints);
