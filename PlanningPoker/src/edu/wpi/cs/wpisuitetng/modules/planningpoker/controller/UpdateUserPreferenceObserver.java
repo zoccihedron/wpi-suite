@@ -29,6 +29,10 @@ public class UpdateUserPreferenceObserver implements RequestObserver {
 	
 	private UserPreferencesPanel userPreferencePanel;
 	
+	/**
+	 * Constructor for observer
+	 * @param userPreferencePanel
+	 */
 	public UpdateUserPreferenceObserver(UserPreferencesPanel userPreferencePanel){
 		this.userPreferencePanel = userPreferencePanel;
 	}
@@ -41,19 +45,17 @@ public class UpdateUserPreferenceObserver implements RequestObserver {
 		userPreferencePanel.setCurrentEmailAndIM(user[0].getEmail(), user[0].getIM(),
 				user[0].isAllowEmail(), user[0].isAllowIM());
 		
-		userPreferencePanel.btnSubmit.setEnabled(false);
+		userPreferencePanel.getBtnSubmit().setEnabled(false);
 
 	}
 
 	@Override
 	public void responseError(IRequest iReq) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -159,7 +159,6 @@ public class EstimationPane extends JPanel {
 	
 		
 		// DESCRIPTION SCROLL
-		//scrollDescription.add(fldReqDescription);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
@@ -334,7 +333,10 @@ public class EstimationPane extends JPanel {
 	}
 
 
-
+	/**
+	 * display error message to the pane
+	 * @param string error message
+	 */
 	public void reportError(String string) {
 		message.setText(string);
 		message.setForeground(Color.RED);
@@ -366,7 +368,7 @@ public class EstimationPane extends JPanel {
 	
 	/**
 	 * This function updates the display to report an information message.
-	 * @param value is the string
+	 * @param string value is the string
 	 */
 	public void reportInfo(String string){
 		message.setText(string);

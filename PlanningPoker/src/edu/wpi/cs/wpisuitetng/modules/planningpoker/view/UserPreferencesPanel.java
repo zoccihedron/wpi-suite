@@ -34,8 +34,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -72,7 +70,7 @@ public class UserPreferencesPanel extends JPanel {
 	private final JLabel lblIM;
 	private final JCheckBox checkBoxEmail;
 	private final JCheckBox checkBoxIM;
-	public final JButton btnSubmit;
+	private final JButton btnSubmit;
 	private final JButton btnCancel;
 	private Pattern pattern;
 	private Matcher matcher;
@@ -583,5 +581,12 @@ public class UserPreferencesPanel extends JPanel {
 				&& initAllowIM == checkBoxIM.isSelected()));
 	}
 	
+	
+	/**
+	 * @return the btnSubmit
+	 */
+	public JButton getBtnSubmit() {
+		return btnSubmit;
+	}
 	
 }
