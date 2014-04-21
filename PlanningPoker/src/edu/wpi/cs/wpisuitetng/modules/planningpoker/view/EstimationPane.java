@@ -18,7 +18,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -51,19 +50,19 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @version 0.1
  */
 public class EstimationPane extends JPanel {
-	private final JLabel titleLabel;
-	private final JLabel nameLabel;
-	private final JLabel descriptionLabel;
-	private final JScrollPane descriptionScroll;
-	private final JTextArea requirementName;
-	private final JTextArea descriptionText;
+	
+	private final JLabel lblTitle;
+	private final JLabel lblReqName;
+	private final JTextField fldReqName;
+	private final JLabel lblReqDescription;
+	private final JTextArea fldReqDescription;
+	private final JScrollPane scrollDescription;
 	private DeckPanel deckPanel;
 	private JLabel message;
 	private JButton voteButton;
 	private int reqid;
 	private ListRequirementsPanel listReqPanel;
 	private Game game;
-	
 	private Requirement req;
 	
 	/**
@@ -76,30 +75,29 @@ public class EstimationPane extends JPanel {
 		this.game = game;
 		this.listReqPanel = listReqPanel;
 		
-		setBounds(5, 5, 307, 393);
 		this.setLayout(new GridBagLayout());
 
-		final Border jtextFieldBorder = new JTextField().getBorder();
+		lblTitle = new JLabel();
+		lblReqName = new JLabel();
+		fldReqName = new JTextField();
+		lblReqDescription = new JLabel();
+		fldReqDescription = new JTextArea();
+		scrollDescription = new JScrollPane();
+		message = new JLabel();
+		voteButton = new JButton();
 		
-		// Adds the fields and button to the main panel.
-		requirementName = new JTextArea();
-		requirementName.setEditable(false);
-		requirementName.setEnabled(true);
-		requirementName.setBorder(jtextFieldBorder);
+		lblReqName.setText("Name:");
+		lblReqDescription.setText("Description:");
+		lblTitle.setText("Requirement Information");
 		
-		descriptionText = new JTextArea();
-		descriptionText.setBorder(jtextFieldBorder);
-		descriptionText.setEditable(false);
-		descriptionText.setAutoscrolls(true);
+		fldReqName.setEditable(false);
+		fldReqName.setBackground(Color.WHITE);
+		fldReqDescription.setBorder(new JTextField().getBorder());
+		fldReqDescription.setEditable(false);
+		fldReqDescription.setEnabled(true);
 		
-		descriptionScroll = new JScrollPane();
-		descriptionScroll.add(descriptionText);
-
-		titleLabel = new JLabel("Game Information");
-
-		nameLabel = new JLabel("Name:");
-
-		descriptionLabel = new JLabel("Description:");
+		deckPanel = new DeckPanel(game.getDeck());
+		
 		infoPanelSetup();
 	}
 
@@ -111,82 +109,88 @@ public class EstimationPane extends JPanel {
 		// DEFINE CONSTAINTS
 		final GridBagConstraints constraints = new GridBagConstraints();
 
-
 		// GAME INFORMATION LABEL
-		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(titleLabel, constraints);
+		constraints.ipady = 20;
+		add(lblTitle, constraints);
+		constraints.ipady = 0;
 
 		// NAME LABEL
-		nameLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblReqName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.insets = new Insets(0, 20, 0, 0);
-		add(nameLabel, constraints);
-		
-		// RequirementName FIELD
-		requirementName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		add(lblReqName, constraints);
+		lblReqName.setBorder(new EmptyBorder(0, 0, 10, 10));
+
+		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 2;
+		constraints.gridx = 1;
 		constraints.gridy = 1;
-		constraints.ipadx = 40;
-		constraints.insets = new Insets(0, 20, 0, 20);
-		requirementName.setColumns(3);
-		add(requirementName, constraints);
+		add(fldReqName, constraints);
 
 		// DESCRIPTION LABEL
-		descriptionLabel.setFont(new Font("Dialog", Font.PLAIN, 15));
+		lblReqDescription.setFont(new Font("Dialog", Font.PLAIN, 15));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
-		constraints.gridy = 5;
-		constraints.insets = new Insets(0, 20, 0, 0);
-		add(descriptionLabel, constraints);
+		constraints.gridy = 10;
+		lblReqDescription.setBorder(new EmptyBorder(0, 0, 10, 0));
+		add(lblReqDescription, constraints);
 
-		
-		JScrollPane scrollPane = new JScrollPane(descriptionText); 
-		descriptionText.setEditable(false);
-		
+						
 		// DESCRIPTION
-		descriptionText.setLineWrap(true);
 		constraints.fill = GridBagConstraints.BOTH;
+		scrollDescription.add(fldReqDescription, constraints);
 		
 		// DESCRIPTION SCROLL
+		scrollDescription.add(fldReqDescription, constraints);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
+		constraints.weighty = 0.4;
 		constraints.gridx = 0;
-		constraints.gridy = 6;
-		constraints.insets = new Insets(0, 20, 10, 20);
-		add(scrollPane, constraints);
+		constraints.gridy = 11;
+		fldReqDescription.setVisible(true);
+		scrollDescription.setVisible(true);
+		scrollDescription.setBorder(new EmptyBorder(0, 0, 10, 0));
+		add(scrollDescription, constraints);
 		
 		// DECK PANEL
-		deckPanel = new DeckPanel(game.getDeck());
 		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 3;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.6;
 		constraints.gridx = 0;
 		constraints.gridy = 12;
-		constraints.weightx = 1.0;
-		constraints.weighty = 1.5;
-		constraints.insets = new Insets(10, 20, 0, 20);
 		add(deckPanel, constraints);
+		
+		// VOTE BUTTON
+		constraints.fill = GridBagConstraints.NONE;
+		voteButton.setAlignmentX(RIGHT_ALIGNMENT);
+		constraints.anchor = GridBagConstraints.SOUTH;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 13;
+		constraints.ipadx = 40;
+		add(voteButton, constraints);
 		
 		//error message
 		message = new JLabel();
@@ -197,26 +201,13 @@ public class EstimationPane extends JPanel {
 		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 0;
-		constraints.gridy = 13;
+		constraints.gridy = 14;
 		constraints.weightx = 0.0;
-		constraints.gridwidth = 1;
-		constraints.ipadx = 200;
-		constraints.anchor = GridBagConstraints.NORTHWEST;
+		constraints.gridwidth = 3;
 		add(message, constraints);
-
-		// VOTE BUTTON
-		voteButton = new JButton("");
-		voteButton.setPreferredSize(new Dimension(140, 40));
-		constraints.fill = GridBagConstraints.CENTER;
-		constraints.gridx = 0;
-		constraints.gridy = 13;
-		constraints.weightx = 1.0;
-		constraints.gridwidth = 4;
-		constraints.ipadx = 80;
-		constraints.anchor = GridBagConstraints.NORTHEAST;
-		constraints.insets = new Insets(2, 0, 0, 21);
-		add(voteButton, constraints);
-		voteButton.setEnabled(false);
+		
+		this.setBorder(new EmptyBorder(10,10,10,10));
+	
 		
 		// adds listener for live validation of the Estimate Field
 		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(new DocumentListener() {
@@ -267,9 +258,9 @@ public class EstimationPane extends JPanel {
 		this.reqid = reqid;
 		try{
 			req = getRequirementFromId();
-			requirementName.setText(req.getName());
+			fldReqName.setText(req.getName());
 			
-			descriptionText.setText(req.getDescription());
+			fldReqDescription.setText(req.getDescription());
 			
 			deckPanel.clearCardsSelected();
 			deckPanel.displayOldEstimate(game, reqid);
