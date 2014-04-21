@@ -106,7 +106,7 @@ public class GameSummaryReqPanel extends JPanel {
 		// Hide the column with IDs
 		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
 	
-		if (game.getStatus() != GameStatus.ENDED) {
+		if (game.getStatus() != GameStatus.ENDED && game.getStatus() != GameStatus.CLOSED) {
 			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(3));
 			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(2));
 		}

@@ -51,13 +51,13 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 @SuppressWarnings({ "serial" })
 public class GameSummaryPanel extends JPanel {
-
 	private GameSummaryInfoPanel infoPanel;
 	private GameSummaryReqPanel reqPanel;
 	private JButton editGameButton;
 	private JButton playGameButton;
 	private JButton endGameButton;
 	private JButton viewResultsButton;
+	private JButton closeGameButton;
 	private JLabel helpTitle;
 	private JLabel helpText;
 	private JLabel reportMessage;
@@ -227,6 +227,16 @@ public class GameSummaryPanel extends JPanel {
 		endGameButton.setEnabled(false);
 		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
+		closeGameButton = new JButton("Close Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
+		add(closeGameButton, constraints);
+		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
 		
 		JPanel extraPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -324,64 +334,65 @@ public class GameSummaryPanel extends JPanel {
 		this.removeAll();
 		setUpGameSummaryPanel();
 		
+		playGameButton.setEnabled(true);
+		viewResultsButton.setEnabled(true);
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
-			//make all buttons visible
-			editGameButton.setVisible(true);
-			endGameButton.setVisible(true);
+			editGameButton.setEnabled(true);
+			endGameButton.setEnabled(true);
+			closeGameButton.setEnabled(true);
 			
 			// If the game is a draft.
 			if(game.getStatus().equals(GameStatus.DRAFT)) {
-				playGameButton.setEnabled(false);
-				editGameButton.setEnabled(true);
-				endGameButton.setEnabled(false);
-				viewResultsButton.setEnabled(false);
-
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(true);
+				endGameButton.setVisible(false);
+				closeGameButton.setVisible(false);
+				viewResultsButton.setVisible(false);
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				
-				playGameButton.setEnabled(!game.isEditing());
-				editGameButton.setEnabled(!game.isHasBeenEstimated());
-				endGameButton.setEnabled(true);
-				viewResultsButton.setEnabled(false);
-
+				playGameButton.setVisible(!game.isEditing());
+				editGameButton.setVisible(!game.isHasBeenEstimated());
+				endGameButton.setVisible(true);
+				closeGameButton.setVisible(false);
+				viewResultsButton.setVisible(false);
 			}
 			// If the game is ended.
-			else {
-				playGameButton.setEnabled(false);
-				editGameButton.setEnabled(false);
-				endGameButton.setEnabled(false);
+			else if(game.getStatus().equals(GameStatus.ENDED)){
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(false);
 				endGameButton.setVisible(false);
-				viewResultsButton.setEnabled(true);
-				
-
+				closeGameButton.setVisible(true);
+			}
+			// If the game is closed.
+			else {
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(false);
+				endGameButton.setVisible(false);
+				closeGameButton.setVisible(false);
+				viewResultsButton.setVisible(true);
 			}
 		}
 		// If the user is not the game creator.
 		else {
-			// disable all instances of edit and end game
 			editGameButton.setVisible(false);
-			editGameButton.setEnabled(false);
 			endGameButton.setVisible(false);
-			endGameButton.setEnabled(false);
-			viewResultsButton.setEnabled(false);
-			
+			closeGameButton.setVisible(false);
+		
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
 			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameButton.setEnabled(true);
-				viewResultsButton.setEnabled(false);
+				playGameButton.setVisible(true);
+				viewResultsButton.setVisible(false);
 
 			}
-			// If the game is ended.
+			// If the game is ended/closed.
 			else {
-				playGameButton.setEnabled(false);
-				viewResultsButton.setEnabled(true);
+				playGameButton.setVisible(false);
+				viewResultsButton.setVisible(true);
 			}
 		}
-		
-		// play game button is always visible
-		playGameButton.setVisible(true);
 		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
