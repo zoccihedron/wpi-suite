@@ -334,75 +334,65 @@ public class GameSummaryPanel extends JPanel {
 		this.removeAll();
 		setUpGameSummaryPanel();
 		
+		playGameButton.setEnabled(true);
+		viewResultsButton.setEnabled(true);
 		if(game.getGameCreator().equals(ConfigManager.getConfig().getUserName())) {
-			//make all buttons visible
-			editGameButton.setVisible(true);
-			endGameButton.setVisible(true);
+			editGameButton.setEnabled(true);
+			endGameButton.setEnabled(true);
+			closeGameButton.setEnabled(true);
 			
 			// If the game is a draft.
 			if(game.getStatus().equals(GameStatus.DRAFT)) {
-				playGameButton.setEnabled(false);
-				editGameButton.setEnabled(true);
-				endGameButton.setEnabled(false);
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(true);
+				endGameButton.setVisible(false);
 				closeGameButton.setVisible(false);
-				viewResultsButton.setEnabled(false);
+				viewResultsButton.setVisible(false);
 			}
 			// If the game is in progress.
 			else if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
 				
-				playGameButton.setEnabled(!game.isEditing());
-				editGameButton.setEnabled(!game.isHasBeenEstimated());
-				endGameButton.setEnabled(true);
+				playGameButton.setVisible(!game.isEditing());
+				editGameButton.setVisible(!game.isHasBeenEstimated());
+				endGameButton.setVisible(true);
 				closeGameButton.setVisible(false);
-				viewResultsButton.setEnabled(false);
+				viewResultsButton.setVisible(false);
 			}
 			// If the game is ended.
 			else if(game.getStatus().equals(GameStatus.ENDED)){
-				playGameButton.setEnabled(false);
-				editGameButton.setEnabled(false);
-				endGameButton.setEnabled(false);
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(false);
 				endGameButton.setVisible(false);
 				closeGameButton.setVisible(true);
-				closeGameButton.setEnabled(true);
 			}
 			// If the game is closed.
 			else {
-				playGameButton.setEnabled(false);
-				editGameButton.setEnabled(false);
-				endGameButton.setEnabled(false);
+				playGameButton.setVisible(false);
+				editGameButton.setVisible(false);
 				endGameButton.setVisible(false);
 				closeGameButton.setVisible(false);
-				closeGameButton.setEnabled(false);
-				viewResultsButton.setEnabled(true);
+				viewResultsButton.setVisible(true);
 			}
 		}
 		// If the user is not the game creator.
 		else {
-			// disable all instances of edit and end game
 			editGameButton.setVisible(false);
-			editGameButton.setEnabled(false);
 			endGameButton.setVisible(false);
-			endGameButton.setEnabled(false);
 			closeGameButton.setVisible(false);
-			closeGameButton.setEnabled(false);
-			viewResultsButton.setEnabled(false);
-			
+		
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
 			if(game.getStatus().equals(GameStatus.IN_PROGRESS)) {
-				playGameButton.setEnabled(true);
-				viewResultsButton.setEnabled(false);
+				playGameButton.setVisible(true);
+				viewResultsButton.setVisible(false);
 
 			}
-			// If the game is ended.
+			// If the game is ended/closed.
 			else {
-				playGameButton.setEnabled(false);
-				viewResultsButton.setEnabled(true);
+				playGameButton.setVisible(false);
+				viewResultsButton.setVisible(true);
 			}
 		}
-		
-		// play game button is always visible
-		playGameButton.setVisible(true);
 		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
