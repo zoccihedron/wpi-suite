@@ -16,7 +16,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequiremen
 public class DeckManagerPanel extends JPanel{
 	private final JSplitPane splitPane;
 	
-	DeckManagerPanel(){
+	public DeckManagerPanel(){
 		setLayout(new BorderLayout());
 		DeckDataPanel deckData = new DeckDataPanel();
 		DeckManager deckManager = new DeckManager();

@@ -15,8 +15,8 @@ public class ManageDeckController {
 	private CardViewPane cardView = null;
 
 	public ManageDeckController() {
-		deckControl = deckControlsPane;
-		cardView = cardViewPane;
+		//deckControl = deckControlsPane;
+		//cardView = cardViewPane;
 	}
 
 	/**
