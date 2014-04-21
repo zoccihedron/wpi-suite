@@ -72,7 +72,7 @@ public class UserPreferencesPanel extends JPanel {
 	private final JLabel lblIM;
 	private final JCheckBox checkBoxEmail;
 	private final JCheckBox checkBoxIM;
-	private final JButton btnSubmit;
+	public final JButton btnSubmit;
 	private final JButton btnCancel;
 	private Pattern pattern;
 	private Matcher matcher;
