@@ -47,13 +47,13 @@ public class UpdateUserPreferenceObserver implements RequestObserver {
 
 	@Override
 	public void responseError(IRequest iReq) {
-		// TODO Auto-generated method stub
+		System.err.println("Error: Could not update preferences in databse.");
 
 	}
 
 	@Override
 	public void fail(IRequest iReq, Exception exception) {
-		// TODO Auto-generated method stub
+		System.err.println("Error: Could not update preferences in databse.");
 
 	}
 
