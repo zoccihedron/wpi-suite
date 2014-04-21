@@ -92,7 +92,7 @@ public class GameSummaryInfoPanel extends JPanel {
 	 * Sets all the grid components for either constructor
 	 */
 	public void infoPanelSetup() {
-		// DEFINE CONSTAINTS
+		// DEFINE CONSTRAINTS
 		final GridBagConstraints constraints = new GridBagConstraints();
 
 
