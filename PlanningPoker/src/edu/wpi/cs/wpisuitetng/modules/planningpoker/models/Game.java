@@ -41,7 +41,7 @@ public class Game extends AbstractModel {
 	private boolean hasBeenEstimated = false;
 	private String deck = "";
 	public enum GameStatus {
-		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
+		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
 		private final String text;
 
@@ -335,13 +335,15 @@ public class Game extends AbstractModel {
 	 * Checks if the deadline has passed and updates the status
 	 */
 	public void updateStatus() {
-		if (hasDeadline) {
-			final Date now = Calendar.getInstance().getTime();
-			if (now.compareTo(end) >= 0) {
-				status = GameStatus.ENDED;
+		if(!getStatus().equals(GameStatus.CLOSED) && !getStatus().equals(GameStatus.ENDED)){
+			if (hasDeadline) {
+				final Date now = Calendar.getInstance().getTime();
+				if (now.compareTo(end) >= 0) {
+					status = GameStatus.ENDED;
+				}
 			}
+			endIfAllEstimated();
 		}
-		endIfAllEstimated();
 	}
 
 	/**
@@ -354,7 +356,7 @@ public class Game extends AbstractModel {
 		boolean shouldEnd = true;
 
 		if (status != GameStatus.DRAFT && !estimates.isEmpty()) {
-			
+
 			for (Estimate estimate : estimates) {
 				shouldEnd &= estimate.areAllEstimationsMade();
 			}
@@ -594,7 +596,7 @@ public class Game extends AbstractModel {
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets whether the game was voted on or not
 	 * @return if the game was voted on or not

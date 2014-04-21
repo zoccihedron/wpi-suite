@@ -11,12 +11,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentListener;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -29,12 +25,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ResultsDisplayController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
 public class ResultsDisplayPanel extends JPanel{
 	private JLabel mean;
@@ -182,7 +176,7 @@ public class ResultsDisplayPanel extends JPanel{
 			this.saveFinalEstimateBtn.setEnabled(false);
 			this.finalEstimate.setEditable(false);
 		} else{
-			this.saveFinalEstimateBtn.setEnabled(true);
+			this.saveFinalEstimateBtn.setEnabled(true && !game.getStatus().equals(GameStatus.CLOSED));
 			this.finalEstimate.setEditable(true);
 		}
 		

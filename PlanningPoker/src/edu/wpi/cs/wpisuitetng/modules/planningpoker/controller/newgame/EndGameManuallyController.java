@@ -21,39 +21,48 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version 1.0
  */
 public class EndGameManuallyController implements ActionListener {
-	
+
 	private final PlanningPokerModel model;
 	private final GameSummaryPanel view;
 	private Game endedGame;
 	private final boolean endingGame;
 
 
+
 	public EndGameManuallyController(GameSummaryPanel gameSummaryPanel,
-										Game endedGame,
-										boolean endingGame) {
+			Game endedGame,
+			boolean endingGame) {
 		model = PlanningPokerModel.getInstance();
 		view = gameSummaryPanel;
 		this.endedGame = endedGame;
 		this.endingGame = endingGame;
 	}
-	
-	
-	
-	
+
 	/* (not Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			final Game currentGame = view.getGameObject();
-			
+		final Game currentGame = view.getGameObject();
+		if(currentGame.getStatus().equals(Game.GameStatus.ENDED)) {
+			currentGame.setStatus(Game.GameStatus.CLOSED);
+
+			// Send a request to the core to save this game
+			final Request request = Network.getInstance().makeRequest
+					("Advanced/planningpoker/game/close", HttpMethod.POST);
+			// put the updated game in the body of the request
+			request.setBody(currentGame.toJSON());
+			// add an observer to process the response
+			request.addObserver(new EndGameManuallyRequestObserver(this));
+			request.send(); // send the request
+		}
+		else {
 			if(endingGame) {
 				currentGame.setStatus(Game.GameStatus.ENDED);
 			}
 			else{
 				currentGame.setStatus(Game.GameStatus.DRAFT);
 			}
-
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest
 					("Advanced/planningpoker/game/end", HttpMethod.POST);
@@ -62,6 +71,8 @@ public class EndGameManuallyController implements ActionListener {
 			// add an observer to process the response
 			request.addObserver(new EndGameManuallyRequestObserver(this));
 			request.send(); // send the request
+		}
+
 	}
 
 	/**
@@ -72,7 +83,12 @@ public class EndGameManuallyController implements ActionListener {
 		endedGame = returnGame;
 		OverviewPanelController.getInstance().refreshListGames();
 		OverviewPanelController.getInstance().updateGameSummary(endedGame);
-		view.reportSuccess("Game ended successfully!");
+		if(endedGame.getStatus().equals(Game.GameStatus.ENDED)){
+			view.reportSuccess("Game ended successfully!");
+		}
+		else{
+			view.reportSuccess("Game closed successfully!");
+		}
 	}
 
 	/**
@@ -82,14 +98,14 @@ public class EndGameManuallyController implements ActionListener {
 	public static void addGameToModel(Game currentGame) {
 		PlanningPokerModel.UpdateGame(currentGame);
 	}
-	
+
 	/**
 	 * Reports when there has been an error ending the game
 	 */
 	public void returnErrorGame() {
 		view.reportError("Error: Game not ended.");
 	}
-	
+
 	/**
 	 * Getter for the updatedGame
 	 */
@@ -97,10 +113,10 @@ public class EndGameManuallyController implements ActionListener {
 	{
 		return endedGame;
 	}
-	
+
 	public boolean isEndingGame() {
 		return endingGame;
 	}
 
-	
+
 }
