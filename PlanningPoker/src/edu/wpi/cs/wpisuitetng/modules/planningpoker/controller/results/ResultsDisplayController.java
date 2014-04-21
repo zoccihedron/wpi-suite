@@ -13,6 +13,12 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * TODO: Someone familiar with this class should make a comment here.
+ * 
+ * @author Team Code On Bleu
+ * @version 1.0
+ */
 public class ResultsDisplayController implements ActionListener{
 	private ResultsDisplayPanel view;
 	private Game game;
