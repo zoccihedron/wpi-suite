@@ -184,7 +184,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 12;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.5;
+		constraints.weighty = 2.5;
 		constraints.insets = new Insets(10, 20, 0, 20);
 		add(deckPanel, constraints);
 		
