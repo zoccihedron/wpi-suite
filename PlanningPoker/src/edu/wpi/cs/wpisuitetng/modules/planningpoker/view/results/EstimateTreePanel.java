@@ -16,6 +16,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -34,7 +36,6 @@ public class EstimateTreePanel extends JPanel{
 		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
-
 		
 		gameId = game.getId();
 		
@@ -51,7 +52,9 @@ public class EstimateTreePanel extends JPanel{
 		
 		//button
 		sendEstimateToReqButton = new JButton();
-		sendEstimateToReqButton.setText("Send Estimates");
+		sendEstimateToReqButton.setText("Send Selected Estimates");
+		
+		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED));
 	
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.NONE;
@@ -94,8 +97,5 @@ public class EstimateTreePanel extends JPanel{
 		listEstimateReqPanel.refresh();
 		
 	}
-
-
 	
-
 }

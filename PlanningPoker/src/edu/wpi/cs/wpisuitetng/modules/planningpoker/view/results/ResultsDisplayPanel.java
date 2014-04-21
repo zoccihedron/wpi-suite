@@ -22,6 +22,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabContro
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ResultsDisplayController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
 public class ResultsDisplayPanel extends JPanel{
 	private JLabel mean;
@@ -71,7 +72,7 @@ public class ResultsDisplayPanel extends JPanel{
 			this.saveFinalEstimateBtn.setEnabled(false);
 			this.finalEstimate.setEditable(false);
 		} else{
-			this.saveFinalEstimateBtn.setEnabled(true);
+			this.saveFinalEstimateBtn.setEnabled(true && !game.getStatus().equals(GameStatus.CLOSED));
 			this.finalEstimate.setEditable(true);
 		}
 		

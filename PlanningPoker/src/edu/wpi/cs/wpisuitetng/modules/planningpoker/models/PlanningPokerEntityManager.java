@@ -271,6 +271,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * @throws WPISuiteException
 	 *             user isn't authorized for the given role
 	 */
+	@SuppressWarnings("unused")
 	private void ensureRole(Session session, Role role)
 			throws WPISuiteException {
 		final User user = (User) db.retrieve(User.class, "username",
@@ -427,6 +428,18 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 							game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
 					mailer.start();
 				}
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = game.toJSON();
+			}
+			
+			else if( string.equals("close") ){
+				final Game closedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(closedGame.getId()))[0];
+				
+				game.setStatus(GameStatus.CLOSED);
 				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");

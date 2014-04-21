@@ -11,16 +11,16 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -175,13 +177,19 @@ public class DeckPanel extends JScrollPane {
 				public void stateChanged(ChangeEvent arg0) {
 					if(!deck.canSelectMultipleCards()){
 						clearPrevious(cardToAdd);
+						cardToAdd.setBorder(null);
+					}
+					if(cardToAdd.isSelected()){
+						Border border = BorderFactory.createCompoundBorder(new LineBorder(Color.GREEN, 3), new JToggleButton().getBorder());
+						cardToAdd.setBorder(border);
+					}else{
+						cardToAdd.setBorder(new JToggleButton().getBorder());
 					}
 					calculateSum();
 				}
 			});
 			
-				
-			
+			cardToAdd.setBorder(new JToggleButton().getBorder());
 
 			listOfButtons.add(cardToAdd);
 			deckPanel.add(cardToAdd, constraints);
