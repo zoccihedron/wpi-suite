@@ -56,6 +56,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 	/**
 	 * Initialize the labels for displaying information about the game
+	 *
 	 * @param game The game to display the results of.
 	 * @param treePanel the tree panel that has a list of estimates
 	 */

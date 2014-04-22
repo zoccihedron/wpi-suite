@@ -162,6 +162,9 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 
 			}
 		}
+		
+		
+		
 
 		top.add(notSelectedCategory);
 		top.add(selectedCategory);

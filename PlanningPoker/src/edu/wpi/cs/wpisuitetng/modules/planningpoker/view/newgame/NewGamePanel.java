@@ -82,6 +82,7 @@ public class NewGamePanel extends JSplitPane {
 	/**
 	 * Use this constructor when you want to edit an existing game
 	 * @param editingGame the game to be updated
+	 * @param isInProgress whether the game is in progress or not
 	 */
 	public NewGamePanel(Game editingGame, boolean isInProgress) {
 		super(JSplitPane.VERTICAL_SPLIT);

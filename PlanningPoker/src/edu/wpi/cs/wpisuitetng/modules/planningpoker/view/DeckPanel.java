@@ -301,11 +301,18 @@ public class DeckPanel extends JScrollPane {
 		return selection;
 	}
 	
+	/**
+	 * Disables voting by making deck not visible
+	 */
 	public void disableVoting(){
 		if(isDeckView){
 			this.getViewport().setVisible(false);
 		}
 	}
+	
+	/**
+	 * Enables voting by making deck visible
+	 */
 	public void enableVoting(){
 		if(isDeckView){
 			this.getViewport().setVisible(true);

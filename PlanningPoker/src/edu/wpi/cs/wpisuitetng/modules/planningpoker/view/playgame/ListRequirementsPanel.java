@@ -48,6 +48,7 @@ implements TreeSelectionListener {
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
+	 * @param playGameController
 	 */
 	public ListRequirementsPanel(final Game game, PlayGameController playGameController) {
 		
