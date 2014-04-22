@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -43,6 +45,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final JLabel median;
 	private final JLabel lblFinalEstimate;
 	private final JTextField finalEstimate;
+	private final JTextArea noteArea;
 	private final JButton saveFinalEstimateBtn;
 	private final Game game;
 	private int reqid;
@@ -53,6 +56,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final String[] columnNames = { "User", "Estimate" };
 	private final Object[][] data = new Object[][] {};
 	private final JScrollPane scrollUsersAndEstimates;
+	private final JScrollPane scrollNoteArea;
 
 	/**
 	 * Initialize the labels for displaying information about the game
@@ -69,6 +73,11 @@ public class ResultsDisplayPanel extends JPanel {
 		message = new JLabel();
 		lblFinalEstimate = new JLabel();
 		finalEstimate = new JTextField();
+		noteArea = new JTextArea();
+		noteArea.setBorder(finalEstimate.getBorder());
+		noteArea.setLineWrap(true);
+		noteArea.setEnabled(false);
+		
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
@@ -83,6 +92,7 @@ public class ResultsDisplayPanel extends JPanel {
 		});
 
 		scrollUsersAndEstimates = new JScrollPane(tableUsersAndEstimates);
+		scrollNoteArea = new JScrollPane(noteArea);
 
 		populatePanel();
 
@@ -147,7 +157,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 4;
 		rightPanel.add(saveFinalEstimateBtn, constraints);
 
 		try {
@@ -158,15 +168,26 @@ public class ResultsDisplayPanel extends JPanel {
 		}
 
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		constraints.gridwidth = 2;
 		rightPanel.add(message, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		constraints.gridwidth = 2;
+		constraints.weighty = 1;
+		constraints.fill = GridBagConstraints.BOTH;	
+		constraints.insets = new Insets(5, 0, 5, 0);
+		rightPanel.add(scrollNoteArea, constraints);
+		
 
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.weightx = 0.5;
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weighty = 0;
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
+		constraints.insets = new Insets(0, 0, 0, 0);
 		add(rightPanel, constraints);
 
 	}
@@ -196,6 +217,8 @@ public class ResultsDisplayPanel extends JPanel {
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
 		median.setText("Median: " + Double.toString(estimate.getMedian()));
 		finalEstimate.setText("" + estimate.getFinalEstimate());
+		noteArea.setText(estimate.getNote());
+		noteArea.setVisible(estimate.estimationHasBeenSent());
 
 		// Set to new empty model to empty table
 		tableUsersAndEstimates
@@ -284,6 +307,19 @@ public class ResultsDisplayPanel extends JPanel {
 	 */
 	public void refresh() {
 		treePanel.refresh();
+	}
+	
+	/**
+	 * Returns the string of the note for the final estimate
+	 *
+	 * @return the note for the estimate
+	 */
+	public String getNote(){
+		return noteArea.getText();
+	}
+	
+	public void setNote(String note){
+		noteArea.setText(note);
 	}
 
 }

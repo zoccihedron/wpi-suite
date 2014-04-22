@@ -38,6 +38,7 @@ public class Estimate {
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
 	private int finalEstimate = 0;
+	private String note = "";
 	private HashMap<String, List<Boolean>> userCardSelection;
 	
 	/**
@@ -272,6 +273,7 @@ public class Estimate {
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
 		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
+		copyEst.note = note;
 		return copyEst;
 	}
 	
@@ -374,5 +376,24 @@ public class Estimate {
 	 */
 	public void setGameModifiedVersion(int gameModifiedVersion) {
 		this.gameModifiedVersion = gameModifiedVersion;
+	}
+	
+	/**
+	 * Gets the note for the current estimate
+	 *
+	 * @return the note for the estimate
+	 */
+	public String getNote() {
+		return note;
+	}
+
+
+	/**
+	 * Sets the note for the current estimate
+	 *
+	 * @param note the note for the estimate
+	 */
+	public void setNote(String note) {
+		this.note = note;
 	}
 }
