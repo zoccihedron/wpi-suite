@@ -61,7 +61,7 @@ public class GameSummaryPanel extends JPanel {
 	private JLabel helpTitle;
 	private JLabel helpText;
 	private JLabel reportMessage;
-	private GameSummaryPanel  gameSummaryPanel = this;
+	private final GameSummaryPanel  summaryPanel = this;
 	JPanel buttonsPanel;
 	Game game;
 
@@ -70,13 +70,13 @@ public class GameSummaryPanel extends JPanel {
 	 */
 	public GameSummaryPanel() {
 		
-		setUpHelpPanel();
+		populatePanel();
 
 	}
 	 /**
 	  * sets up help panel to show before a game has been selected
 	  */
-	private void setUpHelpPanel(){
+	private void populatePanel(){
 		// Set up layout constraints
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -102,7 +102,7 @@ public class GameSummaryPanel extends JPanel {
 	/**
 	 * shows this panel once a game has been selected
 	 */
-	private void setUpGameSummaryPanel(){
+	private void populateGameSummaryPanel(){
 		// Set up layout constraints
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -142,12 +142,12 @@ public class GameSummaryPanel extends JPanel {
 
 						@Override
 						public void responseSuccess(IRequest iReq) {
-							ResponseModel response = iReq.getResponse();
-							String message = response.getBody();
+							final ResponseModel response = iReq.getResponse();
+							final String message = response.getBody();
 							if (message.trim().equals("true")) {
 								mvt.createGameTab(game, true);
 							} else {
-								gameSummaryPanel.reportError(message);
+								summaryPanel.reportError(message);
 								editGameButton.setEnabled(false);
 							}
 						}
@@ -240,7 +240,7 @@ public class GameSummaryPanel extends JPanel {
 		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
 		
-		JPanel extraPanel1 = new JPanel();
+		final JPanel extraPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
@@ -303,7 +303,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridwidth = 1;
 		add(reportMessage, constraints);
 		
-		JPanel extraPanel2 = new JPanel();
+		final JPanel extraPanel2 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
@@ -341,7 +341,7 @@ public class GameSummaryPanel extends JPanel {
 	public void updateSummary(Game game){
 		this.game = game;
 		this.removeAll();
-		setUpGameSummaryPanel();
+		populateGameSummaryPanel();
 		
 		playGameButton.setEnabled(true);
 		viewResultsButton.setEnabled(true);
@@ -413,21 +413,37 @@ public class GameSummaryPanel extends JPanel {
 		return game;
 	}
 	
+	/**
+	 * This function disables or enables buttons to match the boolean passed in
+	 * @param check either true to enable or false to disable
+	 */
 	public void disableOrEnableButtons(boolean check){
 		playGameButton.setEnabled(check);
 		editGameButton.setEnabled(check);
 	}
 
+	/**
+	 * This function sets an error text to red and outputs a string
+	 * @param string Message to display
+	 */
 	public void reportError(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.RED);
 	}
 	
+	/**
+	 * This function sets success message to green and outputs a string
+	 * @param string Success Message to display
+	 */
 	public void reportSuccess(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.BLUE);
 	}
 	
+	/**
+	 * Gets the selected requirements
+	 * @return The list of selected requirement IDS
+	 */
 	public List<Integer> getSelectedRequirements(){
 		return reqPanel.getSelectedRequirements();
 	}

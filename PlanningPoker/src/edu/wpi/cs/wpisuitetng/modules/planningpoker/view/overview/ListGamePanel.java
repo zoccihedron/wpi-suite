@@ -124,6 +124,9 @@ implements TreeSelectionListener {
 		
 	}
 	
+	/**
+	 * This function updates the listGame tree
+	 */
 	public void updateTree(){
 		//makes a starting node
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 
