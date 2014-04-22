@@ -32,7 +32,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
-
 /**
  * Panel for displaying detailed results, the right subpanel in ResultsPanel
  * 
