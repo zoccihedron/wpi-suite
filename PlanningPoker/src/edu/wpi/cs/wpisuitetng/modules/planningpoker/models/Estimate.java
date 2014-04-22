@@ -76,7 +76,7 @@ public class Estimate {
 	 * @return true if the user has been correctly added into
 	 */
 	public boolean canAddUser(String user){
-		return (userWithEstimate.put(user, 0) != null) ? true : false;
+		return (userWithEstimate.put(user, -1) != null) ? true : false;
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class Estimate {
 	 */
 	public boolean hasMadeAnEstimation(String user){
 		if(userWithEstimate.containsKey(user)){
-			return (userWithEstimate.get(user) > 0); 
+			return (userWithEstimate.get(user) > -1); 
 		}
 		else{
 			return false;
@@ -113,7 +113,7 @@ public class Estimate {
 		boolean result = true;
 		for(Entry<String,Integer> e: userWithEstimate.entrySet())
 		{
-			if(e.getValue() <= 0) {
+			if(e.getValue() <= -1) {
 				result &= false;
 			}
 		}
@@ -191,7 +191,7 @@ public class Estimate {
 		int sum = 0;
 		int count = 0;
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != -1) {
+			if(temp.getValue() > 0) {
 				count++;
 				sum += temp.getValue();
 			}
@@ -215,7 +215,7 @@ public class Estimate {
 	public double getMedian() {
 		final List<Integer> estimates = new ArrayList<Integer>();
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != -1) {
+			if(temp.getValue() > 0) {
 				estimates.add(temp.getValue());
 			}
 		}
