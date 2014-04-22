@@ -26,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  */
 public class GetRequirementsControllerFacade implements ActionListener {
 
-	private GetRequirementsRequestObserverFacade observer;
+	private final GetRequirementsRequestObserverFacade observer;
 	private static GetRequirementsControllerFacade instance;
 
 	/**
@@ -82,7 +82,7 @@ public class GetRequirementsControllerFacade implements ActionListener {
 	 * 
 	 * @param requirements array of requirements received from the server
 	 */
-	public void receivedRequirements(Requirement[] requirements) {
+	public static void receivedRequirements(Requirement[] requirements) {
 		// Empty the local model to eliminate duplications
 		
 		// Make sure the response was not null
