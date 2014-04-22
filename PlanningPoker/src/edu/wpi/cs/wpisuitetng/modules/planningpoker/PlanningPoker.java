@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ToolbarView;
 /**
  * This is a module for WPISuiteTNG that provides a support for planning poker.
  * Planning poker is a quick and simple way to estimate the difficulty of implementing a user story.
- * @author Team Codon Bleu
+ * @author Team Code On Bleu
  * @version 0.1
  */
 public class PlanningPoker implements IJanewayModule {
