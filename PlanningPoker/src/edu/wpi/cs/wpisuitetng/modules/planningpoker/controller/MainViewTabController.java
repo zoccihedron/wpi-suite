@@ -70,9 +70,14 @@ public class MainViewTabController {
 
 	/**
 	 * Creates a createGameTab given a game
+<<<<<<< HEAD
 	 * 
 	 * @param game
 	 *            the info with which to populate the tab
+=======
+	 * @param game The game that is being modified
+	 * @param isInProgress check if game has been started
+>>>>>>> 6dec8145194c20db75ca7c913b34602a766829e5
 	 */
 	public void createGameTab(Game game, boolean isInProgress) {
 		final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);

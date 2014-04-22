@@ -11,10 +11,14 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +34,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
+/**
+ * Panel for displaying detailed results, the right subpanel
+ * in ResultsPanel
+ * @author Codon Bleu
+ *
+ */
 public class ResultsDisplayPanel extends JPanel{
 	private JLabel mean;
 	private JLabel median;
@@ -145,6 +155,14 @@ public class ResultsDisplayPanel extends JPanel{
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		rightPanel.add(saveFinalEstimateBtn,constraints);
+		
+		try {
+			Image img = ImageIO.read(getClass().getResource("pen.png"));
+			saveFinalEstimateBtn.setIcon(new ImageIcon(img));
+		}
+		catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
 		
 		
 		constraints.gridx = 0;

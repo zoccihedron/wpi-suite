@@ -25,7 +25,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * This controller responds when the user clicks the Submit button by
  * sending the contents of the fields to the server as a New Game.
  * 
- * @author Code On Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class GetGamesController implements ActionListener {
