@@ -11,6 +11,8 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -22,8 +24,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -74,6 +78,14 @@ public class EstimateTreePanel extends JPanel{
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		add(sendEstimateToReqButton,constraints);
+		
+		try {
+			Image img = ImageIO.read(getClass().getResource("sendMail.png"));
+			sendEstimateToReqButton.setIcon(new ImageIcon(img));
+		}
+		catch (IOException e) {
+			System.err.println(e.getMessage());
+		}
 		
 		
 		sendEstimateToReqButton.addActionListener(new ActionListener(){
