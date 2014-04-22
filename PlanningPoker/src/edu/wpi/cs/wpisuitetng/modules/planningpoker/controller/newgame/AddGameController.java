@@ -66,7 +66,7 @@ public class AddGameController implements ActionListener {
 		if (view.checkFields())
 		{
 			view.disableOrEnableButtonsOnParent(false);
-			view.setDefaults();
+			view.initDefaults();
 			final Game currentGame = view.getGameObject();
 			
 			if(startingGame){

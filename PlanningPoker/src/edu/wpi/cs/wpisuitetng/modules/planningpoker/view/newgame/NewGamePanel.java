@@ -116,7 +116,7 @@ public class NewGamePanel extends JSplitPane {
 	 */
 	private void populatePanel(){
 
-		// Add some lovely padding to the requirements tables and labels
+		// Add some lovely padding to the requirements tables and labels 
 		selectRequirementsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		final JSplitPane topPanel = new JSplitPane();
