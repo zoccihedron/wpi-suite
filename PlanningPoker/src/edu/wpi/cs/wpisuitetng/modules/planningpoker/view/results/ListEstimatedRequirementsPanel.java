@@ -155,6 +155,9 @@ implements TreeSelectionListener {
 			
 			}
 		}
+		
+		
+		
 
 		top.add(notSelectedCategory);
 		top.add(selectedCategory);

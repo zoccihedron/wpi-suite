@@ -71,7 +71,7 @@ public class EstimateTreePanel extends JPanel{
 		sendEstimateToReqButton = new JButton();
 		sendEstimateToReqButton.setText("Send Selected Estimates");
 		
-		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED));
+		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
 	
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.NONE;
@@ -101,6 +101,7 @@ public class EstimateTreePanel extends JPanel{
 				RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
 				facade.sendEstimates(estimates, estimateTreePanel);
 				listEstimateReqPanel.refresh();
+				sendEstimateToReqButton.setEnabled(false);
 			}
 			
 		});
@@ -123,8 +124,19 @@ public class EstimateTreePanel extends JPanel{
 	 * refresh panel
 	 */
 	public void refresh() {
-		listEstimateReqPanel.refresh();
-		
+		try{
+			listEstimateReqPanel.refresh();
+		}
+		finally{
+			if(!listEstimateReqPanel.getSelectedEstimates().isEmpty()){
+				sendEstimateToReqButton.setEnabled(true);
+			}
+			else{
+				sendEstimateToReqButton.setEnabled(false);
+			}	
+		}		
 	}
+	
+
 	
 }
