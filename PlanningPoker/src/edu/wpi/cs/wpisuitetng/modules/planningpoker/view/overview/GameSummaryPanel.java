@@ -92,7 +92,7 @@ public class GameSummaryPanel extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		this.add(helpTitle,constraints);
+		this.add(helpTitle, constraints);
 		
 		constraints.gridy = 1;
 		constraints.gridx = 0;

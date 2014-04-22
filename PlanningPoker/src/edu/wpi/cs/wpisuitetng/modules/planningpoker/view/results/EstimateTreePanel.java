@@ -28,19 +28,19 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The panel which holds listEstimateRequirementsPanel
  * and the button for sending requirements to requirement
  * manager. 
  * @author Code On Bleu
- *
+ * @version 1.00
  */
 public class EstimateTreePanel extends JPanel{
-	private ListEstimatedRequirementsPanel listEstimateReqPanel;
-	private JButton sendEstimateToReqButton;
-	private EstimateTreePanel estimateTreePanel;
+	private final ListEstimatedRequirementsPanel listEstimateReqPanel;
+	private final JButton sendEstimateToReqButton;
+	private final EstimateTreePanel estimateTreePane;
 	private final int gameId;
 	
 	/**
@@ -49,7 +49,7 @@ public class EstimateTreePanel extends JPanel{
 	 * @param controller
 	 */
 	public EstimateTreePanel(Game game, ViewResultsController controller){
-		estimateTreePanel = this;
+		estimateTreePane = this;
 		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -64,23 +64,23 @@ public class EstimateTreePanel extends JPanel{
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		add(listEstimateReqPanel,constraints);
+		add(listEstimateReqPanel, constraints);
 		
 		
 		//button
 		sendEstimateToReqButton = new JButton();
 		sendEstimateToReqButton.setText("Send Selected Estimates");
 		
-		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED));
+		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
 	
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		add(sendEstimateToReqButton,constraints);
+		add(sendEstimateToReqButton, constraints);
 		
 		try {
-			Image img = ImageIO.read(getClass().getResource("sendMail.png"));
+			final Image img = ImageIO.read(getClass().getResource("sendMail.png"));
 			sendEstimateToReqButton.setIcon(new ImageIcon(img));
 		}
 		catch (IOException e) {
@@ -92,15 +92,16 @@ public class EstimateTreePanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				
-				ArrayList<Estimate> estimates = listEstimateReqPanel.getSelectedEstimates();
+				final List<Estimate> estimates = listEstimateReqPanel.getSelectedEstimates();
 				
 				for(Estimate e: estimates){
 					e.setGameID(gameId);
 					e.estimationSent(true);
 				}
-				RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
-				facade.sendEstimates(estimates,estimateTreePanel);
+				final RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
+				facade.sendEstimates(estimates, estimateTreePane);
 				listEstimateReqPanel.refresh();
+				sendEstimateToReqButton.setEnabled(false);
 			}
 			
 		});
@@ -123,8 +124,19 @@ public class EstimateTreePanel extends JPanel{
 	 * refresh panel
 	 */
 	public void refresh() {
-		listEstimateReqPanel.refresh();
-		
+		try{
+			listEstimateReqPanel.refresh();
+		}
+		finally{
+			if(!listEstimateReqPanel.getSelectedEstimates().isEmpty()){
+				sendEstimateToReqButton.setEnabled(true);
+			}
+			else{
+				sendEstimateToReqButton.setEnabled(false);
+			}	
+		}		
 	}
+	
+
 	
 }

@@ -65,12 +65,11 @@ public class EstimationPane extends JPanel {
 	private Game game;
 	private Requirement req;
 	
-	/**
-	 * Constructor for panel
-	 * @param game 
-	 * @param reqid The req to vote on
-	 * @param draftGame The game the vote is going towards
-	 */
+/**
+ * Constructor for panel
+ * @param listReqPanel
+ * @param game
+ */
 	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
 		this.game = game;
 		this.listReqPanel = listReqPanel;
@@ -203,7 +202,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 3;
 		add(message, constraints);
 		
-		this.setBorder(new EmptyBorder(10,10,10,10));
+		this.setBorder(new EmptyBorder(10, 10, 10, 10));
 	
 		
 		// adds listener for live validation of the Estimate Field

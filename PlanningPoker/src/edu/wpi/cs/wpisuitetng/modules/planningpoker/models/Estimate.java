@@ -32,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class Estimate {
 	
 	private int gameID;
+	private int gameModifiedVersion = 0;
 	private int reqID;
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
@@ -317,17 +318,25 @@ public class Estimate {
 		return isEstimationSent;
 	}
 
-	
+	/**
+	 * Checks to see if the final estimate has been set
+	 * @return true if it's been set
+	 */
 	public boolean isFinalEstimateSet() {
 		return (finalEstimate != 0);
 	}
 
+	/**
+	 * @return the final estimate
+	 */
 	public int getFinalEstimate() {
 
 		return finalEstimate;
 	}
 
-	
+	/**
+	 * @param finalEstimate the final estimate to be set.
+	 */
 	public void setFinalEstimate(int finalEstimate) {
 		this.finalEstimate = finalEstimate;
 	}
@@ -349,5 +358,21 @@ public class Estimate {
 	 */
 	public void setUserCardSelection(String user, List<Boolean> userCardSelection) {
 		this.userCardSelection.put(user, userCardSelection);
+	}
+
+
+	/**
+	 * @return the gameModifiedVersion
+	 */
+	public int getGameModifiedVersion() {
+		return gameModifiedVersion;
+	}
+
+
+	/**
+	 * @param gameModifiedVersion the gameModifiedVersion to set
+	 */
+	public void setGameModifiedVersion(int gameModifiedVersion) {
+		this.gameModifiedVersion = gameModifiedVersion;
 	}
 }

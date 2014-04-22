@@ -240,7 +240,7 @@ public class DeckPanel extends JScrollPane {
 				.getUserName();
 		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
 		System.out.println("--------old estimate value: " + oldEstimate);
-		if (oldEstimate > 0) {
+		if (oldEstimate >= 0) {
 			if(isDeckView){
 				ArrayList<Boolean> selected =
 						(ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
@@ -301,11 +301,18 @@ public class DeckPanel extends JScrollPane {
 		return selection;
 	}
 	
+	/**
+	 * Disables voting by making deck not visible
+	 */
 	public void disableVoting(){
 		if(isDeckView){
 			this.getViewport().setVisible(false);
 		}
 	}
+	
+	/**
+	 * Enables voting by making deck visible
+	 */
 	public void enableVoting(){
 		if(isDeckView){
 			this.getViewport().setVisible(true);

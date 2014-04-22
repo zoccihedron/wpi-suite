@@ -46,13 +46,13 @@ public class ResultsDisplayController implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(view.checkField()){
+		if(view.canMakeEstimate()){
 			int finalEstimate = view.getFinalEstimate();
 			int reqid = view.getReqid();
 			
 			Estimate estimate = game.findEstimate(reqid);
 			estimate.setFinalEstimate(finalEstimate);
-			estimate.setGameID(game.getId());				
+			estimate.setGameID(game.getId());
 			
 			// Send a request to the core to mark this estimate as being sent
 			final Request request = Network.getInstance().makeRequest(
