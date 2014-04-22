@@ -9,9 +9,10 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
- * @author Codon Bleu
+ * This observer is called when there is a request to end the game manually.
+ *  
+ * @author Team Code On Bleu
  * @version 1.0
- *
  */
 public class EndGameManuallyRequestObserver implements RequestObserver {
 	

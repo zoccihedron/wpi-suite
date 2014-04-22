@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.google.gson.Gson;
 
@@ -303,6 +302,7 @@ public class Estimate {
 	 * set isEstimationSent, call this function 
 	 * and pass true as parameter 
 	 * before sending this estimation to requirement manager
+	 * @param send boolean to indicate whether the estimate has been sent
 	 */
 	public void estimationSent(boolean send)
 	{
@@ -333,10 +333,20 @@ public class Estimate {
 	}
 
 
+	/**
+	 * Get state of every card (whether each card is selected or not)
+	 * @param user
+	 * @return list of boolean corresponding with state of the card
+	 */
 	public List<Boolean> getUserCardSelection(String user) {
 		return userCardSelection.get(user);
 	}
 
+	/**
+	 * Set state of each card (selected or not)
+	 * @param user
+	 * @param userCardSelection
+	 */
 	public void setUserCardSelection(String user, List<Boolean> userCardSelection) {
 		this.userCardSelection.put(user, userCardSelection);
 	}

@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
 import java.awt.Font;
@@ -19,6 +30,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFac
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
+/**
+ * Main panel for displaying results
+ * @author Code On Bleu
+ *
+ */
 public class ResultsPanel extends JPanel{
 
 	private Game game;
@@ -38,8 +54,8 @@ public class ResultsPanel extends JPanel{
 
 	/**
 	 * Constructor for results panel
-	 * @param listRequirementsPanel is the tree of requirements for the ended game
-	 * @param is the game to view results of
+	 * @param estimateTreePanel listRequirementsPanel is the tree of requirements for the ended game
+	 * @param game is the game to view results of
 	 */
 	public ResultsPanel(EstimateTreePanel estimateTreePanel, Game game) {
 		this.game = game;
@@ -108,7 +124,6 @@ public class ResultsPanel extends JPanel{
 		constraints.gridy = 1;
 		constraints.insets = new Insets(0, 20, 0, 0);
 		add(nameLabel, constraints);
-		//nameLabel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -163,7 +178,6 @@ public class ResultsPanel extends JPanel{
 	 * Update the panel with information from the Estimate in a game that 
 	 * corresponds to the passed requirement
 	 * @param reqid is the id of the requirement in req manager
-	 * @param game is the game the estimate is in
 	 */
 	public void updateDisplay(int reqid){
 		this.reqid = reqid;
