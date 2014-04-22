@@ -27,7 +27,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 public class UpdateUserPreferenceObserver implements RequestObserver {
 	
-	private UserPreferencesPanel userPreferencePanel;
+	private final UserPreferencesPanel userPreferencePanel;
 	
 	/**
 	 * Constructor for observer
