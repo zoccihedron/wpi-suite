@@ -54,9 +54,9 @@ public class NewGamePanel extends JSplitPane {
 	private JButton btnSave;
 	private JButton btnCancel;
 	private JButton btnStart;
-	private JLabel lblMessage;
-	private boolean changesSaved = false;
-	private boolean isInProgress;
+	private final JLabel lblMessage;
+	private final boolean changesSaved = false;
+	private final boolean isInProgress;
 	private Game game;
 	/**
 	 * Use this constructor when starting a new game panel from scratch
@@ -65,13 +65,13 @@ public class NewGamePanel extends JSplitPane {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
 		lblMessage = new JLabel("*Error");
-		this.isInProgress = false;
+		isInProgress = false;
 		
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
 		
-		setUpPanel();
+		populatePanel();
 		
 		// Maps Create Game button to AddGameController class
 		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
@@ -89,14 +89,14 @@ public class NewGamePanel extends JSplitPane {
 		
 		lblMessage = new JLabel("*Error");
 		this.isInProgress = isInProgress;
-		this.game = editingGame;
+		game = editingGame;
 		
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		
 		
-		setUpPanel();
+		populatePanel();
 		
 		// Maps Create Game button to UpdateGameController class
 
@@ -114,7 +114,7 @@ public class NewGamePanel extends JSplitPane {
 	/**
 	 * Sets up constraints on panel that are shared for each constructor
 	 */
-	private void setUpPanel(){
+	private void populatePanel(){
 
 		// Add some lovely padding to the requirements tables and labels
 		selectRequirementsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -204,7 +204,7 @@ public class NewGamePanel extends JSplitPane {
 	 * @param check
 	 */
 	public void disableOrEnableButtons(boolean check){
-		if(this.isInProgress){
+		if(isInProgress){
 			btnStart.setEnabled(false);
 			btnSave.setEnabled(check);
 		}
@@ -281,7 +281,7 @@ public class NewGamePanel extends JSplitPane {
 		} else {
 			result = true;
 		}
-		if (this.isInProgress && result) {
+		if (isInProgress && result) {
 			final Request request = Network.getInstance()
 					.makeRequest("Advanced/planningpoker/game/endEdit",
 							HttpMethod.POST);
