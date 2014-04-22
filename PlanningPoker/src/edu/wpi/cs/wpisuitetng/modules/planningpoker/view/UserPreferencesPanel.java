@@ -386,7 +386,7 @@ public class UserPreferencesPanel extends JPanel {
 						imField.getText(), 
 						checkBoxEmail.isSelected(), 
 						checkBoxIM.isSelected());
-				lblPrefstatus.setText("Success! Your notification preferences have been udpated.");
+				lblPrefstatus.setText("Success! Your notification preferences have been updated.");
 				lblPrefstatus.setBackground(Color.BLUE);
 
 			}

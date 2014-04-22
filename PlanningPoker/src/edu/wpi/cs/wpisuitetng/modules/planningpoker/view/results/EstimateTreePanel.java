@@ -64,7 +64,7 @@ public class EstimateTreePanel extends JPanel{
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		add(listEstimateReqPanel,constraints);
+		add(listEstimateReqPanel, constraints);
 		
 		
 		//button
@@ -77,7 +77,7 @@ public class EstimateTreePanel extends JPanel{
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		add(sendEstimateToReqButton,constraints);
+		add(sendEstimateToReqButton, constraints);
 		
 		try {
 			Image img = ImageIO.read(getClass().getResource("sendMail.png"));
@@ -99,7 +99,7 @@ public class EstimateTreePanel extends JPanel{
 					e.estimationSent(true);
 				}
 				RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
-				facade.sendEstimates(estimates,estimateTreePanel);
+				facade.sendEstimates(estimates, estimateTreePanel);
 				listEstimateReqPanel.refresh();
 			}
 			

@@ -52,13 +52,15 @@ public class ResultsDisplayPanel extends JPanel{
 	private JTable tableUsersAndEstimates;
 	private DefaultTableModel modelUsersAndEstimates;
 	private EstimateTreePanel treePanel;
-	private String[] columnNames = { "User","Estimate"};
+	private String[] columnNames = { "User", "Estimate"};
 	private Object[][] data = new Object[][] {};
 	private JScrollPane scrollUsersAndEstimates;
 	
 	
 	/**
 	 * Initialize the labels for displaying information about the game
+	 * @param game
+	 * @param treePanel
 	 */
 	public ResultsDisplayPanel(final Game game, EstimateTreePanel treePanel){
 		this.treePanel = treePanel;
@@ -105,9 +107,9 @@ public class ResultsDisplayPanel extends JPanel{
 		median.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblFinalEstimate.setText("Final Estimate: ");
 		
-		mean.setBorder(new EmptyBorder(0,0,5,0));
-		median.setBorder(new EmptyBorder(5,0,5,0));
-		lblFinalEstimate.setBorder(new EmptyBorder(5,0,5,0));
+		mean.setBorder(new EmptyBorder(0, 0, 5, 0));
+		median.setBorder(new EmptyBorder(5, 0, 5, 0));
+		lblFinalEstimate.setBorder(new EmptyBorder(5, 0, 5, 0));
 		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -117,7 +119,7 @@ public class ResultsDisplayPanel extends JPanel{
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weighty = 1.0;
 		constraints.weightx = 0.5;
-		add(scrollUsersAndEstimates,constraints);
+		add(scrollUsersAndEstimates, constraints);
 		
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new GridBagLayout());
@@ -130,31 +132,31 @@ public class ResultsDisplayPanel extends JPanel{
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
-		rightPanel.add(mean,constraints);
+		rightPanel.add(mean, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 2;
-		rightPanel.add(median,constraints);
+		rightPanel.add(median, constraints);
 
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 1;
-		rightPanel.add(lblFinalEstimate,constraints);
+		rightPanel.add(lblFinalEstimate, constraints);
 		
 		constraints.gridx = 1;
 		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		finalEstimate.setSize(50, finalEstimate.getHeight());
-		rightPanel.add(finalEstimate,constraints);
+		rightPanel.add(finalEstimate, constraints);
 
 
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
 		constraints.gridy = 3;
-		rightPanel.add(saveFinalEstimateBtn,constraints);
+		rightPanel.add(saveFinalEstimateBtn, constraints);
 		
 		try {
 			Image img = ImageIO.read(getClass().getResource("pen.png"));
@@ -168,14 +170,14 @@ public class ResultsDisplayPanel extends JPanel{
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		constraints.gridwidth = 2;
-		rightPanel.add(message,constraints);
+		rightPanel.add(message, constraints);
 		
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.weightx = 0.5;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		add(rightPanel,constraints);
+		add(rightPanel, constraints);
 	
 	}
 
@@ -183,7 +185,6 @@ public class ResultsDisplayPanel extends JPanel{
 	 * Update the panel with information from the Estimate in a game that 
 	 * corresponds to the passed requirement
 	 * @param reqid is the id of the requirement in req manager
-	 * @param game is the game the estimate is in
 	 */
 	public void updateData(int reqid) {
 		this.reqid = reqid;
@@ -207,14 +208,14 @@ public class ResultsDisplayPanel extends JPanel{
 			public boolean isCellEditable(int row, int column){
 				return false;
 			}
-		});		
+		});
 		modelUsersAndEstimates = (DefaultTableModel) tableUsersAndEstimates.getModel();
 		HashMap<String,Integer> mapUsersAndEstimates = game.findEstimate(reqid).getUsersAndEstimates();
 		Iterator it = mapUsersAndEstimates.entrySet().iterator();
 		while (it.hasNext()) {
 	        Map.Entry pairs = (Map.Entry)it.next();
 	        if(!pairs.getValue().equals(-1)){
-	        	modelUsersAndEstimates.addRow(new Object[] {pairs.getKey(),pairs.getValue()});
+	        	modelUsersAndEstimates.addRow(new Object[] {pairs.getKey(), pairs.getValue()});
 	        }
 	       
 	    }
@@ -246,7 +247,7 @@ public class ResultsDisplayPanel extends JPanel{
 		if(estimate == 0){
 			reportError("<html>Error: 0 is not a valid final estimate. </html>");
 			return true;
-		}		
+		}
 		return true;
 	}
 	
