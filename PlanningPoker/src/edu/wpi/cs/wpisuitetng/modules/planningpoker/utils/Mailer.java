@@ -61,6 +61,7 @@ public class Mailer implements Runnable{
 	 * Constructor for Mailer
 	 * @param game the game from which we get the info
 	 * @param users the list of users to which we send
+	 * @param method is this game just started or ended
 	 */
 	public Mailer(Game game, List<User> users, Notification method)
 	{

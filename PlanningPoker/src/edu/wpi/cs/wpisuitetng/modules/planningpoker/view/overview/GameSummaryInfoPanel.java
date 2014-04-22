@@ -148,7 +148,7 @@ public class GameSummaryInfoPanel extends JPanel {
 		
 		
 		// DESCRIPTION SCROLL
-		JScrollPane scrollPane = new JScrollPane(description); 
+		final JScrollPane scrollPane = new JScrollPane(description); 
 		description.setEditable(false);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;

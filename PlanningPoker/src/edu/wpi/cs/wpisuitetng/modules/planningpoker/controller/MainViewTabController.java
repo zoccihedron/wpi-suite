@@ -26,7 +26,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 /**
  * This is a controller created for the purpose of interfacing with the main view.
  * There is only one instance of MainViewTabController.
- * @author Codon Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class MainViewTabController {
@@ -73,7 +73,8 @@ public class MainViewTabController {
 	
 	/**
 	 * Creates a createGameTab given a game
-	 * @param game the info with which to populate the tab
+	 * @param game The game that is being modified
+	 * @param isInProgress check if game has been started
 	 */
 	public void createGameTab(Game game, boolean isInProgress) {
 		final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);

@@ -65,12 +65,11 @@ public class EstimationPane extends JPanel {
 	private Game game;
 	private Requirement req;
 	
-	/**
-	 * Constructor for panel
-	 * @param game 
-	 * @param reqid The req to vote on
-	 * @param draftGame The game the vote is going towards
-	 */
+/**
+ * Constructor for panel
+ * @param listReqPanel
+ * @param game
+ */
 	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
 		this.game = game;
 		this.listReqPanel = listReqPanel;
@@ -159,7 +158,6 @@ public class EstimationPane extends JPanel {
 	
 		
 		// DESCRIPTION SCROLL
-		//scrollDescription.add(fldReqDescription);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
@@ -204,7 +202,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 3;
 		add(message, constraints);
 		
-		this.setBorder(new EmptyBorder(10,10,10,10));
+		this.setBorder(new EmptyBorder(10, 10, 10, 10));
 	
 		
 		// adds listener for live validation of the Estimate Field
@@ -334,7 +332,10 @@ public class EstimationPane extends JPanel {
 	}
 
 
-
+	/**
+	 * display error message to the pane
+	 * @param string error message
+	 */
 	public void reportError(String string) {
 		message.setText(string);
 		message.setForeground(Color.RED);
@@ -366,7 +367,7 @@ public class EstimationPane extends JPanel {
 	
 	/**
 	 * This function updates the display to report an information message.
-	 * @param value is the string
+	 * @param string value is the string
 	 */
 	public void reportInfo(String string){
 		message.setText(string);

@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.google.gson.Gson;
 
@@ -33,6 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class Estimate {
 	
 	private int gameID;
+	private int gameModifiedVersion = 0;
 	private int reqID;
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
@@ -77,7 +77,7 @@ public class Estimate {
 	 * @return true if the user has been correctly added into
 	 */
 	public boolean canAddUser(String user){
-		return (userWithEstimate.put(user, 0) != null) ? true : false;
+		return (userWithEstimate.put(user, -1) != null) ? true : false;
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class Estimate {
 	 */
 	public boolean hasMadeAnEstimation(String user){
 		if(userWithEstimate.containsKey(user)){
-			return (userWithEstimate.get(user) > 0); 
+			return (userWithEstimate.get(user) > -1); 
 		}
 		else{
 			return false;
@@ -114,7 +114,7 @@ public class Estimate {
 		boolean result = true;
 		for(Entry<String,Integer> e: userWithEstimate.entrySet())
 		{
-			if(e.getValue() <= 0) {
+			if(e.getValue() <= -1) {
 				result &= false;
 			}
 		}
@@ -192,7 +192,7 @@ public class Estimate {
 		int sum = 0;
 		int count = 0;
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != -1) {
+			if(temp.getValue() > 0) {
 				count++;
 				sum += temp.getValue();
 			}
@@ -216,7 +216,7 @@ public class Estimate {
 	public double getMedian() {
 		final List<Integer> estimates = new ArrayList<Integer>();
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != -1) {
+			if(temp.getValue() > 0) {
 				estimates.add(temp.getValue());
 			}
 		}
@@ -303,6 +303,7 @@ public class Estimate {
 	 * set isEstimationSent, call this function 
 	 * and pass true as parameter 
 	 * before sending this estimation to requirement manager
+	 * @param send boolean to indicate whether the estimate has been sent
 	 */
 	public void estimationSent(boolean send)
 	{
@@ -317,27 +318,61 @@ public class Estimate {
 		return isEstimationSent;
 	}
 
-	
+	/**
+	 * Checks to see if the final estimate has been set
+	 * @return true if it's been set
+	 */
 	public boolean isFinalEstimateSet() {
 		return (finalEstimate != 0);
 	}
 
+	/**
+	 * @return the final estimate
+	 */
 	public int getFinalEstimate() {
 
 		return finalEstimate;
 	}
 
-	
+	/**
+	 * @param finalEstimate the final estimate to be set.
+	 */
 	public void setFinalEstimate(int finalEstimate) {
 		this.finalEstimate = finalEstimate;
 	}
 
 
+	/**
+	 * Get state of every card (whether each card is selected or not)
+	 * @param user
+	 * @return list of boolean corresponding with state of the card
+	 */
 	public List<Boolean> getUserCardSelection(String user) {
 		return userCardSelection.get(user);
 	}
 
+	/**
+	 * Set state of each card (selected or not)
+	 * @param user
+	 * @param userCardSelection
+	 */
 	public void setUserCardSelection(String user, List<Boolean> userCardSelection) {
 		this.userCardSelection.put(user, userCardSelection);
+	}
+
+
+	/**
+	 * @return the gameModifiedVersion
+	 */
+	public int getGameModifiedVersion() {
+		return gameModifiedVersion;
+	}
+
+
+	/**
+	 * @param gameModifiedVersion the gameModifiedVersion to set
+	 */
+	public void setGameModifiedVersion(int gameModifiedVersion) {
+		this.gameModifiedVersion = gameModifiedVersion;
 	}
 }

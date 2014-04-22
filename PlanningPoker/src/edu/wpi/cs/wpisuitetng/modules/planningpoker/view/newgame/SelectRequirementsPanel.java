@@ -15,6 +15,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -29,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -163,15 +166,6 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 0;
 		buttonsPanel.add(btnAddSelectedReq, constraints);
 		
-		final JButton btnNewRequirement = new JButton("Refresh");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 1;
-		constraints.gridy = 0;
-		buttonsPanel.add(btnNewRequirement, constraints);
-		
-		
 		// Remove requirement button
 		final JButton btnRemoveSelectedReq = new JButton("Remove");
 		btnRemoveSelectedReq.setEnabled(DISABLED);
@@ -201,15 +195,15 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 		
-		// TODO Make this button actually be able to create a requirement
-		btnNewRequirement.addMouseListener(new MouseAdapter() {
+		Timer refreshTimer = new Timer(1000, new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				// Initially populates the existingReqs Table
+			public void actionPerformed(ActionEvent arg0) {
 				fillTable();
+				
 			}
-
 		});
+		refreshTimer.start();
 	
 		/*---------------------------------------------------------------------
 		 *                   SELECTED REQUIREMENTS TABLE
@@ -280,10 +274,7 @@ public class SelectRequirementsPanel extends JPanel {
 		    btnAddSelectedReq.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("upArrow.png"));
-		    btnRemoveSelectedReq.setIcon(new ImageIcon(img));
-		    
-		    img = ImageIO.read(getClass().getResource("refresh_icon.png"));
-		    btnNewRequirement.setIcon(new ImageIcon(img));   
+		    btnRemoveSelectedReq.setIcon(new ImageIcon(img)); 
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());

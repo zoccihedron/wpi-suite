@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -37,10 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGam
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 
 
@@ -86,6 +82,7 @@ public class NewGamePanel extends JSplitPane {
 	/**
 	 * Use this constructor when you want to edit an existing game
 	 * @param editingGame the game to be updated
+	 * @param isInProgress whether the game is in progress or not
 	 */
 	public NewGamePanel(Game editingGame, boolean isInProgress) {
 		super(JSplitPane.VERTICAL_SPLIT);

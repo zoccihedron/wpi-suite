@@ -34,6 +34,7 @@ public class Game extends AbstractModel {
 	private String gameCreator = "";
 	private boolean hasDeadline = false;
 	private Date start = new Date();
+	private int modifiedVersion = 0;
 
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
@@ -71,6 +72,8 @@ public class Game extends AbstractModel {
 	 *            start time of the game
 	 * @param endTime
 	 *            end time of the game
+	 * @param deckName
+	 * 			  name of the deck
 	 * 
 	 */
 	public Game(String name, Date startTime, Date endTime, String deckName) {
@@ -335,7 +338,7 @@ public class Game extends AbstractModel {
 	 * Checks if the deadline has passed and updates the status
 	 */
 	public void updateStatus() {
-		if(!getStatus().equals(GameStatus.CLOSED) && !getStatus().equals(GameStatus.ENDED)){
+		if(!status.equals(GameStatus.CLOSED) && !status.equals(GameStatus.ENDED)){
 			if (hasDeadline) {
 				final Date now = Calendar.getInstance().getTime();
 				if (now.compareTo(end) >= 0) {
@@ -365,6 +368,15 @@ public class Game extends AbstractModel {
 				status = GameStatus.ENDED;
 			}
 		}
+	}
+	
+	/**
+	 * Checks to see if the game's version matches the other
+	 * @param otherGameVersion int of the game to compare to.
+	 * @return true if they match.
+	 */
+	public boolean isSameModifiedVersion(int otherGameVersion){
+		return otherGameVersion == modifiedVersion;
 	}
 
 	/**
@@ -627,12 +639,33 @@ public class Game extends AbstractModel {
 		this.deck = deck;
 	}
 
+	/**
+	 * sets whether the games is being edited or not
+	 * @param editing true if the game is being edited.
+	 */
 	public void setEditing(boolean editing) {
 		this.editing = editing;
 	}
 
+	/**
+	 * @return true if the game is being edited
+	 */
 	public boolean isEditing() {
 		return editing;
+	}
+
+	/**
+	 * @return the modifiedVersion from the game
+	 */
+	public int getModifiedVersion() {
+		return modifiedVersion;
+	}
+
+	/**
+	 * @param modifiedVersion the modifiedVersion to set in the game
+	 */
+	public void setModifiedVersion(int modifiedVersion) {
+		this.modifiedVersion = modifiedVersion;
 	}
 
 }

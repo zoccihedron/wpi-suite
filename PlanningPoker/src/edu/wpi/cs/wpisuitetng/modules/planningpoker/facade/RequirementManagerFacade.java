@@ -84,7 +84,10 @@ public class RequirementManagerFacade {
 	}
 
 
-	public void updateRequirements() {
+	/**
+	 * Retrieves requirements from the requirement manager.
+	 */
+	public static void updateRequirements() {
 		GetRequirementsControllerFacade.getInstance().retrieveRequirements();
 
 	}
@@ -98,6 +101,10 @@ public class RequirementManagerFacade {
 		return requirements;
 	}
 
+	/**
+	 * set requirements using array of requirements passed in as parameter
+	 * @param requirements
+	 */
 	public void setRequirements(Requirement[] requirements) {
 		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
 	}
@@ -106,6 +113,7 @@ public class RequirementManagerFacade {
 	 * Sends average of estimations to requirement manager 
 	 * Updates estimates in those requirements
 	 * @param estimates to send
+	 * @param view to display confirmation message on
 	 */
 	public void sendEstimates(List<Estimate> estimates, final EstimateTreePanel view){
 
@@ -140,7 +148,7 @@ public class RequirementManagerFacade {
 				request.send();
 				
 				//update information in requirement manager
-				req.setEstimate((int)estimate.getFinalEstimate());
+				req.setEstimate(estimate.getFinalEstimate());
 
 				Request requestForReq = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
 				requestForReq.setBody(req.toJSON()); 
@@ -180,10 +188,10 @@ public class RequirementManagerFacade {
 	 * @param estimate to sent
 	 */
 	public void sendSingleEstimate(Estimate estimate){
-		Requirement req = requirements.get(estimate.getReqID());
-		req.setEstimate((int)estimate.getFinalEstimate());
+		final Requirement req = requirements.get(estimate.getReqID());
+		req.setEstimate(estimate.getFinalEstimate());
 
-		Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
 		request.setBody(req.toJSON()); 
 		request.addObserver(new RequestObserver(){
 
