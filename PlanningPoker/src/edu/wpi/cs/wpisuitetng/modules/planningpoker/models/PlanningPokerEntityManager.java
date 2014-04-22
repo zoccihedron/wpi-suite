@@ -94,6 +94,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		newGame.setUsers(db.retrieveAll(new User()));
 		newGame.setHasBeenEstimated(false);
 		newGame.setEditing(false);
+		newGame.setModifiedVersion(0);
 		save(s, newGame);
 		
 		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
@@ -221,6 +222,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		existingGame.setUsers(db.retrieveAll(new User()));
 		existingGame.setHasBeenEstimated(false);
 		existingGame.setEditing(false);
+		existingGame.setModifiedVersion(existingGame.getModifiedVersion() + 1);
 		
 		if (!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
@@ -331,8 +333,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
 
 				final List<Estimate> newEstimates = new ArrayList<Estimate>();
-
-				if(game.getStatus().equals(GameStatus.IN_PROGRESS) && !game.isEditing()){
+				
+				if(game.getStatus().equals(GameStatus.IN_PROGRESS) && !game.isEditing() && game.isSameModifiedVersion(estimate.getGameModifiedVersion())){
 
 					final Estimate gameEst = game.findEstimate(estimate.getReqID());
 					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
@@ -366,6 +368,9 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				}
 				else if (game.getStatus().equals(GameStatus.ENDED)){
 					returnString = "*Voting is not currently allowed: The game has ended.";
+				}
+				else if (!game.isSameModifiedVersion(estimate.getGameModifiedVersion())){
+					returnString = "*Voting is not currently allowed: The game is outdated.";
 				}
 				else {
 					returnString = "*Voting is not currently allowed.";
