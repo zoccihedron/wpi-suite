@@ -89,6 +89,7 @@ public class EstimateTreePanel extends JPanel{
 				RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
 				facade.sendEstimates(estimates,estimateTreePanel);
 				listEstimateReqPanel.refresh();
+				sendEstimateToReqButton.setEnabled(false);
 			}
 			
 		});
@@ -111,14 +112,17 @@ public class EstimateTreePanel extends JPanel{
 	 * refresh panel
 	 */
 	public void refresh() {
-		listEstimateReqPanel.refresh();
-		if(!listEstimateReqPanel.getSelectedEstimates().isEmpty()){
-			sendEstimateToReqButton.setEnabled(true);
+		try{
+			listEstimateReqPanel.refresh();
 		}
-		else{
-			sendEstimateToReqButton.setEnabled(false);
-		}
-		
+		finally{
+			if(!listEstimateReqPanel.getSelectedEstimates().isEmpty()){
+				sendEstimateToReqButton.setEnabled(true);
+			}
+			else{
+				sendEstimateToReqButton.setEnabled(false);
+			}	
+		}		
 	}
 	
 
