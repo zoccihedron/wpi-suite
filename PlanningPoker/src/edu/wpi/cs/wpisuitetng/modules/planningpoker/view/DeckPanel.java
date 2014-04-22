@@ -240,7 +240,7 @@ public class DeckPanel extends JScrollPane {
 				.getUserName();
 		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
 		System.out.println("--------old estimate value: " + oldEstimate);
-		if (oldEstimate > 0) {
+		if (oldEstimate >= 0) {
 			if(isDeckView){
 				ArrayList<Boolean> selected =
 						(ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
