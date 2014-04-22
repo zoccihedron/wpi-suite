@@ -11,7 +11,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -319,17 +318,25 @@ public class Estimate {
 		return isEstimationSent;
 	}
 
-	
+	/**
+	 * Checks to see if the final estimate has been set
+	 * @return true if it's been set
+	 */
 	public boolean isFinalEstimateSet() {
 		return (finalEstimate != 0);
 	}
 
+	/**
+	 * @return the final estimate
+	 */
 	public int getFinalEstimate() {
 
 		return finalEstimate;
 	}
 
-	
+	/**
+	 * @param finalEstimate the final estimate to be set.
+	 */
 	public void setFinalEstimate(int finalEstimate) {
 		this.finalEstimate = finalEstimate;
 	}
@@ -355,7 +362,7 @@ public class Estimate {
 
 
 	/**
-	 * @return the gameModifiedDate
+	 * @return the gameModifiedVersion
 	 */
 	public int getGameModifiedVersion() {
 		return gameModifiedVersion;
@@ -363,7 +370,7 @@ public class Estimate {
 
 
 	/**
-	 * @param gameModifiedDate the gameModifiedDate to set
+	 * @param gameModifiedVersion the gameModifiedVersion to set
 	 */
 	public void setGameModifiedVersion(int gameModifiedVersion) {
 		this.gameModifiedVersion = gameModifiedVersion;
