@@ -43,6 +43,10 @@ public class Deck extends AbstractModel{
 		Collections.sort(this.cardValues);
 	}
 	
+	public Deck() {
+		name = "";
+	}
+
 	/**
 	 * Returns a deck from JSON encoded string
 	 *
