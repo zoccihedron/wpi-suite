@@ -319,6 +319,9 @@ public class GameSummaryPanel extends JPanel {
 		    
 		    img = ImageIO.read(getClass().getResource("checkmark.png"));
 		    viewResultsButton.setIcon(new ImageIcon(img));   
+		    
+		    img = ImageIO.read(getClass().getResource("close.png"));
+		    closeGameButton.setIcon(new ImageIcon(img));
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
