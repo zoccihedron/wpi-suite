@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
 import javax.swing.JButton;
@@ -7,30 +18,32 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResul
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-
-
-
-
-
-
-
-
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * The panel which holds listEstimateRequirementsPanel
+ * and the button for sending requirements to requirement
+ * manager. 
+ * @author Code On Bleu
+ *
+ */
 public class EstimateTreePanel extends JPanel{
 	private ListEstimatedRequirementsPanel listEstimateReqPanel;
 	private JButton sendEstimateToReqButton;
 	private EstimateTreePanel estimateTreePanel;
 	private final int gameId;
 	
+	/**
+	 * constructor for the panel
+	 * @param game the game
+	 * @param controller
+	 */
 	public EstimateTreePanel(Game game, ViewResultsController controller){
 		estimateTreePanel = this;
 		
@@ -82,9 +95,11 @@ public class EstimateTreePanel extends JPanel{
 		
 	}
 	
-
+	/**
+	 * getter for the tree panel
+	 * @return listEstimateReqPanel
+	 */
 	public ListEstimatedRequirementsPanel getTreePanel() {
-		// TODO Auto-generated method stub
 		return listEstimateReqPanel;
 	}
 	
@@ -92,7 +107,9 @@ public class EstimateTreePanel extends JPanel{
 
 
 
-
+	/**
+	 * refresh panel
+	 */
 	public void refresh() {
 		listEstimateReqPanel.refresh();
 		

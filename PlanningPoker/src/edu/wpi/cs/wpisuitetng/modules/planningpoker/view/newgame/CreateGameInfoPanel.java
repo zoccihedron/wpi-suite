@@ -547,8 +547,6 @@ public class CreateGameInfoPanel extends JPanel {
 			reportError("<html>*A name is required.</html>");
 			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
 			result = false;
-		}else{
-			//gameNameText.setBackground(Color.WHITE);
 		}
 		
 		return result;
