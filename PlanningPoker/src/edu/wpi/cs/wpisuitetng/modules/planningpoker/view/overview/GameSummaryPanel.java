@@ -122,8 +122,9 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 0, 0, 0);
+		constraints.insets = new Insets(0, 0, 5, 0);
 		buttonsPanel.add(editGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		editGameButton.setEnabled(false);
 		editGameButton.addActionListener(new ActionListener () {
 			@Override
@@ -181,7 +182,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 2;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 20);
+		constraints.insets = new Insets(0, 10, 5, 0);
 		buttonsPanel.add(playGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		playGameButton.setEnabled(false);
@@ -200,7 +201,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 3;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 20);
+		constraints.insets = new Insets(0, 10, 5, 0);
 		buttonsPanel.add(viewResultsButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		viewResultsButton.addActionListener(new ActionListener () {
@@ -220,7 +221,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 0, 0);
+		constraints.insets = new Insets(0, 20, 5, 0);
 		add(endGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		endGameButton.setVisible(false);
@@ -233,8 +234,9 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 0, 0);
+		constraints.insets = new Insets(0, 20, 5, 0);
 		add(closeGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
 		
@@ -245,6 +247,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 0, 0, 0);
 		buttonsPanel.add(extraPanel1, constraints);
 		
 		// Panel that contains summary of game information
@@ -284,7 +287,9 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridy = 2;
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
+		constraints.insets = new Insets(0, 0, 0, 20);
 		add(buttonsPanel, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 		
 		
 		reportMessage = new JLabel();
@@ -305,6 +310,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 2;
 		constraints.gridy = 2;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 0, 0, 0);
 		add(extraPanel2, constraints);
 		
 		try {
