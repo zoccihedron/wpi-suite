@@ -18,7 +18,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddCardController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveCardController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
 /**
  * Button Panel for the deck manager panel.
@@ -26,24 +28,28 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.Manag
  * @author Code On Bleu
  *
  */
-public class DeckControlsPane extends JPanel {
-	JButton btnCancel;
-	JButton btnSave;
-	JButton btnRemoveDeck;
-	JButton btnRemoveCard;
-	JButton btnAddCard;
+public class DeckControlsPanel extends JPanel {
+	private JButton btnCancel;
+	private JButton btnSave;
+	private JButton btnRemoveDeck;
+	private JButton btnRemoveCard;
+	private JButton btnAddCard;
 	private JTextField fieldAddCard;
+	private Deck deck;
+	private CardViewPanel cardView;
 	
 	/**
 	 * Construct all the buttons and their action listeners
 	 */
-	public DeckControlsPane() {
+	public DeckControlsPanel(CardViewPanel cardView) {
+		this.cardView = cardView;
+		
 		GridBagConstraints constraints = new GridBagConstraints();
 		this.setLayout(new GridBagLayout());
 		
 		
 		//CANCEL BUTTON
-		 btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Cancel");
 		//TODO
 		//btnCancel.addActionListener(DeckManagerController.cancel());
 		constraints.fill = GridBagConstraints.BOTH;
@@ -53,7 +59,7 @@ public class DeckControlsPane extends JPanel {
 		this.add(btnCancel, constraints);
 		
 		//SAVE BUTTON
-		 btnSave = new JButton("Save");
+		btnSave = new JButton("Save");
 		//TODO
 		//btnCancel.addActionListener(DeckManagerController.cancel());
 		constraints.fill = GridBagConstraints.BOTH;
@@ -63,7 +69,7 @@ public class DeckControlsPane extends JPanel {
 		this.add(btnSave, constraints);
 		
 		//REMOVE DECK BUTTON
-		 btnRemoveDeck = new JButton("Remove Deck");
+		btnRemoveDeck = new JButton("Remove Deck");
 		//TODO
 		//btnCancel.addActionListener(DeckManagerController.cancel());
 		constraints.fill = GridBagConstraints.BOTH;
@@ -73,7 +79,7 @@ public class DeckControlsPane extends JPanel {
 		this.add(btnRemoveDeck, constraints);
 		
 		//REMOVE CARD BUTTON
-		 btnRemoveCard = new JButton("Remove Card");
+		btnRemoveCard = new JButton("Remove Card");
 		//TODO
 		//btnCancel.addActionListener(DeckManagerController.cancel());
 		constraints.fill = GridBagConstraints.BOTH;
@@ -83,7 +89,7 @@ public class DeckControlsPane extends JPanel {
 		this.add(btnRemoveCard, constraints);
 		
 		//ADD CARD BUTTON
-		 btnAddCard = new JButton("Add Card");
+		btnAddCard = new JButton("Add Card");
 		//TODO
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 1;
@@ -92,15 +98,35 @@ public class DeckControlsPane extends JPanel {
 		this.add(btnAddCard, constraints);
 		
 		//ADD CARD TEXT FIELD
-		 fieldAddCard = new JTextField();
+		fieldAddCard = new JTextField();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		this.add(fieldAddCard, constraints);
+		
+		deck = null;
+		
 	}
 	
-	public int sendCard() {
+	public void setActionListeners(Deck newDeck){
+		this.deck = newDeck;
+		
+		btnAddCard.addActionListener(new AddCardController(this, cardView));
+		btnRemoveCard.addActionListener(new RemoveCardController(this, cardView));
+		
+		
+	}
+	
+	public int getCardValue() {
 		return Integer.valueOf(fieldAddCard.getText());
+	}
+
+	public void addToDeck(int cardValue) {
+		this.deck.addCard(cardValue);
+	}
+
+	public Deck getDeck() {
+		return deck;
 	}
 }

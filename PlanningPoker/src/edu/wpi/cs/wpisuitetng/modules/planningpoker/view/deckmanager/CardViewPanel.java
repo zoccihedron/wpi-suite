@@ -32,7 +32,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  * @author Code On Bleu
  *
  */
-public class CardViewPane extends JScrollPane{
+public class CardViewPanel extends JScrollPane{
 	private JPanel currentView;
 	private ArrayList<JToggleButton> toggleBtns;
 	private ImageIcon img;
@@ -41,7 +41,7 @@ public class CardViewPane extends JScrollPane{
 	/**
 	 * Constructs all objects in the panel to prepare for updating
 	 */
-	public CardViewPane(){
+	public CardViewPanel(){
 		
 		toggleBtns = new ArrayList<JToggleButton>();
 		
@@ -96,6 +96,18 @@ public class CardViewPane extends JScrollPane{
 	public void updateView(Deck deck){
 		currentView = cardView(deck);
 		this.setViewportView(currentView);
+	}
+
+	public ArrayList<Integer> getSelected() {
+		ArrayList<Integer> toBeRemoved = new ArrayList<Integer>();
+		
+		for(JToggleButton button : toggleBtns){
+			if(button.isSelected()){
+				toBeRemoved.add(Integer.valueOf(button.getText()));
+			}
+		}
+		
+		return toBeRemoved;
 	}
 
 }

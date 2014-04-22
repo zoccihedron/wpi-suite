@@ -27,8 +27,8 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  *
  */
 public class DeckManager extends JPanel{
-	private CardViewPane cardViewPane;
-	private DeckControlsPane deckControlsPane;
+	private CardViewPanel cardViewPane;
+	private DeckControlsPanel deckControlsPane;
 	private ManageDeckController controller;
 	
 	/**
@@ -36,8 +36,8 @@ public class DeckManager extends JPanel{
 	 */
 	public DeckManager(){
 		
-		cardViewPane = new CardViewPane();
-		deckControlsPane = new DeckControlsPane();
+		cardViewPane = new CardViewPanel();
+		deckControlsPane = new DeckControlsPanel();
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
