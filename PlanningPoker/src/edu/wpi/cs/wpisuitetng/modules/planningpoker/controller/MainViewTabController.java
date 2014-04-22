@@ -133,6 +133,25 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(resultsPanel);
 	}
+	
+	/**
+	 * Creates an instance of the deck manager tab. There can
+	 * only be one open at a time. If the button is pressed
+	 * a second time, it simply switches back to that tab.
+	 */
+	public void DeckManagerTab() {
+		for (int i = 0; i < mainView.getTabCount(); i++) {
+			if (mainView.getComponentAt(i).getClass() == DeckManagerPanel.class) {
+				mainView.setSelectedComponent(mainView.getComponentAt(i));
+				return;
+			}
+		}
+		final DeckManagerPanel deckManagerPanel = new DeckManagerPanel();
+		mainView.insertTab("Deck Manager", deckManagerPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(deckManagerPanel);
+	}
 
 	/**
 	 * Closes a given tab
@@ -160,17 +179,5 @@ public class MainViewTabController {
 		}
 	}
 
-	public void DeckManagerTab() {
-		for (int i = 0; i < mainView.getTabCount(); i++) {
-			if (mainView.getComponentAt(i).getClass() == DeckManagerPanel.class) {
-				mainView.setSelectedComponent(mainView.getComponentAt(i));
-				return;
-			}
-		}
-		final DeckManagerPanel deckManagerPanel = new DeckManagerPanel();
-		mainView.insertTab("Deck Manager", deckManagerPanel, mainView.getTabCount());
-		mainView.invalidate();
-		mainView.repaint();
-		mainView.setSelectedComponent(deckManagerPanel);
-	}
+
 }

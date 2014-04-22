@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
@@ -14,12 +25,22 @@ import javax.swing.SwingConstants;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
+/**
+ * The panel that shows all the cards in the deck
+ * in a grid format
+ * 
+ * @author Code On Bleu
+ *
+ */
 public class CardViewPane extends JScrollPane{
 	private JPanel currentView;
 	private ArrayList<JToggleButton> toggleBtns;
 	private ImageIcon img;
 	private final int NUM_OF_COLUMNS = 4;  
 	
+	/**
+	 * Constructs all objects in the panel to prepare for updating
+	 */
 	public CardViewPane(){
 		
 		toggleBtns = new ArrayList<JToggleButton>();

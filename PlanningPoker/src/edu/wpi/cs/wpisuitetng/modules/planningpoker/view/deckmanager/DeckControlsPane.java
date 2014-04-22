@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
@@ -9,6 +20,12 @@ import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 
+/**
+ * Button Panel for the deck manager panel.
+ * 
+ * @author Code On Bleu
+ *
+ */
 public class DeckControlsPane extends JPanel {
 	JButton btnCancel;
 	JButton btnSave;
@@ -16,6 +33,10 @@ public class DeckControlsPane extends JPanel {
 	JButton btnRemoveCard;
 	JButton btnAddCard;
 	private JTextField fieldAddCard;
+	
+	/**
+	 * Construct all the buttons and their action listeners
+	 */
 	public DeckControlsPane() {
 		GridBagConstraints constraints = new GridBagConstraints();
 		this.setLayout(new GridBagLayout());
