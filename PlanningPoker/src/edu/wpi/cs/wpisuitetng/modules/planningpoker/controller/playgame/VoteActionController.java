@@ -67,7 +67,7 @@ public class VoteActionController implements ActionListener {
 			final Estimate estimate = new Estimate(view.getReqID(), game.getId());
 			estimate.addUser(name);
 			estimate.makeEstimate(name, estimateValue);
-						
+			estimate.setGameModifiedVersion(game.getModifiedVersion());
 			estimate.setUserCardSelection(name, selection);
 			// Send a request to the core to update this game
 			final Request request = Network.getInstance().makeRequest(

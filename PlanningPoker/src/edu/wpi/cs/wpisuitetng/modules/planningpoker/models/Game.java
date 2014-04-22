@@ -34,6 +34,7 @@ public class Game extends AbstractModel {
 	private String gameCreator = "";
 	private boolean hasDeadline = false;
 	private Date start = new Date();
+	private int modifiedVersion = 0;
 
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
@@ -368,6 +369,10 @@ public class Game extends AbstractModel {
 			}
 		}
 	}
+	
+	public boolean isSameModifiedVersion(int otherGameVersion){
+		return otherGameVersion == modifiedVersion;
+	}
 
 	/**
 	 * @return the gameCreator
@@ -635,6 +640,20 @@ public class Game extends AbstractModel {
 
 	public boolean isEditing() {
 		return editing;
+	}
+
+	/**
+	 * @return the modifiedDate
+	 */
+	public int getModifiedVersion() {
+		return modifiedVersion;
+	}
+
+	/**
+	 * @param modifiedDate the modifiedDate to set
+	 */
+	public void setModifiedVersion(int modifiedVersion) {
+		this.modifiedVersion = modifiedVersion;
 	}
 
 }

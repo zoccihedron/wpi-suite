@@ -11,6 +11,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -32,6 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 public class Estimate {
 	
 	private int gameID;
+	private int gameModifiedVersion = 0;
 	private int reqID;
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
@@ -349,5 +351,21 @@ public class Estimate {
 	 */
 	public void setUserCardSelection(String user, List<Boolean> userCardSelection) {
 		this.userCardSelection.put(user, userCardSelection);
+	}
+
+
+	/**
+	 * @return the gameModifiedDate
+	 */
+	public int getGameModifiedVersion() {
+		return gameModifiedVersion;
+	}
+
+
+	/**
+	 * @param gameModifiedDate the gameModifiedDate to set
+	 */
+	public void setGameModifiedVersion(int gameModifiedVersion) {
+		this.gameModifiedVersion = gameModifiedVersion;
 	}
 }
