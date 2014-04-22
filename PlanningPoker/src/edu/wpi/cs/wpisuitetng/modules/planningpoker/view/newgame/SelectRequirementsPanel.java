@@ -164,7 +164,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		buttonsPanel.add(btnAddSelectedReq, constraints);		
+		buttonsPanel.add(btnAddSelectedReq, constraints);
 		
 		// Remove requirement button
 		final JButton btnRemoveSelectedReq = new JButton("Remove");

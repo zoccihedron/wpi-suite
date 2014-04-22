@@ -164,7 +164,7 @@ public class ResultsPanel extends JPanel{
 		add(scrollPane, constraints);
 
 		// DISPLAY PANEL 
-		resultsDisplayPanel = new ResultsDisplayPanel(game,estimateTreePanel);
+		resultsDisplayPanel = new ResultsDisplayPanel(game, estimateTreePanel);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 12;

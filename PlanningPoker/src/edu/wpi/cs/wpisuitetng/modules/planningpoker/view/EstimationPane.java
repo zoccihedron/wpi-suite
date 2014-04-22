@@ -203,7 +203,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 3;
 		add(message, constraints);
 		
-		this.setBorder(new EmptyBorder(10,10,10,10));
+		this.setBorder(new EmptyBorder(10, 10, 10, 10));
 	
 		
 		// adds listener for live validation of the Estimate Field

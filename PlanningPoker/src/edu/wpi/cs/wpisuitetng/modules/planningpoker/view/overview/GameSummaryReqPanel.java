@@ -150,7 +150,7 @@ public class GameSummaryReqPanel extends JPanel {
 		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
 		
 		for (int row: selectedRows){
-			String reqid = (String) requirementsTable.getModel().getValueAt(row,0);
+			String reqid = (String) requirementsTable.getModel().getValueAt(row, 0);
 			Integer reqIdNum = Integer.parseInt(reqid);
 			reqIDs.add(reqIdNum);
 			
