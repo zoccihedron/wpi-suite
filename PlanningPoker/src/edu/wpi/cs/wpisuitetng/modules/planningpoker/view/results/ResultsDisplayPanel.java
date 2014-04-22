@@ -59,6 +59,8 @@ public class ResultsDisplayPanel extends JPanel{
 	
 	/**
 	 * Initialize the labels for displaying information about the game
+	 * @param game
+	 * @param treePanel
 	 */
 	public ResultsDisplayPanel(final Game game, EstimateTreePanel treePanel){
 		this.treePanel = treePanel;
@@ -183,7 +185,6 @@ public class ResultsDisplayPanel extends JPanel{
 	 * Update the panel with information from the Estimate in a game that 
 	 * corresponds to the passed requirement
 	 * @param reqid is the id of the requirement in req manager
-	 * @param game is the game the estimate is in
 	 */
 	public void updateData(int reqid) {
 		this.reqid = reqid;
