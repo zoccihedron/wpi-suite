@@ -16,20 +16,32 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsPanel;
 /**
  * Controller for resultsPanel 
  * @author Code On Bleu
- *
+ *@version 1.00
  */
 public class ViewResultsController {
 	
 	private ResultsPanel resultsPanel;
 	
+	/**
+	 * This is the constructor for the view results controller
+	 */
 	public ViewResultsController() {
 		resultsPanel = null;
 	}
 	
+	/**
+	 * Thie sets the resultsPanel the controller will update
+	 * @param resultsPanel The view
+	 */
 	public void setResultsPanel(ResultsPanel resultsPanel){
 		this.resultsPanel = resultsPanel;
 	}
+	
+	/**
+	 * Updates the GUI to display the results of the req specified by the req IID
+	 * @param reqid The req to display
+	 */
 	public void updateResultsInfo(int reqid){
-		this.resultsPanel.updateDisplay(reqid);
+		resultsPanel.updateDisplay(reqid);
 	}
 }
