@@ -35,35 +35,40 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 
 /**
- * This class is used to create a requirements tree which will be displayed in the view results panel
+ * This class is used to create a requirements tree which will be displayed in
+ * the view results panel
  * 
  * @author Codon Bleu
  * @version 1.0
  */
-public class ListEstimatedRequirementsPanel extends JScrollPane
-implements TreeSelectionListener {
+public class ListEstimatedRequirementsPanel extends JScrollPane implements
+		TreeSelectionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private final Game game;
 	private PlayGameController playGameController;
-	private ViewResultsController controller;
+	private final ViewResultsController controller;
 	private JButton sendSelectedRequirement;
+
 	/**
 	 * Constructs the panel
-	 * @param game Taken in to get all requirements for the game
+	 * 
+	 * @param game
+	 *            Taken in to get all requirements for the game
 	 * @param controller
+	 * 			  The view results controller that updates the GUI
 	 */
-	public ListEstimatedRequirementsPanel(final Game game, ViewResultsController controller) {
+	public ListEstimatedRequirementsPanel(final Game game,
+			ViewResultsController controller) {
 
 		this.game = game;
 		this.controller = controller;
 		this.setViewportView(tree);
-		this.refresh();  
+		this.refresh();
 
-		//Create the nodes.
-		this.addComponentListener(new ComponentListener()
-		{
+		// Create the nodes.
+		this.addComponentListener(new ComponentListener() {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -90,69 +95,71 @@ implements TreeSelectionListener {
 
 	/** Required by TreeSelectionListener interface. */
 	public void valueChanged(TreeSelectionEvent e) {
-		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-				tree.getLastSelectedPathComponent();
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
+				.getLastSelectedPathComponent();
+
+		if (node == null) {
+			return;
+		}
 		
-		if (node == null) return;
-		
-		if(node.isRoot()){
+		if (node.isRoot()) {
 			refresh();
 		}
 		final Object nodeInfo = node.getUserObject();
-		if(node.isLeaf()){
-			if(nodeInfo instanceof Requirement){
-				final Requirement req = (Requirement)nodeInfo;
+		if (node.isLeaf()) {
+			if (nodeInfo instanceof Requirement) {
+				final Requirement req = (Requirement) nodeInfo;
 				controller.updateResultsInfo(req.getId());
 			}
 		}
 	}
 
+	/**
+	 * This method is used to refresh the requirements tree
+	 */
+	public void refresh() {
 
- /**
-  * This method is used to refresh the requirements tree
-  */
-	public void refresh(){
-
-		final DefaultMutableTreeNode top =
-				new DefaultMutableTreeNode("Requirements"); //makes a starting node
-		final List<Requirement> requirements =
-				RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
+				"Requirements"); // makes a starting node
+		final List<Requirement> requirements = RequirementManagerFacade
+				.getInstance().getPreStoredRequirements();
 		DefaultMutableTreeNode reqNode = null;
 
 		DefaultMutableTreeNode notSelectedCategory = null;
 		DefaultMutableTreeNode selectedCategory = null;
 		DefaultMutableTreeNode sentCategory = null;
-		
-		
-		notSelectedCategory = new DefaultMutableTreeNode("Estimate not selected");
+
+		notSelectedCategory = new DefaultMutableTreeNode(
+				"Estimate not selected");
 		selectedCategory = new DefaultMutableTreeNode("Estimate selected");
 		sentCategory = new DefaultMutableTreeNode("Estimate sent");
-		
-		String user = ConfigManager.getInstance().getConfig().getUserName();
-		for(Requirement req: requirements){
+
+		final String user = ConfigManager.getInstance().getConfig().getUserName();
+		for (Requirement req : requirements) {
 
 			// add new node to requirement tree
-			if(game.getRequirements().contains(req.getId())){
-				for(Estimate e : game.getEstimates())
-				{
-					if(e.getReqID() == req.getId()){
-						if(!e.estimationHasBeenSent() && e.getFinalEstimate() == 0){
+			if (game.getRequirements().contains(req.getId())) {
+				for (Estimate e : game.getEstimates()) {
+					if (e.getReqID() == req.getId()) {
+						if (!e.estimationHasBeenSent()
+								&& e.getFinalEstimate() == 0) {
 							reqNode = new DefaultMutableTreeNode(req);
 							notSelectedCategory.add(reqNode);
-						}
-						else if(!e.estimationHasBeenSent() && e.getFinalEstimate() != 0){
-							System.out.println("---------add element to selected");
+						} else if (!e.estimationHasBeenSent()
+								&& e.getFinalEstimate() != 0) {
+							System.out
+									.println("---------add element to selected");
 							reqNode = new DefaultMutableTreeNode(req);
 							selectedCategory.add(reqNode);
-						}
-						else{ // estimation is sent
+						} else { // estimation is sent
 							reqNode = new DefaultMutableTreeNode(req);
 							sentCategory.add(reqNode);
-							System.out.println("-----------add element to sent");
+							System.out
+									.println("-----------add element to sent");
 						}
 					}
 				}
-			
+
 			}
 		}
 		
@@ -163,36 +170,41 @@ implements TreeSelectionListener {
 		top.add(selectedCategory);
 		top.add(sentCategory);
 
-		tree = new JTree(top); //create the tree with the top node as the top
-		for(int i = 0; i < tree.getRowCount(); i++) tree.expandRow(i);
-		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-						//tell it that it can only select one thing at a time
+		tree = new JTree(top); // create the tree with the top node as the top
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
+		}
+		
+		tree.getSelectionModel().setSelectionMode(
+				TreeSelectionModel.SINGLE_TREE_SELECTION);
+		// tell it that it can only select one thing at a time
 		tree.setToggleClickCount(0);
 
 		tree.setCellRenderer(new CustomTreeCellRenderer());
-						//set to custom cell renderer so that icons make sense
+		// set to custom cell renderer so that icons make sense
 		tree.addTreeSelectionListener(this);
-		
-		
 
 		tree.setDragEnabled(true);
 		tree.setDropMode(DropMode.ON);
 
-		this.setViewportView(tree); //make panel display the tree
+		this.setViewportView(tree); // make panel display the tree
 
 		System.out.println("finished refreshing the tree");
 	}
-	
-	public ArrayList<Estimate> getSelectedEstimates(){
-		ArrayList<Estimate> estimates = new ArrayList<Estimate>();
-		for(Estimate e: game.getEstimates()){
-			if(!e.estimationHasBeenSent() && e.getFinalEstimate() != 0){
+
+	/**
+	 * This function returns a list of estimates that the user has selected
+	 * @return The list of selected estimates
+	 */
+	public List<Estimate> getSelectedEstimates() {
+		final List<Estimate> estimates = new ArrayList<Estimate>();
+		for (Estimate e : game.getEstimates()) {
+			if (!e.estimationHasBeenSent() && e.getFinalEstimate() != 0) {
 				estimates.add(e);
-				
+
 			}
 		}
 		return estimates;
 	}
-	
-	
+
 }

@@ -46,7 +46,7 @@ public class ResultsDisplayController implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(view.checkField()){
+		if(view.canMakeEstimate()){
 			int finalEstimate = view.getFinalEstimate();
 			int reqid = view.getReqid();
 			
