@@ -109,7 +109,8 @@ public class RequirementManagerFacade {
 	/**
 	 * Sends average of estimations to requirement manager 
 	 * Updates estimates in those requirements
-	 * @param view estimates to send
+	 * @param estimates to send
+	 * @param view to display confirmation message on
 	 */
 	public void sendEstimates(List<Estimate> estimates, final EstimateTreePanel view){
 
