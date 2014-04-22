@@ -31,8 +31,8 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @version 1.0
  */
 public class ResultsDisplayController implements ActionListener{
-	private ResultsDisplayPanel view;
-	private Game game;
+	private final ResultsDisplayPanel view;
+	private final Game game;
 	
 	/**
 	 * Constructor for ResultDisplayController
@@ -47,10 +47,10 @@ public class ResultsDisplayController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(view.canMakeEstimate()){
-			int finalEstimate = view.getFinalEstimate();
-			int reqid = view.getReqid();
+			final int finalEstimate = view.getFinalEstimate();
+			final int reqid = view.getReqid();
 			
-			Estimate estimate = game.findEstimate(reqid);
+			final Estimate estimate = game.findEstimate(reqid);
 			estimate.setFinalEstimate(finalEstimate);
 			estimate.setGameID(game.getId());
 			
