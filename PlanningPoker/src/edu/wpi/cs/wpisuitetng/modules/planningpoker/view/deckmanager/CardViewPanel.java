@@ -94,7 +94,12 @@ public class CardViewPanel extends JScrollPane{
 	}
 	
 	public void updateView(Deck deck){
-		currentView = cardView(deck);
+		cardView(deck);
+		this.setViewportView(currentView);
+	}
+	
+	public void updateView() {
+		currentView = new JPanel();
 		this.setViewportView(currentView);
 	}
 
@@ -109,5 +114,7 @@ public class CardViewPanel extends JScrollPane{
 		
 		return toBeRemoved;
 	}
+
+	
 
 }

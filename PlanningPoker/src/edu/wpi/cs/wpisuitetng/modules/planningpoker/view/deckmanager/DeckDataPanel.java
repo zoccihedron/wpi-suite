@@ -20,5 +20,13 @@ import javax.swing.JPanel;
  *
  */
 public class DeckDataPanel extends JPanel{
+	private ListDecksPanel listDecksPanel;
+	
+	public DeckDataPanel(){
+		listDecksPanel = new ListDecksPanel();
+	}
+	public ListDecksPanel getListDecksPanel() {
+		return listDecksPanel;
+	}
 
 }

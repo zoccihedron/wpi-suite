@@ -11,9 +11,9 @@ public class RemoveCardController implements ActionListener{
 	private DeckControlsPanel view;
 	private CardViewPanel cardView;
 	
-	public RemoveCardController(DeckControlsPanel view, CardViewPanel cardView){
+	public RemoveCardController(DeckControlsPanel view){
 		this.view = view;
-		this.cardView = cardView;
+		this.cardView = view.getCardView();
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {

@@ -27,17 +27,17 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  *
  */
 public class DeckManager extends JPanel{
-	private CardViewPanel cardViewPane;
-	private DeckControlsPanel deckControlsPane;
+	private CardViewPanel cardViewPanel;
+	private DeckControlsPanel deckControlsPanel;
 	private ManageDeckController controller;
 	
 	/**
 	 * Constructs the two sub panels and places them in their correct positions
 	 */
-	public DeckManager(){
+	public DeckManager(ListDecksPanel listDecksPanel){
 		
-		cardViewPane = new CardViewPanel();
-		deckControlsPane = new DeckControlsPanel();
+		cardViewPanel = new CardViewPanel();
+		deckControlsPanel = new DeckControlsPanel(cardViewPanel, listDecksPanel);
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -47,14 +47,14 @@ public class DeckManager extends JPanel{
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.weighty = 0.8;
-		this.add(cardViewPane, constraints);
+		this.add(cardViewPanel, constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.weighty = 0.2;
-		this.add(deckControlsPane, constraints);
+		this.add(deckControlsPanel, constraints);
 	}
 	
 	/**
@@ -63,7 +63,7 @@ public class DeckManager extends JPanel{
 	 * @param deck the deck to update the card view with
 	 */
 	public void updateDeck(Deck deck){
-		cardViewPane.cardView(deck);
+		cardViewPanel.cardView(deck);
 	}
 
 }

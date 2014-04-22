@@ -10,9 +10,9 @@ public class AddCardController implements ActionListener{
 	private DeckControlsPanel view;
 	private CardViewPanel cardView;
 	
-	public AddCardController(DeckControlsPanel view, CardViewPanel cardView){
+	public AddCardController(DeckControlsPanel view){
 		this.view = view;
-		this.cardView = cardView;
+		this.cardView = view.getCardView();
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
