@@ -195,7 +195,14 @@ public class ResultsDisplayPanel extends JPanel {
 
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
 		median.setText("Median: " + Double.toString(estimate.getMedian()));
-		finalEstimate.setText("" + estimate.getFinalEstimate());
+		if (estimate.getFinalEstimate() == 0)
+		{
+			finalEstimate.setText("" + (int)estimate.getMean());
+		} 
+		else 
+		{
+			finalEstimate.setText("" + estimate.getFinalEstimate());
+		}
 
 		// Set to new empty model to empty table
 		tableUsersAndEstimates
