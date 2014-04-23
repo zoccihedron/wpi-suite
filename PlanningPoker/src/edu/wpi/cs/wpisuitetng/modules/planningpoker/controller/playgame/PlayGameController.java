@@ -24,10 +24,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
 public class PlayGameController {
 	
 	
-	private EstimationPane estimationPane = null;
-	private GameInfoPanel infoPanel = null;
+	private EstimationPane estimationPane;
+	private GameInfoPanel infoPanel;
 	
 	public PlayGameController() {
+		estimationPane = null;
+		infoPanel = null;
 	}
 
 	public void setEstimationPane(EstimationPane ep){
