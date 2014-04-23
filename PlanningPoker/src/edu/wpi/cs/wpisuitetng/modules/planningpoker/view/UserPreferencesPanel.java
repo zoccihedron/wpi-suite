@@ -51,7 +51,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * Creates the user preference panel, which allows the users to denote whether or not
- * they want to be notified by email or IM and, if they do, input their email and IM.
+ * they want to be notified by email and, if they do, input their email.
  *
  * @author Code on Bleu
  * @version Apr 10, 2014
@@ -380,8 +380,8 @@ public class UserPreferencesPanel extends JPanel {
 	}
 
 	/**
-	 * Sets the current Email and IM for the user, and displays the current values in the 
-	 * textfields and the checkboxes.
+	 * Sets the current Email for the user, and displays the current values in the 
+	 * textfield and the checkbox.
 	 *
 	 * @param currentEmail the user's current stored email
 	 * @param allowEmail the user's current stored email preference
@@ -400,6 +400,7 @@ public class UserPreferencesPanel extends JPanel {
 	 * @return whether the tab is ready to close or not.
 	 */
 	public boolean isReadyToClose() {
+		boolean result = true;
 		if(changeHasBeenMade()){
 			final Object[] options = {"Yes", "No"};
 			final int i = JOptionPane.showOptionDialog(this, 
@@ -409,12 +410,9 @@ public class UserPreferencesPanel extends JPanel {
 					JOptionPane.QUESTION_MESSAGE,
 					null, options, options[1]);
 
-			return i == 0;
+			result = (i == 0);
 		}
-		else{
-			return true;
-
-		}
+		return result;
 	}
 
 	/**
