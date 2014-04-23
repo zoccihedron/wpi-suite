@@ -156,4 +156,10 @@ public class Deck extends AbstractModel{
 	public void setCanSelectMultipleCards(boolean newValue){
 		canSelectMultipleCards = newValue;
 	}
+
+	public void copyFrom(Deck updatedDeck) {
+		this.name = updatedDeck.getName();
+		this.canSelectMultipleCards = updatedDeck.canSelectMultipleCards();
+		this.cardValues = updatedDeck.getCards();
+	}
 }

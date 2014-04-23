@@ -1,22 +1,16 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
-
-import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
-import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer.Notification;
+import edu.wpi.cs.wpisuitetng.modules.Model;
 
 public class DeckEntityManager implements EntityManager<Deck>{
 	
@@ -46,7 +40,7 @@ public class DeckEntityManager implements EntityManager<Deck>{
 	}
 
 	@Override
-	public Deck[] getEntity(Session s, String id) throws NotFoundException,
+	public Deck[] getEntity(Session s, String name) throws NotFoundException,
 			WPISuiteException {
 		Deck[] decks = null;
 		try{
@@ -68,46 +62,57 @@ public class DeckEntityManager implements EntityManager<Deck>{
 
 	@Override
 	public Deck update(Session s, String content) throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void save(Session s, Deck model) throws WPISuiteException {
-		// TODO Auto-generated method stub
+		final Deck updatedDeck = Deck.fromJson(content);
+		final List<Model> oldDecks = db.retrieve(Deck.class,  "name", 
+				updatedDeck.getName(), s.getProject());
+		if(oldDecks.size() < 1 || oldDecks.get(0) == null){
+			throw new BadRequestException("Game with name does not exist");
+		}
+		
+		final Deck existingDeck = (Deck) oldDecks.get(0);
+		existingDeck.copyFrom(updatedDeck);
+		if(!db.save(existingDeck, s.getProject())){
+			throw new WPISuiteException("Save was not successful");
+		}
+		
+		return existingDeck;
+		
 		
 	}
 
 	@Override
-	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return false;
+	public void save(Session s, Deck model) throws WPISuiteException {
+		if(!db.save(model, s.getProject())){
+			throw new WPISuiteException("Save was not successful");
+		}
+	}
+
+	@Override
+	public boolean deleteEntity(Session s, String name) throws WPISuiteException {
+		return (db.delete(getEntity(s, name)[0]) != null) ? true : false;
 	}
 
 	@Override
 	public String advancedGet(Session s, String[] args)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public void deleteAll(Session s) throws WPISuiteException {
-		// TODO Auto-generated method stub
-		
+		db.deleteAll(new Deck(), s.getProject());
 	}
 
 	@Override
 	public int Count() throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return 0;
+		return db.retrieveAll(new Deck()).size();
 	}
 
 	@Override
 	public String advancedPut(Session s, String[] args, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
+
 	}
 
 	@Override
