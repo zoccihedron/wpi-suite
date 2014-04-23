@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,6 +25,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -160,14 +163,38 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		constraints.gridwidth = 2;
+		constraints.weightx = 0.75;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(message, constraints);
 
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		constraints.weightx = 0.5;
+		constraints.weightx = 0.25;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 0, 10);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		add(rightPanel, constraints);
+		
+		finalEstimate.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// Do nothing
+			}
+		});
 
 	}
 
@@ -181,17 +208,6 @@ public class ResultsDisplayPanel extends JPanel {
 	public void updateData(int reqid) {
 		this.reqid = reqid;
 		final Estimate estimate = game.findEstimate(reqid);
-
-		if (estimate.estimationHasBeenSent()
-				|| !ConfigManager.getInstance().getConfig().getUserName()
-						.equals(game.getGameCreator())) {
-			saveFinalEstimateBtn.setEnabled(false);
-			finalEstimate.setEditable(false);
-		} else {
-			saveFinalEstimateBtn.setEnabled(true && !game.getStatus().equals(
-					GameStatus.CLOSED));
-			finalEstimate.setEditable(true);
-		}
 
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
 		median.setText("Median: " + Double.toString(estimate.getMedian()));
@@ -224,7 +240,17 @@ public class ResultsDisplayPanel extends JPanel {
 			}
 
 		}
-
+		
+		if (estimate.estimationHasBeenSent()
+				|| !ConfigManager.getInstance().getConfig().getUserName()
+						.equals(game.getGameCreator())) {
+			saveFinalEstimateBtn.setEnabled(false);
+			finalEstimate.setEditable(false);
+		} else {
+			saveFinalEstimateBtn.setEnabled(canMakeEstimate() && !game.getStatus().equals(
+					GameStatus.CLOSED));
+			finalEstimate.setEditable(true);
+		}
 	}
 
 	/**
@@ -240,18 +266,13 @@ public class ResultsDisplayPanel extends JPanel {
 			estimate = Integer.parseInt(finalEstimate.getText());
 
 		} catch (NumberFormatException e) {
-			reportError("<html>Error: Final estimate must be an integer.</html>");
+			reportError("<html>* Final estimate must be an integer.</html>");
 			return false;
 		}
 
-		if (estimate < 0) {
-			reportError("<html>Error: Final estimate must be an integer greater than 0.</html>");
+		if (estimate <= 0) {
+			reportError("<html>* Final estimate must be an integer greater than 0.</html>");
 			return false;
-		}
-
-		if (estimate == 0) {
-			reportError("<html>Error: 0 is not a valid final estimate. </html>");
-			return true;
 		}
 		return true;
 	}
