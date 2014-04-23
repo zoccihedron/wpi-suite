@@ -177,6 +177,9 @@ public class Mailer implements Runnable{
 		}
 	}
 
+	/**
+	 * This method starts the mailer thread
+	 */
 	public void start() {
 		if(thread == null)
 		{
