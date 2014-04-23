@@ -61,31 +61,31 @@ public class UserPreferencesPanel extends JPanel {
 	private final JPanel preferencesPanel;
 	private final JPanel titlePanel;
 	private final JTextField emailField;
-	private final JTextField imField;
+	//private final JTextField imField;
 	private final JLabel lblTitle;
 	private final JLabel lblAllow;
 	private final JLabel lblUserInfo;
 	private final JLabel lblEmailCheck;
-	private final JLabel lblIMCheck;
+	//private final JLabel lblIMCheck;
 	private final JLabel lblPrefstatus;
 	private final JLabel lblEmail;
-	private final JLabel lblIM;
+	//private final JLabel lblIM;
 	private final JCheckBox checkBoxEmail;
-	private final JCheckBox checkBoxIM;
+	//private final JCheckBox checkBoxIM;
 	private final JButton btnSubmit;
 	private final JButton btnCancel;
 	private Pattern pattern;
 	private Matcher matcher;
 	private final String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	private final String imPattern = "^[A-Za-z0-9]*$";
+	//private final String imPattern = "^[A-Za-z0-9]*$";
 	private boolean emailVerified = true;
 	private boolean imVerified = true;
 	private final UserPreferencesPanel userPreferencesPane = this;
 	private String initEmail = "";
-	private String initIM = "";
+	//private String initIM = "";
 	private boolean initAllowEmail;
-	private boolean initAllowIM;
+	//private boolean initAllowIM;
 
 	/**
 	 * Create the panel.
@@ -174,7 +174,7 @@ public class UserPreferencesPanel extends JPanel {
 		lblEmailCheck.setVisible(false);
 		preferencesPanel.add(lblEmailCheck, gbc_lblEmailCheck);
 
-		checkBoxIM = new JCheckBox("");
+/*		checkBoxIM = new JCheckBox("");
 		final GridBagConstraints gbc_checkBox_1 = new GridBagConstraints();
 		gbc_checkBox_1.anchor = GridBagConstraints.WEST;
 		gbc_checkBox_1.insets = new Insets(0, 0, 5, 5);
@@ -207,7 +207,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblIMCheck.gridx = 4;
 		gbc_lblIMCheck.gridy = 3;
 		lblIMCheck.setVisible(false);
-		preferencesPanel.add(lblIMCheck, gbc_lblIMCheck);
+		preferencesPanel.add(lblIMCheck, gbc_lblIMCheck); */
 
 		btnSubmit = new JButton("Submit");
 		final GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
@@ -264,7 +264,7 @@ public class UserPreferencesPanel extends JPanel {
 			}
 		});
 
-		imField.getDocument().addDocumentListener(new DocumentListener() {
+/*		imField.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -280,7 +280,7 @@ public class UserPreferencesPanel extends JPanel {
 			public void changedUpdate(DocumentEvent e) {
 				reportIMValidation(imField.getText());
 			}
-		});
+		}); */
 
 
 		/*
@@ -289,7 +289,7 @@ public class UserPreferencesPanel extends JPanel {
 		 * Use ItemListener so that when the mouse hovers over the checkbox,
 		 * it would not be called.
 		 */
-		checkBoxIM.addItemListener(new ItemListener(){
+/*		checkBoxIM.addItemListener(new ItemListener(){
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -305,7 +305,7 @@ public class UserPreferencesPanel extends JPanel {
 				}
 			}
 
-		});
+		}); */
 
 		/*
 		 * Set up an action listener for the Email checkbox that will
@@ -355,9 +355,9 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setName("Name");
 				dummyUser.setRole(Role.USER);
 				dummyUser.setEmail(emailField.getText());
-				dummyUser.setIM(imField.getText());
+				//dummyUser.setIM(imField.getText());
 				dummyUser.setAllowEmail(checkBoxEmail.isSelected());
-				dummyUser.setAllowIM(checkBoxIM.isSelected());
+				//dummyUser.setAllowIM(checkBoxIM.isSelected());
 				final Request request =
 						Network.getInstance().makeRequest("Advanced/core/user/changeInPreference",
 								HttpMethod.POST);
@@ -383,9 +383,10 @@ public class UserPreferencesPanel extends JPanel {
 				request.send();
 				userPreferencesPane.setCurrentEmailAndIM(
 						emailField.getText(), 
-						imField.getText(), 
-						checkBoxEmail.isSelected(), 
-						checkBoxIM.isSelected());
+						//imField.getText(), 
+						checkBoxEmail.isSelected()//, 
+						//checkBoxIM.isSelected()
+						);
 				lblPrefstatus.setText("Success! Your notification preferences have been updated.");
 				lblPrefstatus.setBackground(Color.BLUE);
 
@@ -428,11 +429,11 @@ public class UserPreferencesPanel extends JPanel {
 	 * @param IM the IM string
 	 * @return true if the IM contains no spaces, false otherwise
 	 */
-	private boolean isCorrectIMFormat(String IM){
+/*	private boolean isCorrectIMFormat(String IM){
 		pattern = Pattern.compile(imPattern);
 		matcher = pattern.matcher(IM);
 		return matcher.matches();
-	}
+	} */
 
 	/**
 	 * Configures the submit button depending on the validity of the email, and
@@ -471,7 +472,7 @@ public class UserPreferencesPanel extends JPanel {
 	 *
 	 * @param IM the IM to be validated
 	 */
-	private void reportIMValidation(String IM){
+/*	private void reportIMValidation(String IM){
 		if(IM.equals("")){
 			lblIMCheck.setText("<html>Please enter an IM.<html>");
 			lblIMCheck.setVisible(true);
@@ -494,7 +495,7 @@ public class UserPreferencesPanel extends JPanel {
 			configSubmitButton();
 			printStatus();
 		}
-	}
+	} */
 
 	/**
 	 * Enables or disables the submit button depending on whether notifications are selected, and
@@ -523,18 +524,19 @@ public class UserPreferencesPanel extends JPanel {
 	 * @param allowIM the user's current stored IM preferences
 	 */
 	public void setCurrentEmailAndIM(String currentEmail, 
-			String currentIM, 
-			boolean allowEmail, 
-			boolean allowIM){
+			//String currentIM, 
+			boolean allowEmail//, 
+			//boolean allowIM
+			){
 
 		initEmail = currentEmail;
 		emailField.setText(currentEmail);
-		initIM = currentIM;
-		imField.setText(currentIM);
+		//initIM = currentIM;
+		//imField.setText(currentIM);
 		checkBoxEmail.setSelected(allowEmail);
 		initAllowEmail = allowEmail;
-		checkBoxIM.setSelected(allowIM);
-		initAllowIM = allowIM;
+		//checkBoxIM.setSelected(allowIM);
+		//initAllowIM = allowIM;
 	}
 
 	/**
@@ -571,9 +573,9 @@ public class UserPreferencesPanel extends JPanel {
 	/**
 	 * @param initIM the initIM to set
 	 */
-	public void setInitIM(String initIM) {
+/*	public void setInitIM(String initIM) {
 		this.initIM = initIM;
-	}
+	}*/
 
 	/**
 	 * @param initAllowEmail the initAllowEmail to set
@@ -585,20 +587,21 @@ public class UserPreferencesPanel extends JPanel {
 	/**
 	 * @param initAllowIM the initAllowIM to set
 	 */
-	public void setInitAllowIM(boolean initAllowIM) {
+/*	public void setInitAllowIM(boolean initAllowIM) {
 		this.initAllowIM = initAllowIM;
-	}
+	}*/
 
 	/**
 	 * 
 	 * @return true if any change has been made
 	 */
 	public boolean changeHasBeenMade(){
-		return (!(initEmail != null && initIM != null 
+		return (!(initEmail != null //&& initIM != null 
 				&& initEmail.equals(emailField.getText()) 
-				&& initIM.equals(imField.getText())
+				//&& initIM.equals(imField.getText())
 				&& initAllowEmail == checkBoxEmail.isSelected()
-				&& initAllowIM == checkBoxIM.isSelected()));
+				//&& initAllowIM == checkBoxIM.isSelected()
+				));
 	}
 	
 	/**
