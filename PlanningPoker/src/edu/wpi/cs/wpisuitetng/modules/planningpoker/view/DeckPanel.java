@@ -48,8 +48,6 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.Scrol
 public class DeckPanel extends JScrollPane {
 	private JTextField estimateField = new JTextField();
 	private ImageIcon img = null;
-	private final int CARD_WIDTH = 100;
-	private final int CARD_HEIGHT = 128;
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
