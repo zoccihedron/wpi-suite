@@ -86,6 +86,7 @@ public class CardViewPanel extends JScrollPane{
 				constraints.anchor = GridBagConstraints.PAGE_END;
 			}
 			currentView.add(cardToAdd, constraints); 
+			toggleBtns.add(cardToAdd);
 		}
 		
 		return currentView;

@@ -23,7 +23,7 @@ public class RemoveCardController implements ActionListener{
 			view.getDeck().removeCard(cardValue);
 		}
 		
-		cardView.updateView(view.getDeck());;
+		cardView.updateView(view.getDeck());
 	}
 
 }

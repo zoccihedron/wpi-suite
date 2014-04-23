@@ -111,11 +111,13 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridwidth = 1;
 		this.add(fieldAddCard, constraints);
 		
+		deckRemovedMessage = new JLabel();
 		deckRemovedMessage.setVisible(false);
 		this.add(deckRemovedMessage);
 		
 		
-		deck = null;
+		deck = new Deck();
+		setActionListeners(deck);
 		
 	}
 	
