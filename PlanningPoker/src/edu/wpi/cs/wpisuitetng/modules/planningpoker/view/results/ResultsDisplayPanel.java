@@ -180,7 +180,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridy = 3;
 		constraints.gridwidth = 2;
 		constraints.weighty = 1;
-		constraints.fill = GridBagConstraints.BOTH;	
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
 
@@ -297,7 +297,8 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn.setEnabled(canMakeEstimate() && !game.getStatus().equals(
 				GameStatus.CLOSED));
 		finalEstimate.setEditable(!game.getStatus().equals(GameStatus.CLOSED) 
-				&& ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator()));
+				&& ConfigManager.getInstance().getConfig().getUserName().equals(
+						game.getGameCreator()));
 
 	}
 
@@ -322,7 +323,8 @@ public class ResultsDisplayPanel extends JPanel {
 
 			if (result && estimateObject.isSentBefore()){
 				if(noteArea.getText().trim().isEmpty()){
-					reportError("<html>A note must be included when modifying a sent final estimate.</html>");
+					reportError("<html>A note must be included when modifying"
+							+ " a sent final estimate.</html>");
 					result &= false;
 				}
 			}
@@ -381,6 +383,11 @@ public class ResultsDisplayPanel extends JPanel {
 		return noteArea.getText();
 	}
 
+	/**
+	 * Sets the note for an final estimation change
+	 *
+	 * @param note the note for an estimation change
+	 */
 	public void setNote(String note){
 		noteArea.setText(note);
 	}
