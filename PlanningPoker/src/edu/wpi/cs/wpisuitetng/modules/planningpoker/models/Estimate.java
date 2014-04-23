@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gson.Gson;
@@ -38,7 +39,7 @@ public class Estimate {
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
 	private int finalEstimate = 0;
-	private HashMap<String, List<Boolean>> userCardSelection;
+	private Map<String, List<Boolean>> userCardSelection;
 	
 	/**
 	 * Constructor for an estimate object
@@ -177,7 +178,7 @@ public class Estimate {
 	 * Get estimates of all users
 	 * @return map of users and their estimates
 	 */
-	public HashMap<String,Integer> getUsersAndEstimates(){
+	public Map<String,Integer> getUsersAndEstimates(){
 		return userWithEstimate;
 	}
 	
@@ -222,16 +223,16 @@ public class Estimate {
 		}
 		Collections.sort(estimates);
 		final int length = estimates.size();
+		final int halfLength = length / 2;
 		double median = 0;
 		if(length == 0){
 			return median;
 		}
 		if(length % 2 == 0){
-			median = ((double) estimates.get(length / 2) + 
-					(double)estimates.get((length / 2) - 1)) / 2.0;
+			median = ((double) estimates.get(halfLength) + (double)estimates.get(halfLength - 1)) / 2;
 		}
 		else {
-			median = (double)estimates.get(length / 2);
+			median = (double)estimates.get(halfLength);
 		}
 		return median;
 	}
@@ -306,7 +307,7 @@ public class Estimate {
 	 */
 	public void estimationSent(boolean send)
 	{
-		this.isEstimationSent = send;
+		isEstimationSent = send;
 	}
 	
 	/**

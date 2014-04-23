@@ -64,7 +64,7 @@ public class DeckPanel extends JScrollPane {
 	public DeckPanel(String deck) {
 		if(deck.equals("default")){
 
-			ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
+			final ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
 			defaultDeckCards.add(0);
 			defaultDeckCards.add(1);
 			defaultDeckCards.add(1);
@@ -74,7 +74,7 @@ public class DeckPanel extends JScrollPane {
 			defaultDeckCards.add(8);
 			defaultDeckCards.add(13);
 			
-			Deck defaultDeck = new Deck("default", true, defaultDeckCards);
+			final Deck defaultDeck = new Deck("default", true, defaultDeckCards);
 			this.setViewportView(deckVersion(defaultDeck));
 		}
 		else {
@@ -242,8 +242,7 @@ public class DeckPanel extends JScrollPane {
 		System.out.println("--------old estimate value: " + oldEstimate);
 		if (oldEstimate >= 0) {
 			if(isDeckView){
-				ArrayList<Boolean> selected =
-						(ArrayList<Boolean>) game.findEstimate(reqid).getUserCardSelection(name);
+				final List<Boolean> selected = game.findEstimate(reqid).getUserCardSelection(name);
 				if(selected != null){
 					for(int i = 0; i < selected.size(); i++)
 					{
@@ -293,8 +292,12 @@ public class DeckPanel extends JScrollPane {
 		return isDeckView;
 	}
 
-	public ArrayList<Boolean> getCardSelection() {
-		ArrayList<Boolean> selection = new ArrayList<Boolean>();
+	/**
+	 * This function gets a list of the selected cards
+	 * @return The cards that are selected as boolean values
+	 */
+	public List<Boolean> getCardSelection() {
+		final List<Boolean> selection = new ArrayList<Boolean>();
 		for(JToggleButton button: listOfButtons){
 			selection.add(button.isSelected());
 		}
