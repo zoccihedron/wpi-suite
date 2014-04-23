@@ -70,6 +70,10 @@ public class EstimateTreePanel extends JPanel{
 		//button
 		sendEstimateToReqButton = new JButton();
 		sendEstimateToReqButton.setText("Send Selected Estimates");
+		if(game.getStatus().equals(GameStatus.CLOSED))
+		{
+			sendEstimateToReqButton.setVisible(false);
+		}
 		
 		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
 	
