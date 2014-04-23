@@ -37,7 +37,7 @@ public class Estimate {
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
-	private boolean hasSentBefore = false;
+	private boolean sentBefore = false;
 	private int finalEstimate = 0;
 	private String note = "";
 	private HashMap<String, List<Boolean>> userCardSelection;
@@ -404,8 +404,8 @@ public class Estimate {
 	 *
 	 * @return status of the estimate ever being sent
 	 */
-	public boolean isHasSentBefore() {
-		return hasSentBefore;
+	public boolean isSentBefore() {
+		return sentBefore;
 	}
 
 
@@ -415,7 +415,7 @@ public class Estimate {
 	 *
 	 * @param hasSentBefore whether the estimate has been sent before or not
 	 */
-	public void setHasSentBefore(boolean hasSentBefore) {
-		this.hasSentBefore = hasSentBefore;
+	public void setSentBefore(boolean sentBefore) {
+		this.sentBefore = sentBefore;
 	}
 }

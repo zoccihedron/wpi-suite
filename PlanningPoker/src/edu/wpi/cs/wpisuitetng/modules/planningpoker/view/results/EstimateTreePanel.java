@@ -97,6 +97,7 @@ public class EstimateTreePanel extends JPanel{
 				for(Estimate e: estimates){
 					e.setGameID(gameId);
 					e.estimationSent(true);
+					e.setSentBefore(true);
 				}
 				final RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
 				facade.sendEstimates(estimates, estimateTreePane);

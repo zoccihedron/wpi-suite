@@ -203,15 +203,15 @@ public class ResultsDisplayPanel extends JPanel {
 		this.reqid = reqid;
 		final Estimate estimate = game.findEstimate(reqid);
 
-		if (estimate.estimationHasBeenSent()
-				|| !ConfigManager.getInstance().getConfig().getUserName()
+		if (!ConfigManager.getInstance().getConfig().getUserName()
 				.equals(game.getGameCreator())) {
-			saveFinalEstimateBtn.setEnabled(true);
-			finalEstimate.setEditable(true);
+			saveFinalEstimateBtn.setEnabled(false);
+			finalEstimate.setEditable(false);
 		} else {
-			saveFinalEstimateBtn.setEnabled(true && !game.getStatus().equals(
+			saveFinalEstimateBtn.setEnabled(!game.getStatus().equals(
 					GameStatus.CLOSED));
-			finalEstimate.setEditable(true);
+			finalEstimate.setEditable(!game.getStatus().equals(
+					GameStatus.CLOSED));
 		}
 
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
@@ -263,7 +263,7 @@ public class ResultsDisplayPanel extends JPanel {
 				result &= false;
 			}
 
-			if (result && estimateObject.estimationHasBeenSent()){
+			if (result && estimateObject.isSentBefore()){
 				if(noteArea.getText().trim().isEmpty()){
 					reportError("<html>Error: A note must be included when modifying a sent final estimate.</html>");
 					result &= false;
@@ -309,7 +309,7 @@ public class ResultsDisplayPanel extends JPanel {
 	}
 
 	/**
-	 * Refreshs the GUI portion of the tree panel
+	 * Refreshes the GUI portion of the tree panel
 	 */
 	public void refresh() {
 		treePanel.refresh();
