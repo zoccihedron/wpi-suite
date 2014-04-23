@@ -75,7 +75,7 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
-		if(game.getStatus() == GameStatus.CLOSED)
+		if(game.getStatus().equals(GameStatus.CLOSED))
 		{
 			saveFinalEstimateBtn.setEnabled(false);
 			finalEstimate.setEditable(false);
