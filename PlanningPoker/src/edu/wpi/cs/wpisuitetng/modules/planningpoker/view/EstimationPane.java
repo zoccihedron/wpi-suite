@@ -19,7 +19,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -57,11 +56,11 @@ public class EstimationPane extends JPanel {
 	private final JLabel lblReqDescription;
 	private final JTextArea fldReqDescription;
 	private final JScrollPane scrollDescription;
-	private DeckPanel deckPanel;
+	private final DeckPanel deckPanel;
 	private JLabel message;
-	private JButton voteButton;
+	private final JButton voteButton;
 	private int reqid;
-	private ListRequirementsPanel listReqPanel;
+	private final ListRequirementsPanel listReqPanel;
 	private Game game;
 	private Requirement req;
 	
@@ -228,7 +227,7 @@ public class EstimationPane extends JPanel {
 		
 
 		try {
-		    Image img = ImageIO.read(getClass().getResource("vote.png"));
+		    final Image img = ImageIO.read(getClass().getResource("vote.png"));
 		    voteButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
@@ -276,7 +275,7 @@ public class EstimationPane extends JPanel {
 	}
 
 	private Requirement getRequirementFromId() throws NotFoundException{
-		List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement req: reqs){
 			if(req.getId() == reqid){
 				return req;
@@ -396,7 +395,11 @@ public class EstimationPane extends JPanel {
 	}
 
 
-	public ArrayList<Boolean> getCardSelection() {
+	/**
+	 * This function passes the request for card selection onto the deckpane
+	 * @return The list of selected cards
+	 */
+	public List<Boolean> getCardSelection() {
 		if(!deckPanel.isDeckView()){
 			return null;
 		} else{
