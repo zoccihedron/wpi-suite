@@ -115,7 +115,8 @@ public class DeckControlsPanel extends JPanel {
 		deckRemovedMessage.setVisible(false);
 		this.add(deckRemovedMessage);
 		
-		
+		// deck = null;
+		//TODO remove this once selecting decks is implemented
 		deck = new Deck();
 		setActionListeners(deck);
 		
