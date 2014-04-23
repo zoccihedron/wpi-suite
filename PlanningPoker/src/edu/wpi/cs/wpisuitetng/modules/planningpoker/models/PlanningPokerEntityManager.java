@@ -9,8 +9,12 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
@@ -24,6 +28,8 @@ import edu.wpi.cs.wpisuitetng.modules.Model;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer.Notification;
 
 
 /**
@@ -50,6 +56,29 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 */
 	public PlanningPokerEntityManager(Data db) {
 		this.db = db;
+		final Data temp_db = db;
+		
+		final ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final List<Game> games = temp_db.retrieveAll(new Game());
+				for(Game g : games)
+				{
+					GameStatus status = g.getStatus();
+					g.updateStatus();
+					if((!status.equals(GameStatus.ENDED)) && g.getStatus().equals(GameStatus.ENDED))
+					{
+						Mailer mailer = new Mailer(g, temp_db.retrieveAll(new User("", "", "", 0)),
+																			Notification.ENDED);
+						mailer.start();
+						temp_db.save(g);
+					}
+				}
+			}
+		};
+		
+		final Timer timer = new Timer(60000 * 5, actionListener);
+		timer.start();
 	}
 
 	/**
@@ -63,7 +92,17 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		final Game newGame = Game.fromJson(content);
 		newGame.setGameCreator(s.getUsername());
 		newGame.setUsers(db.retrieveAll(new User()));
+		newGame.setHasBeenEstimated(false);
+		newGame.setEditing(false);
+		newGame.setModifiedVersion(0);
 		save(s, newGame);
+		
+		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
+		{
+			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
+			mailer.start();
+		}
+		
 		return db.retrieve(Game.class, "id", newGame.getId(), s.getProject())
 				.toArray(new Game[0])[0];
 	}
@@ -122,6 +161,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				.toArray(new Game[0]);
 		final ArrayList<Game> gamesViewableByUser = new ArrayList<Game>();
 		for (Game game : allGames) {
+			game.updateStatus();
 			if (game.getStatus() == Game.GameStatus.DRAFT) {
 				if (game.getGameCreator().equals(s.getUsername())) {
 					gamesViewableByUser.add(game);
@@ -180,11 +220,21 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		existingGame.copyFrom(updatedGame);
 		
 		existingGame.setUsers(db.retrieveAll(new User()));
-
+		existingGame.setHasBeenEstimated(false);
+		existingGame.setEditing(false);
+		existingGame.setModifiedVersion(existingGame.getModifiedVersion() + 1);
+		
 		if (!db.save(existingGame, s.getProject())) {
 			throw new WPISuiteException("Save was not successful");
 		}
 
+		if(existingGame.getStatus().equals(GameStatus.IN_PROGRESS))
+		{
+			final Mailer mailer = new Mailer(
+					existingGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
+			mailer.start();
+		}
+		
 		return existingGame;
 	}
 
@@ -223,6 +273,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * @throws WPISuiteException
 	 *             user isn't authorized for the given role
 	 */
+	@SuppressWarnings("unused")
 	private void ensureRole(Session session, Role role)
 			throws WPISuiteException {
 		final User user = (User) db.retrieve(User.class, "username",
@@ -261,18 +312,77 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throws NotImplementedException {
 		throw new NotImplementedException();
 	}
-
+	
+	/**
+	 * If the content string is "vote", the game will try to update the database with the vote.
+	 * 
+	 * If the content string is "end", the game will be set to ENDED in the database.
+	 * 
+	 * If the content string is "edit", the game will be set to DRAFT if it has not been voted on.
+	 * 
+	 * @see edu.wpi.cs.wpisuitetng.modules.EntityManager#advancedPost(edu.wpi.cs.wpisuitetng.Session, java.lang.String, java.lang.String)
+	 */
 	@Override
 	public String advancedPost(Session s, String string, String content) 
 			throws NotFoundException, WPISuiteException{
-		
+			
 			String returnString = "false";
-			if( string.equals("vote") ){
+			if( string.equals("vote")){
 				
 				final Estimate estimate = Estimate.fromJson(content);
 				final Game game = getEntity(s, Integer.toString(estimate.getGameID()))[0];
-				final Estimate gameEst = game.findEstimate(estimate.getReqID());
-				gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+
+				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+				
+				if(game.getStatus().equals(GameStatus.IN_PROGRESS) && !game.isEditing() && game.isSameModifiedVersion(estimate.getGameModifiedVersion())){
+
+					final Estimate gameEst = game.findEstimate(estimate.getReqID());
+					gameEst.makeEstimate(s.getUsername(), estimate.getEstimate(s.getUsername()));
+					gameEst.setUserCardSelection(s.getUsername(),
+												estimate.getUserCardSelection(s.getUsername()));
+					
+					for(Estimate e: game.getEstimates()){
+						Estimate tempEst = e.getCopy();
+						newEstimates.add(tempEst);
+					}
+					game.setEstimates(newEstimates);
+					game.endIfAllEstimated();
+					
+					game.setHasBeenEstimated(true);
+					
+					if(game.getStatus().equals(GameStatus.ENDED))
+					{
+						final Mailer mailer = new Mailer(
+								game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+						mailer.start();
+					}
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
+				}
+
+				else if (game.isEditing()){
+					returnString = "*Voting is not currently allowed: The game is being edited.";
+				}
+				else if (game.getStatus().equals(GameStatus.ENDED)){
+					returnString = "*Voting is not currently allowed: The game has ended.";
+				}
+				else if (!game.isSameModifiedVersion(estimate.getGameModifiedVersion())){
+					returnString = "*Voting is not currently allowed: The game is outdated.";
+				}
+				else {
+					returnString = "*Voting is not currently allowed.";
+				}
+
+			} 
+			else if(string.equals("send")){
+				final Estimate oldEst = Estimate.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+				final Estimate newEst = game.findEstimate(oldEst.getReqID());
+				
+				newEst.estimationSent(true);
 				
 				final List<Estimate> newEstimates = new ArrayList<Estimate>();
 				for(Estimate e: game.getEstimates()){
@@ -280,13 +390,36 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					newEstimates.add(tempEst);
 				}
 				game.setEstimates(newEstimates);
-				game.endIfAllEstimated();
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = "true";
+				
+			}
+			
+			else if(string.equals("sendFinalEstimate"))
+			{
+				final Estimate oldEst = Estimate.fromJson(content);
+				System.out.println(content);
+				final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+				final Estimate newEst = game.findEstimate(oldEst.getReqID());
+				
+				newEst.setFinalEstimate(oldEst.getFinalEstimate());
+				
+				final List<Estimate> newEstimates = new ArrayList<Estimate>();
+				for(Estimate e: game.getEstimates()){
+					Estimate tempEst = e.getCopy();
+					newEstimates.add(tempEst);
+				}
+				game.setEstimates(newEstimates);
 				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
 				}
 				returnString = "true";
 			}
+			
 			else if( string.equals("end") ){
 				
 				final Game endedGame = Game.fromJson(content);
@@ -294,10 +427,61 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				
 				game.setStatus(GameStatus.ENDED);
 				
+				if(game.getStatus().equals(GameStatus.ENDED))
+				{
+					final Mailer mailer = new Mailer(
+							game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+					mailer.start();
+				}
+				
 				if(!db.save(game, s.getProject())) {
 					throw new WPISuiteException("Save was not successful");
 				}
 				returnString = game.toJSON();
+			}
+			
+			else if( string.equals("close") ){
+				final Game closedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(closedGame.getId()))[0];
+				
+				game.setStatus(GameStatus.CLOSED);
+				
+				if(!db.save(game, s.getProject())) {
+					throw new WPISuiteException("Save was not successful");
+				}
+				returnString = game.toJSON();
+			}
+			else if( string.equals("edit") ){
+				
+				final Game editedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
+				if(!game.isHasBeenEstimated()){
+					game.setEditing(true);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
+				}
+				else{
+					returnString = "*This game has been recently voted on. Editing is no longer available";
+				}
+			}
+			else if( string.equals("endEdit") ){
+				
+				final Game editedGame = Game.fromJson(content);
+				final Game game = getEntity(s, Integer.toString(editedGame.getId()))[0];
+				if(!game.isHasBeenEstimated()){
+					game.setEditing(false);
+					
+					if(!db.save(game, s.getProject())) {
+						throw new WPISuiteException("Save was not successful");
+					}
+					returnString = "true";
+				}
+				else{
+					returnString = "*This game has been recently voted on. Editing is no longer available";
+				}
 			}
 			return returnString;
 	}

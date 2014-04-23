@@ -15,12 +15,12 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.CreateGameInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.CreateGameInfoPanel;
 
 /**
- *Changes the fields on the CreateGameInfoPanel to have deadline input enabled
+ * Changes the fields on the CreateGameInfoPanel to have deadline input enabled
  * 
- * @author Code On Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class ChangeDeadlineVisibilityController implements ActionListener {
