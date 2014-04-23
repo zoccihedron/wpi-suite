@@ -44,4 +44,12 @@ public class ViewResultsController {
 	public void updateResultsInfo(int reqid){
 		resultsPanel.updateDisplay(reqid);
 	}
+	
+	/**
+	 * Updates the GUI to display the results of the req last selected
+	 * @param reqid The req to display
+	 */
+	public void refreshResultsInfo(){
+		resultsPanel.refreshDisplay();
+	}
 }

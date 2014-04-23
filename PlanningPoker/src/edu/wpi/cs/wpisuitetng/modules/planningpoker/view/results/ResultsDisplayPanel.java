@@ -83,10 +83,10 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
-		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig().getUserName().equals(
-				game.getGameCreator()));
-		saveFinalEstimateBtn.setEnabled(true);
-		finalEstimate.setEditable(true);
+		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
+				.getUserName().equals(game.getGameCreator()));
+		saveFinalEstimateBtn.setEnabled(false);
+		finalEstimate.setEditable(false);
 
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
@@ -193,7 +193,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.weighty = 0;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-		constraints.insets = new Insets(0, 0, 0, 0);
+		constraints.insets = new Insets(0, 20, 0, 0);
 		add(rightPanel, constraints);
 
 		finalEstimate.getDocument().addDocumentListener(new DocumentListener() {
@@ -301,6 +301,9 @@ public class ResultsDisplayPanel extends JPanel {
 		finalEstimate.setEditable(!game.getStatus().equals(GameStatus.CLOSED) 
 				&& ConfigManager.getInstance().getConfig().getUserName().equals(
 						game.getGameCreator()));
+		noteArea.setEditable(!game.getStatus().equals(GameStatus.CLOSED) 
+				&& ConfigManager.getInstance().getConfig().getUserName().equals(
+						game.getGameCreator()));
 
 	}
 
@@ -372,10 +375,12 @@ public class ResultsDisplayPanel extends JPanel {
 	}
 
 	/**
-	 * Refreshes the GUI portion of the tree panel
+	 * Refreshes the GUI portion of the tree panel and the data 
+	 * on the results panel.
 	 */
 	public void refresh() {
 		treePanel.refresh();
+		updateData(reqid);
 	}
 
 	/**
