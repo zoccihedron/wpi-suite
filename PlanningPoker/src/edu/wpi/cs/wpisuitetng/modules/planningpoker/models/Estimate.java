@@ -37,7 +37,7 @@ public class Estimate {
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
-	private int finalEstimate = 0;
+	private int finalEstimate = -1;
 	private HashMap<String, List<Boolean>> userCardSelection;
 	
 	/**
@@ -256,7 +256,6 @@ public class Estimate {
 	 * @return true if the user was added, false if not
 	 */
 	public boolean addUser(String user){
-		System.out.println("Adding User to estimate!");
 		if(userWithEstimate.put(user, -1) != null) return true;
 		return false;
 	}
@@ -330,7 +329,10 @@ public class Estimate {
 	 * @return the final estimate
 	 */
 	public int getFinalEstimate() {
-
+		if(finalEstimate < 0)
+		{
+			finalEstimate = (int)this.getMean();
+		}
 		return finalEstimate;
 	}
 
