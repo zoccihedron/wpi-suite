@@ -256,7 +256,6 @@ public class Estimate {
 	 * @return true if the user was added, false if not
 	 */
 	public boolean addUser(String user){
-		System.out.println("Adding User to estimate!");
 		if(userWithEstimate.put(user, -1) != null) return true;
 		return false;
 	}
@@ -330,7 +329,6 @@ public class Estimate {
 	 * @return the final estimate
 	 */
 	public int getFinalEstimate() {
-
 		return finalEstimate;
 	}
 
