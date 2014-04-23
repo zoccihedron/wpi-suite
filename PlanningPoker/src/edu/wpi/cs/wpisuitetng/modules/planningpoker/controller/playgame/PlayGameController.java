@@ -32,6 +32,7 @@ public class PlayGameController {
 
 	public void setEstimationPane(EstimationPane ep){
 		estimationPane = ep;
+		estimationPane.setHelp(true);
 	}
 	
 	public void setGameInfoPanel(GameInfoPanel gio){
@@ -53,9 +54,11 @@ public class PlayGameController {
 	 * @param id the requirement ID
 	 * @param game the game
 	 */
-	public void updateEstimationPane(int id, Game game) {
+	public void updateEstimationPane(int id, Game game, boolean help) {
+		help = false;
 		estimationPane.getDeckPanel().enableVoting();
 		estimationPane.setGameAndRequirement(id, game);
+		estimationPane.setHelp(help);
 	}
 	
 	

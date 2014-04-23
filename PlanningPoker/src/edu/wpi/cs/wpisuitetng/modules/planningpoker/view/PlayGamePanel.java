@@ -13,7 +13,11 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -54,7 +58,7 @@ public class PlayGamePanel extends JPanel{
 		listRequirementsPanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
-		estimationPane = new EstimationPane(listRequirementsPanel, game);
+		estimationPane = new EstimationPane(listRequirementsPanel, game, true); //TODO
 		playGameController.setEstimationPane(estimationPane);
 		splitPane.setRightComponent(estimationPane);
 

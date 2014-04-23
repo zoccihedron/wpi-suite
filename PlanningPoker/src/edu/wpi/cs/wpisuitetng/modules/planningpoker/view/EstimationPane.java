@@ -51,12 +51,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class EstimationPane extends JPanel {
 	
-	private final JLabel lblTitle;
-	private final JLabel lblReqName;
-	private final JTextField fldReqName;
-	private final JLabel lblReqDescription;
-	private final JTextArea fldReqDescription;
-	private final JScrollPane scrollDescription;
+	private JLabel lblTitle;
+	private JLabel lblReqName;
+	private JTextField fldReqName;
+	private JLabel lblReqDescription;
+	private JTextArea fldReqDescription;
+	private JScrollPane scrollDescription;
 	private DeckPanel deckPanel;
 	private JLabel message;
 	private JButton voteButton;
@@ -64,16 +64,28 @@ public class EstimationPane extends JPanel {
 	private ListRequirementsPanel listReqPanel;
 	private Game game;
 	private Requirement req;
+	private JLabel helpTitle;
+	private JLabel helpText;
+	private boolean help;
 	
 /**
  * Constructor for panel
  * @param listReqPanel
  * @param game
+ * @param help - help screen to show up when game-play first starts
  */
-	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
-		this.game = game;
-		this.listReqPanel = listReqPanel;
-		
+	public EstimationPane(ListRequirementsPanel listReqPanel, Game game, boolean help) {
+		this.help = help;
+		if (help) {
+			setUpPlayGameHelpPanel();
+		} else {
+			this.game = game;
+			this.listReqPanel = listReqPanel;
+			setUpEstimationPane(listReqPanel, game);
+		}
+	}
+	
+	private void setUpEstimationPane(ListRequirementsPanel listReqPanel, Game game) {
 		this.setLayout(new GridBagLayout());
 
 		lblTitle = new JLabel();
@@ -99,7 +111,32 @@ public class EstimationPane extends JPanel {
 		
 		infoPanelSetup();
 	}
-
+	
+	 /**
+	  * sets up help panel to show before a requirement has been selected
+	  */
+	public void setUpPlayGameHelpPanel(){
+		// Set up layout constraints
+		this.setLayout(new GridBagLayout());
+		final GridBagConstraints constraints = new GridBagConstraints();
+				
+		helpTitle = new JLabel();
+		helpText = new JLabel();
+		
+		helpTitle.setText("Play Game");
+		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		
+		helpText.setText("To begin, please select a requirement from the tree on the left.");
+		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(helpTitle, constraints);
+		
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		this.add(helpText, constraints);
+	}
 	
 	/**
 	 * Sets all the grid components for either constructor
@@ -245,6 +282,7 @@ public class EstimationPane extends JPanel {
 	 * @param game the game
 	 */
 	public void setGameAndRequirement(int reqid, Game game){
+		setUpEstimationPane(listReqPanel, game);
 		this.game = game;
 		
 		voteButton.addActionListener(new VoteActionController(this, game));
@@ -392,7 +430,7 @@ public class EstimationPane extends JPanel {
 	}
 	
 	public DeckPanel getDeckPanel(){
-		return deckPanel;
+		return this.deckPanel;
 	}
 
 
@@ -402,6 +440,10 @@ public class EstimationPane extends JPanel {
 		} else{
 			return deckPanel.getCardSelection();
 		}
+	}
+
+	public void setHelp(boolean b) {
+		this.help = b;
 	}
 
 }
