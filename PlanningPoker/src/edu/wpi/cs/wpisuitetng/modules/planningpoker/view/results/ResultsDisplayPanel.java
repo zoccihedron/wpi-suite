@@ -26,6 +26,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -170,6 +172,8 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 5;
 		constraints.gridwidth = 2;
+		constraints.weightx = 0.75;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(message, constraints);
 
 		constraints.gridx = 0;
@@ -190,6 +194,46 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.insets = new Insets(0, 0, 0, 0);
 		add(rightPanel, constraints);
 
+		finalEstimate.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// Do nothing
+			}
+		});
+		
+		noteArea.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// Do nothing
+			}
+		});
+
 	}
 
 	/**
@@ -202,10 +246,9 @@ public class ResultsDisplayPanel extends JPanel {
 	public void updateData(int reqid) {
 		this.reqid = reqid;
 		final Estimate estimate = game.findEstimate(reqid);
-
 		if (!ConfigManager.getInstance().getConfig().getUserName()
 				.equals(game.getGameCreator())) {
-			saveFinalEstimateBtn.setEnabled(false);
+			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
 		} else {
 			saveFinalEstimateBtn.setEnabled(!game.getStatus().equals(
@@ -220,6 +263,14 @@ public class ResultsDisplayPanel extends JPanel {
 		noteArea.setText(estimate.getNote());
 		noteArea.setVisible(true);
 		noteArea.setEnabled(true);
+		if (estimate.getFinalEstimate() == 0)
+		{
+			finalEstimate.setText("" + (int)estimate.getMean());
+		} 
+		else 
+		{
+			finalEstimate.setText("" + estimate.getFinalEstimate());
+		}
 
 		// Set to new empty model to empty table
 		tableUsersAndEstimates
@@ -242,6 +293,12 @@ public class ResultsDisplayPanel extends JPanel {
 
 		}
 
+
+		saveFinalEstimateBtn.setEnabled(canMakeEstimate() && !game.getStatus().equals(
+				GameStatus.CLOSED));
+		finalEstimate.setEditable(!game.getStatus().equals(GameStatus.CLOSED) 
+				&& ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator()));
+
 	}
 
 	/**
@@ -259,19 +316,19 @@ public class ResultsDisplayPanel extends JPanel {
 			estimate = Integer.parseInt(finalEstimate.getText());
 
 			if (estimate <= 0) {
-				reportError("<html>Error: Final estimate must be an integer greater than 0.</html>");
+				reportError("<html>Final estimate must be an integer greater than 0.</html>");
 				result &= false;
 			}
 
 			if (result && estimateObject.isSentBefore()){
 				if(noteArea.getText().trim().isEmpty()){
-					reportError("<html>Error: A note must be included when modifying a sent final estimate.</html>");
+					reportError("<html>A note must be included when modifying a sent final estimate.</html>");
 					result &= false;
 				}
 			}
 
 		} catch (NumberFormatException e) {
-			reportError("<html>Error: Final estimate must be an integer.</html>");
+			reportError("<html>Final estimate must be a positive integer.</html>");
 			result = false;
 		}
 

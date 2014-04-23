@@ -451,7 +451,7 @@ public class CreateGameInfoPanel extends JPanel {
 			}
 		});
 		verificationChecker.start();
-		setDefaults();
+		initDefaults();
 		checkFields();
 	}
 	
@@ -555,7 +555,7 @@ public class CreateGameInfoPanel extends JPanel {
 	/**
 	 * Sets the defaults for the fields at game start up.
 	 */
-	public void setDefaults(){
+	public void initDefaults(){
 		//Saved fields for checking page editing
 		defaultName = gameNameText.getText();
 		defaultDescription = description.getText();

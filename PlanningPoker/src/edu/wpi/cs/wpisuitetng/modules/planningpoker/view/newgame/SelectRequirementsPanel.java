@@ -58,12 +58,12 @@ public class SelectRequirementsPanel extends JPanel {
 	private DefaultTableModel modelExisting;
 	private DefaultTableModel modelAdded;
 	private JPanel buttonsPanel;
-	private GridBagConstraints constraints = new GridBagConstraints();
+	private final GridBagConstraints constraints = new GridBagConstraints();
 	
 	private Game game;
 	
 	public SelectRequirementsPanel() {
-		setUpPanel();
+		populatePanel();
 	}
 	
 	/**
@@ -72,13 +72,13 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public SelectRequirementsPanel(Game editingGame) {
 		game = editingGame;
-		setUpPanel();
+		populatePanel();
 	}
 	
 	/**
 	 * Sets up shared constraints between both constructors
 	 */
-	public void setUpPanel(){
+	public void populatePanel(){
 		// set layout
 		this.setLayout(new GridBagLayout());
 	
@@ -195,7 +195,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 		
-		Timer refreshTimer = new Timer(1000, new ActionListener() {
+		final Timer refreshTimer = new Timer(1000, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
