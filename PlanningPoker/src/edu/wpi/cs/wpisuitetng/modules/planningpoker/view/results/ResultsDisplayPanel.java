@@ -83,6 +83,8 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
+		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig().getUserName().equals(
+				game.getGameCreator()));
 		saveFinalEstimateBtn.setEnabled(true);
 		finalEstimate.setEditable(true);
 
@@ -213,7 +215,7 @@ public class ResultsDisplayPanel extends JPanel {
 				// Do nothing
 			}
 		});
-		
+
 		noteArea.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
@@ -312,26 +314,28 @@ public class ResultsDisplayPanel extends JPanel {
 		final int estimate;
 		final Estimate estimateObject = game.findEstimate(reqid);
 		boolean result = true;
-		try {
-			reportError("<html></html>");
-			estimate = Integer.parseInt(finalEstimate.getText());
+		if(ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator())){
+			try {
+				reportError("<html></html>");
+				estimate = Integer.parseInt(finalEstimate.getText());
 
-			if (estimate <= 0) {
-				reportError("<html>Final estimate must be an integer greater than 0.</html>");
-				result &= false;
-			}
-
-			if (result && estimateObject.isSentBefore()){
-				if(noteArea.getText().trim().isEmpty()){
-					reportError("<html>A note must be included when modifying"
-							+ " a sent final estimate.</html>");
+				if (estimate <= 0) {
+					reportError("<html>Final estimate must be an integer greater than 0.</html>");
 					result &= false;
 				}
-			}
 
-		} catch (NumberFormatException e) {
-			reportError("<html>Final estimate must be a positive integer.</html>");
-			result = false;
+				if (result && estimateObject.isSentBefore()){
+					if(noteArea.getText().trim().isEmpty()){
+						reportError("<html>A note must be included when modifying"
+								+ " a sent final estimate.</html>");
+						result &= false;
+					}
+				}
+
+			} catch (NumberFormatException e) {
+				reportError("<html>Final estimate must be a positive integer.</html>");
+				result = false;
+			}
 		}
 
 		return result;
