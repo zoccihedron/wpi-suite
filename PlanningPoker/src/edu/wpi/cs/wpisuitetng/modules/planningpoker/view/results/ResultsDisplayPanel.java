@@ -83,8 +83,8 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
-		saveFinalEstimateBtn.setEnabled(false);
-		finalEstimate.setEditable(false);
+		saveFinalEstimateBtn.setEnabled(true);
+		finalEstimate.setEditable(true);
 
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
