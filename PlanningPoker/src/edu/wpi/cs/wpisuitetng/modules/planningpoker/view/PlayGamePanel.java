@@ -13,11 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -66,6 +62,11 @@ public class PlayGamePanel extends JPanel{
 
 	}
 
+	/**
+	 * Checks if the pane has been edited and returns false if it has
+	 * (and thus needs to be saved)
+	 * @return true if all changes are saved
+	 */
 	public boolean isReadyToClose() {
 		if(estimationPane.isNothingHappened()) {
 			return true;

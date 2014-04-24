@@ -66,13 +66,13 @@ public class EstimationPane extends JPanel {
 	private Requirement req;
 	private JLabel helpTitle;
 	private JLabel helpText;
-	private boolean nothingHappened; //this variable allows the panel to close before an estimation is selected
+	private boolean nothingHappened;
+			//this variable allows the panel to close before an estimation is selected
 	
 /**
  * Constructor for panel
  * @param listReqPanel
  * @param game
- * @param help - help screen to show up when game-play first starts
  */
 	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
 		setUpPlayGameHelpPanel();
@@ -80,6 +80,9 @@ public class EstimationPane extends JPanel {
 		this.game = game;
 	}
 	
+	/**
+	 * Constructs the estimation pane with voting capabilities.
+	 */
 	public void setUpEstimationPane() {
 		nothingHappened = false;
 		
@@ -245,7 +248,8 @@ public class EstimationPane extends JPanel {
 	
 		
 		// adds listener for live validation of the Estimate Field
-		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(new DocumentListener() {
+		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(
+				new DocumentListener() {
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {

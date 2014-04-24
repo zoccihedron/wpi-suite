@@ -182,7 +182,9 @@ public class DeckPanel extends JScrollPane {
 						cardToAdd.setBorder(null);
 					}
 					if(cardToAdd.isSelected()){
-						Border border = BorderFactory.createCompoundBorder(new LineBorder(Color.GREEN, 3), new JToggleButton().getBorder());
+						Border border = BorderFactory.createCompoundBorder(
+								new LineBorder(Color.GREEN, 3),
+								new JToggleButton().getBorder());
 						cardToAdd.setBorder(border);
 					}else{
 						cardToAdd.setBorder(new JToggleButton().getBorder());
