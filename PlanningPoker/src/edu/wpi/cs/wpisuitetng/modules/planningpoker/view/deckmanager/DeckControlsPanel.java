@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddCardController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.CancelDeckChangesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveCardController;
@@ -128,6 +129,8 @@ public class DeckControlsPanel extends JPanel {
 	public void setActionListeners(Deck newDeck){
 		this.deck = newDeck;
 		
+		if(deck.getDeckCreator().equals(ConfigManager.getInstance().getConfig().getUserName()))
+		{
 		deckRemovedMessage.setVisible(false);
 		
 		btnAddCard.setVisible(true);
@@ -141,6 +144,18 @@ public class DeckControlsPanel extends JPanel {
 		btnRemoveCard.addActionListener(new RemoveCardController(this));
 		btnCancel.addActionListener(new CancelDeckChangesController(this));
 		btnRemoveDeck.addActionListener(new RemoveDeckController(this));
+		} else{
+			btnAddCard.setVisible(false);
+			btnRemoveCard.setVisible(false);
+			btnCancel.setVisible(false);
+			btnRemoveDeck.setVisible(false);
+			//btnSave.setVisible(false);
+			fieldAddCard.setVisible(false);
+			
+			deckRemovedMessage.setVisible(true);
+			deckRemovedMessage.setForeground(Color.BLUE);
+			deckRemovedMessage.setText("You cannot edit this deck");
+		}
 	}
 	
 	public void disableControls(){
