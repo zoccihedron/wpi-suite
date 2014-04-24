@@ -58,7 +58,8 @@ public class DeckPanel extends JScrollPane {
 	 * Constructs the DeckPanel
 	 * Right now the default deck is constructed here, this should move when
 	 * decks are fully implemented
-	 * @param controller deck name of the deck
+	 * @param controller the view sum controller
+	 * @param deck name of the deck
 	 */
 	public DeckPanel(String deck, ViewSumController controller) {
 		this.controller = controller;
