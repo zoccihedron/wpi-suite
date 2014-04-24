@@ -293,8 +293,12 @@ public class SelectRequirementsPanel extends JPanel {
 		    Image img = ImageIO.read(getClass().getResource("downArrow.png"));
 		    btnAddSelectedReq.setIcon(new ImageIcon(img));
 		    
+		    
 		    img = ImageIO.read(getClass().getResource("upArrow.png"));
 		    btnRemoveSelectedReq.setIcon(new ImageIcon(img)); 
+		
+		    img = ImageIO.read(getClass().getResource("new_req.png"));
+		    btnNewRequirement.setIcon(new ImageIcon(img));
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
