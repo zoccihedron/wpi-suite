@@ -98,6 +98,10 @@ public class ResultsDisplayPanel extends JPanel {
 		scrollNoteArea = new JScrollPane(noteArea);
 
 		populatePanel();
+		if(game.getStatus().equals(GameStatus.CLOSED))
+		{
+			saveFinalEstimateBtn.setVisible(false);
+		}
 
 	}
 
@@ -250,7 +254,6 @@ public class ResultsDisplayPanel extends JPanel {
 				// Do nothing
 			}
 		});
-
 	}
 
 	/**
@@ -323,9 +326,9 @@ public class ResultsDisplayPanel extends JPanel {
 		ConfigManager.getInstance();
 		if (ConfigManager.getConfig().getUserName()
 						.equals(game.getGameCreator())
-			&& !estimate.estimationHasBeenSent()
-			&& !game.getStatus().equals(GameStatus.CLOSED)
-			&& canMakeEstimate())
+		//	&& !estimate.estimationHasBeenSent()
+			&& !game.getStatus().equals(GameStatus.CLOSED))
+		//	&& canMakeEstimate())
 		{
 			saveFinalEstimateBtn.setVisible(true);
 			finalEstimate.setEditable(true);
