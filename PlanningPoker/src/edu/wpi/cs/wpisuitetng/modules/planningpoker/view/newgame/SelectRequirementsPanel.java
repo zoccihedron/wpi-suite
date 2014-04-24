@@ -61,6 +61,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private DefaultTableModel modelAdded;
 	private JPanel buttonsPanel;
 	private JPanel newReqPanel;
+	private JPanel newReqButtonsPanel;
 	private JScrollPane existingRequirementsTablePanel;
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
@@ -311,7 +312,11 @@ public class SelectRequirementsPanel extends JPanel {
 	private void generateNewRequirementPanel(){
 		
 		this.remove(existingRequirementsTablePanel);
+		this.remove(buttonsPanel);
+		
 		newReqPanel = new JPanel();
+		
+		newReqButtonsPanel = new JPanel();
 		
 		JLabel lblName = new JLabel("Name: ");
 		JTextField fldName = new JTextField();
@@ -362,7 +367,74 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.add(newReqPanel, constraints);
-			
+		
+		
+		JButton btnCreateAndAdd = new JButton("Create and Add");
+		try {
+		    Image img = ImageIO.read(getClass().getResource("create_and_add.png"));
+		    btnCreateAndAdd.setIcon(new ImageIcon(img));
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
+		// Add requirement button
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		newReqButtonsPanel.add(btnCreateAndAdd, constraints);
+		
+		// Add requirement button
+		JButton btnCancelNewReq = new JButton("Cancel New Requirement");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		newReqButtonsPanel.add(btnCancelNewReq, constraints);
+		
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		this.add(newReqButtonsPanel, constraints);	
+		
+		btnCancelNewReq.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				cancelNewReq();
+			}
+
+		});
+		
+	}
+	
+	public void cancelNewReq(){
+		this.remove(newReqButtonsPanel);
+		this.remove(newReqPanel);
+		
+		// Put in scroll pane for overflow
+		existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 4;
+		constraints.weightx = 1;
+		constraints.weighty = 0.5;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		this.add(existingRequirementsTablePanel, constraints);
+		
+
+		// Panel to hold add, remove, and new requirement buttons in center
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		this.add(buttonsPanel, constraints);
+		
 	}
 	
 	/**
