@@ -66,7 +66,7 @@ public class DeckEntityManager implements EntityManager<Deck>{
 		final List<Model> oldDecks = db.retrieve(Deck.class,  "name", 
 				updatedDeck.getName(), s.getProject());
 		if(oldDecks.size() < 1 || oldDecks.get(0) == null){
-			throw new BadRequestException("Game with name does not exist");
+			throw new BadRequestException("Deck with name does not exist");
 		}
 		
 		final Deck existingDeck = (Deck) oldDecks.get(0);

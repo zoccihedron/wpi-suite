@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -24,6 +25,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.Cance
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveCardController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 
 /**
  * Button Panel for the deck manager panel.
@@ -33,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  */
 public class DeckControlsPanel extends JPanel {
 	private JButton btnCancel;
-	private JButton btnSave;
+	//private JButton btnSave;
 	private JButton btnRemoveDeck;
 	private JButton btnRemoveCard;
 	private JButton btnAddCard;
@@ -42,6 +44,7 @@ public class DeckControlsPanel extends JPanel {
 	private CardViewPanel cardView;
 	private ListDecksPanel listDecksPanel;
 	private JLabel deckRemovedMessage;
+	private JLabel message;
 	
 	/**
 	 * Construct all the buttons and their action listeners
@@ -64,7 +67,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridwidth = 1;
 		this.add(btnCancel, constraints);
 		
-		//SAVE BUTTON
+		/*//SAVE BUTTON
 		btnSave = new JButton("Save");
 		//TODO
 		//btnCancel.addActionListener(DeckManagerController.cancel());
@@ -72,7 +75,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		this.add(btnSave, constraints);
+		this.add(btnSave, constraints); */
 		
 		//REMOVE DECK BUTTON
 		btnRemoveDeck = new JButton("Remove Deck");
@@ -115,10 +118,10 @@ public class DeckControlsPanel extends JPanel {
 		deckRemovedMessage.setVisible(false);
 		this.add(deckRemovedMessage);
 		
-		// deck = null;
-		//TODO remove this once selecting decks is implemented
-		deck = new Deck();
-		setActionListeners(deck);
+		message = new JLabel();
+		
+		deck = null;
+		
 		
 	}
 	
@@ -131,7 +134,7 @@ public class DeckControlsPanel extends JPanel {
 		btnRemoveCard.setVisible(true);
 		btnCancel.setVisible(true);
 		btnRemoveDeck.setVisible(true);
-		btnSave.setVisible(true);
+		//btnSave.setVisible(true);
 		fieldAddCard.setVisible(true);
 		
 		btnAddCard.addActionListener(new AddCardController(this));
@@ -145,7 +148,7 @@ public class DeckControlsPanel extends JPanel {
 		btnRemoveCard.setVisible(false);
 		btnCancel.setVisible(false);
 		btnRemoveDeck.setVisible(false);
-		btnSave.setVisible(false);
+		//btnSave.setVisible(false);
 		fieldAddCard.setVisible(false);
 	}
 	
@@ -172,5 +175,44 @@ public class DeckControlsPanel extends JPanel {
 	public void updateDeckRemovalMessage(String text) {
 		deckRemovedMessage.setVisible(true);
 		deckRemovedMessage.setText(text);
+	}
+
+	public boolean checkFields() {
+		final int estimate;
+		try{
+			reportError("<html></html>");
+			estimate = Integer.parseInt(fieldAddCard.getText());
+
+		} catch (NumberFormatException e){
+			reportError("<html>Error: Estimate must be an integer.</html>");
+			btnAddCard.setEnabled(false);
+			return false;
+		}
+
+		if(estimate < 0) {
+			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+			btnAddCard.setEnabled(false);
+			return false;
+		}
+		
+		if(estimate == 0){
+			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
+			btnAddCard.setEnabled(true);
+			return true;
+		}
+		
+		
+		btnAddCard.setEnabled(true);
+		return true;
+	}
+	
+	public void reportError(String string) {
+		message.setText(string);
+		message.setForeground(Color.RED);
+	}
+	
+	public void reportInfo(String string){
+		message.setText(string);
+		message.setForeground(Color.BLUE);
 	}
 }
