@@ -138,6 +138,13 @@ public class Deck extends AbstractModel{
 	}
 	
 	/**
+	 * Setter for the name field
+	 */
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	/**
 	 * Getter for list of cards 
 	 * @return the cards in the deck
 	 */
