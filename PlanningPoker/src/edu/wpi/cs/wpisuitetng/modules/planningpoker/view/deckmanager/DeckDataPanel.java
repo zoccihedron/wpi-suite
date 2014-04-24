@@ -24,6 +24,7 @@ public class DeckDataPanel extends JPanel{
 	
 	public DeckDataPanel(){
 		listDecksPanel = new ListDecksPanel();
+		add(listDecksPanel);
 	}
 	public ListDecksPanel getListDecksPanel() {
 		return listDecksPanel;
