@@ -13,6 +13,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -145,8 +146,9 @@ public class GameSummaryInfoPanel extends JPanel {
 		description.setLineWrap(true);
 		constraints.fill = GridBagConstraints.BOTH;
 		
+		
 		// DESCRIPTION SCROLL
-		JScrollPane scrollPane = new JScrollPane(description); 
+		final JScrollPane scrollPane = new JScrollPane(description); 
 		description.setEditable(false);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
@@ -154,6 +156,10 @@ public class GameSummaryInfoPanel extends JPanel {
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 11;
+		int descWidth = description.getWidth();
+		int descHeight = 250;
+		Dimension size = new Dimension(descWidth, descHeight);
+		scrollPane.setPreferredSize(size);
 		add(scrollPane, constraints);
 	
 

@@ -42,10 +42,10 @@ public class GameSummaryReqPanel extends JPanel {
 
 	private JTable requirementsTable = null;
 	private DefaultTableModel modelReqs;
-	private String[] columnNames = { "ID", "Name", "Description", "Mean", "Final Estimate"};
-	private JLabel lblRequirements;
-	private Object[][] data = new Object[][] {};
-	private String currentUser = ConfigManager.getInstance().getConfig().getUserName();
+	private final String[] columnNames = { "ID", "Name", "Description", "Mean", "Final Estimate"};
+	private final JLabel lblRequirements;
+	private final Object[][] data = new Object[][] {};
+	private final String currentUser = ConfigManager.getInstance().getConfig().getUserName();
 	/**
 	 * This constructor is to be used when starting from a new game
 	 * 
@@ -112,7 +112,7 @@ public class GameSummaryReqPanel extends JPanel {
 		}
 		
 		modelReqs = (DefaultTableModel) requirementsTable.getModel();
-		List<Integer> reqIDs = game.getRequirements();
+		final List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
 			if(reqIDs.contains(req.getId())){
 				int meanEstimate = 0;
@@ -145,9 +145,13 @@ public class GameSummaryReqPanel extends JPanel {
 	}
 	
 	
-	public ArrayList<Integer> getSelectedRequirements(){
-		int[] selectedRows = requirementsTable.getSelectedRows();
-		ArrayList<Integer> reqIDs = new ArrayList<Integer>();
+	/**
+	 * This function returns a list of the selected requirements
+	 * @return The list of selected requirements.
+	 */
+	public List<Integer> getSelectedRequirements(){
+		final int[] selectedRows = requirementsTable.getSelectedRows();
+		final List<Integer> reqIDs = new ArrayList<Integer>();
 		
 		for (int row: selectedRows){
 			String reqid = (String) requirementsTable.getModel().getValueAt(row, 0);

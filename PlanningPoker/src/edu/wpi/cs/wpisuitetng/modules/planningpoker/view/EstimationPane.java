@@ -19,7 +19,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -61,7 +60,7 @@ public class EstimationPane extends JPanel {
 	private JLabel message;
 	private JButton voteButton;
 	private int reqid;
-	private ListRequirementsPanel listReqPanel;
+	private final ListRequirementsPanel listReqPanel;
 	private Game game;
 	private Requirement req;
 	private JLabel helpTitle;
@@ -75,7 +74,7 @@ public class EstimationPane extends JPanel {
  * @param game
  */
 	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
-		setUpPlayGameHelpPanel();
+		initPlayGameHelpPanel();
 		this.listReqPanel = listReqPanel;
 		this.game = game;
 	}
@@ -83,7 +82,7 @@ public class EstimationPane extends JPanel {
 	/**
 	 * Constructs the estimation pane with voting capabilities.
 	 */
-	public void setUpEstimationPane() {
+	public void initEstimationPane() {
 		nothingHappened = false;
 		
 		this.remove(helpText);
@@ -118,7 +117,7 @@ public class EstimationPane extends JPanel {
 	 /**
 	  * sets up help panel to show before a requirement has been selected
 	  */
-	public void setUpPlayGameHelpPanel(){
+	public void initPlayGameHelpPanel(){
 		nothingHappened = true;
 		
 		// Set up layout constraints
@@ -271,7 +270,7 @@ public class EstimationPane extends JPanel {
 		
 
 		try {
-		    Image img = ImageIO.read(getClass().getResource("vote.png"));
+		    final Image img = ImageIO.read(getClass().getResource("vote.png"));
 		    voteButton.setIcon(new ImageIcon(img));
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
@@ -319,7 +318,7 @@ public class EstimationPane extends JPanel {
 	}
 
 	private Requirement getRequirementFromId() throws NotFoundException{
-		List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement req: reqs){
 			if(req.getId() == reqid){
 				return req;
@@ -435,11 +434,15 @@ public class EstimationPane extends JPanel {
 	}
 	
 	public DeckPanel getDeckPanel(){
-		return this.deckPanel;
+		return deckPanel;
 	}
 
 
-	public ArrayList<Boolean> getCardSelection() {
+	/**
+	 * This function passes the request for card selection onto the deckpane
+	 * @return The list of selected cards
+	 */
+	public List<Boolean> getCardSelection() {
 		if(!deckPanel.isDeckView()){
 			return null;
 		} else{

@@ -40,7 +40,7 @@ public class OverviewPanel extends JSplitPane {
 		summaryPanel = new GameSummaryPanel();
 		listGamePanel = new ListGamePanel();
 		
-		Dimension minimumSize = new Dimension(250, 300);
+		final Dimension minimumSize = new Dimension(250, 300);
 		listGamePanel.setMinimumSize(minimumSize);
 	
 		OverviewPanelController.getInstance().setGameSummary(summaryPanel);

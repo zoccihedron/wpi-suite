@@ -84,7 +84,10 @@ public class RequirementManagerFacade {
 	}
 
 
-	public void updateRequirements() {
+	/**
+	 * Retrieves requirements from the requirement manager.
+	 */
+	public static void updateRequirements() {
 		GetRequirementsControllerFacade.getInstance().retrieveRequirements();
 
 	}
@@ -145,7 +148,7 @@ public class RequirementManagerFacade {
 				request.send();
 				
 				//update information in requirement manager
-				req.setEstimate((int)estimate.getFinalEstimate());
+				req.setEstimate(estimate.getFinalEstimate());
 
 				Request requestForReq = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
 				requestForReq.setBody(req.toJSON()); 
@@ -185,10 +188,10 @@ public class RequirementManagerFacade {
 	 * @param estimate to sent
 	 */
 	public void sendSingleEstimate(Estimate estimate){
-		Requirement req = requirements.get(estimate.getReqID());
-		req.setEstimate((int)estimate.getFinalEstimate());
+		final Requirement req = requirements.get(estimate.getReqID());
+		req.setEstimate(estimate.getFinalEstimate());
 
-		Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
 		request.setBody(req.toJSON()); 
 		request.addObserver(new RequestObserver(){
 
