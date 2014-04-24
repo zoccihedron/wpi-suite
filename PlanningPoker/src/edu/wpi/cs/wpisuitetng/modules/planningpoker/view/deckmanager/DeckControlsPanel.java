@@ -46,6 +46,7 @@ public class DeckControlsPanel extends JPanel {
 	private ListDecksPanel listDecksPanel;
 	private JLabel deckRemovedMessage;
 	private JLabel message;
+	private JLabel saveStatusMessage;
 	private ButtonGroup cardSelectGroup;
 	private JRadioButton singleSelectBtn;
 	private JRadioButton multiSelectBtn;
@@ -114,6 +115,8 @@ public class DeckControlsPanel extends JPanel {
 		this.add(multiSelectBtn, constraints);
 		
 		
+		
+		
 		cardSelectGroup = new ButtonGroup();
 		cardSelectGroup.add(singleSelectBtn);
 		cardSelectGroup.add(multiSelectBtn);
@@ -124,6 +127,13 @@ public class DeckControlsPanel extends JPanel {
 		this.add(deckRemovedMessage);
 		
 		message = new JLabel();
+		
+		saveStatusMessage = new JLabel();
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 3;
+		constraints.anchor = GridBagConstraints.WEST;
+		this.add(saveStatusMessage, constraints);
 		
 		deck = null;
 		
@@ -252,5 +262,9 @@ public class DeckControlsPanel extends JPanel {
 
 	public void setDeckMultiSelectStatus(boolean multiSelectStatus) {
 		deck.setCanSelectMultipleCards(multiSelectStatus);
+	}
+	
+	public void saveMessage(String message) {
+		saveStatusMessage.setText(message);
 	}
 }
