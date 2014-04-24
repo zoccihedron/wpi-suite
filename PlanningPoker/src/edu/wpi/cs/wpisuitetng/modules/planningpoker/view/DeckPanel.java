@@ -15,6 +15,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -168,7 +169,10 @@ public class DeckPanel extends JScrollPane {
 		for (int i = 0; i < cards.size(); i++) {
 			final JToggleButton cardToAdd = new JToggleButton(Integer.toString(cards
 					.get(i)), img);
+			
 			final Border unselectedBorder = BorderFactory.createLineBorder(Color.WHITE, 3);
+			final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN, 3);
+			
 			cardToAdd.setHorizontalTextPosition(SwingConstants.CENTER);
 			cardToAdd.setVerticalTextPosition(SwingConstants.CENTER);
 			constraints.fill = GridBagConstraints.NONE;
@@ -190,6 +194,44 @@ public class DeckPanel extends JScrollPane {
 						cardToAdd.setBorder(unselectedBorder);
 					}
 					calculateSum();
+					
+				}
+			});
+			
+			cardToAdd.addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent e) {
+					if(cardToAdd.isSelected()){
+						cardToAdd.setBorder(selectedBorder);
+					}else{
+						cardToAdd.setBorder(unselectedBorder);
+					}
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					if(cardToAdd.isSelected()){
+					}else{
+						cardToAdd.setBorder(selectedBorder);
+					}
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
 					
 				}
 			});
