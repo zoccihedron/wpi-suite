@@ -100,6 +100,7 @@ public class ResultsDisplayPanel extends JPanel {
 		populatePanel();
 		if(game.getStatus().equals(GameStatus.CLOSED))
 		{
+			scrollNoteArea.setVisible(false);
 			saveFinalEstimateBtn.setVisible(false);
 		}
 
@@ -313,22 +314,10 @@ public class ResultsDisplayPanel extends JPanel {
 
 		}
 
-		/*
-		 * Caution: large if-statement
-		 * for it to pass
-		 * 1) user must be game creator
-		 * 2) the estimate has not yet been recorded in the requirement manager
-		 * 3) the game is not closed (archived)
-		 * 4) the estimate is a valid one
-		 * then and only then can the final estimate field be edited and
-		 * submitted
-		 */
 		ConfigManager.getInstance();
 		if (ConfigManager.getConfig().getUserName()
 						.equals(game.getGameCreator())
-		//	&& !estimate.estimationHasBeenSent()
 			&& !game.getStatus().equals(GameStatus.CLOSED))
-		//	&& canMakeEstimate())
 		{
 			saveFinalEstimateBtn.setVisible(true);
 			finalEstimate.setEditable(true);
@@ -350,27 +339,30 @@ public class ResultsDisplayPanel extends JPanel {
 		final int estimate;
 		final Estimate estimateObject = game.findEstimate(reqid);
 		boolean result = true;
-		if(ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator())){
-			try {
-				reportError("<html></html>");
-				estimate = Integer.parseInt(finalEstimate.getText());
+		if(!game.getStatus().equals(GameStatus.CLOSED))
+		{
+			if(ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator())){
+				try {
+					reportError("<html></html>");
+					estimate = Integer.parseInt(finalEstimate.getText());
 
-				if (estimate <= 0) {
-					reportError("<html>Final estimate must be an integer greater than 0.</html>");
-					result &= false;
-				}
-
-				if (result && estimateObject.isSentBefore()){
-					if(noteArea.getText().trim().isEmpty()){
-						reportError("<html>A note must be included when modifying"
-								+ " a sent final estimate.</html>");
+					if (estimate <= 0) {
+						reportError("<html>Final estimate must be an integer greater than 0.</html>");
 						result &= false;
 					}
-				}
 
-			} catch (NumberFormatException e) {
-				reportError("<html>Final estimate must be a positive integer.</html>");
-				result = false;
+					if (result && estimateObject.isSentBefore()){
+						if(noteArea.getText().trim().isEmpty()){
+							reportError("<html>A note must be included when modifying"
+									+ " a sent final estimate.</html>");
+							result &= false;
+						}
+					}
+
+				} catch (NumberFormatException e) {
+					reportError("<html>Final estimate must be a positive integer.</html>");
+					result = false;
+				}
 			}
 		}
 
