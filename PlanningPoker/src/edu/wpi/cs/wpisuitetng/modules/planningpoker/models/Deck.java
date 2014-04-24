@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
@@ -27,8 +28,10 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  */
 public class Deck extends AbstractModel{
 	private String name = "";
+	private String deckCreator = "";
 	private boolean canSelectMultipleCards = false;
 	private List<Integer> cardValues = new ArrayList<Integer>();
+	private int id;
 	
 	/**
 	 * Constructor for Deck
@@ -40,11 +43,12 @@ public class Deck extends AbstractModel{
 		this.name = name;
 		this.canSelectMultipleCards = canSelectMultipleCards;
 		this.cardValues = cardValues;
+		this.deckCreator = ConfigManager.getInstance().getConfig().getUserName();
 		Collections.sort(this.cardValues);
 	}
 	
 	public Deck() {
-		name = "";
+		id = 0;
 	}
 
 	/**
@@ -99,12 +103,16 @@ public class Deck extends AbstractModel{
 	@Override
 	public Boolean identify(Object o) {
 		boolean result = false;
-		if(o instanceof String){
-			result = (name.equals((String)(o)));
+		if(o instanceof Integer){
+			result = (id == (Integer)o);
 		} else if (o instanceof Deck){
-			result = name.equals(((Deck)(o)).getName());
+			result = id == ((Deck)o).getId();
 		} 
 		return result;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	/**
@@ -161,5 +169,15 @@ public class Deck extends AbstractModel{
 		this.name = updatedDeck.getName();
 		this.canSelectMultipleCards = updatedDeck.canSelectMultipleCards();
 		this.cardValues = updatedDeck.getCards();
+		this.id = updatedDeck.getId();
+		this.deckCreator = updatedDeck.getDeckCreator();
+	}
+
+	public String getDeckCreator() {
+		return deckCreator;
+	}
+
+	public void setId(int id_count) {
+		id = id_count;
 	}
 }

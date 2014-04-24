@@ -16,6 +16,8 @@ public class DeckEntityManager implements EntityManager<Deck>{
 	
 	/** The database */
 	Data db;
+	
+	private int id_count = 0;
 
 	/**
 	 * Constructs the entity manager. This constructor is called by
@@ -36,15 +38,22 @@ public class DeckEntityManager implements EntityManager<Deck>{
 			throws BadRequestException, ConflictException, WPISuiteException {
 		final Deck newDeck = Deck.fromJson(content);
 		save(s, newDeck);
-		return db.retrieve(Deck.class, "name", s.getProject()).toArray(new Deck[0])[0];
+		return db.retrieve(Deck.class, "id", newDeck.getId(), s.getProject())
+				.toArray(new Deck[0])[0];
 	}
 
 	@Override
-	public Deck[] getEntity(Session s, String name) throws NotFoundException,
+	public Deck[] getEntity(Session s, String id) throws NotFoundException,
 			WPISuiteException {
+		final int intId = Integer.parseInt(id);
+		if (intId < 1) {
+			throw new NotFoundException("ID is not valid");
+		}
+		
 		Deck[] decks = null;
 		try{
-			decks = db.retrieve(Deck.class, "name", s.getProject()).toArray(new Deck[0]);
+			decks = db.retrieve(Deck.class, "id", intId, s.getProject())
+					.toArray(new Deck[0]);
 		} catch(WPISuiteException e){
 			e.printStackTrace();
 		}
@@ -56,17 +65,18 @@ public class DeckEntityManager implements EntityManager<Deck>{
 
 	@Override
 	public Deck[] getAll(Session s) throws WPISuiteException {
-		final Deck[] allDecks = db.retrieveAll(new Deck(), s.getProject()).toArray(new Deck[0]);
+		final Deck[] allDecks = db.retrieveAll(new Deck(), s.getProject())
+				.toArray(new Deck[0]);
 		return allDecks;
 	}
 
 	@Override
 	public Deck update(Session s, String content) throws WPISuiteException {
 		final Deck updatedDeck = Deck.fromJson(content);
-		final List<Model> oldDecks = db.retrieve(Deck.class,  "name", 
-				updatedDeck.getName(), s.getProject());
+		final List<Model> oldDecks = db.retrieve(Deck.class,  "id", 
+				updatedDeck.getId(), s.getProject());
 		if(oldDecks.size() < 1 || oldDecks.get(0) == null){
-			throw new BadRequestException("Deck with name does not exist");
+			throw new BadRequestException("Deck with ID does not exist");
 		}
 		
 		final Deck existingDeck = (Deck) oldDecks.get(0);
@@ -82,14 +92,30 @@ public class DeckEntityManager implements EntityManager<Deck>{
 
 	@Override
 	public void save(Session s, Deck model) throws WPISuiteException {
+		if(id_count == 0){
+			final Deck[] retrieved = db.retrieveAll(new Deck(), s.getProject())
+					.toArray(new Deck[0]);
+			if(retrieved.length == 0){
+				id_count = 1;
+			} else {
+				id_count = getDeckWithLargestId(retrieved) + 1;
+			}
+		}
+		
+		model.setId(id_count);
+		id_count++;
+		
 		if(!db.save(model, s.getProject())){
 			throw new WPISuiteException("Save was not successful");
 		}
 	}
 
+	
+
+
 	@Override
-	public boolean deleteEntity(Session s, String name) throws WPISuiteException {
-		return (db.delete(getEntity(s, name)[0]) != null) ? true : false;
+	public boolean deleteEntity(Session s, String id) throws WPISuiteException {
+		return (db.delete(getEntity(s, id)[0]) != null) ? true : false;
 	}
 
 	@Override
@@ -118,8 +144,17 @@ public class DeckEntityManager implements EntityManager<Deck>{
 	@Override
 	public String advancedPost(Session s, String string, String content)
 			throws WPISuiteException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
+	}
+	
+	private int getDeckWithLargestId(Deck[] retrieved) {
+		int largestId = 0;
+		for (int i = 0; i < retrieved.length; i++) {
+			if (retrieved[i].getId() > largestId) {
+				largestId = retrieved[i].getId();
+			}
+		}
+		return largestId;
 	}
 
 }
