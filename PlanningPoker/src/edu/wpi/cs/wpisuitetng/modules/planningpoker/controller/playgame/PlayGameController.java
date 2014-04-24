@@ -26,13 +26,13 @@ public class PlayGameController {
 	
 	private EstimationPane estimationPane = null;
 	private GameInfoPanel infoPanel = null;
+	private boolean firstTime = true;
 	
 	public PlayGameController() {
 	}
 
 	public void setEstimationPane(EstimationPane ep){
 		estimationPane = ep;
-		estimationPane.setHelp(true);
 	}
 	
 	public void setGameInfoPanel(GameInfoPanel gio){
@@ -54,11 +54,13 @@ public class PlayGameController {
 	 * @param id the requirement ID
 	 * @param game the game
 	 */
-	public void updateEstimationPane(int id, Game game, boolean help) {
-		help = false;
+	public void updateEstimationPane(int id, Game game) {
+		if (firstTime) {
+			estimationPane.setUpEstimationPane();
+		}
+		firstTime = false;
 		estimationPane.getDeckPanel().enableVoting();
 		estimationPane.setGameAndRequirement(id, game);
-		estimationPane.setHelp(help);
 	}
 	
 	

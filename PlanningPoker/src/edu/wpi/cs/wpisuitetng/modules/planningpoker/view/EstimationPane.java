@@ -66,7 +66,6 @@ public class EstimationPane extends JPanel {
 	private Requirement req;
 	private JLabel helpTitle;
 	private JLabel helpText;
-	private boolean help;
 	
 /**
  * Constructor for panel
@@ -74,18 +73,16 @@ public class EstimationPane extends JPanel {
  * @param game
  * @param help - help screen to show up when game-play first starts
  */
-	public EstimationPane(ListRequirementsPanel listReqPanel, Game game, boolean help) {
-		this.help = help;
-		if (help) {
-			setUpPlayGameHelpPanel();
-		} else {
-			this.game = game;
-			this.listReqPanel = listReqPanel;
-			setUpEstimationPane(listReqPanel, game);
-		}
+	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
+		setUpPlayGameHelpPanel();
+		this.listReqPanel = listReqPanel;
+		this.game = game;
 	}
 	
-	private void setUpEstimationPane(ListRequirementsPanel listReqPanel, Game game) {
+	public void setUpEstimationPane() {		
+		this.remove(helpText);
+		this.remove(helpTitle);
+		
 		this.setLayout(new GridBagLayout());
 
 		lblTitle = new JLabel();
@@ -282,7 +279,6 @@ public class EstimationPane extends JPanel {
 	 * @param game the game
 	 */
 	public void setGameAndRequirement(int reqid, Game game){
-		setUpEstimationPane(listReqPanel, game);
 		this.game = game;
 		
 		voteButton.addActionListener(new VoteActionController(this, game));
@@ -440,10 +436,6 @@ public class EstimationPane extends JPanel {
 		} else{
 			return deckPanel.getCardSelection();
 		}
-	}
-
-	public void setHelp(boolean b) {
-		this.help = b;
 	}
 
 }

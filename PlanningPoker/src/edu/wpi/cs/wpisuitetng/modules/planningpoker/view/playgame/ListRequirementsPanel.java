@@ -99,7 +99,7 @@ implements TreeSelectionListener {
 		if(node.isLeaf()){
 			if(nodeInfo instanceof Requirement){
 				final Requirement req = (Requirement)nodeInfo;
-				playGameController.updateEstimationPane(req.getId(), game, false);
+				playGameController.updateEstimationPane(req.getId(), game);
 			}
 		}
 		

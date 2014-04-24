@@ -58,7 +58,7 @@ public class PlayGamePanel extends JPanel{
 		listRequirementsPanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
-		estimationPane = new EstimationPane(listRequirementsPanel, game, true); //TODO
+		estimationPane = new EstimationPane(listRequirementsPanel, game);
 		playGameController.setEstimationPane(estimationPane);
 		splitPane.setRightComponent(estimationPane);
 
