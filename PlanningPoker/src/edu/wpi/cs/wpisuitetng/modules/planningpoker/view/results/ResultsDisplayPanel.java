@@ -85,7 +85,6 @@ public class ResultsDisplayPanel extends JPanel {
 				this, game));
 		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
 				.getUserName().equals(game.getGameCreator()));
-		saveFinalEstimateBtn.setVisible(false);
 		finalEstimate.setEditable(false);
 
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
@@ -295,16 +294,31 @@ public class ResultsDisplayPanel extends JPanel {
 
 		}
 
-
-		saveFinalEstimateBtn.setEnabled(canMakeEstimate() && !game.getStatus().equals(
-				GameStatus.CLOSED));
-		finalEstimate.setEditable(!game.getStatus().equals(GameStatus.CLOSED) 
-				&& ConfigManager.getInstance().getConfig().getUserName().equals(
-						game.getGameCreator()));
-		noteArea.setEditable(!game.getStatus().equals(GameStatus.CLOSED) 
-				&& ConfigManager.getInstance().getConfig().getUserName().equals(
-						game.getGameCreator()));
-
+		/*
+		 * Caution: large if-statement
+		 * for it to pass
+		 * 1) user must be game creator
+		 * 2) the estimate has not yet been recorded in the requirement manager
+		 * 3) the game is not closed (archived)
+		 * 4) the estimate is a valid one
+		 * then and only then can the final estimate field be edited and
+		 * submitted
+		 */
+		ConfigManager.getInstance();
+		if (ConfigManager.getConfig().getUserName()
+						.equals(game.getGameCreator())
+			&& !estimate.estimationHasBeenSent()
+			&& !game.getStatus().equals(GameStatus.CLOSED)
+			&& canMakeEstimate())
+		{
+			saveFinalEstimateBtn.setVisible(true);
+			finalEstimate.setEditable(true);
+		}
+		else 
+		{
+			saveFinalEstimateBtn.setVisible(false);
+			finalEstimate.setEditable(false);
+		}
 	}
 
 	/**
