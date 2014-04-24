@@ -36,8 +36,8 @@ public class ViewResultsPanel extends JPanel{
 	private final EstimateTreePanel estimateTreePanel;
 	private final ResultsPanel resultsPanel;
 	private final JSplitPane splitPane;
-	private Game game;
-	private ViewResultsController controller;
+	private final Game game;
+	private final ViewResultsController controller;
 
 	/**
 	 * Constructs the ViewResultsPanel with the given game
@@ -51,7 +51,7 @@ public class ViewResultsPanel extends JPanel{
 		
 		controller = new ViewResultsController();
 		estimateTreePanel = new EstimateTreePanel(game, controller);
-		Dimension minimumSize = new Dimension(250, 300);
+		final Dimension minimumSize = new Dimension(250, 300);
 		estimateTreePanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(estimateTreePanel);

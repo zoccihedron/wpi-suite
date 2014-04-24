@@ -35,7 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
  *
  */
 public class DeckControlsPanel extends JPanel {
-	private JButton btnCancel;
+	//private JButton btnCancel;
 	//private JButton btnSave;
 	private JButton btnRemoveDeck;
 	private JButton btnRemoveCard;
@@ -58,7 +58,7 @@ public class DeckControlsPanel extends JPanel {
 		this.setLayout(new GridBagLayout());
 		
 		
-		//CANCEL BUTTON
+		/*//CANCEL BUTTON
 		btnCancel = new JButton("Cancel");
 		//TODO
 		//btnCancel.addActionListener(DeckManagerController.cancel());
@@ -66,7 +66,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		this.add(btnCancel, constraints);
+		this.add(btnCancel, constraints);*/
 		
 		/*//SAVE BUTTON
 		btnSave = new JButton("Save");
@@ -135,19 +135,19 @@ public class DeckControlsPanel extends JPanel {
 		
 		btnAddCard.setVisible(true);
 		btnRemoveCard.setVisible(true);
-		btnCancel.setVisible(true);
+		//btnCancel.setVisible(true);
 		btnRemoveDeck.setVisible(true);
 		//btnSave.setVisible(true);
 		fieldAddCard.setVisible(true);
 		
 		btnAddCard.addActionListener(new AddCardController(this));
 		btnRemoveCard.addActionListener(new RemoveCardController(this));
-		btnCancel.addActionListener(new CancelDeckChangesController(this));
+		//btnCancel.addActionListener(new CancelDeckChangesController(this));
 		btnRemoveDeck.addActionListener(new RemoveDeckController(this));
 		} else{
 			btnAddCard.setVisible(false);
 			btnRemoveCard.setVisible(false);
-			btnCancel.setVisible(false);
+			//btnCancel.setVisible(false);
 			btnRemoveDeck.setVisible(false);
 			//btnSave.setVisible(false);
 			fieldAddCard.setVisible(false);
@@ -161,7 +161,7 @@ public class DeckControlsPanel extends JPanel {
 	public void disableControls(){
 		btnAddCard.setVisible(false);
 		btnRemoveCard.setVisible(false);
-		btnCancel.setVisible(false);
+		//btnCancel.setVisible(false);
 		btnRemoveDeck.setVisible(false);
 		//btnSave.setVisible(false);
 		fieldAddCard.setVisible(false);

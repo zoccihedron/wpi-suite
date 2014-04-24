@@ -33,12 +33,12 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 /**
  * Main panel for displaying results
  * @author Code On Bleu
- *
+ * @version 1.00
  */
 public class ResultsPanel extends JPanel{
 
-	private Game game;
-	private EstimateTreePanel estimateTreePanel;
+	private final Game game;
+	private final EstimateTreePanel estimateTreePanel;
 	private final JLabel titleLabel;
 	private final JLabel nameLabel;
 	private final JLabel descriptionLabel;
@@ -146,7 +146,7 @@ public class ResultsPanel extends JPanel{
 		add(descriptionLabel, constraints);
 
 
-		JScrollPane scrollPane = new JScrollPane(descriptionText); 
+		final JScrollPane scrollPane = new JScrollPane(descriptionText); 
 		descriptionText.setEditable(false);
 
 		// DESCRIPTION
@@ -192,9 +192,27 @@ public class ResultsPanel extends JPanel{
 		}
 
 	}
+	
+	/**
+	 * Refreshes the panel with information from the Estimate in a game that 
+	 * corresponds to the previously selected requirement
+	 * @param reqid is the id of the requirement in req manager
+	 */
+	public void refreshDisplay() {
+		try{
+			req = getRequirementFromId();
+			requirementName.setText(req.getName());
+			descriptionText.setText(req.getDescription());
+			resultsDisplayPanel.updateData(reqid);
+		}
+		catch(NotFoundException exception){
+			System.err.println("Exception: Requirement Not Found");
+		}
+
+	}
 
 	private Requirement getRequirementFromId() throws NotFoundException{
-		List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement req: reqs){
 			if(req.getId() == reqid){
 				return req;

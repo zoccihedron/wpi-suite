@@ -27,7 +27,7 @@ import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
  */
 public class UpdateUserPreferenceObserver implements RequestObserver {
 	
-	private UserPreferencesPanel userPreferencePanel;
+	private final UserPreferencesPanel userPreferencePanel;
 	
 	/**
 	 * Constructor for observer
@@ -42,8 +42,7 @@ public class UpdateUserPreferenceObserver implements RequestObserver {
 		
 		final ResponseModel response = iReq.getResponse();
 		final User[] user = User.fromJsonArray(response.getBody());
-		userPreferencePanel.setCurrentEmailAndIM(user[0].getEmail(), user[0].getIM(),
-				user[0].isAllowEmail(), user[0].isAllowIM());
+		userPreferencePanel.setCurrentEmail(user[0].getEmail(), user[0].isAllowEmail());
 		
 		userPreferencePanel.getBtnSubmit().setEnabled(false);
 
