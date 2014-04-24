@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -43,10 +42,11 @@ public class ManageDeckController {
 		timer.start();
 	}
 
-	protected void updateDecks() {
+	public void updateDecks() {
 		// Send a request to the server to retrieve all decks
-		final Request request = Network.getInstance().makeRequest("planningpoker/deck",
-																	HttpMethod.GET); // GET is read
+		final Request request = Network.getInstance().
+				makeRequest("planningpoker/deck",
+						HttpMethod.GET);
 		request.addObserver(new RequestObserver() {
 			
 			@Override
@@ -57,14 +57,12 @@ public class ManageDeckController {
 			
 			@Override
 			public void responseError(IRequest iReq) {
-				// TODO Auto-generated method stub
-				
+				System.err.println("Request to get decks failed.");
 			}
 			
 			@Override
 			public void fail(IRequest iReq, Exception exception) {
-				// TODO Auto-generated method stub
-				
+				System.err.println("Request to get decks failed.");
 			}
 		}); // add an observer to process the response
 		request.send(); // send the request
