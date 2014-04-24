@@ -58,7 +58,7 @@ public class VoteActionController implements ActionListener {
 			
 			final String name = ConfigManager.getInstance().getConfig().getUserName();
 			estimateValue = view.getEstimate();
-			List<Boolean> selection =  view.getCardSelection();
+			final List<Boolean> selection = view.getCardSelection();
 			view.getDeckPanel().setCurrentEstimate(Integer.toString(estimateValue));
 			
 			final Estimate oldEstimate = game.findEstimate(view.getReqID());
