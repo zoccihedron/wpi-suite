@@ -36,7 +36,7 @@ public class DeckEntityManager implements EntityManager<Deck>{
 			throws BadRequestException, ConflictException, WPISuiteException {
 		final Deck newDeck = Deck.fromJson(content);
 		save(s, newDeck);
-		return db.retrieve(Deck.class, "name", s.getProject()).toArray(new Deck[0])[0];
+		return db.retrieve(Deck.class, "name", newDeck.getName(), s.getProject()).toArray(new Deck[0])[0];
 	}
 
 	@Override

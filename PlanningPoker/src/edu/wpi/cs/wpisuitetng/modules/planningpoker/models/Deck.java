@@ -48,7 +48,7 @@ public class Deck extends AbstractModel{
 	}
 	
 	public Deck (String name){
-		this(name, false, null);
+		this(name, false, new ArrayList<Integer>());
 	}
 
 	/**
