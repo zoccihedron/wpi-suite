@@ -15,8 +15,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +47,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.Scrol
  * @author Codon Bleu
  * @version Apr 9, 2014
  */
+@SuppressWarnings("serial")
 public class DeckPanel extends JScrollPane {
 	private JTextField estimateField = new JTextField();
 	private ImageIcon img = null;
@@ -180,6 +181,7 @@ public class DeckPanel extends JScrollPane {
 			constraints.gridy = 2;
 			constraints.gridwidth = 1;
 			constraints.insets = new Insets(0, 3, 0, 3);
+			
 			cardToAdd.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent arg0) {
@@ -198,20 +200,7 @@ public class DeckPanel extends JScrollPane {
 				}
 			});
 			
-			cardToAdd.addMouseListener(new MouseListener() {
-				
-				@Override
-				public void mouseReleased(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
-				
+			cardToAdd.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseExited(MouseEvent e) {
 					if(cardToAdd.isSelected()){
@@ -228,12 +217,6 @@ public class DeckPanel extends JScrollPane {
 						cardToAdd.setBorder(selectedBorder);
 					}
 				}
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
-					
-				}
 			});
 
 			cardToAdd.setBorder(unselectedBorder);
@@ -242,17 +225,15 @@ public class DeckPanel extends JScrollPane {
 			deckPanel.add(cardToAdd, constraints);
 		}
 		
-		
 		return deckPanel;
 	}
 
 	private void clearPrevious(JToggleButton cardToAdd) {
 		for( JToggleButton button : listOfButtons){
-			if(!button.equals(cardToAdd)){
+			if(!button.equals(cardToAdd)) {
 				button.setSelected(false);
 			}
 		}
-		
 	}
 	
 	private void calculateSum() {
@@ -277,7 +258,8 @@ public class DeckPanel extends JScrollPane {
 	 */
 	public void displayOldEstimate(Game game, int reqid) {
 
-		final String name = ConfigManager.getInstance().getConfig()
+		ConfigManager.getInstance();
+		final String name = ConfigManager.getConfig()
 				.getUserName();
 		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
 		if (oldEstimate >= 0) {
