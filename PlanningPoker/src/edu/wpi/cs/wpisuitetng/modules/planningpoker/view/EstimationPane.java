@@ -66,6 +66,7 @@ public class EstimationPane extends JPanel {
 	private Requirement req;
 	private JLabel helpTitle;
 	private JLabel helpText;
+	private boolean nothingHappened; //this variable allows the panel to close before an estimation is selected
 	
 /**
  * Constructor for panel
@@ -79,7 +80,9 @@ public class EstimationPane extends JPanel {
 		this.game = game;
 	}
 	
-	public void setUpEstimationPane() {		
+	public void setUpEstimationPane() {
+		nothingHappened = false;
+		
 		this.remove(helpText);
 		this.remove(helpTitle);
 		
@@ -113,6 +116,8 @@ public class EstimationPane extends JPanel {
 	  * sets up help panel to show before a requirement has been selected
 	  */
 	public void setUpPlayGameHelpPanel(){
+		nothingHappened = true;
+		
 		// Set up layout constraints
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -436,6 +441,20 @@ public class EstimationPane extends JPanel {
 		} else{
 			return deckPanel.getCardSelection();
 		}
+	}
+
+	/**
+	 * @return the nothingHappened
+	 */
+	public boolean isNothingHappened() {
+		return nothingHappened;
+	}
+
+	/**
+	 * @param nothingHappened the nothingHappened to set
+	 */
+	public void setNothingHappened(boolean nothingHappened) {
+		this.nothingHappened = nothingHappened;
 	}
 
 }
