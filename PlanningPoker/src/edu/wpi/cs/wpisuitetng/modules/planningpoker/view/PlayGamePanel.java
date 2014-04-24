@@ -68,7 +68,9 @@ public class PlayGamePanel extends JPanel{
 	 * @return A true if it is ready to close and there are no changes
 	 */
 	public boolean isReadyToClose() {
-		if(estimationPane.getDeckPanel().getCurrentEstimate() != null){
+		if(estimationPane.isNothingHappened()) {
+			return true;
+		} else if(estimationPane.getDeckPanel().getCurrentEstimate() != null) {
 			if(estimationPane.getDeckPanel().isOldEstimate()){
 				return true;
 			}
