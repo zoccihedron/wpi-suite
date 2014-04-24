@@ -34,6 +34,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.ViewSumController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ScrollablePanel;
@@ -54,6 +55,7 @@ public class DeckPanel extends JScrollPane {
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
 	private JLabel currentVote;
+	private ViewSumController controller;
 	
 	/**
 	 * Constructs the DeckPanel
@@ -61,7 +63,8 @@ public class DeckPanel extends JScrollPane {
 	 * decks are fully implemented
 	 * @param deck name of the deck
 	 */
-	public DeckPanel(String deck) {
+	public DeckPanel(String deck, ViewSumController controller) {
+		this.controller = controller;
 		if(deck.equals("default")){
 
 			final ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
@@ -199,7 +202,8 @@ public class DeckPanel extends JScrollPane {
 		}
 		
 		currentVote = new JLabel();
-		deckPanel.add(currentVote);
+		//deckPanel.add(currentVote);
+		
 
 		return deckPanel;
 	}
@@ -223,6 +227,7 @@ public class DeckPanel extends JScrollPane {
 		}
 		currentVote.setText("Current Vote: " + result);
 		estimateField.setText(Integer.toString(result));
+		controller.updateSum(result);
 	}
 	
 	/**
