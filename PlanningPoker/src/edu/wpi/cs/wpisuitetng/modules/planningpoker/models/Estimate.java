@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gson.Gson;
@@ -37,8 +38,10 @@ public class Estimate {
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
+	private boolean sentBefore = false;
 	private int finalEstimate = 0;
-	private HashMap<String, List<Boolean>> userCardSelection;
+	private String note = "";
+	private Map<String, List<Boolean>> userCardSelection;
 	
 	/**
 	 * Constructor for an estimate object
@@ -77,7 +80,7 @@ public class Estimate {
 	 * @return true if the user has been correctly added into
 	 */
 	public boolean canAddUser(String user){
-		return (userWithEstimate.put(user, 0) != null) ? true : false;
+		return (userWithEstimate.put(user, -1) != null) ? true : false;
 	}
 	
 	/**
@@ -98,7 +101,7 @@ public class Estimate {
 	 */
 	public boolean hasMadeAnEstimation(String user){
 		if(userWithEstimate.containsKey(user)){
-			return (userWithEstimate.get(user) > 0); 
+			return (userWithEstimate.get(user) > -1); 
 		}
 		else{
 			return false;
@@ -114,7 +117,7 @@ public class Estimate {
 		boolean result = true;
 		for(Entry<String,Integer> e: userWithEstimate.entrySet())
 		{
-			if(e.getValue() <= 0) {
+			if(e.getValue() <= -1) {
 				result &= false;
 			}
 		}
@@ -177,7 +180,7 @@ public class Estimate {
 	 * Get estimates of all users
 	 * @return map of users and their estimates
 	 */
-	public HashMap<String,Integer> getUsersAndEstimates(){
+	public Map<String,Integer> getUsersAndEstimates(){
 		return userWithEstimate;
 	}
 	
@@ -192,7 +195,7 @@ public class Estimate {
 		int sum = 0;
 		int count = 0;
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != -1) {
+			if(temp.getValue() > 0) {
 				count++;
 				sum += temp.getValue();
 			}
@@ -216,22 +219,22 @@ public class Estimate {
 	public double getMedian() {
 		final List<Integer> estimates = new ArrayList<Integer>();
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			if(temp.getValue() != -1) {
+			if(temp.getValue() > 0) {
 				estimates.add(temp.getValue());
 			}
 		}
 		Collections.sort(estimates);
 		final int length = estimates.size();
+		final int halfLength = length / 2;
 		double median = 0;
 		if(length == 0){
 			return median;
 		}
 		if(length % 2 == 0){
-			median = ((double) estimates.get(length / 2) + 
-					(double)estimates.get((length / 2) - 1)) / 2.0;
+			median = ((double) estimates.get(halfLength) + (double)estimates.get(halfLength - 1)) / 2;
 		}
 		else {
-			median = (double)estimates.get(length / 2);
+			median = (double)estimates.get(halfLength);
 		}
 		return median;
 	}
@@ -256,7 +259,6 @@ public class Estimate {
 	 * @return true if the user was added, false if not
 	 */
 	public boolean addUser(String user){
-		System.out.println("Adding User to estimate!");
 		if(userWithEstimate.put(user, -1) != null) return true;
 		return false;
 	}
@@ -271,7 +273,9 @@ public class Estimate {
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
+		copyEst.sentBefore = sentBefore;
 		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
+		copyEst.note = note;
 		return copyEst;
 	}
 	
@@ -307,7 +311,7 @@ public class Estimate {
 	 */
 	public void estimationSent(boolean send)
 	{
-		this.isEstimationSent = send;
+		isEstimationSent = send;
 	}
 	
 	/**
@@ -330,7 +334,6 @@ public class Estimate {
 	 * @return the final estimate
 	 */
 	public int getFinalEstimate() {
-
 		return finalEstimate;
 	}
 
@@ -374,5 +377,45 @@ public class Estimate {
 	 */
 	public void setGameModifiedVersion(int gameModifiedVersion) {
 		this.gameModifiedVersion = gameModifiedVersion;
+	}
+	
+	/**
+	 * Gets the note for the current estimate
+	 *
+	 * @return the note for the estimate
+	 */
+	public String getNote() {
+		return note;
+	}
+
+
+	/**
+	 * Sets the note for the current estimate
+	 *
+	 * @param note the note for the estimate
+	 */
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	/**
+	 * Returns whether the estimate has ever been sent to the 
+	 * requirement manager
+	 *
+	 * @return status of the estimate ever being sent
+	 */
+	public boolean isSentBefore() {
+		return sentBefore;
+	}
+
+
+	/**
+	 * sets whether the estimate has ever been sent to the 
+	 * requirement manager previously
+	 *
+	 * @param hasSentBefore whether the estimate has been sent before or not
+	 */
+	public void setSentBefore(boolean sentBefore) {
+		this.sentBefore = sentBefore;
 	}
 }

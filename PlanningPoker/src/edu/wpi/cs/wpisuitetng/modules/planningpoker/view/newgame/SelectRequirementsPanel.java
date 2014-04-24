@@ -58,12 +58,14 @@ public class SelectRequirementsPanel extends JPanel {
 	private DefaultTableModel modelExisting;
 	private DefaultTableModel modelAdded;
 	private JPanel buttonsPanel;
-	private GridBagConstraints constraints = new GridBagConstraints();
+	private JScrollPane requirementsToAddTablePanel;
+	private JScrollPane existingRequirementsTablePanel;
+	private final GridBagConstraints constraints = new GridBagConstraints();
 	
 	private Game game;
 	
 	public SelectRequirementsPanel() {
-		setUpPanel();
+		populatePanel();
 	}
 	
 	/**
@@ -72,13 +74,13 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public SelectRequirementsPanel(Game editingGame) {
 		game = editingGame;
-		setUpPanel();
+		populatePanel();
 	}
 	
 	/**
 	 * Sets up shared constraints between both constructors
 	 */
-	public void setUpPanel(){
+	public void populatePanel(){
 		// set layout
 		this.setLayout(new GridBagLayout());
 	
@@ -132,7 +134,7 @@ public class SelectRequirementsPanel extends JPanel {
 		modelExisting = (DefaultTableModel) existingRequirementsTable.getModel();
 
 		// Put in scroll pane for overflow
-		final JScrollPane existingRequirementsTablePanel =
+		existingRequirementsTablePanel =
 				new JScrollPane(existingRequirementsTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
@@ -195,7 +197,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 		
-		Timer refreshTimer = new Timer(1000, new ActionListener() {
+		final Timer refreshTimer = new Timer(1000, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -252,7 +254,7 @@ public class SelectRequirementsPanel extends JPanel {
 				.getColumnModel().getColumn(0));
 
 		// Add to scroll pane for overflow
-		final JScrollPane requirementsToAddTablePanel = new JScrollPane(
+		requirementsToAddTablePanel = new JScrollPane(
 				requirementsToAddTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_END;
@@ -383,10 +385,10 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public void displayErrorBorders(boolean check) {
 		if(check){
-			existingRequirementsTable.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+			requirementsToAddTablePanel.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 		}
 		else{
-			existingRequirementsTable.setBorder(null);
+			requirementsToAddTablePanel.setBorder(existingRequirementsTablePanel.getBorder());
 		}
 	}
 
