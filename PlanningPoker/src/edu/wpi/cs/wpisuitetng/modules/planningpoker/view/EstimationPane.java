@@ -176,7 +176,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		currentVote = new JLabel();
-		currentVote.setText("Current Vote: ");
+		currentVote.setText("Current Vote: " + 0);
 		add(currentVote, constraints);
 		if(game.getDeck().equals("text entry")){
 			currentVote.setVisible(false);
@@ -423,6 +423,10 @@ public class EstimationPane extends JPanel {
 		}
 	}
 	
+	/**
+	 * This function updates the sum of voting by changing the content of label
+	 * @param sum the updated sum that needs to show up
+	 */
 	public void updateSum(int sum){
 		currentVote.setText("Current Vote: " + sum);
 

@@ -54,7 +54,6 @@ public class DeckPanel extends JScrollPane {
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
-	private JLabel currentVote;
 	private ViewSumController controller;
 	
 	/**
@@ -201,10 +200,7 @@ public class DeckPanel extends JScrollPane {
 			deckPanel.add(cardToAdd, constraints);
 		}
 		
-		currentVote = new JLabel();
-		//deckPanel.add(currentVote);
 		
-
 		return deckPanel;
 	}
 
@@ -225,7 +221,6 @@ public class DeckPanel extends JScrollPane {
 				result += Integer.valueOf(button.getText());
 			}
 		}
-		currentVote.setText("Current Vote: " + result);
 		estimateField.setText(Integer.toString(result));
 		controller.updateSum(result);
 	}
@@ -239,12 +234,10 @@ public class DeckPanel extends JScrollPane {
 	 *            the requirement ID
 	 */
 	public void displayOldEstimate(Game game, int reqid) {
-		System.out.println("--------text set for old estiamte");
 
 		final String name = ConfigManager.getInstance().getConfig()
 				.getUserName();
 		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
-		System.out.println("--------old estimate value: " + oldEstimate);
 		if (oldEstimate >= 0) {
 			if(isDeckView){
 				final List<Boolean> selected = game.findEstimate(reqid).getUserCardSelection(name);
@@ -258,7 +251,6 @@ public class DeckPanel extends JScrollPane {
 			}
 			estimateField.setText(Integer.toString(oldEstimate));
 			currentEstimate = Integer.toString(oldEstimate);
-			System.out.println("--------reached ");
 
 		} else {
 			estimateField.setText("");
