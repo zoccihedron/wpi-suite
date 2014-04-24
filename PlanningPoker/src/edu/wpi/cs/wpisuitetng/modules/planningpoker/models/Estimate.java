@@ -38,7 +38,9 @@ public class Estimate {
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
+	private boolean sentBefore = false;
 	private int finalEstimate = 0;
+	private String note = "";
 	private Map<String, List<Boolean>> userCardSelection;
 	
 	/**
@@ -271,7 +273,9 @@ public class Estimate {
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
+		copyEst.sentBefore = sentBefore;
 		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
+		copyEst.note = note;
 		return copyEst;
 	}
 	
@@ -373,5 +377,45 @@ public class Estimate {
 	 */
 	public void setGameModifiedVersion(int gameModifiedVersion) {
 		this.gameModifiedVersion = gameModifiedVersion;
+	}
+	
+	/**
+	 * Gets the note for the current estimate
+	 *
+	 * @return the note for the estimate
+	 */
+	public String getNote() {
+		return note;
+	}
+
+
+	/**
+	 * Sets the note for the current estimate
+	 *
+	 * @param note the note for the estimate
+	 */
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	/**
+	 * Returns whether the estimate has ever been sent to the 
+	 * requirement manager
+	 *
+	 * @return status of the estimate ever being sent
+	 */
+	public boolean isSentBefore() {
+		return sentBefore;
+	}
+
+
+	/**
+	 * sets whether the estimate has ever been sent to the 
+	 * requirement manager previously
+	 *
+	 * @param hasSentBefore whether the estimate has been sent before or not
+	 */
+	public void setSentBefore(boolean sentBefore) {
+		this.sentBefore = sentBefore;
 	}
 }

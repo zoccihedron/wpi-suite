@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -63,7 +64,9 @@ public class SelectRequirementsPanel extends JPanel {
 	private JPanel newReqPanel;
 	private JPanel newReqButtonsPanel;
 	private JScrollPane existingRequirementsTablePanel;
+	private JScrollPane requirementsToAddTablePanel;
 	private JLabel lblRequirementsToEstimate;
+
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
 	private Game game;
@@ -270,12 +273,10 @@ public class SelectRequirementsPanel extends JPanel {
 		});
 		
 		// Hide the column with IDs
-		requirementsToAddTable.removeColumn(requirementsToAddTable
-				.getColumnModel().getColumn(0));
+		requirementsToAddTable.removeColumn(requirementsToAddTable.getColumnModel().getColumn(0));
 
 		// Add to scroll pane for overflow
-		final JScrollPane requirementsToAddTablePanel = new JScrollPane(
-				requirementsToAddTable);
+		requirementsToAddTablePanel = new JScrollPane(requirementsToAddTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.PAGE_END;
 		constraints.gridwidth = 4;
@@ -562,10 +563,10 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public void displayErrorBorders(boolean check) {
 		if(check){
-			existingRequirementsTable.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+			requirementsToAddTablePanel.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 		}
 		else{
-			existingRequirementsTable.setBorder(null);
+			requirementsToAddTablePanel.setBorder(existingRequirementsTablePanel.getBorder());
 		}
 	}
 
