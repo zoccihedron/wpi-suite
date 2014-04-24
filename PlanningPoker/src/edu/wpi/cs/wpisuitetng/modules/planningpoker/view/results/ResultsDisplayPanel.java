@@ -85,7 +85,7 @@ public class ResultsDisplayPanel extends JPanel {
 				this, game));
 		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
 				.getUserName().equals(game.getGameCreator()));
-		saveFinalEstimateBtn.setEnabled(false);
+		saveFinalEstimateBtn.setVisible(false);
 		finalEstimate.setEditable(false);
 
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
