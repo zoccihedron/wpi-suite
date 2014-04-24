@@ -71,7 +71,9 @@ public class EstimateTreePanel extends JPanel{
 		//button
 		sendEstimateToReqButton = new JButton();
 		sendEstimateToReqButton.setText("Send Selected Estimates");
-		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator()));
+		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
+				equals(game.getGameCreator())
+				&& !game.getStatus().equals(GameStatus.CLOSED));
 		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
 	
 		constraints.anchor = GridBagConstraints.SOUTHWEST;

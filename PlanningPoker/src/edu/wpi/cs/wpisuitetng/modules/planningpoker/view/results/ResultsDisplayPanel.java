@@ -199,12 +199,20 @@ public class ResultsDisplayPanel extends JPanel {
 
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
 			}
@@ -219,12 +227,20 @@ public class ResultsDisplayPanel extends JPanel {
 
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
 			}
 
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
 			}
@@ -252,7 +268,7 @@ public class ResultsDisplayPanel extends JPanel {
 			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
 		} else {
-			saveFinalEstimateBtn.setEnabled(!game.getStatus().equals(
+			saveFinalEstimateBtn.setVisible(!game.getStatus().equals(
 					GameStatus.CLOSED));
 			finalEstimate.setEditable(!game.getStatus().equals(
 					GameStatus.CLOSED));
