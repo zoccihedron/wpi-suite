@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2014 -- WPI Suite
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
+
+
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager;
 
 import java.awt.event.ActionEvent;
@@ -15,6 +28,13 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * This class is a singleton which gets the desks
+ * from the server
+ * 
+ * @author Code On Bleu
+ * @version 1.0
+ */
 public class ManageDeckController {
 
 	static ManageDeckController instance = null;
@@ -42,10 +62,13 @@ public class ManageDeckController {
 		timer.start();
 	}
 
-	public void updateDecks() {
-		// Send a request to the server to retrieve all decks
-		final Request request = Network.getInstance().
-				makeRequest("planningpoker/deck",
+	/**
+	 *  Send a request to the server to retrieve all decks
+	 */
+	public static void updateDecks() {
+		
+		final Request request = Network.getInstance().makeRequest(
+				"planningpoker/deck",
 						HttpMethod.GET);
 		request.addObserver(new RequestObserver() {
 			
@@ -68,13 +91,18 @@ public class ManageDeckController {
 		request.send(); // send the request
 	}
 
-	public ManageDeckController getInstance(){
+	/**
+	 * Returns the singleton object of the ManageDeckController
+	 *  (creating a new one if needed)
+	 * @return the instance of the controller
+	 */
+	public static ManageDeckController getInstance(){
 		if(instance == null){
-			return new ManageDeckController();
+			instance = new ManageDeckController();
 		}
-		else{
-			return instance;
-		}
+			
+		return instance;
+		
 	}
 
 	/**
@@ -85,7 +113,7 @@ public class ManageDeckController {
 	}
 
 	/**
-	 * @param decks the decks to set
+	 * @param decks - sets the decks in the class
 	 */
 	public void setDecks(List<Deck> decks) {
 		this.decks = decks;
