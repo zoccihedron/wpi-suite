@@ -66,6 +66,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JScrollPane existingRequirementsTablePanel;
 	private JScrollPane requirementsToAddTablePanel;
 	private JLabel lblRequirementsToEstimate;
+	private JLabel existingRequirementsLabel;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
@@ -102,7 +103,7 @@ public class SelectRequirementsPanel extends JPanel {
 		final Object[][] data = {};
 	
 		// Label
-		final JLabel existingRequirementsLabel = new JLabel("Existing Requirements");
+		existingRequirementsLabel = new JLabel("Existing Requirements");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -323,7 +324,7 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		newReqButtonsPanel = new JPanel();
 		
-		lblRequirementsToEstimate.setText("New Requirement");
+		existingRequirementsLabel.setText("New Requirement");
 		
 		JLabel lblName = new JLabel("Name: ");
 		final JTextField fldName = new JTextField();
@@ -382,7 +383,7 @@ public class SelectRequirementsPanel extends JPanel {
 		    Image img = ImageIO.read(getClass().getResource("create_and_add.png"));
 		    btnCreateAndAdd.setIcon(new ImageIcon(img));
 		    
-		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
+		    img = ImageIO.read(getClass().getResource("red_circle_x.png"));
 		    btnCancelNewReq.setIcon(new ImageIcon(img));
 		} 
 		catch (IOException ex) {
@@ -427,6 +428,7 @@ public class SelectRequirementsPanel extends JPanel {
 				Requirement req = new Requirement(10,fldName.getText(),fldDescription.getText());
 				RequirementManagerFacade RMF = RequirementManagerFacade.getInstance();
 				RMF.createNewRequirement(req);
+				addNewRequirementToTable(req);
 				fillTable();
 				cancelNewReq();
 			}
@@ -436,9 +438,19 @@ public class SelectRequirementsPanel extends JPanel {
 	}
 	
 	/**
+	 * add requirement to the added table
+	 * @param req to add
+	 */
+	private void addNewRequirementToTable(Requirement req){
+		modelAdded.addRow(new Object[] {
+				Integer.toString(req.getId()), req.getName(),
+				req.getDescription() });
+	}
+	
+	/**
 	 * replaces the new req panel with the existing requirements panel
 	 */
-	public void cancelNewReq(){
+	private void cancelNewReq(){
 		
 		this.remove(newReqButtonsPanel);
 		this.remove(newReqPanel);
