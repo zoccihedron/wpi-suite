@@ -279,11 +279,11 @@ public class ResultsDisplayPanel extends JPanel {
 
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
 		median.setText("Median: " + Double.toString(estimate.getMedian()));
-		finalEstimate.setText("" + estimate.getFinalEstimate());
 		noteArea.setText(estimate.getNote());
 		noteArea.setVisible(true);
 		noteArea.setEnabled(true);
-		if (estimate.getFinalEstimate() == 0)
+		if (estimate.getFinalEstimate() == 0
+				&& !game.getStatus().equals(GameStatus.CLOSED))
 		{
 			finalEstimate.setText("" + (int)estimate.getMean());
 		} 
