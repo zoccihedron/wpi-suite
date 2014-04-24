@@ -35,6 +35,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.ViewSumController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -63,6 +64,7 @@ public class EstimationPane extends JPanel {
 	private final ListRequirementsPanel listReqPanel;
 	private Game game;
 	private Requirement req;
+	private JLabel currentVote;
 	
 /**
  * Constructor for panel
@@ -94,7 +96,7 @@ public class EstimationPane extends JPanel {
 		fldReqDescription.setEditable(false);
 		fldReqDescription.setLineWrap(true);
 		
-		deckPanel = new DeckPanel(game.getDeck());
+		deckPanel = new DeckPanel(game.getDeck(), new ViewSumController(this));
 		
 		infoPanelSetup();
 	}
@@ -166,13 +168,27 @@ public class EstimationPane extends JPanel {
 		scrollDescription.setBorder(new EmptyBorder(0, 0, 10, 0));
 		add(scrollDescription, constraints);
 		
+		// CURRENT VOTING
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		currentVote = new JLabel();
+		currentVote.setText("Current Vote: " + 0);
+		add(currentVote, constraints);
+		if(game.getDeck().equals("text entry")){
+			currentVote.setVisible(false);
+		}
+		
 		// DECK PANEL
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.6;
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		add(deckPanel, constraints);
 		
 		// VOTE BUTTON
@@ -183,7 +199,7 @@ public class EstimationPane extends JPanel {
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
-		constraints.gridy = 5;
+		constraints.gridy = 6;
 		constraints.ipadx = 40;
 		add(voteButton, constraints);
 		
@@ -196,7 +212,7 @@ public class EstimationPane extends JPanel {
 		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 2;
-		constraints.gridy = 5;
+		constraints.gridy = 6;
 		constraints.weightx = 0.0;
 		constraints.gridwidth = 3;
 		add(message, constraints);
@@ -405,6 +421,16 @@ public class EstimationPane extends JPanel {
 		} else{
 			return deckPanel.getCardSelection();
 		}
+	}
+	
+	/**
+	 * This function updates the sum of voting by changing the content of label
+	 * @param sum the updated sum that needs to show up
+	 */
+	public void updateSum(int sum){
+		currentVote.setText("Current Vote: " + sum);
+
+		
 	}
 
 }
