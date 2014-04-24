@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -55,9 +56,12 @@ public class SelectRequirementsPanel extends JPanel {
 	private final boolean DISABLED = false;
 	private final boolean ENABLED = true;
 	private JButton btnAddSelectedReq;
+	private JButton btnNewRequirement;
 	private DefaultTableModel modelExisting;
 	private DefaultTableModel modelAdded;
 	private JPanel buttonsPanel;
+	private JPanel newReqPanel;
+	private JScrollPane existingRequirementsTablePanel;
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
 	private Game game;
@@ -132,8 +136,7 @@ public class SelectRequirementsPanel extends JPanel {
 		modelExisting = (DefaultTableModel) existingRequirementsTable.getModel();
 
 		// Put in scroll pane for overflow
-		final JScrollPane existingRequirementsTablePanel =
-				new JScrollPane(existingRequirementsTable);
+		existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
@@ -166,6 +169,16 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 0;
 		buttonsPanel.add(btnAddSelectedReq, constraints);
 		
+		// Add requirement button
+		btnNewRequirement = new JButton("New Requirement");
+		btnAddSelectedReq.setEnabled(true);
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		buttonsPanel.add(btnNewRequirement, constraints);
+		
 		// Remove requirement button
 		final JButton btnRemoveSelectedReq = new JButton("Remove");
 		btnRemoveSelectedReq.setEnabled(DISABLED);
@@ -182,6 +195,13 @@ public class SelectRequirementsPanel extends JPanel {
 				moveRequirementsBetweenTables(existingRequirementsTable,
 						requirementsToAddTable);
 				btnAddSelectedReq.setEnabled(DISABLED);
+			}
+		});
+		
+		btnNewRequirement.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				generateNewRequirementPanel();
 			}
 		});
 		
@@ -284,6 +304,62 @@ public class SelectRequirementsPanel extends JPanel {
 		fillTable();
 	}
 
+	private void generateNewRequirementPanel(){
+		
+		this.remove(existingRequirementsTablePanel);
+		newReqPanel = new JPanel();
+		
+		JLabel lblName = new JLabel("Name: ");
+		JTextField fldName = new JTextField();
+		JLabel lblDescription = new JLabel("Description: ");
+		JTextField fldDescription = new JTextField();
+		
+		newReqPanel.setLayout(new GridBagLayout());
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		newReqPanel.add(lblName,constraints);
+		
+		constraints.gridx = 1;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		newReqPanel.add(fldName,constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.gridwidth = 1;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.fill = GridBagConstraints.NONE;
+		newReqPanel.add(lblDescription,constraints);
+		
+
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 2;
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
+		constraints.fill = GridBagConstraints.BOTH;
+		newReqPanel.add(fldDescription,constraints);
+		
+		// Put in scroll pane for overflow
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 4;
+		constraints.weightx = 1;
+		constraints.weighty = 0.5;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		this.add(newReqPanel, constraints);
+			
+	}
 	
 	/**
 	 * Fills the table with a list of requirements
