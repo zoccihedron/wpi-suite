@@ -192,6 +192,24 @@ public class ResultsPanel extends JPanel{
 		}
 
 	}
+	
+	/**
+	 * Refreshes the panel with information from the Estimate in a game that 
+	 * corresponds to the previously selected requirement
+	 * @param reqid is the id of the requirement in req manager
+	 */
+	public void refreshDisplay() {
+		try{
+			req = getRequirementFromId();
+			requirementName.setText(req.getName());
+			descriptionText.setText(req.getDescription());
+			resultsDisplayPanel.updateData(reqid);
+		}
+		catch(NotFoundException exception){
+			System.err.println("Exception: Requirement Not Found");
+		}
+
+	}
 
 	private Requirement getRequirementFromId() throws NotFoundException{
 		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();

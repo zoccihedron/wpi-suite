@@ -23,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -46,6 +47,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final JLabel median;
 	private final JLabel lblFinalEstimate;
 	private final JTextField finalEstimate;
+	private final JTextArea noteArea;
 	private final JButton saveFinalEstimateBtn;
 	private final Game game;
 	private int reqid;
@@ -56,6 +58,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final String[] columnNames = { "User", "Estimate" };
 	private final Object[][] data = new Object[][] {};
 	private final JScrollPane scrollUsersAndEstimates;
+	private final JScrollPane scrollNoteArea;
 
 	/**
 	 * Initialize the labels for displaying information about the game
@@ -72,11 +75,17 @@ public class ResultsDisplayPanel extends JPanel {
 		message = new JLabel();
 		lblFinalEstimate = new JLabel();
 		finalEstimate = new JTextField();
+		noteArea = new JTextArea();
+		noteArea.setBorder(finalEstimate.getBorder());
+		noteArea.setLineWrap(true);
+		noteArea.setEnabled(false);
+
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
-		saveFinalEstimateBtn.setEnabled(true);
-		finalEstimate.setEditable(true);
+		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
+				.getUserName().equals(game.getGameCreator()));
+		finalEstimate.setEditable(false);
 
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
@@ -86,8 +95,13 @@ public class ResultsDisplayPanel extends JPanel {
 		});
 
 		scrollUsersAndEstimates = new JScrollPane(tableUsersAndEstimates);
+		scrollNoteArea = new JScrollPane(noteArea);
 
 		populatePanel();
+		if(game.getStatus().equals(GameStatus.CLOSED))
+		{
+			saveFinalEstimateBtn.setVisible(false);
+		}
 
 	}
 
@@ -150,7 +164,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 4;
 		rightPanel.add(saveFinalEstimateBtn, constraints);
 
 		try {
@@ -161,41 +175,85 @@ public class ResultsDisplayPanel extends JPanel {
 		}
 
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(message, constraints);
 
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		constraints.gridwidth = 2;
+		constraints.weighty = 1;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(5, 0, 5, 0);
+		rightPanel.add(scrollNoteArea, constraints);
+
+
 		constraints.gridx = 1;
 		constraints.gridy = 0;
-		constraints.weightx = 0.25;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 0, 10);
-		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 0.5;
+		constraints.weighty = 0;
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
+		constraints.insets = new Insets(0, 20, 0, 0);
 		add(rightPanel, constraints);
-		
+
 		finalEstimate.getDocument().addDocumentListener(new DocumentListener() {
-			
+
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
 			}
-			
+
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
 			}
-			
+
 			@Override
 			public void changedUpdate(DocumentEvent arg0) {
 				// Do nothing
 			}
 		});
 
+		noteArea.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				if(game.getStatus().equals(GameStatus.CLOSED))
+				{
+					saveFinalEstimateBtn.setVisible(false);
+				}
+				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
+						&& !game.getStatus().equals(GameStatus.CLOSED));
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				// Do nothing
+			}
+		});
 	}
 
 	/**
@@ -208,9 +266,23 @@ public class ResultsDisplayPanel extends JPanel {
 	public void updateData(int reqid) {
 		this.reqid = reqid;
 		final Estimate estimate = game.findEstimate(reqid);
+		if (!ConfigManager.getInstance().getConfig().getUserName()
+				.equals(game.getGameCreator())) {
+			saveFinalEstimateBtn.setVisible(false);
+			finalEstimate.setEditable(false);
+		} else {
+			saveFinalEstimateBtn.setVisible(!game.getStatus().equals(
+					GameStatus.CLOSED));
+			finalEstimate.setEditable(!game.getStatus().equals(
+					GameStatus.CLOSED));
+		}
 
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
 		median.setText("Median: " + Double.toString(estimate.getMedian()));
+		finalEstimate.setText("" + estimate.getFinalEstimate());
+		noteArea.setText(estimate.getNote());
+		noteArea.setVisible(true);
+		noteArea.setEnabled(true);
 		if (estimate.getFinalEstimate() == 0)
 		{
 			finalEstimate.setText("" + (int)estimate.getMean());
@@ -222,11 +294,11 @@ public class ResultsDisplayPanel extends JPanel {
 
 		// Set to new empty model to empty table
 		tableUsersAndEstimates
-				.setModel(new DefaultTableModel(data, columnNames) {
-					public boolean isCellEditable(int row, int column) {
-						return false;
-					}
-				});
+		.setModel(new DefaultTableModel(data, columnNames) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		});
 		modelUsersAndEstimates = (DefaultTableModel) tableUsersAndEstimates
 				.getModel();
 		final Map<String, Integer> mapUsersAndEstimates = game.findEstimate(reqid)
@@ -240,16 +312,31 @@ public class ResultsDisplayPanel extends JPanel {
 			}
 
 		}
-		
-		if (estimate.estimationHasBeenSent()
-				|| !ConfigManager.getInstance().getConfig().getUserName()
-						.equals(game.getGameCreator())) {
-			saveFinalEstimateBtn.setEnabled(false);
-			finalEstimate.setEditable(false);
-		} else {
-			saveFinalEstimateBtn.setEnabled(canMakeEstimate() && !game.getStatus().equals(
-					GameStatus.CLOSED));
+
+		/*
+		 * Caution: large if-statement
+		 * for it to pass
+		 * 1) user must be game creator
+		 * 2) the estimate has not yet been recorded in the requirement manager
+		 * 3) the game is not closed (archived)
+		 * 4) the estimate is a valid one
+		 * then and only then can the final estimate field be edited and
+		 * submitted
+		 */
+		ConfigManager.getInstance();
+		if (ConfigManager.getConfig().getUserName()
+						.equals(game.getGameCreator())
+		//	&& !estimate.estimationHasBeenSent()
+			&& !game.getStatus().equals(GameStatus.CLOSED))
+		//	&& canMakeEstimate())
+		{
+			saveFinalEstimateBtn.setVisible(true);
 			finalEstimate.setEditable(true);
+		}
+		else 
+		{
+			saveFinalEstimateBtn.setVisible(false);
+			finalEstimate.setEditable(false);
 		}
 	}
 
@@ -261,20 +348,33 @@ public class ResultsDisplayPanel extends JPanel {
 	 */
 	public boolean canMakeEstimate() {
 		final int estimate;
-		try {
-			reportError("<html></html>");
-			estimate = Integer.parseInt(finalEstimate.getText());
+		final Estimate estimateObject = game.findEstimate(reqid);
+		boolean result = true;
+		if(ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator())){
+			try {
+				reportError("<html></html>");
+				estimate = Integer.parseInt(finalEstimate.getText());
 
-		} catch (NumberFormatException e) {
-			reportError("<html>* Final estimate must be an integer.</html>");
-			return false;
+				if (estimate <= 0) {
+					reportError("<html>Final estimate must be an integer greater than 0.</html>");
+					result &= false;
+				}
+
+				if (result && estimateObject.isSentBefore()){
+					if(noteArea.getText().trim().isEmpty()){
+						reportError("<html>A note must be included when modifying"
+								+ " a sent final estimate.</html>");
+						result &= false;
+					}
+				}
+
+			} catch (NumberFormatException e) {
+				reportError("<html>Final estimate must be a positive integer.</html>");
+				result = false;
+			}
 		}
 
-		if (estimate <= 0) {
-			reportError("<html>* Final estimate must be an integer greater than 0.</html>");
-			return false;
-		}
-		return true;
+		return result;
 	}
 
 	/**
@@ -308,10 +408,30 @@ public class ResultsDisplayPanel extends JPanel {
 	}
 
 	/**
-	 * Refreshs the GUI portion of the tree panel
+	 * Refreshes the GUI portion of the tree panel and the data 
+	 * on the results panel.
 	 */
 	public void refresh() {
 		treePanel.refresh();
+		updateData(reqid);
+	}
+
+	/**
+	 * Returns the string of the note for the final estimate
+	 *
+	 * @return the note for the estimate
+	 */
+	public String getNote(){
+		return noteArea.getText();
+	}
+
+	/**
+	 * Sets the note for an final estimation change
+	 *
+	 * @param note the note for an estimation change
+	 */
+	public void setNote(String note){
+		noteArea.setText(note);
 	}
 
 }

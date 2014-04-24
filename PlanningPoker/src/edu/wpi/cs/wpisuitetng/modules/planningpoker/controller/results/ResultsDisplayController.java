@@ -53,6 +53,8 @@ public class ResultsDisplayController implements ActionListener{
 			final Estimate estimate = game.findEstimate(reqid);
 			estimate.setFinalEstimate(finalEstimate);
 			estimate.setGameID(game.getId());
+			estimate.setNote(view.getNote());
+			estimate.estimationSent(false);
 			
 			// Send a request to the core to mark this estimate as being sent
 			final Request request = Network.getInstance().makeRequest(
