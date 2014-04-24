@@ -63,6 +63,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JPanel newReqPanel;
 	private JPanel newReqButtonsPanel;
 	private JScrollPane existingRequirementsTablePanel;
+	private JLabel lblRequirementsToEstimate;
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
 	private Game game;
@@ -232,7 +233,7 @@ public class SelectRequirementsPanel extends JPanel {
 		 */	
 	
 		// Label
-		final JLabel lblRequirementsToEstimate = new JLabel("Requirements to Estimate");
+		lblRequirementsToEstimate = new JLabel("Requirements to Estimate");
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
@@ -309,6 +310,9 @@ public class SelectRequirementsPanel extends JPanel {
 		fillTable();
 	}
 
+	/**
+	 * creates panel to add a new requirement while creating a planning poker session
+	 */
 	private void generateNewRequirementPanel(){
 		
 		this.remove(existingRequirementsTablePanel);
@@ -318,10 +322,12 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		newReqButtonsPanel = new JPanel();
 		
+		lblRequirementsToEstimate.setText("New Requirement");
+		
 		JLabel lblName = new JLabel("Name: ");
-		JTextField fldName = new JTextField();
+		final JTextField fldName = new JTextField();
 		JLabel lblDescription = new JLabel("Description: ");
-		JTextField fldDescription = new JTextField();
+		final JTextField fldDescription = new JTextField();
 		
 		newReqPanel.setLayout(new GridBagLayout());
 		
@@ -370,9 +376,13 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		
 		JButton btnCreateAndAdd = new JButton("Create and Add");
+		JButton btnCancelNewReq = new JButton("Cancel New Requirement");
 		try {
 		    Image img = ImageIO.read(getClass().getResource("create_and_add.png"));
 		    btnCreateAndAdd.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("undo-icon.png"));
+		    btnCancelNewReq.setIcon(new ImageIcon(img));
 		} 
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
@@ -387,7 +397,7 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqButtonsPanel.add(btnCreateAndAdd, constraints);
 		
 		// Add requirement button
-		JButton btnCancelNewReq = new JButton("Cancel New Requirement");
+		btnCancelNewReq.setSize(btnCancelNewReq.getWidth(), btnCreateAndAdd.getHeight());
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -410,11 +420,28 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 		
+		btnCreateAndAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Requirement req = new Requirement(10,fldName.getText(),fldDescription.getText());
+				RequirementManagerFacade RMF = RequirementManagerFacade.getInstance();
+				RMF.createNewRequirement(req);
+				fillTable();
+				cancelNewReq();
+			}
+
+		});
+		
 	}
 	
+	/**
+	 * replaces the new req panel with the existing requirements panel
+	 */
 	public void cancelNewReq(){
+		
 		this.remove(newReqButtonsPanel);
 		this.remove(newReqPanel);
+		
 		
 		// Put in scroll pane for overflow
 		existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
