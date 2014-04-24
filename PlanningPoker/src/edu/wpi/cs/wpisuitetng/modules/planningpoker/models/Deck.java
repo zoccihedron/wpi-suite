@@ -46,6 +46,10 @@ public class Deck extends AbstractModel{
 	public Deck() {
 		name = "";
 	}
+	
+	public Deck (String name){
+		this(name, false, null);
+	}
 
 	/**
 	 * Returns a deck from JSON encoded string
