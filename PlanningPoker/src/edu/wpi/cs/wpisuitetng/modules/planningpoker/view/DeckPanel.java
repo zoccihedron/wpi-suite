@@ -52,13 +52,13 @@ public class DeckPanel extends JScrollPane {
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
-	private ViewSumController controller;
+	private final ViewSumController controller;
 	
 	/**
 	 * Constructs the DeckPanel
 	 * Right now the default deck is constructed here, this should move when
 	 * decks are fully implemented
-	 * @param deck name of the deck
+	 * @param controller deck name of the deck
 	 */
 	public DeckPanel(String deck, ViewSumController controller) {
 		this.controller = controller;
