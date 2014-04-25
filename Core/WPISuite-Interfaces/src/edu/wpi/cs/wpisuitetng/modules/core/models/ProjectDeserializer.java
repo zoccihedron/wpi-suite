@@ -57,6 +57,10 @@ public class ProjectDeserializer implements JsonDeserializer<Project> {
 		 User[] team = null;
 		 String[] supportedModules = null;
 		 
+		 String mailAccount = null;
+		 String mailServer = null;
+		 String port = null;
+		 String password = null;
 		 
 		 if(deflated.has("name"))
 		 {
@@ -80,7 +84,27 @@ public class ProjectDeserializer implements JsonDeserializer<Project> {
 			 supportedModules = tempList.toArray(tempSM);
 		 }
 		 
-		 Project inflated = new Project(name, idNum, owner, team, supportedModules);
+		 if(deflated.has("mailAccount"))
+		 {
+			 mailAccount = deflated.get("mailAccount").getAsString();
+		 }
+		 
+		 if(deflated.has("mailServer"))
+		 {
+			 mailServer = deflated.get("mailServer").getAsString();
+		 }
+		 
+		 if(deflated.has("port"))
+		 {
+			 port = deflated.get("port").getAsString();
+		 }
+		 
+		 if(deflated.has("password"))
+		 {
+			 password = deflated.get("password").getAsString();
+		 }
+		 
+		 Project inflated = new Project(name, idNum, owner, team, supportedModules, mailAccount, mailServer, port, password);
 		 
 		 if(deflated.has("team"))
 		 {

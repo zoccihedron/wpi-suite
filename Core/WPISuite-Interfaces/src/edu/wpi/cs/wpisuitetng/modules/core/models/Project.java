@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
-import edu.wpi.cs.wpisuitetng.modules.Model;
 
 /**
  * The Data Model representation of a Project. Offers
@@ -39,6 +38,11 @@ public class Project extends AbstractModel
 	private User owner;
 	private ArrayList<User> team;
 	
+	private String mailAccount;
+	private String mailServer;
+	private String port;
+	private String password;
+	
 	/**
 	 * Primary constructor for a Project
 	 * @param name - the project name
@@ -47,12 +51,17 @@ public class Project extends AbstractModel
 	 * @param team - The User[] who are associated with the project
 	 * @param supportedModules - the modules supported by this project
 	 */
-	public Project(String name, String idNum, User owner, User[] team, String[] supportedModules)
+	public Project(String name, String idNum, User owner, User[] team, String[] supportedModules,
+			String mailAccount, String mailServer, String port, String password)
 	{
 		this.name = name;
 		this.idNum = idNum;
 		this.owner = owner;
 		this.supportedModules = supportedModules;
+		this.mailAccount = mailAccount;
+		this.mailServer = mailServer;
+		this.port = port;
+		this.password = password;
 		
 		if(team != null)
 		{
@@ -170,6 +179,14 @@ public class Project extends AbstractModel
 			json += "]";
 		}
 		
+		json += ",\"mailAccount\":\"" + this.mailAccount+"\"";
+		
+		json += ",\"mailServer\":\"" + this.mailServer+"\"";
+		
+		json += ",\"port\":\"" + this.port+"\"";
+		
+		json += ",\"password\":\"" + this.password+"\"";
+		
 		json += "}";
 		
 		return json;
@@ -286,6 +303,22 @@ public class Project extends AbstractModel
 	public User[] getTeam() {
 		User[] a = new User[1];
 		return team.toArray(a);
+	}
+	
+	public String getMailAccount() {
+		return mailAccount;
+	}
+	
+	public String getMailServer() {
+		return mailServer;
+	}
+	
+	public String getPort() {
+		return port;
+	}
+	
+	public String getPassword() {
+		return password;
 	}
 	
 	/**

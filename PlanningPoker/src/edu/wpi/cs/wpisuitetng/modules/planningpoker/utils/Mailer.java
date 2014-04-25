@@ -22,6 +22,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
@@ -40,8 +41,10 @@ public class Mailer implements Runnable{
 	private Properties properties;
 	private Session session;
 	private final Notification method;
-	private final String from = "codonbleu@gmail.com";
-	private final String host = "smtp.gmail.com";
+	private final String from;
+	private final String host;
+	private final String port;
+	private final String password;
 	public enum Notification {
 		STARTED("Started"), ENDED("Ended");
 
@@ -63,11 +66,16 @@ public class Mailer implements Runnable{
 	 * @param users the list of users to which we send
 	 * @param method is this game just started or ended
 	 */
-	public Mailer(Game game, List<User> users, Notification method)
+	public Mailer(Game game, List<User> users, Notification method, Project project)
 	{
 		this.game = game;
 		this.users = users;
 		this.method = method;
+		
+		this.from = project.getMailAccount();
+		this.host = project.getMailServer();
+		this.port = project.getPort();
+		this.password = project.getPassword();
 	}
 	
 	@Override
@@ -78,7 +86,7 @@ public class Mailer implements Runnable{
 
         // Set the properties
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.ssl.trust", host);
         properties.put("mail.smtp.starttls.enable", "true");
@@ -86,7 +94,7 @@ public class Mailer implements Runnable{
         session = Session.getInstance(properties,
       		  new javax.mail.Authenticator() {
       			protected PasswordAuthentication getPasswordAuthentication() {
-      				return new PasswordAuthentication(from, "CodonBleu1");
+      				return new PasswordAuthentication(from, password);
       			}
       		  });
 		
