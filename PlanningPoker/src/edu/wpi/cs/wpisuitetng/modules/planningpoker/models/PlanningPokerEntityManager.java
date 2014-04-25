@@ -69,7 +69,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					if((!status.equals(GameStatus.ENDED)) && g.getStatus().equals(GameStatus.ENDED))
 					{
 						Mailer mailer = new Mailer(g, temp_db.retrieveAll(new User("", "", "", 0)),
-																			Notification.ENDED);
+																			Notification.ENDED, s.getProject());
 						mailer.start();
 						temp_db.save(g);
 					}
@@ -99,7 +99,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		
 		if(newGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
-			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
+			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED, s.getProject());
 			mailer.start();
 		}
 		
@@ -231,7 +231,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if(existingGame.getStatus().equals(GameStatus.IN_PROGRESS))
 		{
 			final Mailer mailer = new Mailer(
-					existingGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED);
+					existingGame, db.retrieveAll(new User("", "", "", 0)), Notification.STARTED, s.getProject());
 			mailer.start();
 		}
 		
@@ -353,7 +353,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					if(game.getStatus().equals(GameStatus.ENDED))
 					{
 						final Mailer mailer = new Mailer(
-								game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+								game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED, s.getProject());
 						mailer.start();
 					}
 					
@@ -433,7 +433,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				if(game.getStatus().equals(GameStatus.ENDED))
 				{
 					final Mailer mailer = new Mailer(
-							game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED);
+							game, db.retrieveAll(new User("", "", "", 0)), Notification.ENDED, s.getProject());
 					mailer.start();
 				}
 				
