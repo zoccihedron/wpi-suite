@@ -58,6 +58,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JTable requirementsToAddTable = null;
 	private final boolean DISABLED = false;
 	private final boolean ENABLED = true;
+	private boolean firstTimeCreating = true;
 	private JButton btnAddSelectedReq;
 	private JButton btnNewRequirement;
 	private JButton btnCreateAndAdd;
@@ -215,7 +216,15 @@ public class SelectRequirementsPanel extends JPanel {
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				generateNewRequirementPanel();
+				if(firstTimeCreating)
+				{ 
+					generateNewRequirementPanel();
+					firstTimeCreating = false;
+				}
+				else
+				{
+					showNewRequirementPanel();
+				}
 			}
 		});
 		
@@ -325,8 +334,10 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	private void generateNewRequirementPanel(){
 		
-		this.remove(existingRequirementsTablePanel);
-		this.remove(buttonsPanel);
+		existingRequirementsTablePanel.setVisible(false);
+		existingRequirementsTablePanel.setEnabled(false);
+		buttonsPanel.setVisible(false);
+		buttonsPanel.setEnabled(false);
 		
 		newReqPanel = new JPanel();
 		
@@ -384,7 +395,6 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 1;
 		this.add(newReqPanel, constraints);
 		
-		
 		btnCreateAndAdd = new JButton("Create and Add");
 		btnCancelNewReq = new JButton("Cancel New Requirement");
 		try {
@@ -421,6 +431,11 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		this.add(newReqButtonsPanel, constraints);	
+		
+		fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+		fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+		
+		btnCreateAndAdd.setEnabled(false);
 		
 		fldName.getDocument().addDocumentListener(new DocumentListener() {
 			
@@ -518,6 +533,27 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 		
+		this.invalidate();
+		this.repaint();
+		
+	}
+	
+	/**
+	 * This is a method which makes the panel visible which
+	 * creates a new requirement
+	 */
+	public void showNewRequirementPanel()
+	{
+
+		existingRequirementsTablePanel.setVisible(false);
+		existingRequirementsTablePanel.setEnabled(false);
+		buttonsPanel.setVisible(false);
+		buttonsPanel.setEnabled(false);
+		
+		newReqButtonsPanel.setVisible(true);
+		newReqButtonsPanel.setEnabled(true);
+		newReqPanel.setVisible(true);
+		newReqPanel.setEnabled(true);
 	}
 	
 	/**
@@ -535,28 +571,27 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	private void cancelNewReq(){
 		
-		this.remove(newReqButtonsPanel);
-		this.remove(newReqPanel);
+		// disable the create new requirement panel
+		newReqButtonsPanel.setVisible(false);
+		newReqButtonsPanel.setEnabled(false);
+		newReqPanel.setVisible(false);
+		newReqPanel.setEnabled(false);
+		
+		// empty the newReqPanel
+		fldDescription.setText("");
+		fldName.setText("");
 		
 		
 		// Put in scroll pane for overflow
-		existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridwidth = 4;
-		constraints.weightx = 1;
-		constraints.weighty = 0.5;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		this.add(existingRequirementsTablePanel, constraints);
-		
+		existingRequirementsTablePanel.setVisible(true);
+		existingRequirementsTablePanel.setEnabled(true);
 
 		// Panel to hold add, remove, and new requirement buttons in center
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		this.add(buttonsPanel, constraints);
+		buttonsPanel.setVisible(true);
+		buttonsPanel.setEnabled(true);
+		
+		this.invalidate();
+		this.repaint();
 		
 	}
 	
@@ -581,9 +616,10 @@ public class SelectRequirementsPanel extends JPanel {
 					removeRowByValue(req, requirementsToAddTable);
 				}
 				
-			//Checks that the pulled requirements are
-			//Not in the pendingRequirementsTable already
-			//Not in the existingRequirementsTable already
+			/* Checks that the pulled requirements are
+			 * Not in the pendingRequirementsTable already
+			 * Not in the existingRequirementsTable already
+			 */
 			} else if (game != null && 
 					!existingReqs.contains(req.getId()) && 
 					!pendingReqs.contains(req.getId())) {
