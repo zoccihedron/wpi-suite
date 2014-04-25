@@ -24,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -38,6 +39,7 @@ public class ListDecksPanel  extends JScrollPane implements
 TreeSelectionListener {
 	
 	private JTree deckTree;
+	private UpdateDeckViewController updateDeckViewController;
 
 	public ListDecksPanel() {
 		
@@ -166,11 +168,22 @@ TreeSelectionListener {
 		if (node == null) {
 			return;
 		}
-		
+
 		if (node.isRoot()) {
 			refresh();
 		}
+		if(node.isLeaf() && !node.isRoot()) {
+			final Object nodeInfo = node.getUserObject();
+			if (nodeInfo instanceof Deck) {
+				Deck deck = (Deck) nodeInfo;
+				updateDeckViewController.updateDeckManager(deck);
+			}
+		}
 
+	}
+	
+	public void setDeckViewController(UpdateDeckViewController updateDeckViewController) {
+		this.updateDeckViewController = updateDeckViewController;
 	}
 
 }

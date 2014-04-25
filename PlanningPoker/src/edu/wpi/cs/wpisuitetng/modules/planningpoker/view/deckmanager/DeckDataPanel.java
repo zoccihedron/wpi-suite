@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import javax.swing.JPanel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
+
 /**
  * Panel on the right hand side of the deck manager. Holds
  * the list of decks panel and the create deck button panel.
@@ -30,4 +32,7 @@ public class DeckDataPanel extends JPanel{
 		return listDecksPanel;
 	}
 
+	public void setListDecksController(UpdateDeckViewController updateDeckViewController) {
+		listDecksPanel.setDeckViewController(updateDeckViewController);
+	}
 }
