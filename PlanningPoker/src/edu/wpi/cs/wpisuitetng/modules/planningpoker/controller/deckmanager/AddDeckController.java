@@ -20,7 +20,7 @@ public class AddDeckController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(!createDeckPanel.getDeck().getName().equals("")){
-			// Send a request to the core to save this game
+			// Send a request to the core to save this deck
 			final Request request = Network.getInstance().makeRequest(
 					"planningpoker/deck", HttpMethod.PUT);
 			request.setBody(createDeckPanel.getDeck().toJSON()); // put the new message in the body of the request

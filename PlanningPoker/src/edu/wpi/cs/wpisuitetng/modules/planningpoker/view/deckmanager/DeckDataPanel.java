@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
@@ -28,10 +29,14 @@ public class DeckDataPanel extends JPanel{
 	private ListDecksPanel listDecksPanel;
 	private CreateDeckPanel createDeckPanel;
 	
+	private JLabel currentlySelectedDeckName;
+	
 	public DeckDataPanel(){
 		listDecksPanel = new ListDecksPanel();
 
 		createDeckPanel = new CreateDeckPanel();
+		
+		currentlySelectedDeckName = new JLabel();
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
