@@ -431,7 +431,8 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqNameValid = false;
 				}
 				else {
-					fldName.setBorder(existingRequirementsTablePanel.getBorder());
+					JTextField temp = new JTextField();
+					fldName.setBorder(temp.getBorder());
 					newReqNameValid = true;
 				}
 				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
@@ -444,7 +445,8 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqNameValid = false;
 				}
 				else {
-					fldName.setBorder(existingRequirementsTablePanel.getBorder());
+					JTextField temp = new JTextField();
+					fldName.setBorder(temp.getBorder());
 					newReqNameValid = true;
 				}
 				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
@@ -466,7 +468,8 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqDescValid = false;
 				}
 				else {
-					fldDescription.setBorder(existingRequirementsTablePanel.getBorder());
+					JTextField temp = new JTextField();
+					fldDescription.setBorder(temp.getBorder());
 					newReqDescValid = true;
 				}
 				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
@@ -480,7 +483,8 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqDescValid = false;
 				}
 				else {
-					fldDescription.setBorder(existingRequirementsTablePanel.getBorder());
+					JTextField temp = new JTextField();
+					fldDescription.setBorder(temp.getBorder());
 					newReqDescValid = true;
 				}
 				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
@@ -686,9 +690,5 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public List<Integer> getSelectedRequirementIds() {
 		return getRequirementIdsFromTable(requirementsToAddTable);
-	}
-	
-	public void checkNewReq(){
-		
 	}
 }
