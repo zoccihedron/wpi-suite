@@ -108,6 +108,7 @@ public class RequirementManagerFacade {
 	public void setRequirements(Requirement[] requirements) {
 		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
 	}
+	
 
 	/**
 	 * Sends average of estimations to requirement manager 
@@ -198,6 +199,7 @@ public class RequirementManagerFacade {
 			@Override
 			public void responseSuccess(IRequest iReq) {
 				// TODO Auto-generated method stub
+				
 			}
 
 			@Override
@@ -216,6 +218,50 @@ public class RequirementManagerFacade {
 		request.send(); 
 
 		
+	}
+	
+	/**
+	 * takes a requirement, increments the id and send to req manager
+	 * @param req to send to requirement manager
+	 */
+	public void createNewRequirement(Requirement req){
+		
+		updateRequirements();
+		List<Requirement> allReqs = getPreStoredRequirements();
+		
+		int maxID = 0;
+		
+		for(Requirement requirement : allReqs){
+			if(requirement.getId()>maxID){
+				maxID = requirement.getId();
+			}
+		}
+		
+		req.setId(maxID+1);
+		
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); 
+		request.setBody(req.toJSON()); 
+		request.addObserver(new RequestObserver(){
+
+			@Override
+			public void responseSuccess(IRequest iReq) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void responseError(IRequest iReq) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void fail(IRequest iReq, Exception exception) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+		request.send(); 
 	}
 
 }

@@ -15,6 +15,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -46,6 +47,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.Scrol
  * @author Codon Bleu
  * @version Apr 9, 2014
  */
+@SuppressWarnings("serial")
 public class DeckPanel extends JScrollPane {
 	private JTextField estimateField = new JTextField();
 	private ImageIcon img = null;
@@ -168,13 +170,18 @@ public class DeckPanel extends JScrollPane {
 		for (int i = 0; i < cards.size(); i++) {
 			final JToggleButton cardToAdd = new JToggleButton(Integer.toString(cards
 					.get(i)), img);
+			
+			final Border unselectedBorder = BorderFactory.createLineBorder(Color.WHITE, 3);
+			final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN, 3);
+			
 			cardToAdd.setHorizontalTextPosition(SwingConstants.CENTER);
 			cardToAdd.setVerticalTextPosition(SwingConstants.CENTER);
 			constraints.fill = GridBagConstraints.NONE;
 			constraints.gridx = i;
 			constraints.gridy = 2;
 			constraints.gridwidth = 1;
-			constraints.insets = new Insets(0, 5, 0, 5);
+			constraints.insets = new Insets(0, 3, 0, 3);
+			
 			cardToAdd.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(ChangeEvent arg0) {
@@ -183,35 +190,50 @@ public class DeckPanel extends JScrollPane {
 						cardToAdd.setBorder(null);
 					}
 					if(cardToAdd.isSelected()){
-						Border border = BorderFactory.createCompoundBorder(
-								new LineBorder(Color.GREEN, 3),
-								new JToggleButton().getBorder());
+						Border border = BorderFactory.createLineBorder(Color.GREEN, 3);
 						cardToAdd.setBorder(border);
 					}else{
-						cardToAdd.setBorder(new JToggleButton().getBorder());
+						cardToAdd.setBorder(unselectedBorder);
 					}
 					calculateSum();
 					
 				}
 			});
 			
-			cardToAdd.setBorder(new JToggleButton().getBorder());
+			cardToAdd.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseExited(MouseEvent e) {
+					if(cardToAdd.isSelected()){
+						cardToAdd.setBorder(selectedBorder);
+					}else{
+						cardToAdd.setBorder(unselectedBorder);
+					}
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					if(cardToAdd.isSelected()){
+					}else{
+						cardToAdd.setBorder(selectedBorder);
+					}
+				}
+			});
+
+			cardToAdd.setBorder(unselectedBorder);
 
 			listOfButtons.add(cardToAdd);
 			deckPanel.add(cardToAdd, constraints);
 		}
-		
 		
 		return deckPanel;
 	}
 
 	private void clearPrevious(JToggleButton cardToAdd) {
 		for( JToggleButton button : listOfButtons){
-			if(!button.equals(cardToAdd)){
+			if(!button.equals(cardToAdd)) {
 				button.setSelected(false);
 			}
 		}
-		
 	}
 	
 	private void calculateSum() {
@@ -236,7 +258,8 @@ public class DeckPanel extends JScrollPane {
 	 */
 	public void displayOldEstimate(Game game, int reqid) {
 
-		final String name = ConfigManager.getInstance().getConfig()
+		ConfigManager.getInstance();
+		final String name = ConfigManager.getConfig()
 				.getUserName();
 		final int oldEstimate = game.findEstimate(reqid).getEstimate(name);
 		if (oldEstimate >= 0) {
