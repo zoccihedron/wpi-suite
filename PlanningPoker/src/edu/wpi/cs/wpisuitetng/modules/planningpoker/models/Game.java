@@ -41,6 +41,7 @@ public class Game extends AbstractModel {
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
 	private String deck = "";
+	
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
@@ -125,7 +126,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**
@@ -135,7 +136,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**

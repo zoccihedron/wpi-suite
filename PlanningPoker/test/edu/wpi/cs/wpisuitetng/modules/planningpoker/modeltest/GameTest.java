@@ -22,6 +22,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -43,7 +44,7 @@ public class GameTest {
 		String game1name = "Game1";
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
-		endTime.set(2015, 1,1);
+		endTime.set(start.getYear(), 1,1);
 		Date end = endTime.getTime();
 		game1 = new Game(game1name,start,end, "default");
 		
@@ -63,6 +64,26 @@ public class GameTest {
 		
 	}
 
+	@Test
+	public void constructorTest(){
+		Game testGameEmptyConstructor = new Game();
+		
+		Date start = new Date();
+		Calendar endTime = new GregorianCalendar();
+		endTime.set(start.getYear(), 1,1);
+		Date end = endTime.getTime();
+		
+		Game testGameConstructor = new Game("test",start,end, "default");
+		
+		assertEquals("test", testGameConstructor.getName());
+		assertEquals(start, testGameConstructor.getStart());
+		assertEquals(end, testGameConstructor.getEnd());
+		assertEquals("default", testGameConstructor.getDeck());
+		
+		assertEquals(0, testGameEmptyConstructor.getId());
+		
+	}
+	
 	@Test
 	public void updateEstimateTest()
 	{			
@@ -125,4 +146,37 @@ public class GameTest {
 		assertEquals(GameStatus.IN_PROGRESS, endedGame.getStatus());
 	}
 
+	@Test
+	public void gameStatusEnumTest(){
+		Game testGame = new Game();
+		testGame.setStatus(GameStatus.DRAFT);
+		assertEquals(GameStatus.DRAFT, testGame.getStatus());
+		
+		testGame.setStatus(GameStatus.IN_PROGRESS);
+		assertEquals(GameStatus.IN_PROGRESS, testGame.getStatus());
+		
+		testGame.setStatus(GameStatus.ENDED);
+		assertEquals(GameStatus.ENDED, testGame.getStatus());
+		
+		testGame.setStatus(GameStatus.CLOSED);
+		assertEquals(GameStatus.CLOSED, testGame.getStatus());
+	}
+	
+	
+	@Test
+	public void testJSON(){
+		Date start = new Date();
+		Calendar endTime = new GregorianCalendar();
+		endTime.set(start.getYear(), 1,1);
+		Date end = endTime.getTime();
+		
+		Game testGameConstructor = new Game("test",start,end, "default");
+		String jsonMessage = testGameConstructor.toJSON();
+		Game fromMessage = Game.fromJson(jsonMessage);
+		
+		assertEquals(testGameConstructor.getName(), fromMessage.getName());
+		assertEquals(testGameConstructor.getStart(), fromMessage.getStart());
+		assertEquals(testGameConstructor.getEnd(), fromMessage.getEnd());
+		assertEquals(testGameConstructor.getDeck(), fromMessage.getDeck());
+	}
 }
