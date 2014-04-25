@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 import java.awt.Component;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.HelpPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
@@ -114,6 +115,7 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(userPrefPanel);
 	}
+	
 	/**
 	 * Creates a view results tab given a game
 	 * @param game the game to be viewed
@@ -124,6 +126,24 @@ public class MainViewTabController {
 		mainView.invalidate();
 		mainView.repaint();
 		mainView.setSelectedComponent(resultsPanel);
+	}
+	
+	/**
+	 * Creates a help tab, but only if
+	 * there are no other help tabs open.
+	 */
+	public void helpTab() {
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == HelpPanel.class){
+				mainView.setSelectedComponent(mainView.getComponentAt(i));
+				return;
+			}
+		}
+		final HelpPanel helpPanel = new HelpPanel();
+		mainView.insertTab("Help", helpPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(helpPanel);
 	}
 	
 	/**
@@ -145,6 +165,10 @@ public class MainViewTabController {
 			}
 		} else if(tabToClose instanceof ViewResultsPanel){
 			if(((ViewResultsPanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
+		} else if(tabToClose instanceof HelpPanel){
+			if(((HelpPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
 		}

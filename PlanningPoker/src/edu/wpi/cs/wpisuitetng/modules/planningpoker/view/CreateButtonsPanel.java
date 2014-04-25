@@ -38,7 +38,8 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 	
 	private final JButton crtGameBtn = new JButton("<html>Create<BR />Game</html>");
 	private final JButton crtDeckBtn = new JButton("<html>Manage<BR />Decks</html>");
-	private final JButton userPrefBtn = new JButton("<html>User<BR />Preferences<html>");
+	private final JButton userPrefBtn = new JButton("<html>User<BR />Preferences</html>");
+	private final JButton helpBtn = new JButton("<html>Help</html>");
 	private final JPanel buttonPanel = new JPanel();
 	
 	/**
@@ -55,6 +56,7 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		buttonPanel.add(crtDeckBtn);
 		crtDeckBtn.setVisible(false);
 		buttonPanel.add(userPrefBtn);
+		buttonPanel.add(helpBtn);
 		buttonPanel.add(Box.createHorizontalStrut(50));
 		
 		buttonPanel.setOpaque(false);
@@ -71,6 +73,9 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		    
 		    img = ImageIO.read(getClass().getResource("gear.png"));
 		    userPrefBtn.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("questionMark.png"));
+		    helpBtn.setIcon(new ImageIcon(img));
 
 		    
 		} catch (IOException ex) {
@@ -96,6 +101,13 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainViewTabController.getInstance().userPreferencesTab();
+			}
+		});
+		
+		helpBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainViewTabController.getInstance().helpTab();
 			}
 		});
 	}
