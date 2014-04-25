@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
@@ -72,7 +73,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JLabel lblRequirementsToEstimate;
 	private JLabel existingRequirementsLabel;
 	private JTextField fldName;
-	private JTextField fldDescription;
+	private JTextArea fldDescription;
 	private boolean newReqNameValid = false;
 	private boolean newReqDescValid = false;
 
@@ -349,7 +350,8 @@ public class SelectRequirementsPanel extends JPanel {
 		final JLabel lblName = new JLabel("Name: *");
 		fldName = new JTextField();
 		final JLabel lblDescription = new JLabel("Description: *");
-		fldDescription = new JTextField();
+		fldDescription = new JTextArea();
+		fldDescription.setLineWrap(true);
 		
 		newReqPanel.setLayout(new GridBagLayout());
 		
