@@ -180,7 +180,8 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		// Add requirement button
 		btnNewRequirement = new JButton("New Requirement");
-		btnAddSelectedReq.setEnabled(true);
+		btnNewRequirement.setEnabled(ENABLED);
+		btnNewRequirement.setToolTipText("Click here to create a new requirement.");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -386,7 +387,9 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		
 		JButton btnCreateAndAdd = new JButton("Create and Add");
+		btnCreateAndAdd.setToolTipText("Click here to create the new requirement.");
 		JButton btnCancelNewReq = new JButton("Cancel New Requirement");
+		btnCancelNewReq.setToolTipText("Click here to go back to the select requirements screen.");
 		try {
 		    Image img = ImageIO.read(getClass().getResource("create_and_add.png"));
 		    btnCreateAndAdd.setIcon(new ImageIcon(img));
