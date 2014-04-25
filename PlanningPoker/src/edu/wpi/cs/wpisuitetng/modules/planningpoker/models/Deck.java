@@ -50,6 +50,10 @@ public class Deck extends AbstractModel{
 	public Deck() {
 		id = 0;
 	}
+	
+	public Deck (String name){
+		this(name, false, new ArrayList<Integer>());
+	}
 
 	/**
 	 * Returns a deck from JSON encoded string
@@ -139,6 +143,13 @@ public class Deck extends AbstractModel{
 	 */
 	public String getName(){
 		return name;
+	}
+	
+	/**
+	 * Setter for the name field
+	 */
+	public void setName(String name){
+		this.name = name;
 	}
 	
 	/**
