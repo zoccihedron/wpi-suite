@@ -32,6 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
@@ -67,13 +68,17 @@ public class SelectRequirementsPanel extends JPanel {
 	private JScrollPane requirementsToAddTablePanel;
 	private JLabel lblRequirementsToEstimate;
 	private JLabel existingRequirementsLabel;
+	private SelectRequirementsPanel thisPanel;
+	private boolean showingNewReqPanel = false;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
 	private Game game;
 	
 	public SelectRequirementsPanel() {
+		thisPanel = this;
 		populatePanel();
+		generateNewRequirementPanel();
 	}
 	
 	/**
@@ -81,7 +86,9 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param editingGame the game for which the requirements will be edited
 	 */
 	public SelectRequirementsPanel(Game editingGame) {
+		thisPanel = this;
 		game = editingGame;
+		generateNewRequirementPanel();
 		populatePanel();
 	}
 	
@@ -207,7 +214,8 @@ public class SelectRequirementsPanel extends JPanel {
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				generateNewRequirementPanel();
+				//thisPanel.toggleNewAndExistingReqPanels(newReqPanel,existingRequirementsTablePanel);
+				toggleNewReqAndExistingReqsPanels();
 			}
 		});
 		
@@ -316,20 +324,15 @@ public class SelectRequirementsPanel extends JPanel {
 	 * creates panel to add a new requirement while creating a planning poker session
 	 */
 	private void generateNewRequirementPanel(){
-		
-		this.remove(existingRequirementsTablePanel);
-		this.remove(buttonsPanel);
-		
+			
 		newReqPanel = new JPanel();
 		
 		newReqButtonsPanel = new JPanel();
-		
-		existingRequirementsLabel.setText("New Requirement");
-		
+				
 		JLabel lblName = new JLabel("Name: ");
 		final JTextField fldName = new JTextField();
 		JLabel lblDescription = new JLabel("Description: ");
-		final JTextField fldDescription = new JTextField();
+		final JTextArea fldDescription = new JTextArea();
 		
 		newReqPanel.setLayout(new GridBagLayout());
 		
@@ -358,7 +361,9 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.fill = GridBagConstraints.NONE;
 		newReqPanel.add(lblDescription,constraints);
 		
-
+		fldDescription.setBorder(new JTextField().getBorder());
+		fldDescription.setAlignmentY(TOP_ALIGNMENT);
+		fldDescription.setLineWrap(true);
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 2;
@@ -366,16 +371,6 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
 		newReqPanel.add(fldDescription,constraints);
-		
-		// Put in scroll pane for overflow
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridwidth = 4;
-		constraints.weightx = 1;
-		constraints.weighty = 0.5;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		this.add(newReqPanel, constraints);
-		
 		
 		JButton btnCreateAndAdd = new JButton("Create and Add");
 		JButton btnCancelNewReq = new JButton("Cancel New Requirement");
@@ -407,17 +402,10 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 0;
 		newReqButtonsPanel.add(btnCancelNewReq, constraints);
 		
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		this.add(newReqButtonsPanel, constraints);	
-		
 		btnCancelNewReq.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				cancelNewReq();
+				toggleNewReqAndExistingReqsPanels();
 			}
 
 		});
@@ -430,11 +418,70 @@ public class SelectRequirementsPanel extends JPanel {
 				RMF.createNewRequirement(req);
 				addNewRequirementToTable(req);
 				fillTable();
-				cancelNewReq();
+				toggleNewReqAndExistingReqsPanels();
 			}
 
 		});
 		
+	}
+	
+	/**
+	 * Switches view from new requirement to existing requirements table and vice versa
+	 * 
+	 */
+	private void toggleNewReqAndExistingReqsPanels(){
+		if(!showingNewReqPanel){
+
+			existingRequirementsLabel.setText("New Requirement");
+			
+			this.remove(existingRequirementsTablePanel);
+			this.remove(buttonsPanel);
+			
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.gridwidth = 4;
+			constraints.weightx = 1.0;
+			constraints.weighty = 0.425;
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			this.add(newReqPanel, constraints);
+			
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+	 		constraints.weightx = 0.0;
+	 		constraints.weighty = 0.0;
+	 		constraints.gridx = 0;
+	 		constraints.gridy = 2;
+	 		this.add(newReqButtonsPanel, constraints);
+			
+			showingNewReqPanel = true;
+		}
+		else{
+			this.remove(newReqButtonsPanel);
+			this.remove(newReqPanel);
+			
+			existingRequirementsLabel.setText("Existing Requirements");
+			
+			// Put in scroll pane for overflow
+			existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
+			constraints.fill = GridBagConstraints.BOTH;
+			constraints.gridwidth = 4;
+			constraints.weightx = 1;
+			constraints.weighty = 0.5;
+			constraints.gridx = 0;
+			constraints.gridy = 1;
+			this.add(existingRequirementsTablePanel, constraints);
+			
+
+			// Panel to hold add, remove, and new requirement buttons in center
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weightx = 0.0;
+			constraints.weighty = 0.0;
+			constraints.gridx = 0;
+			constraints.gridy = 2;
+			this.add(buttonsPanel, constraints);
+
+			showingNewReqPanel = false;
+		}
+			
 	}
 	
 	/**
@@ -447,35 +494,7 @@ public class SelectRequirementsPanel extends JPanel {
 				req.getDescription() });
 	}
 	
-	/**
-	 * replaces the new req panel with the existing requirements panel
-	 */
-	private void cancelNewReq(){
-		
-		this.remove(newReqButtonsPanel);
-		this.remove(newReqPanel);
-		
-		
-		// Put in scroll pane for overflow
-		existingRequirementsTablePanel = new JScrollPane(existingRequirementsTable);
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridwidth = 4;
-		constraints.weightx = 1;
-		constraints.weighty = 0.5;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		this.add(existingRequirementsTablePanel, constraints);
-		
 
-		// Panel to hold add, remove, and new requirement buttons in center
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		this.add(buttonsPanel, constraints);
-		
-	}
 	
 	/**
 	 * Fills the table with a list of requirements
