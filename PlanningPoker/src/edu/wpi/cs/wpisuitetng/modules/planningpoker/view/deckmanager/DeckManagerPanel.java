@@ -40,7 +40,7 @@ public class DeckManagerPanel extends JPanel{
 		DeckDataPanel deckData = new DeckDataPanel();
 		DeckManager deckManager = new DeckManager(deckData.getListDecksPanel());
 		//TODO Needs arguements
-		ManageDeckController controller = new ManageDeckController();
+		ManageDeckController controller = ManageDeckController.getInstance();
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(deckData);
 		splitPane.setRightComponent(deckManager);
