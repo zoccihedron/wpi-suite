@@ -11,53 +11,29 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.DropMode;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.RequestObserver;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import edu.wpi.cs.wpisuitetng.network.models.IRequest;
-import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 
 public class ListDecksPanel  extends JScrollPane implements
 TreeSelectionListener {
 	
-//	private JList<Deck> deckList;
-//	private JLabel decksLabel;
 	private JTree deckTree;
 
 	public ListDecksPanel() {
 		
-//		this.refresh();
-//		this.setLayout(new GridBagLayout());
-//		final GridBagConstraints constraints = new GridBagConstraints();
-//		
 		this.setViewportView(deckTree);
 		this.refresh();
 
@@ -85,31 +61,6 @@ TreeSelectionListener {
 
 			}
 		});
-		
-//		//label
-//		decksLabel = new JLabel("Available Decks");
-//		constraints.anchor = GridBagConstraints.NORTHWEST;
-//		constraints.fill = GridBagConstraints.NONE;
-//		constraints.gridx = 0;
-//		constraints.gridy = 0;
-//		add(decksLabel, constraints);
-//
-//		// list
-////		deckList = new JList<Deck>(d);
-////		deckList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-////		deckList.setLayoutOrientation(JList.VERTICAL);
-////		deckList.setVisibleRowCount(-1);
-		
-//		constraints.fill = GridBagConstraints.BOTH;
-//		constraints.weightx = 1.0;
-//		constraints.weighty = 1.0;
-//		constraints.gridx = 0;
-//		constraints.gridy = 0;
-//		add(deckList, constraints);
-		
-
-		
-//		this.setViewportView(deckList);
 
 	}
 		
@@ -125,7 +76,6 @@ TreeSelectionListener {
 		Deck deck5 = new Deck("Deck5", true, Arrays.asList(1, 5, 6));
 		Deck[] decks = new Deck[]{deck1,deck2,deck3,deck4,deck5};
 		
-//		List<Deck> decks = ManageDeckController.getInstance().getDecks();
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
 				"Decks"); // makes a starting node
 	
@@ -170,29 +120,6 @@ TreeSelectionListener {
 
 		this.setViewportView(deckTree); // make panel display the tree
 		
-//		final Request request = Network.getInstance().makeRequest("planningpoker/deck", HttpMethod.GET);
-//		request.addObserver(new RequestObserver()
-//		{
-//			@Override
-//			public void responseSuccess(IRequest iReq) {
-//				ResponseModel r = iReq.getResponse();
-//				final Deck[] decks = Deck.fromJsonArray(r.getBody());
-//				populateDeckList(decks); 
-//				
-//			}
-//			@Override
-//			public void responseError(IRequest iReq) {
-//				// TODO Auto-generated method stub	
-//			}
-//			@Override
-//			public void fail(IRequest iReq, Exception exception) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//			
-//		});
-//		request.send();
-		
 	}
 
 	/**
@@ -215,10 +142,6 @@ TreeSelectionListener {
 	}
 	
 	public void populateDeckList(Deck[] decks) {
-//		
-//		deckList = new JList<Deck>(decks);
-//
-//		this.setViewportView(deckList); //make panel display the list
 	}
 
 	@Override
