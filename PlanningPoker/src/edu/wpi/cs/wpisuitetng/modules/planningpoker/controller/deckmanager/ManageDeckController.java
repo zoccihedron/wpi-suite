@@ -65,7 +65,7 @@ public class ManageDeckController {
 	/**
 	 *  Send a request to the server to retrieve all decks
 	 */
-	public static void updateDecks() {
+	public void updateDecks() {
 		
 		final Request request = Network.getInstance().makeRequest(
 				"planningpoker/deck",
