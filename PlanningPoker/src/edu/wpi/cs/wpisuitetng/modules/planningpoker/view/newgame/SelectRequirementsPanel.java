@@ -27,7 +27,6 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -145,7 +144,8 @@ public class SelectRequirementsPanel extends JPanel {
 		});
 		
 		// Hide the column with IDs
-		existingRequirementsTable.removeColumn(existingRequirementsTable.getColumnModel().getColumn(0));
+		existingRequirementsTable.removeColumn(
+				existingRequirementsTable.getColumnModel().getColumn(0));
 
 		// Filling with some initial data for testing
 		modelExisting = (DefaultTableModel) existingRequirementsTable.getModel();
@@ -276,7 +276,8 @@ public class SelectRequirementsPanel extends JPanel {
 		});
 		
 		// Set up buttons to interact with table selection
-		requirementsToAddTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		requirementsToAddTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(requirementsToAddTable.getSelectedRow() == - 1){
@@ -345,9 +346,9 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		existingRequirementsLabel.setText("New Requirement");
 		
-		JLabel lblName = new JLabel("Name: *");
+		final JLabel lblName = new JLabel("Name: *");
 		fldName = new JTextField();
-		JLabel lblDescription = new JLabel("Description: *");
+		final JLabel lblDescription = new JLabel("Description: *");
 		fldDescription = new JTextField();
 		
 		newReqPanel.setLayout(new GridBagLayout());
@@ -359,7 +360,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
-		newReqPanel.add(lblName,constraints);
+		newReqPanel.add(lblName, constraints);
 		
 		constraints.gridx = 1;
 		constraints.gridy = 0;
@@ -367,7 +368,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		newReqPanel.add(fldName,constraints);
+		newReqPanel.add(fldName, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 1;
@@ -375,7 +376,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.NONE;
-		newReqPanel.add(lblDescription,constraints);
+		newReqPanel.add(lblDescription, constraints);
 		
 
 		constraints.gridx = 0;
@@ -384,7 +385,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
-		newReqPanel.add(fldDescription,constraints);
+		newReqPanel.add(fldDescription, constraints);
 		
 		// Put in scroll pane for overflow
 		constraints.fill = GridBagConstraints.BOTH;
@@ -430,7 +431,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		this.add(newReqButtonsPanel, constraints);	
+		this.add(newReqButtonsPanel, constraints);
 		
 		fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 		fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
@@ -446,7 +447,7 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqNameValid = false;
 				}
 				else {
-					JTextField temp = new JTextField();
+					final JTextField temp = new JTextField();
 					fldName.setBorder(temp.getBorder());
 					newReqNameValid = true;
 				}
@@ -460,7 +461,7 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqNameValid = false;
 				}
 				else {
-					JTextField temp = new JTextField();
+					final JTextField temp = new JTextField();
 					fldName.setBorder(temp.getBorder());
 					newReqNameValid = true;
 				}
@@ -483,7 +484,7 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqDescValid = false;
 				}
 				else {
-					JTextField temp = new JTextField();
+					final JTextField temp = new JTextField();
 					fldDescription.setBorder(temp.getBorder());
 					newReqDescValid = true;
 				}
@@ -498,7 +499,7 @@ public class SelectRequirementsPanel extends JPanel {
 					newReqDescValid = false;
 				}
 				else {
-					JTextField temp = new JTextField();
+					final JTextField temp = new JTextField();
 					fldDescription.setBorder(temp.getBorder());
 					newReqDescValid = true;
 				}
@@ -523,8 +524,9 @@ public class SelectRequirementsPanel extends JPanel {
 		btnCreateAndAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				Requirement req = new Requirement(10,fldName.getText(),fldDescription.getText());
-				RequirementManagerFacade RMF = RequirementManagerFacade.getInstance();
+				final Requirement req = new Requirement(10, fldName.getText(), 
+						fldDescription.getText());
+				final RequirementManagerFacade RMF = RequirementManagerFacade.getInstance();
 				RMF.createNewRequirement(req);
 				addNewRequirementToTable(req);
 				fillTable();
