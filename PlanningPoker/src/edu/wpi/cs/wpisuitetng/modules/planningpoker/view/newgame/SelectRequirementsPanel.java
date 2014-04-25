@@ -34,6 +34,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -58,6 +60,8 @@ public class SelectRequirementsPanel extends JPanel {
 	private final boolean ENABLED = true;
 	private JButton btnAddSelectedReq;
 	private JButton btnNewRequirement;
+	private JButton btnCreateAndAdd;
+	private JButton btnCancelNewReq;
 	private DefaultTableModel modelExisting;
 	private DefaultTableModel modelAdded;
 	private JPanel buttonsPanel;
@@ -67,6 +71,10 @@ public class SelectRequirementsPanel extends JPanel {
 	private JScrollPane requirementsToAddTablePanel;
 	private JLabel lblRequirementsToEstimate;
 	private JLabel existingRequirementsLabel;
+	private JTextField fldName;
+	private JTextField fldDescription;
+	private boolean newReqNameValid = false;
+	private boolean newReqDescValid = false;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
@@ -326,10 +334,10 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		existingRequirementsLabel.setText("New Requirement");
 		
-		JLabel lblName = new JLabel("Name: ");
-		final JTextField fldName = new JTextField();
-		JLabel lblDescription = new JLabel("Description: ");
-		final JTextField fldDescription = new JTextField();
+		JLabel lblName = new JLabel("Name: *");
+		fldName = new JTextField();
+		JLabel lblDescription = new JLabel("Description: *");
+		fldDescription = new JTextField();
 		
 		newReqPanel.setLayout(new GridBagLayout());
 		
@@ -377,8 +385,8 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(newReqPanel, constraints);
 		
 		
-		JButton btnCreateAndAdd = new JButton("Create and Add");
-		JButton btnCancelNewReq = new JButton("Cancel New Requirement");
+		btnCreateAndAdd = new JButton("Create and Add");
+		btnCancelNewReq = new JButton("Cancel New Requirement");
 		try {
 		    Image img = ImageIO.read(getClass().getResource("create_and_add.png"));
 		    btnCreateAndAdd.setIcon(new ImageIcon(img));
@@ -413,6 +421,77 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		this.add(newReqButtonsPanel, constraints);	
+		
+		fldName.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(fldName.getText().trim().equals("")){
+					fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+					newReqNameValid = false;
+				}
+				else {
+					fldName.setBorder(existingRequirementsTablePanel.getBorder());
+					newReqNameValid = true;
+				}
+				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(fldName.getText().trim().equals("")){
+					fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+					newReqNameValid = false;
+				}
+				else {
+					fldName.setBorder(existingRequirementsTablePanel.getBorder());
+					newReqNameValid = true;
+				}
+				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		fldDescription.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(fldDescription.getText().trim().equals("")){
+					fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+					newReqDescValid = false;
+				}
+				else {
+					fldDescription.setBorder(existingRequirementsTablePanel.getBorder());
+					newReqDescValid = true;
+				}
+				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
+				
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(fldDescription.getText().trim().equals("")){
+					fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+					newReqDescValid = false;
+				}
+				else {
+					fldDescription.setBorder(existingRequirementsTablePanel.getBorder());
+					newReqDescValid = true;
+				}
+				btnCreateAndAdd.setEnabled(newReqNameValid && newReqDescValid);
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		btnCancelNewReq.addMouseListener(new MouseAdapter() {
 			@Override
@@ -607,5 +686,9 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public List<Integer> getSelectedRequirementIds() {
 		return getRequirementIdsFromTable(requirementsToAddTable);
+	}
+	
+	public void checkNewReq(){
+		
 	}
 }
