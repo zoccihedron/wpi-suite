@@ -64,6 +64,7 @@ public class DeckManager extends JPanel{
 	 */
 	public void updateDeck(Deck deck){
 		cardViewPanel.cardView(deck);
+		deckControlsPanel.setActionListeners(deck);
 	}
 
 }
