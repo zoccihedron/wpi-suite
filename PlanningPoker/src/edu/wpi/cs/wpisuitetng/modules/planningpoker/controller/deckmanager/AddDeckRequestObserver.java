@@ -1,5 +1,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
@@ -12,7 +13,8 @@ public class AddDeckRequestObserver implements RequestObserver {
 	
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		
+		ReponseModel response = iReq.getResponse();
+		Deck deck = Deck.fromJson(response.getBody());
 	}
 
 	@Override
