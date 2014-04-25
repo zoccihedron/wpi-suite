@@ -419,29 +419,11 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 
 		});
-		
-		this.invalidate();
-		this.repaint();
+
 		
 	}
 	
-	/**
-	 * This is a method which makes the panel visible which
-	 * creates a new requirement
-	 */
-	public void showNewRequirementPanel()
-	{
 
-		existingRequirementsTablePanel.setVisible(false);
-		existingRequirementsTablePanel.setEnabled(false);
-		buttonsPanel.setVisible(false);
-		buttonsPanel.setEnabled(false);
-		
-		newReqButtonsPanel.setVisible(true);
-		newReqButtonsPanel.setEnabled(true);
-		newReqPanel.setVisible(true);
-		newReqPanel.setEnabled(true);
-	}
 	
 	/**
 	 * Switches view from new requirement to existing requirements table and vice versa
