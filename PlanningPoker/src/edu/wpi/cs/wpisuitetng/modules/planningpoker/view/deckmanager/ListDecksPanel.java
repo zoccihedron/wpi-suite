@@ -13,7 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.DropMode;
 import javax.swing.JScrollPane;
@@ -23,10 +23,17 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 
+/**
+ * Panel on the left hand side of the deck manager that displays all decks
+ * available
+ * @author Code On Bleu
+ *
+ */
 public class ListDecksPanel  extends JScrollPane implements
 TreeSelectionListener {
 	
@@ -42,15 +49,12 @@ TreeSelectionListener {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-
 			}
-
+			
 			@Override
 			public void componentMoved(ComponentEvent e) {
-				// TODO Auto-generated method stub
-
 			}
-
+			
 			@Override
 			public void componentShown(ComponentEvent e) {
 				refresh();
@@ -58,7 +62,6 @@ TreeSelectionListener {
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
-
 			}
 		});
 
@@ -68,13 +71,8 @@ TreeSelectionListener {
 	 * Refresh the list with the decks in the database
 	 */
 	public void refresh() {
-		
-		Deck deck1 = new Deck("Deck1", true, Arrays.asList(1, 1, 4));
-		Deck deck2 = new Deck("Deck2", true, Arrays.asList(1, 2, 4));
-		Deck deck3 = new Deck("Deck3", true, Arrays.asList(1, 3, 4));
-		Deck deck4 = new Deck("Deck4", true, Arrays.asList(1, 4, 4));
-		Deck deck5 = new Deck("Deck5", true, Arrays.asList(1, 5, 6));
-		Deck[] decks = new Deck[]{deck1,deck2,deck3,deck4,deck5};
+
+		List<Deck> decks = ManageDeckController.getInstance().getDecks();
 		
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
 				"Decks"); // makes a starting node
@@ -82,6 +80,7 @@ TreeSelectionListener {
 		DefaultMutableTreeNode deckNode = null;
 		DefaultMutableTreeNode createdDecksCategory = null;
 		DefaultMutableTreeNode viewableDecksCategory = null;
+		
 		createdDecksCategory = new DefaultMutableTreeNode("Created Decks");
 		viewableDecksCategory = new DefaultMutableTreeNode("Viewable Decks");
 		
@@ -101,20 +100,24 @@ TreeSelectionListener {
 		top.add(createdDecksCategory);
 		top.add(viewableDecksCategory);
 
-		deckTree = new JTree(top); // create the tree with the top node as the top
+		// create the tree with the top node as the top
+		deckTree = new JTree(top); 
+		
+		// expand the tree
 		for (int i = 0; i < deckTree.getRowCount(); i++) {
 			deckTree.expandRow(i);
 		}
 		
 		deckTree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
+		
 		// tell it that it can only select one thing at a time
 		deckTree.setToggleClickCount(0);
 
 		deckTree.setCellRenderer(new CustomTreeCellRenderer());
+		
 		// set to custom cell renderer so that icons make sense
 		deckTree.addTreeSelectionListener(this);
-
 		deckTree.setDragEnabled(true);
 		deckTree.setDropMode(DropMode.ON);
 
@@ -127,8 +130,20 @@ TreeSelectionListener {
 	 * @return the selected deck
 	 */
 	public Deck getSelected() {
-		// TODO Auto-generated method stub
-		return null;
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) deckTree
+				.getLastSelectedPathComponent();
+
+		Deck deck = null;
+		final Object nodeInfo = node.getUserObject();
+		
+		if (node.isLeaf()) {
+			if (nodeInfo instanceof Deck) {
+				deck = (Deck) nodeInfo;
+			}
+		}
+		
+		return deck;
+		
 	}
 
 	/**
@@ -141,15 +156,21 @@ TreeSelectionListener {
 
 	}
 	
-	public void populateDeckList(Deck[] decks) {
-	}
-
+	/** Required by TreeSelectionListener interface. */
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
-	
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) deckTree
+				.getLastSelectedPathComponent();
+
+		if (node == null) {
+			return;
+		}
+		
+		if (node.isRoot()) {
+			refresh();
+		}
+
+	}
 
 }
