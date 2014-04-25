@@ -180,4 +180,8 @@ public class Deck extends AbstractModel{
 	public void setId(int id_count) {
 		id = id_count;
 	}
+	
+	public String toString() {
+		return this.getName();
+	}
 }
