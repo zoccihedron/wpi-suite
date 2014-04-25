@@ -144,6 +144,22 @@ public class DeckControlsPanel extends JPanel {
 		singleSelectBtn.setVisible(true);
 		multiSelectBtn.setVisible(true);
 		
+		if(!(btnAddCard.getActionListeners().length == 0)){
+			btnAddCard.removeActionListener(btnAddCard.getActionListeners()[0]);
+		}
+		if(!(btnRemoveCard.getActionListeners().length == 0)){
+			btnRemoveCard.removeActionListener(btnRemoveCard.getActionListeners()[0]);
+		}
+		if(!(btnRemoveDeck.getActionListeners().length == 0)){
+			btnRemoveDeck.removeActionListener(btnRemoveDeck.getActionListeners()[0]);
+		}
+		if(!(singleSelectBtn.getActionListeners().length == 0)){
+			singleSelectBtn.removeActionListener(singleSelectBtn.getActionListeners()[0]);
+		}
+		if(!(multiSelectBtn.getActionListeners().length == 0)){
+			multiSelectBtn.removeActionListener(multiSelectBtn.getActionListeners()[0]);
+		}
+		
 		btnAddCard.addActionListener(new AddCardController(this));
 		btnRemoveCard.addActionListener(new RemoveCardController(this));
 		btnRemoveDeck.addActionListener(new RemoveDeckController(this));
