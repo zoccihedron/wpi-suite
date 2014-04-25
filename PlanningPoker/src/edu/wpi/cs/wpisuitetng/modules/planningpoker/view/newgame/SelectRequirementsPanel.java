@@ -57,6 +57,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JTable requirementsToAddTable = null;
 	private final boolean DISABLED = false;
 	private final boolean ENABLED = true;
+	private boolean firstTimeCreating = true;
 	private JButton btnAddSelectedReq;
 	private JButton btnNewRequirement;
 	private DefaultTableModel modelExisting;
@@ -68,7 +69,6 @@ public class SelectRequirementsPanel extends JPanel {
 	private JScrollPane requirementsToAddTablePanel;
 	private JLabel lblRequirementsToEstimate;
 	private JLabel existingRequirementsLabel;
-	private SelectRequirementsPanel thisPanel;
 	private boolean showingNewReqPanel = false;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
@@ -76,7 +76,6 @@ public class SelectRequirementsPanel extends JPanel {
 	private Game game;
 	
 	public SelectRequirementsPanel() {
-		thisPanel = this;
 		populatePanel();
 		generateNewRequirementPanel();
 	}
@@ -86,7 +85,6 @@ public class SelectRequirementsPanel extends JPanel {
 	 * @param editingGame the game for which the requirements will be edited
 	 */
 	public SelectRequirementsPanel(Game editingGame) {
-		thisPanel = this;
 		game = editingGame;
 		generateNewRequirementPanel();
 		populatePanel();
@@ -214,7 +212,6 @@ public class SelectRequirementsPanel extends JPanel {
 		btnNewRequirement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//thisPanel.toggleNewAndExistingReqPanels(newReqPanel,existingRequirementsTablePanel);
 				toggleNewReqAndExistingReqsPanels();
 			}
 		});
@@ -324,7 +321,6 @@ public class SelectRequirementsPanel extends JPanel {
 	 * creates panel to add a new requirement while creating a planning poker session
 	 */
 	private void generateNewRequirementPanel(){
-			
 		newReqPanel = new JPanel();
 		
 		newReqButtonsPanel = new JPanel();
@@ -333,6 +329,7 @@ public class SelectRequirementsPanel extends JPanel {
 		final JTextField fldName = new JTextField();
 		JLabel lblDescription = new JLabel("Description: ");
 		final JTextArea fldDescription = new JTextArea();
+
 		
 		newReqPanel.setLayout(new GridBagLayout());
 		
@@ -371,7 +368,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
 		newReqPanel.add(fldDescription,constraints);
-		
+	
 		JButton btnCreateAndAdd = new JButton("Create and Add");
 		JButton btnCancelNewReq = new JButton("Cancel New Requirement");
 		try {
@@ -423,6 +420,27 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 		
+		this.invalidate();
+		this.repaint();
+		
+	}
+	
+	/**
+	 * This is a method which makes the panel visible which
+	 * creates a new requirement
+	 */
+	public void showNewRequirementPanel()
+	{
+
+		existingRequirementsTablePanel.setVisible(false);
+		existingRequirementsTablePanel.setEnabled(false);
+		buttonsPanel.setVisible(false);
+		buttonsPanel.setEnabled(false);
+		
+		newReqButtonsPanel.setVisible(true);
+		newReqButtonsPanel.setEnabled(true);
+		newReqPanel.setVisible(true);
+		newReqPanel.setEnabled(true);
 	}
 	
 	/**
@@ -494,7 +512,6 @@ public class SelectRequirementsPanel extends JPanel {
 				req.getDescription() });
 	}
 	
-
 	
 	/**
 	 * Fills the table with a list of requirements
@@ -517,9 +534,10 @@ public class SelectRequirementsPanel extends JPanel {
 					removeRowByValue(req, requirementsToAddTable);
 				}
 				
-			//Checks that the pulled requirements are
-			//Not in the pendingRequirementsTable already
-			//Not in the existingRequirementsTable already
+			/* Checks that the pulled requirements are
+			 * Not in the pendingRequirementsTable already
+			 * Not in the existingRequirementsTable already
+			 */
 			} else if (game != null && 
 					!existingReqs.contains(req.getId()) && 
 					!pendingReqs.contains(req.getId())) {
