@@ -40,7 +40,7 @@ public class CreateDeckPanel extends JPanel{
 		constraints.anchor = constraints.EAST;
 		this.add(btnSubmit, constraints);
 		
-		deck = new Deck(deckName.getText(), false, new ArrayList<Integer>());
+		deck = null;
 		
 		btnSubmit.addActionListener(new AddDeckController(this));
 		}
@@ -50,5 +50,12 @@ public class CreateDeckPanel extends JPanel{
 	 */
 	public Deck getDeck() {
 		return deck;
+	}
+
+	/**
+	 * @return the name the user wants the text to be
+	 */
+	public String getDeckName() {
+		return deckName.getText();
 	}
 }
