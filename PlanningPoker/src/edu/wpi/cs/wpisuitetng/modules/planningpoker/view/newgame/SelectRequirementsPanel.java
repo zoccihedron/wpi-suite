@@ -12,6 +12,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -83,6 +84,7 @@ public class SelectRequirementsPanel extends JPanel {
 	
 	public SelectRequirementsPanel() {
 		populatePanel();
+		this.setMinimumSize(new Dimension(500, 1));
 	}
 	
 	/**
@@ -537,7 +539,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 		});
 		
-		this.invalidate();
+		this.revalidate();
 		this.repaint();
 		
 	}
