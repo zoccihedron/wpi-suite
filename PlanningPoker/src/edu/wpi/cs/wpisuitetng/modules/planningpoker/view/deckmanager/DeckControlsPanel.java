@@ -266,5 +266,6 @@ public class DeckControlsPanel extends JPanel {
 	
 	public void saveMessage(String message) {
 		saveStatusMessage.setText(message);
+		saveStatusMessage.setForeground(Color.BLUE);
 	}
 }

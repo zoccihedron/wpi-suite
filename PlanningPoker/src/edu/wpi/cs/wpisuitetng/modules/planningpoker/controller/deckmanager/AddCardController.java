@@ -24,7 +24,7 @@ public class AddCardController implements ActionListener{
 		int cardValue = view.getCardValue();
 		
 		view.addToDeck(cardValue);
-		view.saveMessage("</html>Saving changes...</html>");
+		view.saveMessage("<html>Saving changes...</html>");
 		
 		if(view.checkFields())
 		{
@@ -58,7 +58,7 @@ public class AddCardController implements ActionListener{
 	
 	public void successfulAdditon(){
 		cardView.updateView(view.getDeck());
-		view.saveMessage("<html>Game is saved.</html>");
+		view.saveMessage("<html>Changes saved.</html>");
 	}
 
 }
