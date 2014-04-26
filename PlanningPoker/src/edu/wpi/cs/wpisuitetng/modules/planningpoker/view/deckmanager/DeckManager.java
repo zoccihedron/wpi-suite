@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  *
  */
 public class DeckManager extends JPanel{
+	
 	private CardViewPanel cardViewPanel;
 	private DeckControlsPanel deckControlsPanel;
 	private ManageDeckController controller;
@@ -35,7 +36,6 @@ public class DeckManager extends JPanel{
 	 * Constructs the two sub panels and places them in their correct positions
 	 */
 	public DeckManager(ListDecksPanel listDecksPanel){
-		
 		cardViewPanel = new CardViewPanel();
 		deckControlsPanel = new DeckControlsPanel(cardViewPanel, listDecksPanel);
 		
@@ -43,15 +43,15 @@ public class DeckManager extends JPanel{
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.weighty = 0.8;
 		this.add(cardViewPanel, constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridx = 1;
+		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		constraints.weighty = 0.2;
 		this.add(deckControlsPanel, constraints);
@@ -64,6 +64,7 @@ public class DeckManager extends JPanel{
 	 */
 	public void updateDeck(Deck deck){
 		cardViewPanel.cardView(deck);
+		deckControlsPanel.setActionListeners(deck);
 	}
 
 }

@@ -109,7 +109,7 @@ public class DeckControlsPanel extends JPanel {
 
 		multiSelectBtn = new JRadioButton("Multiple Selection");
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 2;
+		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		this.add(multiSelectBtn, constraints);
@@ -162,11 +162,11 @@ public class DeckControlsPanel extends JPanel {
 		singleSelectBtn.addActionListener(multiSelectController);
 		multiSelectBtn.addActionListener(multiSelectController);
 
-		if(deck.canSelectMultipleCards()){
-			cardSelectGroup.setSelected((ButtonModel) multiSelectBtn, true);
-		} else {
-			cardSelectGroup.setSelected((ButtonModel) singleSelectBtn, true);
-		}
+//		if(deck.canSelectMultipleCards()){
+//			cardSelectGroup.setSelected((ButtonModel) multiSelectBtn, true);
+//		} else {
+//			cardSelectGroup.setSelected((ButtonModel) singleSelectBtn, true);
+//		}
 		
 		
 		} else{
