@@ -221,4 +221,11 @@ public class PlanningPokerEntityManagerTest {
 			} 
 		}
 	}
+	
+	
+	public void testGetAllForEveryone() throws WPISuiteException{
+		Game[] getAllForEveryone = (Game[])manager.getAllForEveryone(s1);
+		
+	}
+	
 }
