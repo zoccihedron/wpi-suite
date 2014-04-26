@@ -371,6 +371,30 @@ public class Game extends AbstractModel {
 	}
 	
 	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getMaxVotes(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getMaxVoteCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getVoteCount(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getVoteCount();
+		}
+		return count;
+	}
+	
+	/**
 	 * Checks to see if the game's version matches the other
 	 * @param otherGameVersion int of the game to compare to.
 	 * @return true if they match.

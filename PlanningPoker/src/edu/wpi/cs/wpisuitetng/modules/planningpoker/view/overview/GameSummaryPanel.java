@@ -13,6 +13,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -21,6 +22,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -28,6 +30,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -64,7 +67,8 @@ public class GameSummaryPanel extends JPanel {
 	private final GameSummaryPanel  summaryPanel = this;
 	JPanel buttonsPanel;
 	Game game;
-
+	private JProgressBar overallProgressBar;
+	
 	/**
 	 * 
 	 */
@@ -239,6 +243,18 @@ public class GameSummaryPanel extends JPanel {
 		constraints.insets = new Insets(0, 0, 0, 0);
 		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
+		overallProgressBar = new JProgressBar();
+		overallProgressBar.setString("Total Team Progress");
+		overallProgressBar.setStringPainted(true);
+		overallProgressBar.setVisible(false);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 1;
+		constraints.gridy = 2;
+		constraints.gridwidth = 2;
+		constraints.insets = new Insets(0, 10, 0, 0);
+		add(overallProgressBar, constraints);
 		
 		final JPanel extraPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -403,6 +419,16 @@ public class GameSummaryPanel extends JPanel {
 			}
 		}
 		
+		overallProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
+
+		overallProgressBar.setMinimum(0);
+		overallProgressBar.setMaximum(game.getMaxVotes());
+		overallProgressBar.setValue(game.getVoteCount());
+		overallProgressBar.setString("Overall Team Progress: " + 
+				Double.parseDouble(new DecimalFormat("#.##").format(
+						overallProgressBar.getPercentComplete() * 100)) + "%");
+		System.out.println("Votes: " + game.getVoteCount() + "| Max: " + game.getMaxVotes());
+		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
 
@@ -429,6 +455,7 @@ public class GameSummaryPanel extends JPanel {
 	public void reportError(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.RED);
+		overallProgressBar.setVisible(false);
 	}
 	
 	/**
@@ -446,6 +473,12 @@ public class GameSummaryPanel extends JPanel {
 	 */
 	public List<Integer> getSelectedRequirements(){
 		return reqPanel.getSelectedRequirements();
+	}
+	/**
+	 * @return the overallProgressBar
+	 */
+	public JProgressBar getOverallProgressBar() {
+		return overallProgressBar;
 	}
 	
 }
