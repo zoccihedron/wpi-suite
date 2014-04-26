@@ -12,15 +12,17 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 public class AddDeckController implements ActionListener {
 	private CreateDeckPanel createDeckPanel;
+	private String defaultDeckText;
 	
-	public AddDeckController(CreateDeckPanel createDeckPanel){
+	public AddDeckController(CreateDeckPanel createDeckPanel, String defaultDeckText){
 		this.createDeckPanel = createDeckPanel;
+		this.defaultDeckText = defaultDeckText;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Deck deck  = new Deck(createDeckPanel.getDeckName(), false, new ArrayList<Integer>());
-		if(!deck.getName().equals("")){
+		if(!deck.getName().equals("") && !deck.getName().equals(defaultDeckText)){
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest(
 					"planningpoker/deck", HttpMethod.PUT);

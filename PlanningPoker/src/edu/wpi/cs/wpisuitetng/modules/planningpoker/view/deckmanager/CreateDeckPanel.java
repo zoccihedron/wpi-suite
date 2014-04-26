@@ -3,28 +3,33 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
+
 public class CreateDeckPanel extends JPanel{
-	
-	private JTextField deckName;
+
+	private JPlaceholderTextField deckName;
 	private JButton btnSubmit;
 	private Deck deck;
-	
+	private final String PLACEHOLDER_TEXT = "Enter Deck Name Here";
+
 	public CreateDeckPanel(){
-		deckName = new JTextField("Deck");
+
+		deckName = new JPlaceholderTextField(PLACEHOLDER_TEXT);
 		btnSubmit = new JButton("Create Deck");
-		
+
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
-		
+
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -32,7 +37,7 @@ public class CreateDeckPanel extends JPanel{
 		constraints.weightx = 0.75;
 		constraints.anchor = constraints.WEST;
 		this.add(deckName, constraints);
-		
+
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
@@ -41,12 +46,12 @@ public class CreateDeckPanel extends JPanel{
 		constraints.weightx = 0.25;
 		constraints.anchor = constraints.EAST;
 		this.add(btnSubmit, constraints);
-		
+
 		deck = null;
-		
-		btnSubmit.addActionListener(new AddDeckController(this));
-		}
-	
+
+		btnSubmit.addActionListener(new AddDeckController(this, PLACEHOLDER_TEXT));
+	}
+
 	/**
 	 * @return the deck
 	 */
@@ -60,7 +65,7 @@ public class CreateDeckPanel extends JPanel{
 	public String getDeckName() {
 		return deckName.getText();
 	}
-	
+
 	public JButton getBtnSubmit() {
 		return btnSubmit;
 	}

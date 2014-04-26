@@ -24,6 +24,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddCardController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.MultiSelectController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveCardController;
@@ -41,7 +42,8 @@ public class DeckControlsPanel extends JPanel {
 	private final JButton btnRemoveDeck;
 	private final JButton btnRemoveCard;
 	private final JButton btnAddCard;
-	private final JTextField fieldAddCard;
+	private final JPlaceholderTextField fieldAddCard;
+	private final String PLACEHOLDER_TEXT = "Enter Card Value Here";
 	private Deck deck;
 	private final CardViewPanel cardView;
 	private final ListDecksPanel listDecksPanel;
@@ -93,7 +95,7 @@ public class DeckControlsPanel extends JPanel {
 		this.add(btnAddCard, constraints);
 
 		//ADD CARD TEXT FIELD
-		fieldAddCard = new JTextField();
+		fieldAddCard = new JPlaceholderTextField(PLACEHOLDER_TEXT);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
