@@ -34,15 +34,15 @@ public class DeckDataPanel extends JPanel{
 	public DeckDataPanel(){
 		listDecksPanel = new ListDecksPanel();
 
-		createDeckPanel = new CreateDeckPanel();
+		createDeckPanel = new CreateDeckPanel(listDecksPanel);
 
-		createDeckPanel.getBtnSubmit().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				listDecksPanel.refresh();
-			}
-			
-		});
+//		createDeckPanel.getBtnSubmit().addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				listDecksPanel.refresh();
+//			}
+//			
+//		});
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();

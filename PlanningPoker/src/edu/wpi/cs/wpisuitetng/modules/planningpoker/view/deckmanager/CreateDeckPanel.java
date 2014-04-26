@@ -20,10 +20,12 @@ public class CreateDeckPanel extends JPanel{
 	private JPlaceholderTextField deckName;
 	private JButton btnSubmit;
 	private Deck deck;
+	private ListDecksPanel listDecksPanel;
 	private final String PLACEHOLDER_TEXT = "Enter Deck Name Here";
 
-	public CreateDeckPanel(){
+	public CreateDeckPanel(ListDecksPanel listDecksPanel){
 
+		this.listDecksPanel = listDecksPanel;
 		deckName = new JPlaceholderTextField(PLACEHOLDER_TEXT);
 		btnSubmit = new JButton("Create Deck");
 
@@ -49,7 +51,7 @@ public class CreateDeckPanel extends JPanel{
 
 		deck = null;
 
-		btnSubmit.addActionListener(new AddDeckController(this, PLACEHOLDER_TEXT));
+		btnSubmit.addActionListener(new AddDeckController(this, PLACEHOLDER_TEXT, listDecksPanel));
 	}
 
 	/**

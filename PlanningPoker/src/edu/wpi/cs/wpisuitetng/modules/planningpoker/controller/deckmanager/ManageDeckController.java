@@ -148,5 +148,9 @@ public class ManageDeckController {
 		decks.remove(d);
 	}
 	
+	public void addDeck(Deck deck) {
+		decks.add(deck);
+	}
+	
 	
 }
