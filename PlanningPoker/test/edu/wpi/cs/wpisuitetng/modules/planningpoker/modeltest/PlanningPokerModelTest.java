@@ -97,6 +97,31 @@ public class PlanningPokerModelTest {
 		assertTrue(retrievedAllGames.contains(newGame3));
 
 	}
+
+	@Test
+	public void getGamesTest() throws WPISuiteException{
+		model = PlanningPokerModel.getInstance();
+		model.emptyModel();
+
+		Game newGame1 = new Game("newGame1", start, end, "default");
+		newGame1.setId(1);
+		model.AddGame(newGame1);
+
+		Game newGame2 = new Game("newGame2", start, end, "default");
+		newGame2.setId(2);
+		model.AddGame(newGame2);
+		
+		Game newGame3 = new Game("newGame3", start, end, "default");
+		newGame2.setId(3);
+		model.AddGame(newGame3);
+		
+		List<Game> retrievedAllGames = model.getGames();
+		assertEquals(retrievedAllGames.size(), 3);
+		assertTrue(retrievedAllGames.contains(newGame1));
+		assertTrue(retrievedAllGames.contains(newGame2));
+		assertTrue(retrievedAllGames.contains(newGame3));
+
+	}	
 	
 	@Test
 	public void addAllGamesTest() throws WPISuiteException{
@@ -111,11 +136,11 @@ public class PlanningPokerModelTest {
 		newGame2.setId(2);
 		gameArray[1] = newGame2;
 		Game newGame3 = new Game("newGame3", start, end, "default");
-		newGame2.setId(3);
+		newGame3.setId(3);
 		gameArray[2] = newGame3;
-		
+	
 		model.addAllGames(gameArray);
-		
+
 		Game game1 = model.getElementAt(2);
 		Game game2 = model.getElementAt(1);
 		Game game3 = model.getElementAt(0);
