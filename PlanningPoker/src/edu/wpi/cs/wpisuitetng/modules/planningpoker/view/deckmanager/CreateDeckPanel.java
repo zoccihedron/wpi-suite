@@ -12,10 +12,10 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddDe
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
 public class CreateDeckPanel extends JPanel{
-	JTextField deckName;
-	JButton btnSubmit;
 	
-	Deck deck;
+	private JTextField deckName;
+	private JButton btnSubmit;
+	private Deck deck;
 	
 	public CreateDeckPanel(){
 		deckName = new JTextField("Deck");
@@ -57,5 +57,9 @@ public class CreateDeckPanel extends JPanel{
 	 */
 	public String getDeckName() {
 		return deckName.getText();
+	}
+	
+	public JButton getBtnSubmit() {
+		return btnSubmit;
 	}
 }

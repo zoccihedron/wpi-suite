@@ -13,6 +13,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
@@ -32,6 +34,14 @@ public class DeckDataPanel extends JPanel{
 		listDecksPanel = new ListDecksPanel();
 
 		createDeckPanel = new CreateDeckPanel();
+
+		createDeckPanel.getBtnSubmit().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listDecksPanel.refresh();
+			}
+			
+		});
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();

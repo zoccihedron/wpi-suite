@@ -26,8 +26,11 @@ import javax.swing.tree.TreeSelectionModel;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
+import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
  * Panel on the left hand side of the deck manager that displays all decks
@@ -44,6 +47,16 @@ TreeSelectionListener {
 	public ListDecksPanel() {
 		
 		this.setViewportView(deckTree);
+		try{
+			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
+				ManageDeckController.getInstance().updateDecks();
+			}
+		}
+
+		catch(RuntimeException exception){
+			exception.printStackTrace();
+		}
+		
 		this.refresh();
 
 		// Create the nodes.
@@ -51,10 +64,12 @@ TreeSelectionListener {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
+				refresh();
 			}
 			
 			@Override
 			public void componentMoved(ComponentEvent e) {
+				refresh();
 			}
 			
 			@Override
@@ -64,6 +79,7 @@ TreeSelectionListener {
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
+				refresh();
 			}
 		});
 
