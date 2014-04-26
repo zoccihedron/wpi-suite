@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -28,15 +29,16 @@ public class CreateDeckPanel extends JPanel{
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.weightx = 0.6;
+		constraints.weightx = 0.75;
 		constraints.anchor = constraints.WEST;
 		this.add(deckName, constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 1;
 		constraints.gridy = 0;
+		constraints.insets = new Insets(0, 5, 0, 0);
 		constraints.gridwidth = 1;
-		constraints.weightx = 0.4;
+		constraints.weightx = 0.25;
 		constraints.anchor = constraints.EAST;
 		this.add(btnSubmit, constraints);
 		
