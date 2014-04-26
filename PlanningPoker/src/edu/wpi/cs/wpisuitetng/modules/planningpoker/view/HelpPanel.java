@@ -11,52 +11,101 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 
-import javax.swing.JLabel;
+import javax.swing.DropMode;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.HelpPanelController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 
 /**
  * @author Codon Bleu
  *
  */
 @SuppressWarnings("serial")
-public class HelpPanel extends JSplitPane {
-	private final HelpTopicsPanel topicsPanel;
-	private final JPanel helpPanel;
-	private final JLabel titleText;
-	
+public class HelpPanel extends JPanel
+implements TreeSelectionListener {
+	private JPanel helpInfoPane;
+	private JTree tree;
+
 	public HelpPanel() {
-		topicsPanel = new HelpTopicsPanel();
-		helpPanel = new JPanel();
+		super(new GridLayout(1,0));
 		
-		setLayout(new BorderLayout(0, 0));
+		//Create the nodes.
+		DefaultMutableTreeNode top =
+				new DefaultMutableTreeNode("Help Topics");
+		createNodes(top);
 
-		
-		final Dimension minimumSize = new Dimension(250, 300);
-		topicsPanel.setMinimumSize(minimumSize);
-		
+		//Create a tree that allows one selection at a time.
+		tree = new JTree(top);
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		tree.setToggleClickCount(0);
 
-		//HelpPanelController.getInstance().setGameSummary(topicsPanel);
-		//HelpPanelController.getInstance().setListGames(helpPanel);
+		tree.setCellRenderer(new CustomTreeCellRenderer());
+		tree.addTreeSelectionListener(this);
 		
-		setLeftComponent(topicsPanel);
-		setRightComponent(helpPanel);
-		
-		setDividerLocation(300);
-		
-		titleText = new JLabel("How to Use Planning Poker");
-		helpPanel.add(titleText);
+		tree.setDragEnabled(true);
+		tree.setDropMode(DropMode.ON);
+
+		//Create the scroll pane and add the tree to it. 
+		JScrollPane treeView = new JScrollPane(tree);
+
+		helpInfoPane = new HelpTopics();
+		JScrollPane helpInfoView = new JScrollPane(helpInfoPane);
+
+		//Add the scroll panes to a split pane.
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setLeftComponent(treeView);
+		splitPane.setRightComponent(helpInfoView);
+
+		Dimension minimumSize = new Dimension(300, 500);
+		helpInfoView.setMinimumSize(minimumSize);
+		treeView.setMinimumSize(minimumSize);
+		splitPane.setDividerLocation(300);
+
+		//Add the split pane to this panel.
+		add(splitPane);
+	}
+
+	/** Required by TreeSelectionListener interface. */
+	public void valueChanged(TreeSelectionEvent e) {
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+				tree.getLastSelectedPathComponent();
+
+		if (node == null) return;
+
+		Object nodeInfo = node.getUserObject();
+		if (node.isLeaf()) {
+			HelpTopics helpTopic = (HelpTopics)nodeInfo;
+			helpInfoPane.add(helpTopic);
+		}
+	}
+
+	private void createNodes(DefaultMutableTreeNode top) {
+		DefaultMutableTreeNode category = null;
+		DefaultMutableTreeNode topic = null;
+
+		category = new DefaultMutableTreeNode("Creating a Game");
+		top.add(category);
+
+		//original Tutorial
+		topic = new DefaultMutableTreeNode(new HelpTopics
+				("Validation Fields",
+						"Hello"));
+		category.add(topic);
 	}
 
 	/**
 	 * Says that the help tab should always be ready to close
-	 * @return always true
+	 * @return true
 	 */
 	public boolean isReadyToClose() {
 		return true;
