@@ -22,6 +22,8 @@ import java.util.List;
 import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -76,6 +78,7 @@ public class ManageDeckController {
 			public void responseSuccess(IRequest iReq) {
 				final Deck[] deckArray = Deck.fromJsonArray(iReq.getResponse().getBody());
 				setDecks(new ArrayList<Deck>(Arrays.asList(deckArray)));
+				setDecksInUse();
 			}
 			
 			@Override
@@ -104,6 +107,21 @@ public class ManageDeckController {
 		return instance;
 		
 	}
+	
+	public void setDecksInUse(){
+		//TODO decks need to be changed to stored as 
+		//ints in the game, not strings
+		List<Game> games = 
+				PlanningPokerModel.getInstance().getAllGames();
+		List<String> deckIds = new ArrayList<String>();
+		for(Game g: games){
+			deckIds.add(g.getDeck());
+		}
+		
+		for(Deck d: decks){
+			d.setInUse(deckIds.contains(d.getName()));
+		}
+	}
 
 	/**
 	 * @return the decks
@@ -118,4 +136,5 @@ public class ManageDeckController {
 	public void setDecks(List<Deck> decks) {
 		this.decks = decks;
 	}
+	
 }

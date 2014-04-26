@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DropMode;
@@ -80,27 +81,28 @@ TreeSelectionListener {
 				"Decks"); // makes a starting node
 	
 		DefaultMutableTreeNode deckNode = null;
-		DefaultMutableTreeNode createdDecksCategory = null;
-		DefaultMutableTreeNode viewableDecksCategory = null;
+		DefaultMutableTreeNode editableDecksCategory = null;
+		DefaultMutableTreeNode inUseDecksCategory = null;
 		
-		createdDecksCategory = new DefaultMutableTreeNode("Created Decks");
-		viewableDecksCategory = new DefaultMutableTreeNode("Viewable Decks");
+		editableDecksCategory = new DefaultMutableTreeNode("Decks Not In Use");
+		inUseDecksCategory = new DefaultMutableTreeNode("Decks In Use");
 		
 		final String user = ConfigManager.getInstance().getConfig().getUserName();
 		
 		for(Deck d : decks) {
-			if(d.getDeckCreator().equals(user)) {
+			d.setMyDeck(d.getDeckCreator().equals(user));
+			if(d.isInUse()) {
 				deckNode = new DefaultMutableTreeNode(d);
-				createdDecksCategory.add(deckNode);
+				inUseDecksCategory.add(deckNode);
 			}
 			else {
 				deckNode = new DefaultMutableTreeNode(d);
-				viewableDecksCategory.add(deckNode);
+				editableDecksCategory.add(deckNode);
 			}
 		}
 		
-		top.add(createdDecksCategory);
-		top.add(viewableDecksCategory);
+		top.add(editableDecksCategory);
+		top.add(inUseDecksCategory);
 
 		// create the tree with the top node as the top
 		deckTree = new JTree(top); 
@@ -182,8 +184,11 @@ TreeSelectionListener {
 
 	}
 	
+	/**
+	 * Changes the decViewController to the passed in contoller
+	 * @param updateDeckViewController
+	 */
 	public void setDeckViewController(UpdateDeckViewController updateDeckViewController) {
 		this.updateDeckViewController = updateDeckViewController;
 	}
-
 }
