@@ -37,6 +37,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  *
  */
 public class DeckControlsPanel extends JPanel {
+
 	private JButton btnRemoveDeck;
 	private JButton btnRemoveCard;
 	private JButton btnAddCard;
@@ -44,6 +45,10 @@ public class DeckControlsPanel extends JPanel {
 	private Deck deck;
 	private CardViewPanel cardView;
 	private ListDecksPanel listDecksPanel;
+	
+	public JTextField fieldDeckName;
+	private JButton btnUpdateDeckName;
+	
 	private JLabel deckRemovedMessage;
 	private JLabel message;
 	private ButtonGroup cardSelectGroup;
@@ -60,6 +65,26 @@ public class DeckControlsPanel extends JPanel {
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		this.setLayout(new GridBagLayout());
+		
+		//DECK NAME TEXT FIELD
+		fieldDeckName = new JTextField("");
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		constraints.weightx = 0.5;
+		constraints.gridwidth = 2;
+		constraints.anchor = GridBagConstraints.SOUTH;
+		this.add(fieldDeckName, constraints);
+		
+		//DECK NAME TEXT FIELD
+		btnUpdateDeckName = new JButton("Rename Deck");
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 2;
+		constraints.gridy = 4;
+		constraints.weightx = 0.5;
+		constraints.gridwidth = 1;
+		constraints.anchor = GridBagConstraints.SOUTH;
+		this.add(btnUpdateDeckName, constraints);
 				
 		//REMOVE DECK BUTTON
 		btnRemoveDeck = new JButton("Remove Deck");
@@ -253,4 +278,5 @@ public class DeckControlsPanel extends JPanel {
 	public void setDeckMultiSelectStatus(boolean multiSelectStatus) {
 		deck.setCanSelectMultipleCards(multiSelectStatus);
 	}
+	
 }
