@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -307,12 +308,62 @@ public class PlanningPokerEntityManagerTest {
 	public void getIdCountTest() throws WPISuiteException{
 		Game[] retrievedGames = (Game[])manager.getAll(s1);
 		int count = manager.getIdCount();
-		assertEquals(count, 0); //should be false
+		assertEquals(count, 0); //should be false (3)
 		
 	}
 
+	@Test
+	public void getAllUsersTest() throws WPISuiteException{
+		List<User> userList = manager.getAllUsers();
+		int size = userList.size();
+		assertEquals(size,1);
+
+	}
 
 
+	@Test
+	public void advancedPostCloseTest() throws WPISuiteException{
+		Game closedGame = Game.fromJson(manager.advancedPost(s1,"close",draftGame.toJSON()));
+		assertEquals(closedGame.getId(), draftGame.getId());
+		assertEquals(closedGame.getName(), draftGame.getName());
+		assertEquals(closedGame.getStatus(),Game.GameStatus.CLOSED);
+	}
+
+
+	@Test
+	public void advancedPostEndTest() throws WPISuiteException{
+		Game endedGame = Game.fromJson(manager.advancedPost(s1,"close",draftGame.toJSON()));
+		assertEquals(endedGame.getId(), draftGame.getId());
+		assertEquals(endedGame.getName(), draftGame.getName());
+		assertEquals(endedGame.getStatus(),Game.GameStatus.CLOSED);
+
+	}
+
+	@Test
+	public void advancedPostEditTest() throws WPISuiteException{
+		String ableToEdit = manager.advancedPost(s1, "edit", draftGame.toJSON());
+		assertEquals(ableToEdit, "true");
+
+		draftGame.setHasBeenEstimated(true);
+		String hasBeenVotedOn = manager.advancedPost(s1, "edit", draftGame.toJSON());
+		Game edittedGame = (Game) db.retrieve(Game.class, "id", draftGame.getId()).get(0);
+		assertEquals(hasBeenVotedOn, "*This game has been recently voted on. Editing is no longer available");
+		assertTrue(edittedGame.isEditing());
+
+	}
+
+	@Test
+	public void advancedPostEndEditTest() throws WPISuiteException{
+		String ableToEdit = manager.advancedPost(s1, "endEdit", draftGame.toJSON());
+		assertEquals(ableToEdit, "true");
+
+		draftGame.setHasBeenEstimated(true);
+		String hasBeenVotedOn = manager.advancedPost(s1, "endEdit", draftGame.toJSON());
+		Game edittedGame = (Game) db.retrieve(Game.class, "id", draftGame.getId()).get(0);
+		assertEquals(hasBeenVotedOn, "*This game has been recently voted on. Editing is no longer available");
+		assertFalse(edittedGame.isEditing());
+
+	}
 
 	
 }
