@@ -28,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
 
 import java.util.Date;
@@ -57,7 +58,7 @@ public class PlanningPokerEntityManagerTest {
 	@Before
 	public void setUp() throws WPISuiteException{
 		
-		User dummyUser = new User("Bob", "bob", "abc123", 1);
+		dummyUser = new User("Bob", "bob", "abc123", 1);
 		start = new Date();
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
@@ -304,13 +305,7 @@ public class PlanningPokerEntityManagerTest {
 		}
 	}
 	
-	@Test
-	public void getIdCountTest() throws WPISuiteException{
-		Game[] retrievedGames = (Game[])manager.getAll(s1);
-		int count = manager.getIdCount();
-		assertEquals(count, 0); //should be false (3)
-		
-	}
+
 
 	@Test
 	public void getAllUsersTest() throws WPISuiteException{
@@ -365,5 +360,46 @@ public class PlanningPokerEntityManagerTest {
 
 	}
 
+
+	@Test
+	public void advancedPostVoteTest() throws WPISuiteException{
+		Estimate newEstimate = new Estimate(0, inProgressGame.getId());
+		inProgressGame.addEstimate(newEstimate);
+		newEstimate.makeEstimate(dummyUser.getUsername(),3);
+		String makeNewEstimate = manager.advancedPost(s1, "vote", newEstimate.toJSON());
+		assertEquals(makeNewEstimate, "true");
+		Game votedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		assertEquals(votedGame.findEstimate(newEstimate.getReqID()).getEstimate(dummyUser.getUsername()),3);
+
+		inProgressGame.setStatus(Game.GameStatus.ENDED);
+		manager.update(s1,inProgressGame.toJSON());
+
+		String estimateOnEndedGame = manager.advancedPost(s1, "vote", newEstimate.toJSON());
+		assertEquals(estimateOnEndedGame, "*Voting is not currently allowed: The game has ended.");
+
+	}
+
+
+	@Test
+	public void advancedPostSendTest() throws WPISuiteException{
+		Estimate newEstimate = new Estimate(0, inProgressGame.getId());
+		inProgressGame.addEstimate(newEstimate);
+		newEstimate.makeEstimate(dummyUser.getUsername(),3);
+		String makeNewEstimate = manager.advancedPost(s1, "send", newEstimate.toJSON());
+		assertEquals(makeNewEstimate, "true");
+		Game votedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		assertTrue(votedGame.findEstimate(newEstimate.getReqID()).estimationHasBeenSent());
+
+	}
+
+
+	//This test fails
+	@Test
+	public void getIdCountTest() throws WPISuiteException{
+		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		int count = manager.getIdCount();
+		assertEquals(count, 3); 
+		
+	}
 	
 }
