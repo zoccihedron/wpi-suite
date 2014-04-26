@@ -70,7 +70,7 @@ public class GameTest {
 		
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
-		endTime.set(start.getYear(), 1,1);
+		endTime.set(start.getYear() + 1, 1,1);
 		Date end = endTime.getTime();
 		
 		Game testGameConstructor = new Game("test",start,end, "default");
