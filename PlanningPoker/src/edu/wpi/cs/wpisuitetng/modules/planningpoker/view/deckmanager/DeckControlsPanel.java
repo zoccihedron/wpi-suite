@@ -168,11 +168,13 @@ public class DeckControlsPanel extends JPanel {
 		singleSelectBtn.addActionListener(multiSelectController);
 		multiSelectBtn.addActionListener(multiSelectController);
 
-//		if(deck.canSelectMultipleCards()){
-//			cardSelectGroup.setSelected((ButtonModel) multiSelectBtn, true);
-//		} else {
-//			cardSelectGroup.setSelected((ButtonModel) singleSelectBtn, true);
-//		}
+		if(deck.canSelectMultipleCards()){
+			singleSelectBtn.setSelected(false);
+			multiSelectBtn.setSelected(true);
+		} else {
+			singleSelectBtn.setSelected(true);
+			multiSelectBtn.setSelected(false);
+			}
 		
 		
 		} else{
