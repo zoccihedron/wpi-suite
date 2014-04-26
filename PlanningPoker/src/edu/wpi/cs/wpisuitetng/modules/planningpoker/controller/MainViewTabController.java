@@ -176,6 +176,10 @@ public class MainViewTabController {
 			if (((ViewResultsPanel) tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
+		} else if (tabToClose instanceof DeckManagerPanel) {
+			if(((DeckManagerPanel) tabToClose).isReadyToClose()){
+				mainView.remove(tabToClose);
+			}
 		}
 	}
 

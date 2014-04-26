@@ -49,5 +49,9 @@ public class DeckManagerPanel extends JPanel{
 		splitPane.setRightComponent(deckManager);
 		add(splitPane, BorderLayout.CENTER);
 	}
+	
+	public boolean isReadyToClose() {
+		return true;
+	}
 }
 

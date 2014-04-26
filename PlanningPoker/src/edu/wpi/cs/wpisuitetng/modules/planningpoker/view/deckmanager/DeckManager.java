@@ -67,9 +67,12 @@ public class DeckManager extends JPanel{
 	 * @param deck the deck to update the card view with
 	 */
 	public void updateDeck(Deck deck){
-		cardViewPanel.cardView(deck);
 		deckControlsPanel.setActionListeners(deck);
+
 		deckControlsPanel.fieldDeckName.setText(listDecksPanel.getSelected().getName());
+
+		cardViewPanel.updateView(deck);
+
 	}
 
 }

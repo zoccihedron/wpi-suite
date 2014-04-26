@@ -32,6 +32,8 @@ public class Deck extends AbstractModel{
 	private boolean canSelectMultipleCards = false;
 	private List<Integer> cardValues = new ArrayList<Integer>();
 	private int id;
+	private boolean inUse = false;
+	private boolean myDeck = false;
 	
 	/**
 	 * Constructor for Deck
@@ -192,7 +194,50 @@ public class Deck extends AbstractModel{
 		id = id_count;
 	}
 	
+	/**
+	 * A boolean that keeps track if the deck
+	 * is being used by a game
+	 * @return the inUse
+	 */
+	public boolean isInUse() {
+		return inUse;
+	}
+
+	/**
+	 * set the deck if it's in use or not
+	 * @param inUse the inUse to set
+	 */
+	public void setInUse(boolean inUse) {
+		this.inUse = inUse;
+	}
+
 	public String toString() {
-		return this.getName();
+		String returnString = name;
+		
+		if(myDeck){
+			returnString = name + " (Owner)";
+		}
+		
+		return returnString;
+	}
+
+	/**
+	 * A boolean to set before to claim a deck
+	 * @return the myDeck
+	 */
+	public boolean isMyDeck() {
+		return myDeck;
+	}
+
+	/**
+	 * use this to claim the deck as the current users
+	 * @param myDeck the myDeck to set
+	 */
+	public void setMyDeck(boolean myDeck) {
+		this.myDeck = myDeck;
+	}
+	
+	public boolean equals(Deck deck){
+		return this.id == deck.getId();
 	}
 }
