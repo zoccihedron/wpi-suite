@@ -27,8 +27,7 @@ public class RemoveDeckController implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Deck toDelete = view.getDeck();
 		final Request request = Network.getInstance().makeRequest(
-				"planningpoker/deck", HttpMethod.DELETE);
-		request.setBody(toDelete.toJSON());
+				"planningpoker/deck/" + toDelete.getId(), HttpMethod.DELETE);
 		request.addObserver(new RequestObserver(){
 
 			@Override
@@ -49,12 +48,15 @@ public class RemoveDeckController implements ActionListener{
 			}
 			
 		});
+		request.send();
+		
 	}
 
 	public void successfulRemoval(){
-		listDecksPanel.refresh();
+		ManageDeckController.getInstance().updateDecks();
 		cardView.updateView();
 		view.disableControls();
 		view.updateDeckRemovalMessage("Deck Successfully Removed");
+		listDecksPanel.refresh();
 	}
 }
