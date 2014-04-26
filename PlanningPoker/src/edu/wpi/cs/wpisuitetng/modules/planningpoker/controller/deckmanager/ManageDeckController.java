@@ -118,4 +118,5 @@ public class ManageDeckController {
 	public void setDecks(List<Deck> decks) {
 		this.decks = decks;
 	}
+	
 }

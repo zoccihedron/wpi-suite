@@ -37,13 +37,13 @@ public class RemoveDeckController implements ActionListener{
 
 			@Override
 			public void responseError(IRequest iReq) {
-				System.err.println("Error: The request to delete the deck failed");
+				System.err.println("The request to delete the deck failed");
 				
 			}
 
 			@Override
 			public void fail(IRequest iReq, Exception exception) {
-				System.err.println("Fail: The request to delete the deck failed" + exception.toString());
+				System.err.println("The request to delete the deck failed");
 				
 			}
 			
@@ -53,6 +53,7 @@ public class RemoveDeckController implements ActionListener{
 	}
 
 	public void successfulRemoval(){
+		ManageDeckController.getInstance().updateDecks();
 		cardView.updateView();
 		view.disableControls();
 		view.updateDeckRemovalMessage("Deck Successfully Removed");
