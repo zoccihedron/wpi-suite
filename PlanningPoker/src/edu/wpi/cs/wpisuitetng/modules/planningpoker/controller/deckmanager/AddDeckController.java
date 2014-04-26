@@ -38,8 +38,9 @@ public class AddDeckController implements ActionListener {
 		}
 	}
 	
-	public void deckCreationSuccessful() {
-		ManageDeckController.getInstance().addDeck(deck);
+	public void deckCreationSuccessful(Deck deckAdded) {
+		ManageDeckController.getInstance().addDeck(deckAdded);
+		ManageDeckController.getInstance().updateDecks();
 		listDecksPanel.refresh();
 	}
 

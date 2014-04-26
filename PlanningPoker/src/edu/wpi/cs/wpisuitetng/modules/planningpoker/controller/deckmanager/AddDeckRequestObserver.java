@@ -16,7 +16,7 @@ public class AddDeckRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		ResponseModel response = iReq.getResponse();
 		Deck deck = Deck.fromJson(response.getBody());
-		addDeckController.deckCreationSuccessful();
+		addDeckController.deckCreationSuccessful(deck);
 	}
 
 	@Override
