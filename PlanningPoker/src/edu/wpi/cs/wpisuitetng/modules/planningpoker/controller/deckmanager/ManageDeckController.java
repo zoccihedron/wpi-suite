@@ -68,7 +68,7 @@ public class ManageDeckController {
 	 *  Send a request to the server to retrieve all decks
 	 */
 	public void updateDecks() {
-		
+
 		final Request request = Network.getInstance().makeRequest(
 				"planningpoker/deck",
 						HttpMethod.GET);
@@ -136,5 +136,17 @@ public class ManageDeckController {
 	public void setDecks(List<Deck> decks) {
 		this.decks = decks;
 	}
+
+	public void removeDeck(Deck toDelete) {
+		Deck d = null;
+		for(Deck deck : decks){
+			if(deck.getId() == toDelete.getId()){
+				d = deck;
+			}
+		}
+		
+		decks.remove(d);
+	}
+	
 	
 }

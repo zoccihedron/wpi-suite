@@ -236,4 +236,8 @@ public class Deck extends AbstractModel{
 	public void setMyDeck(boolean myDeck) {
 		this.myDeck = myDeck;
 	}
+	
+	public boolean equals(Deck deck){
+		return this.id == deck.getId();
+	}
 }
