@@ -195,4 +195,8 @@ public class Deck extends AbstractModel{
 	public String toString() {
 		return this.getName();
 	}
+	
+	public boolean equals(Deck deck){
+		return this.id == deck.getId();
+	}
 }
