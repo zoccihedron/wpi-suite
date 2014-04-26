@@ -134,10 +134,36 @@ public class Deck extends AbstractModel{
 	}
 	
 	/**
+	 * return a boolean that tell you if is usable for the new game tab
+	 * @return if the deck is usable in new game tab
+	 */
+	public boolean isUsable(){
+		int nonZeroCards = 0;
+		for(Integer card: this.getCards()){
+			if(card > 0){
+				nonZeroCards++;
+			}
+		}
+		if(nonZeroCards >= 2){
+		return true;
+		}
+		else{
+		return false;
+		}
+	}
+	
+	/**
 	 * Getter for the name field
 	 * @return The name of the deck
 	 */
 	public String getName(){
+		return name;
+	}
+	/**
+	 * Getter for the name field
+	 * @return The name of the deck
+	 */
+	public String ToString(){
 		return name;
 	}
 	

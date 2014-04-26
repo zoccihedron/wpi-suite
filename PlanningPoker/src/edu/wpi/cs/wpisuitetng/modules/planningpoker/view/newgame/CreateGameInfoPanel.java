@@ -21,6 +21,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -45,6 +46,7 @@ import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.ChangeDeadlineVisibilityController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 /**
@@ -71,12 +73,13 @@ public class CreateGameInfoPanel extends JPanel {
 	private final JRadioButton rdbtnPm;
 	private final ButtonGroup AMPMSelection;
 	private final JLabel lblDeck;
-	private final JComboBox deck;
+	private final JComboBox deckBox;
 	private final JCheckBox chckbxDeadline;
 	private Game editingGame;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
 	private Timer verificationChecker;
+	private List<Deck> decks;
 	
 	//Saved fields for checking page editing
 	private String defaultName;
@@ -152,11 +155,19 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 
 		// creates deck selector and sets it to default deck
+		Deck TextEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		TextEntry.setId(-1);
+		
 		lblDeck = new JLabel("Deck:");
-
-		final String[] decks = { "default", "text entry"};
-		deck = new JComboBox(decks);
-
+		List<Deck> copyDecks =  decks;
+		for(Deck d:copyDecks){
+			if(!d.isUsable()){
+				decks.remove(d);
+			}
+		}
+		
+		deckBox = new JComboBox(decks.toArray());
+		
 		// creates deadline checkbox
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
@@ -197,11 +208,21 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 		description.setText(editingGame.getDescription());
 		description.setBorder(jtextFieldBorder);
-
+		
+		Deck TextEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		TextEntry.setId(-1);
+		
 		lblDeck = new JLabel("Deck:");
-		final String[] decks = { "default", "text entry"};
-		deck = new JComboBox(decks);
-		deck.setSelectedItem(editingGame.getDeck());
+		List<Deck> copyDecks =  decks;
+		for(Deck d:copyDecks){
+			if(!d.isUsable()){
+				decks.remove(d);
+			}
+		}
+		
+		deckBox = new JComboBox(decks.toArray());
+		
+		deckBox.setSelectedItem(editingGame.getDeck());
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
@@ -345,14 +366,14 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblDeck, constraints);
 
 		// DECK SELECTOR
-		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deckBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 2;
 		constraints.gridy = 9;
-		add(deck, constraints);
+		add(deckBox, constraints);
 
 		// DEADLINE CHECKBOX
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -570,7 +591,7 @@ public class CreateGameInfoPanel extends JPanel {
 			defaultDate = null;
 		}
 		defaultReqs = parentPanel.getGameRequirements();
-		defaultDeck = (String) deck.getSelectedItem();
+		defaultDeck = (String) deckBox.getSelectedItem();
 	}
 	
 	/**
@@ -592,7 +613,7 @@ public class CreateGameInfoPanel extends JPanel {
 			}
 		}
 
-		result &= defaultDeck.equals(deck.getSelectedItem());
+		result &= defaultDeck.equals(deckBox.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
 		return !result;
 	}
@@ -680,11 +701,11 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date(), "default");
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), 1);
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
-		newGame.setDeck((String) deck.getSelectedItem());
+		newGame.setDeck(((Deck)deckBox.getSelectedItem()).getId());
 
 		if (chckbxDeadline.isSelected()) {
 			newGame.setHasDeadline(true);

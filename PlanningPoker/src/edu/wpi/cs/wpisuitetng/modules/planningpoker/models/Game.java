@@ -40,7 +40,7 @@ public class Game extends AbstractModel {
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
-	private String deck = "";
+	private int deck;
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
@@ -76,13 +76,13 @@ public class Game extends AbstractModel {
 	 * 			  name of the deck
 	 * 
 	 */
-	public Game(String name, Date startTime, Date endTime, String deckName) {
+	public Game(String name, Date startTime, Date endTime, int deckId) {
 		// TODO: whether a session could be add to the parameter of game's
 		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
-		this.setDeck(deckName);
+		this.setDeck(deckId);
 	}
 
 	/**
@@ -628,14 +628,14 @@ public class Game extends AbstractModel {
 	/**
 	 * @return the deck
 	 */
-	public String getDeck() {
+	public int getDeck() {
 		return deck;
 	}
 
 	/**
 	 * @param deck the deck to set
 	 */
-	public void setDeck(String deck) {
+	public void setDeck(int deck) {
 		this.deck = deck;
 	}
 
