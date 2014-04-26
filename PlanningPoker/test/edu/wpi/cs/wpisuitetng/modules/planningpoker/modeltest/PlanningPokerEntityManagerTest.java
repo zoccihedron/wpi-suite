@@ -222,9 +222,11 @@ public class PlanningPokerEntityManagerTest {
 		}
 	}
 	
-	
-	public void testGetAllForEveryone() throws WPISuiteException{
-		Game[] getAllForEveryone = (Game[])manager.getAllForEveryone(s1);
+	@Test
+	public void getIdCountTest() throws WPISuiteException{
+		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		int count = manager.getIdCount();
+		assertEquals(count, 0);
 		
 	}
 	
