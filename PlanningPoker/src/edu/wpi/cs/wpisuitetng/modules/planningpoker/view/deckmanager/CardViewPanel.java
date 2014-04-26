@@ -66,7 +66,8 @@ public class CardViewPanel extends JScrollPane{
 		constraints.weighty = 1.0;
 		
 		currentView.removeAll();
-
+		toggleBtns = new ArrayList<JToggleButton>();
+		
 		for(Integer card: deck.getCards()){
 			
 			final JToggleButton cardToAdd = new JToggleButton(Integer.toString(card), img);
@@ -97,6 +98,7 @@ public class CardViewPanel extends JScrollPane{
 	public void updateView(Deck deck){
 		cardView(deck);
 		this.setViewportView(currentView);
+		this.revalidate();
 	}
 	
 	public void updateView() {

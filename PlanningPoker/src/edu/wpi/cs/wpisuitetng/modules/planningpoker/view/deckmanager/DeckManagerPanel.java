@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
@@ -39,12 +40,18 @@ public class DeckManagerPanel extends JPanel{
 		setLayout(new BorderLayout());
 		DeckDataPanel deckData = new DeckDataPanel();
 		DeckManager deckManager = new DeckManager(deckData.getListDecksPanel());
+		UpdateDeckViewController updateDeckViewController = new UpdateDeckViewController(deckManager);
+		deckData.setListDecksController(updateDeckViewController);
 		//TODO Needs arguements
-		ManageDeckController controller = new ManageDeckController();
+		ManageDeckController controller = ManageDeckController.getInstance();
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(deckData);
 		splitPane.setRightComponent(deckManager);
 		add(splitPane, BorderLayout.CENTER);
+	}
+	
+	public boolean isReadyToClose() {
+		return true;
 	}
 }
 

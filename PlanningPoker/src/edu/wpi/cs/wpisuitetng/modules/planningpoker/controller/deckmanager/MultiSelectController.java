@@ -2,9 +2,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager.CardViewPanel;
+import javax.swing.JRadioButton;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager.DeckControlsPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
@@ -12,31 +12,32 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
-public class RemoveCardController implements ActionListener{
-	private DeckControlsPanel view;
-	private CardViewPanel cardView;
+public class MultiSelectController implements ActionListener{
 	
-	public RemoveCardController(DeckControlsPanel view){
+	private DeckControlsPanel view;
+	
+	public MultiSelectController(DeckControlsPanel view){
 		this.view = view;
-		this.cardView = view.getCardView();
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ArrayList<Integer> toRemove = cardView.getSelected();
-		view.saveMessage("<html>Saving changes...</html>");
+		JRadioButton button = (JRadioButton) e.getSource();
 		
-		for(Integer cardValue: toRemove){
-			view.getDeck().removeCard(cardValue);
+		if(button.getText().equals(view.getSingleSelectText())){
+			view.setDeckMultiSelectStatus(false);
+		} else{
+			view.setDeckMultiSelectStatus(true);
 		}
 		
 		final Request request = Network.getInstance().makeRequest(
-				"planningpoker/deck", HttpMethod.POST);
+					"planningpoker/deck", HttpMethod.POST);
 		request.setBody(view.getDeck().toJSON());
 		request.addObserver(new RequestObserver(){
 
 			@Override
 			public void responseSuccess(IRequest iReq) {
-				successfulRemoval();
+				successfulStatusUpdate();
 			}
 
 			@Override
@@ -52,12 +53,10 @@ public class RemoveCardController implements ActionListener{
 			
 		});
 		request.send();
-		
 	}
 	
-	public void successfulRemoval(){
-		cardView.updateView(view.getDeck());
-		view.saveMessage("<html>Changes saved.</html>");
+	public void successfulStatusUpdate(){
+		view.getCardView().updateView(view.getDeck());
 	}
 
 }
