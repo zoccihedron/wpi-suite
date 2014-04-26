@@ -39,26 +39,28 @@ import java.util.Date;
  */
 public class PlanningPokerEntityManagerTest {
 	
-	static MockData db;
-	static Game draftGame;
-	static Game draftGameYouCreated;
-	static Game inProgressGame;
-	static PlanningPokerEntityManager manager;
-	static User dummyUser, dummyUser2;
-	static Session s1, s2;
-	static String mockSsid = "abc123";
-	static Project testProject;
-	static Project otherProject;
+	MockData db;
+	Game draftGame;
+	Game draftGameYouCreated;
+	Game inProgressGame;
+	PlanningPokerEntityManager manager;
+	User dummyUser, dummyUser2;
+	Session s1, s2;
+	String mockSsid = "abc123";
+	Project testProject;
+	Project otherProject;
+	Date start;
+	Date end;
 	
 	
 	@Before
 	public void setUp() throws WPISuiteException{
 		
 		User dummyUser = new User("Bob", "bob", "abc123", 1);
-		Date start = new Date();
+		start = new Date();
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
-		Date end = endTime.getTime();
+		end = endTime.getTime();
 		
 		dummyUser.setRole(Role.ADMIN);
 		
@@ -200,6 +202,85 @@ public class PlanningPokerEntityManagerTest {
 	}
 	
 	@Test
+	public void getAllForEveryoneTest() throws WPISuiteException{
+		//test for session 1
+		Game[] retrievedGames = (Game[])manager.getAllForEveryone(s1);
+
+		boolean containedDraftsOwnedByUser = false;
+		boolean containedGameInProgress = false;
+		boolean containedGames = false;
+
+		for(Game g: retrievedGames){
+			if(g.getName().equals("game")||g.getName().equals("game2")){
+				containedDraftsOwnedByUser = true;
+			}
+			if(g.getName().equals("game3")){
+				containedGameInProgress = true;
+			}
+			if((g.getStatus()==Game.GameStatus.DRAFT)&&(g.getGameCreator().equals(s2.getUser().getName()))){
+				containedDraftsOwnedByUser = true;
+			}
+			containedGames = true;
+		}
+
+		assertTrue(containedDraftsOwnedByUser);
+		assertTrue(containedGames);
+		assertTrue(containedGameInProgress);
+
+		//test for session 2
+		retrievedGames = (Game[])manager.getAllForEveryone(s2);
+
+		containedDraftsOwnedByUser = false;
+		containedGameInProgress = false;
+		containedGames = false;
+
+
+		for(Game g: retrievedGames){
+			if(g.getName().equals("game")||g.getName().equals("game2")){
+				containedDraftsOwnedByUser = true;
+			}
+			if(g.getName().equals("game3")){
+				containedGameInProgress = true;
+			}
+			if((g.getStatus()==Game.GameStatus.DRAFT)&&(g.getGameCreator().equals(s2.getUser().getName()))){
+				containedDraftsOwnedByUser = true;
+			}
+			containedGames = true;
+		}
+
+		assertTrue(containedDraftsOwnedByUser);
+		assertTrue(containedGames);
+		assertTrue(containedGameInProgress);
+
+	}
+
+	@Test 
+	public void updateGameTest() throws WPISuiteException{
+		draftGame.setName("gameWithNewName");
+		draftGame.setDescription("new description");
+		manager.update(s1,draftGame.toJSON());
+		Game updatedGame = (Game)db.retrieve(Game.class, "id", draftGame.getId()).get(0);
+
+		assertEquals(updatedGame, draftGame);
+		assertEquals(updatedGame.getName(), "gameWithNewName");
+		assertEquals(updatedGame.getDescription(),"new description");
+
+	}
+
+	@Test
+	public void saveGameTest() throws WPISuiteException{
+		Game newGame = new Game("newgame", start, end, "default");
+		manager.save(s1, newGame);
+		assertSame(newGame, db.retrieve(Game.class, "id", newGame.getId()).get(0));
+
+	}
+
+	@Test
+	public void getCountTest() throws WPISuiteException{
+		assertEquals(manager.Count(), 3);
+	}
+
+	@Test
 	public void getHighestIdTest() throws WPISuiteException{
 		Game[] retrievedGames = (Game[])manager.getAll(s1);
 		int largestId = manager.getGameWithLargestId(retrievedGames);
@@ -226,8 +307,12 @@ public class PlanningPokerEntityManagerTest {
 	public void getIdCountTest() throws WPISuiteException{
 		Game[] retrievedGames = (Game[])manager.getAll(s1);
 		int count = manager.getIdCount();
-		assertEquals(count, 0);
+		assertEquals(count, 0); //should be false
 		
 	}
+
+
+
+
 	
 }
