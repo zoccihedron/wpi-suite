@@ -58,7 +58,7 @@ public class GameTest {
 		
 		Estimate est1 = new Estimate(1, game1.getId());		
 		game1.addEstimate(est1);
-		
+		game1.addUser(dummyUser.getUsername());
 		est1.addUser(dummyUser.getUsername());
 		est1.addUser(dummyUser2.getUsername());
 		
@@ -70,7 +70,7 @@ public class GameTest {
 		
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
-		endTime.set(start.getYear(), 1,1);
+		endTime.set(start.getYear() + 1, 1,1);
 		Date end = endTime.getTime();
 		
 		Game testGameConstructor = new Game("test",start,end, "default");
@@ -164,7 +164,7 @@ public class GameTest {
 	
 	
 	@Test
-	public void testJSON(){
+	public void JSONtest(){
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(start.getYear(), 1,1);
@@ -175,8 +175,67 @@ public class GameTest {
 		Game fromMessage = Game.fromJson(jsonMessage);
 		
 		assertEquals(testGameConstructor.getName(), fromMessage.getName());
-		assertEquals(testGameConstructor.getStart(), fromMessage.getStart());
-		assertEquals(testGameConstructor.getEnd(), fromMessage.getEnd());
 		assertEquals(testGameConstructor.getDeck(), fromMessage.getDeck());
 	}
+	
+	@Test 
+	public void identityTest(){
+		assertTrue(game1.identify(0));
+		assertFalse(game1.identify(11));
+		assertTrue(game1.identify("0"));
+		assertFalse(game1.identify("11"));
+		assertTrue(game1.identify(game1));
+	}
+	
+	@Test
+	public void copyTest(){
+		Game copy = new Game();
+		copy.copyFrom(game1);
+		
+		assertEquals(copy.getName(), game1.getName());
+		assertEquals(copy.getParticipants(), game1.getParticipants());
+		assertEquals(copy.getGameCreator(), game1.getGameCreator());
+		assertEquals(copy.getDescription(), game1.getDescription());
+		assertEquals(copy.getRequirements(), game1.getRequirements());
+		assertEquals(copy.getStart(), game1.getStart());
+		assertEquals(copy.getEnd(), game1.getEnd());
+		assertEquals(copy.getStatus(), game1.getStatus());
+		assertEquals(copy.isHasDeadline(), game1.isHasDeadline());
+	}
+	
+	@Test
+	public void changeCreatorTest(){
+		game1.changeCreator("Testing123");
+		assertEquals("Testing123", game1.getGameCreator());
+	}
+	
+	@Test
+	public void isParticipantTest(){
+		assertTrue(game1.isParticipant(dummyUser.getUsername()));
+		assertFalse(game1.isParticipant("Nope"));
+	}
+	
+	@Test
+	public void hasUserTest(){
+		assertTrue(game1.hasUser(dummyUser.getUsername()));
+		assertFalse(game1.hasUser("Nope"));
+	}
+	
+	@Test
+	public void addUserTest(){
+		
+		assertFalse(game1.hasUser(dummyUser2.getUsername()));
+		game1.addUser(dummyUser2.getUsername());
+		assertTrue(game1.hasUser(dummyUser2.getUsername()));
+
+	}
+	
+	@Test
+	public void addEstimateTest(){
+		assertNull(game1.findEstimate(2));
+		Estimate est2 = new Estimate(2, game1.getId());		
+		game1.addEstimate(est2);
+		assertNotNull(game1.findEstimate(2));
+	}
 }
+
