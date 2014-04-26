@@ -13,7 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DropMode;
@@ -24,17 +23,17 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 
 /**
  * Panel on the left hand side of the deck manager that displays all decks
  * available
  * @author Code On Bleu
- *
+ * @version 1.0
  */
 public class ListDecksPanel  extends JScrollPane implements
 TreeSelectionListener {
@@ -75,16 +74,16 @@ TreeSelectionListener {
 	 */
 	public void refresh() {
 
-		List<Deck> decks = ManageDeckController.getInstance().getDecks();
+		final List<Deck> decks = ManageDeckController.getInstance().getDecks();
 		
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
 				"Decks"); // makes a starting node
 	
 		DefaultMutableTreeNode deckNode = null;
-		DefaultMutableTreeNode editableDecksCategory = null;
+		DefaultMutableTreeNode notInUseDecksCategory = null;
 		DefaultMutableTreeNode inUseDecksCategory = null;
 		
-		editableDecksCategory = new DefaultMutableTreeNode("Decks Not In Use");
+		notInUseDecksCategory = new DefaultMutableTreeNode("Decks Not In Use");
 		inUseDecksCategory = new DefaultMutableTreeNode("Decks In Use");
 		
 		final String user = ConfigManager.getInstance().getConfig().getUserName();
@@ -97,11 +96,11 @@ TreeSelectionListener {
 			}
 			else {
 				deckNode = new DefaultMutableTreeNode(d);
-				editableDecksCategory.add(deckNode);
+				notInUseDecksCategory.add(deckNode);
 			}
 		}
 		
-		top.add(editableDecksCategory);
+		top.add(notInUseDecksCategory);
 		top.add(inUseDecksCategory);
 
 		// create the tree with the top node as the top
@@ -177,7 +176,7 @@ TreeSelectionListener {
 		if(node.isLeaf() && !node.isRoot()) {
 			final Object nodeInfo = node.getUserObject();
 			if (nodeInfo instanceof Deck) {
-				Deck deck = (Deck) nodeInfo;
+				final Deck deck = (Deck) nodeInfo;
 				updateDeckViewController.updateDeckManager(deck);
 			}
 		}
