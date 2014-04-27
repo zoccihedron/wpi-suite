@@ -31,11 +31,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -66,9 +69,10 @@ public class GameSummaryPanel extends JPanel {
 	private JLabel reportMessage;
 	private final GameSummaryPanel  summaryPanel = this;
 	JPanel buttonsPanel;
-	Game game;
+	Game game = null;
 	private JProgressBar overallProgressBar;
 	private JProgressBar userProgressBar;
+	private Timer gameUpdateTimer;
 	
 	/**
 	 * 
@@ -102,6 +106,45 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridy = 1;
 		constraints.gridx = 0;
 		this.add(helpText, constraints);
+		
+		gameUpdateTimer = new Timer(10000, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(game != null && 
+						Network.getInstance().getDefaultNetworkConfiguration() 
+							!= null){
+					// Send a request to the core to save this game
+					final Request request = Network.getInstance().makeRequest
+							("planningpoker/game/" + game.getId(), HttpMethod.GET);
+					// add an observer to process the response
+					request.addObserver(new RequestObserver() {
+						
+						@Override
+						public void responseSuccess(IRequest iReq) {
+							final ResponseModel response = iReq.getResponse();
+							final Game returnedGame = Game.fromJsonArray(response.getBody())[0];
+							updateIfChanged(returnedGame);
+						}
+						
+						@Override
+						public void responseError(IRequest iReq) {
+							System.err.println("The request to get a game failed.");
+						}
+						
+						@Override
+						public void fail(IRequest iReq, Exception exception) {
+							System.err.println("The request to get a game failed.");
+						}
+					});
+					request.send(); // send the request
+					
+				}
+				
+			}
+		});
+		gameUpdateTimer.start();
+		
 	}
 	
 	/**
@@ -433,22 +476,7 @@ public class GameSummaryPanel extends JPanel {
 			}
 		}
 		
-		overallProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
-		overallProgressBar.setMinimum(0);
-		overallProgressBar.setMaximum(game.getMaxVotes());
-		overallProgressBar.setValue(game.getVoteCount());
-		overallProgressBar.setString("Overall Game Progress: " + 
-				Double.parseDouble(new DecimalFormat("#.##").format(
-						overallProgressBar.getPercentComplete() * 100)) + "%");
-		
-		userProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
-		userProgressBar.setMinimum(0);
-		userProgressBar.setMaximum(game.getUserMaxVotes());
-		userProgressBar.setValue(game.getUserVoteCount(
-				ConfigManager.getInstance().getConfig().getUserName()));
-		userProgressBar.setString("Your Progress: " + 
-				Double.parseDouble(new DecimalFormat("#.##").format(
-						userProgressBar.getPercentComplete() * 100)) + "%");
+		updateBars();
 		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
@@ -489,17 +517,77 @@ public class GameSummaryPanel extends JPanel {
 	}
 	
 	/**
+	 * Update the progress bars
+	 */
+	public void updateBars(){
+		overallProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
+		overallProgressBar.setMinimum(0);
+		overallProgressBar.setMaximum(game.getMaxVotes());
+		overallProgressBar.setValue(game.getVoteCount());
+		overallProgressBar.setString("Overall Game Progress: " + 
+				Double.parseDouble(new DecimalFormat("#.##").format(
+						overallProgressBar.getPercentComplete() * 100)) + "%");
+		
+		userProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
+		userProgressBar.setMinimum(0);
+		userProgressBar.setMaximum(game.getUserMaxVotes());
+		userProgressBar.setValue(game.getUserVoteCount(
+				ConfigManager.getInstance().getConfig().getUserName()));
+		userProgressBar.setString("Your Progress: " + 
+				Double.parseDouble(new DecimalFormat("#.##").format(
+						userProgressBar.getPercentComplete() * 100)) + "%");
+	}
+	
+	/**
+	 * Updates the panel if there have been changes to the current game
+	 * @param returnedGame
+	 */
+	public void updateIfChanged(Game returnedGame){
+		boolean updated = !game.isSameModifiedVersion(
+				returnedGame.getModifiedVersion());
+		boolean statusChanged = !game.getStatus().equals(
+				returnedGame.getStatus());
+		if(game.identify(returnedGame) && updated){
+			updateSummary(returnedGame);
+			new GetGamesController().initializeTable();
+			reportSuccess("<html> The game has been updated recently. </html>");
+		}
+		else if(game.identify(returnedGame) && statusChanged){
+			updateSummary(returnedGame);
+			new GetGamesController().initializeTable();
+			switch(returnedGame.getStatus()){
+				case CLOSED:
+					reportSuccess("<html> The game has been closed.</html>");
+					break;
+				case DRAFT:
+					reportSuccess("<html> The game has been created. </html>");
+					break;
+				case ENDED:
+					reportSuccess("<html> The game has ended. </html>");
+					break;
+				case IN_PROGRESS:
+					reportSuccess("<html> The game has been started. </html>");
+					break;
+				default:
+					reportSuccess("<html> The games's status has changed. </html>");
+					break;
+			}
+		}
+		else if(game.identify(returnedGame) && game.isChanged(returnedGame, 
+				ConfigManager.getInstance().getConfig().getUserName())){
+			new GetGamesController().initializeTable();
+			game = returnedGame;
+			updateBars();
+			reqPanel.updateReqSummary(game);
+		}
+	}
+	
+	/**
 	 * Gets the selected requirements
 	 * @return The list of selected requirement IDS
 	 */
 	public List<Integer> getSelectedRequirements(){
 		return reqPanel.getSelectedRequirements();
-	}
-	/**
-	 * @return the overallProgressBar
-	 */
-	public JProgressBar getOverallProgressBar() {
-		return overallProgressBar;
 	}
 	
 }

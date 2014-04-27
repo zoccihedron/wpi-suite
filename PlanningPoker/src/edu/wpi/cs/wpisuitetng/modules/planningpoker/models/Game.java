@@ -436,6 +436,35 @@ public class Game extends AbstractModel {
 	}
 	
 	/**
+	 * Checks to see if the game has been changed
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if the game has been changed
+	 */
+	public boolean isChanged(Game returnedGame, String user) {
+		boolean result = false;
+		result |= !(areUserVotesSame(returnedGame, user));
+		result |= (getVoteCount() != returnedGame.getVoteCount());
+		return result;
+	}
+
+	/**
+	 * Checks to see if all the users votes are the same
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if all the votes are the same
+	 */
+	private boolean areUserVotesSame(Game returnedGame, String user) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getEstimate(user) == 
+					returnedGame.findEstimate(reqid).getEstimate(user);
+		}
+		return result;
+	}
+	
+	/**
 	 * Checks to see if the game's version matches the other
 	 * @param otherGameVersion int of the game to compare to.
 	 * @return true if they match.
