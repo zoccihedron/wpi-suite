@@ -105,7 +105,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 0;
 		this.add(helpText, constraints);
 		
-		gameUpdateTimer = new Timer(10000, new ActionListener() {
+		gameUpdateTimer = new Timer(5000, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
