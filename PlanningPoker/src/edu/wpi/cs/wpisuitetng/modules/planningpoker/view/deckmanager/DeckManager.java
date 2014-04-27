@@ -74,8 +74,6 @@ public class DeckManager extends JPanel{
 	public void updateDeck(Deck deck){
 		deckControlsPanel.setActionListeners(deck);
 
-		deckControlsPanel.fieldDeckName.setText(listDecksPanel.getSelected().getName());
-
 		cardViewPanel.updateView(deck);
 
 	}

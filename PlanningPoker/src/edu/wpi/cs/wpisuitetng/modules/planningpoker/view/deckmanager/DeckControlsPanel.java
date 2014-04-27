@@ -51,7 +51,7 @@ public class DeckControlsPanel extends JPanel {
 	private CardViewPanel cardView;
 	private ListDecksPanel listDecksPanel;
 	
-	public JTextField fieldDeckName;
+	private JTextField fieldDeckName;
 	private JButton btnUpdateDeckName;
 	
 	private JLabel deckRemovedMessage;
@@ -190,6 +190,7 @@ public class DeckControlsPanel extends JPanel {
 			fieldAddCard.setVisible(true);
 			singleSelectBtn.setVisible(true);
 			multiSelectBtn.setVisible(true);
+			fieldDeckName.setVisible(true);
 
 			if (!(btnAddCard.getActionListeners().length == 0)) {
 				btnAddCard
@@ -229,6 +230,8 @@ public class DeckControlsPanel extends JPanel {
 				singleSelectBtn.setSelected(true);
 				multiSelectBtn.setSelected(false);
 			}
+			
+			fieldDeckName.setText(deck.getName());
 
 		} else {
 			btnAddCard.setVisible(false);
@@ -237,10 +240,11 @@ public class DeckControlsPanel extends JPanel {
 			fieldAddCard.setVisible(false);
 			singleSelectBtn.setVisible(false);
 			multiSelectBtn.setVisible(false);
+			fieldDeckName.setVisible(false);
 
 			deckRemovedMessage.setVisible(true);
 			deckRemovedMessage.setForeground(Color.BLUE);
-			deckRemovedMessage.setText("You cannot edit this deck");
+			deckRemovedMessage.setText("Deck: " + deck.getName() + " was not created by you. You cannot edit this deck");
 		}
 	}
 
@@ -393,6 +397,10 @@ public class DeckControlsPanel extends JPanel {
 	public void saveMessage(String message) {
 		saveStatusMessage.setText(message);
 		saveStatusMessage.setForeground(Color.BLUE);
+	}
+	
+	public String getFieldDeckNameText(){
+		return fieldDeckName.getText();
 	}
 
 }

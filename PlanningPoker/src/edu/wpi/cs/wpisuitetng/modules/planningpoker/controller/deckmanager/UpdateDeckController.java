@@ -28,8 +28,8 @@ public class UpdateDeckController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		updatedDeck  = new Deck(deckControlsPanel.fieldDeckName.getText(), false, new ArrayList<Integer>());
-		
+		updatedDeck  = deckControlsPanel.getDeck();
+		updatedDeck.setName(deckControlsPanel.getFieldDeckNameText());
 		// Send a request to the core to save this game
 		final Request request = Network.getInstance().makeRequest(
 				"planningpoker/deck", HttpMethod.POST);
