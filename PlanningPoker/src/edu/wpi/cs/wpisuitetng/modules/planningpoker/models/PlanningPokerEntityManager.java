@@ -13,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.swing.Timer;
 
@@ -76,7 +79,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 									g,
 									temp_db.retrieveAll(new User("", "", "", 0)),
 									Notification.ENDED, p);
-							mailer.start();
+							ExecutorService thread = Executors.newSingleThreadExecutor();
+							Future<Boolean> future = thread.submit(mailer);
 							temp_db.save(g);
 						}
 					}
@@ -108,7 +112,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if (newGame.getStatus().equals(GameStatus.IN_PROGRESS)) {
 			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User(
 					"", "", "", 0)), Notification.STARTED, s.getProject());
-			mailer.start();
+			ExecutorService thread = Executors.newSingleThreadExecutor();
+			Future<Boolean> future = thread.submit(mailer);
 		}
 
 		return db.retrieve(Game.class, "id", newGame.getId(), s.getProject())
@@ -240,7 +245,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			final Mailer mailer = new Mailer(existingGame,
 					db.retrieveAll(new User("", "", "", 0)),
 					Notification.STARTED, s.getProject());
-			mailer.start();
+			ExecutorService thread = Executors.newSingleThreadExecutor();
+			Future<Boolean> future = thread.submit(mailer);
 		}
 
 		return existingGame;
@@ -371,7 +377,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					final Mailer mailer = new Mailer(game,
 							db.retrieveAll(new User("", "", "", 0)),
 							Notification.ENDED, s.getProject());
-					mailer.start();
+					ExecutorService thread = Executors.newSingleThreadExecutor();
+					Future<Boolean> future = thread.submit(mailer);
 				}
 
 				if (!db.save(game, s.getProject())) {
@@ -446,7 +453,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			if (game.getStatus().equals(GameStatus.ENDED)) {
 				final Mailer mailer = new Mailer(game, db.retrieveAll(new User(
 						"", "", "", 0)), Notification.ENDED, s.getProject());
-				mailer.start();
+				ExecutorService thread = Executors.newSingleThreadExecutor();
+				Future<Boolean> future = thread.submit(mailer);
 			}
 
 			if (!db.save(game, s.getProject())) {
