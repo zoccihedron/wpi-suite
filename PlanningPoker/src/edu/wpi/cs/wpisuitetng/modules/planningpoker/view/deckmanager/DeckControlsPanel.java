@@ -220,7 +220,7 @@ public class DeckControlsPanel extends JPanel {
 			}
 		};
 		
-		final Timer timer = new Timer(500, removeCardListener);
+		final Timer timer = new Timer(250, removeCardListener);
 		
 		timer.start();
 
