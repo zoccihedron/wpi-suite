@@ -80,6 +80,7 @@ public class PlanningPokerEntityManagerTest {
 		s2 = new Session(dummyUser2, testProject, mockSsid);
 		
 		db = new MockData(new HashSet<Object>());
+		db.save(dummyUser);
 		manager = new PlanningPokerEntityManager(db);
 		
 		draftGame.setGameCreator(dummyUser.getUsername());
@@ -89,10 +90,6 @@ public class PlanningPokerEntityManagerTest {
 		manager.save(s1, draftGame);
 		manager.save(s1, draftGameYouCreated);
 		manager.save(s1, inProgressGame);
-
-		db.save(dummyUser);
-		
-		manager = new PlanningPokerEntityManager(db);
 	}
 	
 	@Test
@@ -397,7 +394,7 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void getIdCountTest() throws WPISuiteException{
 		int count = manager.getIdCount();
-		assertEquals(count, 3); 
+		assertEquals(count, 4); 
 		
 	}
 	
