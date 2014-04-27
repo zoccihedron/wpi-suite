@@ -34,6 +34,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ScrollablePanel;
@@ -59,8 +60,8 @@ public class DeckPanel extends JScrollPane {
 	 * decks are fully implemented
 	 * @param deck name of the deck
 	 */
-	public DeckPanel(String deck) {
-		if(deck.equals("default")){
+	public DeckPanel(int deck) {
+		if(deck == -2){
 
 			final ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
 			defaultDeckCards.add(0);
@@ -75,8 +76,20 @@ public class DeckPanel extends JScrollPane {
 			final Deck defaultDeck = new Deck("default", true, defaultDeckCards);
 			this.setViewportView(deckVersion(defaultDeck));
 		}
-		else {
+		else if(deck == -1){
 			this.setViewportView(textVersion());
+		}
+		else
+		{
+			Deck tempDeck;
+			tempDeck = ManageDeckController.getInstance().getDeckWithId(deck);
+			if(tempDeck == null){
+				this.setViewportView(textVersion());
+			}
+			else{
+			this.setViewportView(deckVersion(tempDeck));
+			}
+			
 		}
 		disableVoting();
 	}

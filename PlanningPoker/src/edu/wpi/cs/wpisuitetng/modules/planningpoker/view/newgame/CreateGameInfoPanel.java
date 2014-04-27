@@ -45,6 +45,7 @@ import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.ChangeDeadlineVisibilityController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -87,7 +88,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private Date defaultDate;
 	private boolean defaultDeadlineCheck;
 	private List<Integer> defaultReqs;
-	private String defaultDeck;
+	private Deck defaultDeckObject;
 
 	/**
 	 * This constructor is to be used when starting from a new game
@@ -155,8 +156,11 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 
 		// creates deck selector and sets it to default deck
-		Deck TextEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
-		TextEntry.setId(-1);
+		decks = ManageDeckController.getInstance().getDecks();
+		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		textEntry.setId(-1);
+		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
+		textEntry.setId(-2);
 		
 		lblDeck = new JLabel("Deck:");
 		List<Deck> copyDecks =  decks;
@@ -165,8 +169,10 @@ public class CreateGameInfoPanel extends JPanel {
 				decks.remove(d);
 			}
 		}
-		
+		decks.add(textEntry);
+		decks.add(defaultDeck);
 		deckBox = new JComboBox(decks.toArray());
+		deckBox.setSelectedItem(defaultDeck);
 		
 		// creates deadline checkbox
 		chckbxDeadline = new JCheckBox("Deadline?");
@@ -209,8 +215,12 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setText(editingGame.getDescription());
 		description.setBorder(jtextFieldBorder);
 		
-		Deck TextEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
-		TextEntry.setId(-1);
+	
+		decks = ManageDeckController.getInstance().getDecks();
+		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		textEntry.setId(-1);
+		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
+		textEntry.setId(-2);
 		
 		lblDeck = new JLabel("Deck:");
 		List<Deck> copyDecks =  decks;
@@ -219,7 +229,8 @@ public class CreateGameInfoPanel extends JPanel {
 				decks.remove(d);
 			}
 		}
-		
+		decks.add(textEntry);
+		decks.add(defaultDeck);
 		deckBox = new JComboBox(decks.toArray());
 		
 		deckBox.setSelectedItem(editingGame.getDeck());
@@ -591,7 +602,7 @@ public class CreateGameInfoPanel extends JPanel {
 			defaultDate = null;
 		}
 		defaultReqs = parentPanel.getGameRequirements();
-		defaultDeck = (String) deckBox.getSelectedItem();
+		defaultDeckObject = (Deck) deckBox.getSelectedItem();
 	}
 	
 	/**
@@ -613,7 +624,7 @@ public class CreateGameInfoPanel extends JPanel {
 			}
 		}
 
-		result &= defaultDeck.equals(deckBox.getSelectedItem());
+		result &= defaultDeckObject.equals(deckBox.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
 		return !result;
 	}
@@ -701,12 +712,11 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date(), 1);
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), -2);
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
 		newGame.setDeck(((Deck)deckBox.getSelectedItem()).getId());
-
 		if (chckbxDeadline.isSelected()) {
 			newGame.setHasDeadline(true);
 			newGame.setEnd(getDeadline());
