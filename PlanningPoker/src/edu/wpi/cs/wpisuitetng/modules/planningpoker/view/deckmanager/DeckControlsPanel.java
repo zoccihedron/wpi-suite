@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -23,6 +24,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddCardController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.MultiSelectController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveCardController;
@@ -39,10 +41,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  */
 public class DeckControlsPanel extends JPanel {
 
-	private JButton btnRemoveDeck;
-	private JButton btnRemoveCard;
-	private JButton btnAddCard;
-	private JTextField fieldAddCard;
+	private final JButton btnRemoveDeck;
+	private final JButton btnRemoveCard;
+	private final JButton btnAddCard;
+	private final JPlaceholderTextField fieldAddCard;
+	private final String PLACEHOLDER_TEXT = "Enter Card Value Here";
+
 	private Deck deck;
 	private CardViewPanel cardView;
 	private ListDecksPanel listDecksPanel;
@@ -92,20 +96,20 @@ public class DeckControlsPanel extends JPanel {
 				
 		//REMOVE DECK BUTTON
 		btnRemoveDeck = new JButton("Remove Deck");
-		//TODO: btnCancel.addActionListener(DeckManagerController.cancel());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 2;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(2, 2, 0, 0);
 		this.add(btnRemoveDeck, constraints);
 
 		//REMOVE CARD BUTTON
 		btnRemoveCard = new JButton("Remove Card");
-		//TODO: btnCancel.addActionListener(DeckManagerController.cancel());
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 2;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 2, 2, 0);
 		this.add(btnRemoveCard, constraints);
 
 		//ADD CARD BUTTON
@@ -114,14 +118,16 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 2, 2, 2);
 		this.add(btnAddCard, constraints);
 
 		//ADD CARD TEXT FIELD
-		fieldAddCard = new JTextField();
+		fieldAddCard = new JPlaceholderTextField(PLACEHOLDER_TEXT);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 0, 2, 2);
 		this.add(fieldAddCard, constraints);
 
 		//MULTI SELECT RADIO BUTTONS
@@ -130,6 +136,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(2, 2, 0, 2);
 		this.add(singleSelectBtn, constraints);
 
 		multiSelectBtn = new JRadioButton("Multiple Selection");
@@ -137,6 +144,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(2, 0, 0, 2);
 		this.add(multiSelectBtn, constraints);
 
 		cardSelectGroup = new ButtonGroup();

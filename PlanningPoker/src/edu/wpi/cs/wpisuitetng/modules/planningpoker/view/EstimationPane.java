@@ -35,6 +35,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.ViewSumController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.VoteActionController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -50,19 +51,24 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  */
 public class EstimationPane extends JPanel {
 	
-	private final JLabel lblTitle;
-	private final JLabel lblReqName;
-	private final JTextField fldReqName;
-	private final JLabel lblReqDescription;
-	private final JTextArea fldReqDescription;
-	private final JScrollPane scrollDescription;
-	private final DeckPanel deckPanel;
+	private JLabel lblTitle;
+	private JLabel lblReqName;
+	private JTextField fldReqName;
+	private JLabel lblReqDescription;
+	private JTextArea fldReqDescription;
+	private JScrollPane scrollDescription;
+	private DeckPanel deckPanel;
 	private JLabel message;
-	private final JButton voteButton;
+	private JButton voteButton;
 	private int reqid;
 	private final ListRequirementsPanel listReqPanel;
 	private Game game;
 	private Requirement req;
+	private JLabel helpTitle;
+	private JLabel helpText;
+	//this variable allows the panel to close before an estimation is selected
+	private boolean nothingHappened;
+	private JLabel currentVote;
 	
 /**
  * Constructor for panel
@@ -70,8 +76,19 @@ public class EstimationPane extends JPanel {
  * @param game
  */
 	public EstimationPane(ListRequirementsPanel listReqPanel, Game game) {
-		this.game = game;
+		initPlayGameHelpPanel();
 		this.listReqPanel = listReqPanel;
+		this.game = game;
+	}
+	
+	/**
+	 * Constructs the estimation pane with voting capabilities.
+	 */
+	public void initEstimationPane() {
+		nothingHappened = false;
+		
+		this.remove(helpText);
+		this.remove(helpTitle);
 		
 		this.setLayout(new GridBagLayout());
 
@@ -94,11 +111,38 @@ public class EstimationPane extends JPanel {
 		fldReqDescription.setEditable(false);
 		fldReqDescription.setLineWrap(true);
 		
-		deckPanel = new DeckPanel(game.getDeck());
+		deckPanel = new DeckPanel(game.getDeck(), new ViewSumController(this));
 		
 		infoPanelSetup();
 	}
-
+	
+	 /**
+	  * sets up help panel to show before a requirement has been selected
+	  */
+	public void initPlayGameHelpPanel(){
+		nothingHappened = true;
+		
+		// Set up layout constraints
+		this.setLayout(new GridBagLayout());
+		final GridBagConstraints constraints = new GridBagConstraints();
+				
+		helpTitle = new JLabel();
+		helpText = new JLabel();
+		
+		helpTitle.setText("Play Game");
+		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		
+		helpText.setText("To begin, please select a requirement from the tree on the left.");
+		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(helpTitle, constraints);
+		
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		this.add(helpText, constraints);
+	}
 	
 	/**
 	 * Sets all the grid components for either constructor
@@ -166,13 +210,27 @@ public class EstimationPane extends JPanel {
 		scrollDescription.setBorder(new EmptyBorder(0, 0, 10, 0));
 		add(scrollDescription, constraints);
 		
+		// CURRENT VOTING
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridwidth = 3;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		currentVote = new JLabel();
+		currentVote.setText("Current Vote: " + 0);
+		add(currentVote, constraints);
+		if(game.getDeck().equals("text entry")){
+			currentVote.setVisible(false);
+		}
+		
 		// DECK PANEL
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 3;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.6;
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		add(deckPanel, constraints);
 		
 		// VOTE BUTTON
@@ -183,7 +241,7 @@ public class EstimationPane extends JPanel {
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
-		constraints.gridy = 5;
+		constraints.gridy = 6;
 		constraints.ipadx = 40;
 		add(voteButton, constraints);
 		
@@ -196,7 +254,7 @@ public class EstimationPane extends JPanel {
 		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 2;
-		constraints.gridy = 5;
+		constraints.gridy = 6;
 		constraints.weightx = 0.0;
 		constraints.gridwidth = 3;
 		add(message, constraints);
@@ -205,7 +263,8 @@ public class EstimationPane extends JPanel {
 	
 		
 		// adds listener for live validation of the Estimate Field
-		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(new DocumentListener() {
+		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(
+				new DocumentListener() {
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -405,6 +464,30 @@ public class EstimationPane extends JPanel {
 		} else{
 			return deckPanel.getCardSelection();
 		}
+	}
+	
+	/**
+	 * This function updates the sum of voting by changing the content of label
+	 * @param sum the updated sum that needs to show up
+	 */
+	public void updateSum(int sum){
+		currentVote.setText("Current Vote: " + sum);
+
+		
+	}
+
+	/**
+	 * @return the nothingHappened
+	 */
+	public boolean isNothingHappened() {
+		return nothingHappened;
+	}
+
+	/**
+	 * @param nothingHappened the nothingHappened to set
+	 */
+	public void setNothingHappened(boolean nothingHappened) {
+		this.nothingHappened = nothingHappened;
 	}
 
 }

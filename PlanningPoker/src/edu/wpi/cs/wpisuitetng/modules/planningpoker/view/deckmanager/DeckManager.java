@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JPanel;
 
@@ -47,16 +48,20 @@ public class DeckManager extends JPanel{
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 1;
-		constraints.gridy = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.8;
 		this.add(cardViewPanel, constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 1;
-		constraints.gridy = 2;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.2;
 		this.add(deckControlsPanel, constraints);
 	}
