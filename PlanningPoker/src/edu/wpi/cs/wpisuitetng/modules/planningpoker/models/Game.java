@@ -445,6 +445,17 @@ public class Game extends AbstractModel {
 		boolean result = false;
 		result |= !(areUserVotesSame(returnedGame, user));
 		result |= (getVoteCount() != returnedGame.getVoteCount());
+		result |= !(areFinalEstimatesSame(returnedGame));
+		return result;
+	}
+
+	private boolean areFinalEstimatesSame(Game returnedGame) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getFinalEstimate() == 
+					returnedGame.findEstimate(reqid).getFinalEstimate();
+		}
 		return result;
 	}
 
