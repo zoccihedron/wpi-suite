@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
@@ -129,6 +131,36 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 2, 2);
 		this.add(fieldAddCard, constraints);
+		fieldAddCard.setEnabled(false);
+		
+		fieldAddCard.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!fieldAddCard.getText().trim().equals("")){
+					btnAddCard.setEnabled(true);
+				}
+				else {
+					btnAddCard.setEnabled(false);
+				}
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!fieldAddCard.getText().trim().equals("")){
+					btnAddCard.setEnabled(true);
+				}
+				else {
+					btnAddCard.setEnabled(false);
+				}
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				//Intentionally Left Blank
+				
+			}
+		});
 
 		//MULTI SELECT RADIO BUTTONS
 		singleSelectBtn = new JRadioButton("Single Selection");
@@ -166,6 +198,8 @@ public class DeckControlsPanel extends JPanel {
 		this.add(saveStatusMessage, constraints);
 
 		deck = null;
+		
+		btnAddCard.setEnabled(false);
 
 
 	}
@@ -188,6 +222,7 @@ public class DeckControlsPanel extends JPanel {
 			btnRemoveCard.setVisible(true);
 			btnRemoveDeck.setVisible(true);
 			fieldAddCard.setVisible(true);
+			fieldAddCard.setEnabled(true);
 			singleSelectBtn.setVisible(true);
 			multiSelectBtn.setVisible(true);
 			fieldDeckName.setVisible(true);
