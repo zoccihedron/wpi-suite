@@ -88,6 +88,7 @@ public class VoteActionController implements ActionListener {
 	public void reportSuccess() {
 		view.refresh();
 		OverviewPanelController.getInstance().refreshListGames();
+		OverviewPanelController.getInstance().updateGameSummary(game);
 		view.reportSuccess(estimateValue);
 		// TODO Auto-generated method stub
 		

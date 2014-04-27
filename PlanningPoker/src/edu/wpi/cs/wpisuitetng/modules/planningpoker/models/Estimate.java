@@ -418,4 +418,26 @@ public class Estimate {
 	public void setSentBefore(boolean sentBefore) {
 		this.sentBefore = sentBefore;
 	}
+	
+	/**
+	 * Returns the number of estimates voted for this requirement
+	 * @return number of estimates
+	 */
+	public int getMaxVoteCount(){
+		return userWithEstimate.entrySet().size();
+	}
+	
+	/**
+	 * Returns the number of estimates voted for this requirement
+	 * @return number of estimates
+	 */
+	public int getVoteCount(){
+		int count = 0;
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			if(temp.getValue() >= 0){
+				count++;
+			}
+		}
+		return count;
+	}
 }
