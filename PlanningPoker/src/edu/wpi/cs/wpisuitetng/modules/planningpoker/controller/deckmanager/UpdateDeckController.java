@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager.CreateDeckPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager.DeckControlsPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
@@ -16,20 +16,26 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  *
  */
 public class UpdateDeckController implements ActionListener{
-	private CreateDeckPanel createDeckPanel;
+	private Deck updatedDeck;
+	private Deck originalDeck;
+	private DeckControlsPanel deckControlsPanel;
 	
-	public UpdateDeckController(CreateDeckPanel createDeckPanel){
-		this.createDeckPanel = createDeckPanel;
+	public UpdateDeckController(DeckControlsPanel deckControlsPanel){
+		this.deckControlsPanel = deckControlsPanel;
+		originalDeck = deckControlsPanel.getDeck();
+		updatedDeck = deckControlsPanel.getDeck();
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Deck deck  = new Deck(createDeckPanel.getDeckName(), false, new ArrayList<Integer>());
+		
+		updatedDeck  = new Deck(deckControlsPanel.fieldDeckName.getText(), false, new ArrayList<Integer>());
 		
 		// Send a request to the core to save this game
 		final Request request = Network.getInstance().makeRequest(
 				"planningpoker/deck", HttpMethod.POST);
-		request.setBody(deck.toJSON()); // put the new message in the body of the request
+		request.setBody(updatedDeck.toJSON()); // put the new message in the body of the request
 		// add an observer to process the response
+		System.out.println(updatedDeck.toJSON());
 		request.addObserver(new UpdateDeckRequestObserver(this));
 		request.send(); // send the request
 		

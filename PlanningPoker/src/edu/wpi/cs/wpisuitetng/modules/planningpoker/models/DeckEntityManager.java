@@ -72,7 +72,9 @@ public class DeckEntityManager implements EntityManager<Deck>{
 
 	@Override
 	public Deck update(Session s, String content) throws WPISuiteException {
+		System.out.println("Deck.update() " + content);
 		final Deck updatedDeck = Deck.fromJson(content);
+		System.out.println("AFTER JSON");
 		final List<Model> oldDecks = db.retrieve(Deck.class,  "id", 
 				updatedDeck.getId(), s.getProject());
 		if(oldDecks.size() < 1 || oldDecks.get(0) == null){

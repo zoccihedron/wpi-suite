@@ -1,7 +1,9 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 /**
  * Responsible for receiving responses from database for requests to update.
@@ -16,8 +18,8 @@ public class UpdateDeckRequestObserver implements RequestObserver {
 	
 	@Override
 	public void responseSuccess(IRequest iReq) {
-		// TODO Auto-generated method stub
-
+		ResponseModel response = iReq.getResponse();
+		Deck deck = Deck.fromJson(response.getBody());
 	}
 
 	@Override

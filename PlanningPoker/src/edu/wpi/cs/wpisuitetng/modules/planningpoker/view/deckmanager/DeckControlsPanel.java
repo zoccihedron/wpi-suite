@@ -27,6 +27,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddCa
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.MultiSelectController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveCardController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
 /**
@@ -37,7 +38,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  *
  */
 public class DeckControlsPanel extends JPanel {
-<<<<<<< HEAD
 
 	private JButton btnRemoveDeck;
 	private JButton btnRemoveCard;
@@ -207,6 +207,7 @@ public class DeckControlsPanel extends JPanel {
 			btnAddCard.addActionListener(new AddCardController(this));
 			btnRemoveCard.addActionListener(new RemoveCardController(this));
 			btnRemoveDeck.addActionListener(new RemoveDeckController(this));
+			btnUpdateDeckName.addActionListener(new UpdateDeckController(this));
 
 			MultiSelectController multiSelectController = new MultiSelectController(
 					this);
