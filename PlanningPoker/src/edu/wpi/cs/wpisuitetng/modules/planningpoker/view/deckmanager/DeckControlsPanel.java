@@ -15,6 +15,9 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -22,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -68,7 +72,7 @@ public class DeckControlsPanel extends JPanel {
 	 * @param cardView the card view panel
 	 * @param listDecksPanel the list deck panel
 	 */
-	public DeckControlsPanel(CardViewPanel cardView, ListDecksPanel listDecksPanel) {
+	public DeckControlsPanel(final CardViewPanel cardView, ListDecksPanel listDecksPanel) {
 		this.cardView = cardView;
 		this.listDecksPanel = listDecksPanel;
 
@@ -160,6 +164,7 @@ public class DeckControlsPanel extends JPanel {
 				//Intentionally Left Blank
 				
 			}
+			
 		});
 
 		//MULTI SELECT RADIO BUTTONS
@@ -200,6 +205,24 @@ public class DeckControlsPanel extends JPanel {
 		deck = null;
 		
 		btnAddCard.setEnabled(false);
+		
+		final ActionListener removeCardListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Integer> selected = cardView.getSelected();
+				if(selected.size() == 0){
+					btnRemoveCard.setEnabled(false);
+				}
+				else {
+					btnRemoveCard.setEnabled(true);
+				}
+			}
+		};
+		
+		final Timer timer = new Timer(500, removeCardListener);
+		
+		timer.start();
 
 
 	}
