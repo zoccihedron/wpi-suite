@@ -389,8 +389,6 @@ public class PlanningPokerEntityManagerTest {
 
 	}
 
-
-	//This test fails
 	@Test
 	public void getIdCountTest() throws WPISuiteException{
 		int count = manager.getIdCount();
