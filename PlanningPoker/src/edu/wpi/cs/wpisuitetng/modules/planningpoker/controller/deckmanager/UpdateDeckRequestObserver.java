@@ -20,6 +20,7 @@ public class UpdateDeckRequestObserver implements RequestObserver {
 	public void responseSuccess(IRequest iReq) {
 		ResponseModel response = iReq.getResponse();
 		Deck deck = Deck.fromJson(response.getBody());
+		updateDeckController.successfulNameChange(deck);
 	}
 
 	@Override

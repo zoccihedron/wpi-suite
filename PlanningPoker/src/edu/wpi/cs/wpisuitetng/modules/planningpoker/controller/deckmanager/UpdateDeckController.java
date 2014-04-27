@@ -40,5 +40,12 @@ public class UpdateDeckController implements ActionListener{
 		request.send(); // send the request
 		
 	}
+	
+	public void successfulNameChange(Deck deck){
+		deckControlsPanel.setActionListeners(deck);
+		deckControlsPanel.getCardView().updateView(deck);
+		ManageDeckController.getInstance().updateName(deck);
+		deckControlsPanel.getListDecksPanel().refresh();
+	}
 
 }

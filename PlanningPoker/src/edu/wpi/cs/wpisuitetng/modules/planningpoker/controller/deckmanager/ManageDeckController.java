@@ -151,6 +151,21 @@ public class ManageDeckController {
 	public void addDeck(Deck deck) {
 		decks.add(deck);
 	}
+
+	public void updateName(Deck toChange) {
+		int i = 0;
+		int index = -1;
+		for(Deck deck : decks){
+			if(deck.getId() == toChange.getId()){
+				index = i;
+			}
+			i++;
+		}
+		
+		if(index != -1){
+			decks.set(index, toChange);
+		}
+	}
 	
 	
 }
