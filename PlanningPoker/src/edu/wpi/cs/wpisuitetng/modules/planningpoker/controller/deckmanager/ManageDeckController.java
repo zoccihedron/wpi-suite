@@ -147,6 +147,7 @@ public class ManageDeckController {
 		
 		decks.remove(d);
 	}
+
 	public Deck getDeckWithId(Integer id){
 		Deck tempDeck = null;
 		for(Deck d: decks){
@@ -156,5 +157,12 @@ public class ManageDeckController {
 		}
 		return tempDeck;
 	}
+
+	
+	public void addDeck(Deck deck) {
+		decks.add(deck);
+	}
+	
+
 	
 }

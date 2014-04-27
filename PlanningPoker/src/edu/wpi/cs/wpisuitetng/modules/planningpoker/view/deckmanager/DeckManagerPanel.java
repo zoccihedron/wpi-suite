@@ -12,24 +12,19 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.ListRequirementsPanel;
 
 /**
  * Overraching tab for the Deck Manager
  * @author Code On Bleu
  *
  */
+@SuppressWarnings("serial")
 public class DeckManagerPanel extends JPanel{
 	private final JSplitPane splitPane;
 	
@@ -48,6 +43,7 @@ public class DeckManagerPanel extends JPanel{
 		splitPane.setLeftComponent(deckData);
 		splitPane.setRightComponent(deckManager);
 		add(splitPane, BorderLayout.CENTER);
+		splitPane.setDividerLocation(300);
 	}
 	
 	public boolean isReadyToClose() {

@@ -13,6 +13,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
@@ -31,7 +34,15 @@ public class DeckDataPanel extends JPanel{
 	public DeckDataPanel(){
 		listDecksPanel = new ListDecksPanel();
 
-		createDeckPanel = new CreateDeckPanel();
+		createDeckPanel = new CreateDeckPanel(listDecksPanel);
+
+//		createDeckPanel.getBtnSubmit().addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				listDecksPanel.refresh();
+//			}
+//			
+//		});
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -40,6 +51,7 @@ public class DeckDataPanel extends JPanel{
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
 		constraints.weighty = 0.8;
 		constraints.anchor = constraints.NORTH;
 		this.add(listDecksPanel, constraints);
@@ -47,6 +59,8 @@ public class DeckDataPanel extends JPanel{
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
+		constraints.weightx = 1.0;
+		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.gridwidth = 1;
 		constraints.weighty = 0.0;
 		constraints.anchor = constraints.SOUTH;
