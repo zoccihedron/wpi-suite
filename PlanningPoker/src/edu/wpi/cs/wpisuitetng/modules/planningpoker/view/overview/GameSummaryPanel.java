@@ -68,6 +68,7 @@ public class GameSummaryPanel extends JPanel {
 	JPanel buttonsPanel;
 	Game game;
 	private JProgressBar overallProgressBar;
+	private JProgressBar userProgressBar;
 	
 	/**
 	 * 
@@ -223,7 +224,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 20, 5, 0);
 		add(endGameButton, constraints);
@@ -236,7 +237,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 20, 5, 0);
 		add(closeGameButton, constraints);
@@ -244,17 +245,30 @@ public class GameSummaryPanel extends JPanel {
 		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
 		overallProgressBar = new JProgressBar();
-		overallProgressBar.setString("Total Team Progress");
+		overallProgressBar.setString("Team's Completion");
 		overallProgressBar.setStringPainted(true);
 		overallProgressBar.setVisible(false);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 1;
-		constraints.gridy = 2;
-		constraints.gridwidth = 2;
-		constraints.insets = new Insets(0, 10, 0, 0);
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.gridwidth = 4;
+		constraints.insets = new Insets(0, 20, 0, 20);
 		add(overallProgressBar, constraints);
+		
+		userProgressBar = new JProgressBar();
+		userProgressBar.setString("Your Completion");
+		userProgressBar.setStringPainted(true);
+		userProgressBar.setVisible(false);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 4;
+		constraints.insets = new Insets(10, 20, 0, 20);
+		add(userProgressBar, constraints);
 		
 		final JPanel extraPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -289,7 +303,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.5;
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 3;
 		constraints.ipadx = 20;
 		constraints.ipady = 20;
 		add(reqPanel, constraints);
@@ -300,7 +314,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 3;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
 		constraints.insets = new Insets(0, 0, 0, 20);
@@ -315,7 +329,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 1;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		add(reportMessage, constraints);
 		
@@ -324,7 +338,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 2;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		add(extraPanel2, constraints);
@@ -420,14 +434,21 @@ public class GameSummaryPanel extends JPanel {
 		}
 		
 		overallProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
-
 		overallProgressBar.setMinimum(0);
 		overallProgressBar.setMaximum(game.getMaxVotes());
 		overallProgressBar.setValue(game.getVoteCount());
-		overallProgressBar.setString("Overall Team Progress: " + 
+		overallProgressBar.setString("Overall Game Progress: " + 
 				Double.parseDouble(new DecimalFormat("#.##").format(
 						overallProgressBar.getPercentComplete() * 100)) + "%");
-		System.out.println("Votes: " + game.getVoteCount() + "| Max: " + game.getMaxVotes());
+		
+		userProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
+		userProgressBar.setMinimum(0);
+		userProgressBar.setMaximum(game.getUserMaxVotes());
+		userProgressBar.setValue(game.getUserVoteCount(
+				ConfigManager.getInstance().getConfig().getUserName()));
+		userProgressBar.setString("Your Progress: " + 
+				Double.parseDouble(new DecimalFormat("#.##").format(
+						userProgressBar.getPercentComplete() * 100)) + "%");
 		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
