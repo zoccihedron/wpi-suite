@@ -13,7 +13,6 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,7 +37,6 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesRequestObserver;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -543,9 +541,9 @@ public class GameSummaryPanel extends JPanel {
 	 * @param returnedGame
 	 */
 	public void updateIfChanged(Game returnedGame){
-		boolean updated = !game.isSameModifiedVersion(
+		final boolean updated = !game.isSameModifiedVersion(
 				returnedGame.getModifiedVersion());
-		boolean statusChanged = !game.getStatus().equals(
+		final boolean statusChanged = !game.getStatus().equals(
 				returnedGame.getStatus());
 		if(game.identify(returnedGame) && updated){
 			updateSummary(returnedGame);

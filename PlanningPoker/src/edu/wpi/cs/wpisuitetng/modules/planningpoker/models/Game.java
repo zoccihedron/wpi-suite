@@ -409,7 +409,7 @@ public class Game extends AbstractModel {
 	
 	/**
 	 * Returns the number of total votes needed for the game to be done.
-	 * @param the user to check for
+	 * @param user - the user to check for
 	 * @return the number of total votes needed
 	 */
 	public int getUserVoteCount(String user){
@@ -422,6 +422,7 @@ public class Game extends AbstractModel {
 	
 	/**
 	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
 	 * @return the number of total votes needed
 	 */
 	public int getReqVoteCount(int reqid){
@@ -430,6 +431,7 @@ public class Game extends AbstractModel {
 	
 	/**
 	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
 	 * @return the number of total votes needed
 	 */
 	public int getReqMaxVotes(int reqid){
@@ -444,13 +446,13 @@ public class Game extends AbstractModel {
 	 */
 	public boolean isChanged(Game returnedGame, String user) {
 		boolean result = false;
-		result |= !(areUserVotesSame(returnedGame, user));
+		result |= !(equalUserVotes(returnedGame, user));
 		result |= (getVoteCount() != returnedGame.getVoteCount());
-		result |= !(areFinalEstimatesSame(returnedGame));
+		result |= !(equalFinalEstimates(returnedGame));
 		return result;
 	}
 
-	private boolean areFinalEstimatesSame(Game returnedGame) {
+	private boolean equalFinalEstimates(Game returnedGame) {
 		boolean result = true;
 		for(Estimate e: estimates){
 			int reqid = e.getReqID();
@@ -466,7 +468,7 @@ public class Game extends AbstractModel {
 	 * @param user the current user
 	 * @return true if all the votes are the same
 	 */
-	private boolean areUserVotesSame(Game returnedGame, String user) {
+	private boolean equalUserVotes(Game returnedGame, String user) {
 		boolean result = true;
 		for(Estimate e: estimates){
 			int reqid = e.getReqID();

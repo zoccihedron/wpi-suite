@@ -27,7 +27,6 @@ import javax.swing.table.DefaultTableModel;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 /**
@@ -42,7 +41,8 @@ public class GameSummaryReqPanel extends JPanel {
 
 	private JTable requirementsTable = null;
 	private DefaultTableModel modelReqs;
-	private final String[] columnNames = { "ID", "Name", "Description", "Mean", "Final Estimate", "Your Vote", "Players Voted"};
+	private final String[] columnNames = { "ID", "Name", "Description", "Mean", 
+			"Final Estimate", "Your Vote", "Players Voted"};
 	private final JLabel lblRequirements;
 	private final Object[][] data = new Object[][] {};
 	private final String currentUser = ConfigManager.getInstance().getConfig().getUserName();
@@ -106,10 +106,6 @@ public class GameSummaryReqPanel extends JPanel {
 		// Hide the column with IDs
 		requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(0));
 	
-		/*if (game.getStatus() != GameStatus.ENDED && game.getStatus() != GameStatus.CLOSED) {
-			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(3));
-			requirementsTable.removeColumn(requirementsTable.getColumnModel().getColumn(2));
-		}*/
 		switch (game.getStatus()) {
 		case DRAFT:
 			requirementsTable.removeColumn(requirementsTable.getColumnModel()
@@ -137,8 +133,6 @@ public class GameSummaryReqPanel extends JPanel {
 			requirementsTable.removeColumn(requirementsTable.getColumnModel()
 					.getColumn(1));
 			break;
-		// "0Name", "1Description", "2Mean", "3Final Estimate", "4Your Vote",
-		// "5Players Voted"
 		case IN_PROGRESS:
 			requirementsTable.removeColumn(requirementsTable.getColumnModel()
 					.getColumn(3));
