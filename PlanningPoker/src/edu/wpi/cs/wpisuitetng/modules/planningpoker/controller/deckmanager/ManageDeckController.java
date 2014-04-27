@@ -113,7 +113,7 @@ public class ManageDeckController {
 		//ints in the game, not strings
 		List<Game> games = 
 				PlanningPokerModel.getInstance().getAllGames();
-		List<String> deckIds = new ArrayList<String>();
+		List<Integer> deckIds = new ArrayList<Integer>();
 		for(Game g: games){
 			deckIds.add(g.getDeck());
 		}
@@ -147,6 +147,17 @@ public class ManageDeckController {
 		
 		decks.remove(d);
 	}
+
+	public Deck getDeckWithId(Integer id){
+		Deck tempDeck = null;
+		for(Deck d: decks){
+			if(d.getId() == id){
+				tempDeck = d;
+			}
+		}
+		return tempDeck;
+	}
+
 	
 	public void addDeck(Deck deck) {
 		decks.add(deck);
@@ -167,5 +178,6 @@ public class ManageDeckController {
 		}
 	}
 	
+
 	
 }
