@@ -220,7 +220,7 @@ public class EstimationPane extends JPanel {
 		currentVote = new JLabel();
 		currentVote.setText("Current Vote: " + 0);
 		add(currentVote, constraints);
-		if(game.getDeck().equals("text entry")){
+		if(game.getDeck() == 1){
 			currentVote.setVisible(false);
 		}
 		

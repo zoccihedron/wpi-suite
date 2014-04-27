@@ -35,11 +35,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-<<<<<<< HEAD
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
-=======
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.ViewSumController;
->>>>>>> 127d7c723c28037f5d67a25689ee8748802f5c26
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.requirements.ScrollablePanel;
