@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager;
 
 import java.awt.event.ActionEvent;
@@ -11,17 +20,29 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
+/**
+ * Controller for adding a deck to the database
+ * @author Code on Bleu
+ * @version 1.0
+ */
 public class AddDeckController implements ActionListener {
-	private CreateDeckPanel createDeckPanel;
-	private String defaultDeckText;
-	private ListDecksPanel listDecksPanel;
+	private final CreateDeckPanel createDeckPanel;
+	private final String defaultDeckText;
+	private final ListDecksPanel listDecksPanel;
 	private Deck deck;
 	
-	public AddDeckController(CreateDeckPanel createDeckPanel, String defaultDeckText, ListDecksPanel listDecksPanel){
+	/**
+	 * Constructor for AddDeckController
+	 * @param createDeckPanel the create deck panel
+	 * @param defaultDeckText the hint in the text field
+	 * @param listDecksPanel the list decks panel
+	 */
+	public AddDeckController(CreateDeckPanel createDeckPanel, 
+			String defaultDeckText, ListDecksPanel listDecksPanel){
 		this.createDeckPanel = createDeckPanel;
 		this.defaultDeckText = defaultDeckText;
 		this.listDecksPanel = listDecksPanel;
-		this.deck = null;
+		deck = null;
 	}
 	
 	@Override
@@ -39,6 +60,10 @@ public class AddDeckController implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Refresh the list of decks when a deck is successfully added to the database
+	 * @param deckAdded the deck added to the database
+	 */
 	public void deckCreationSuccessful(Deck deckAdded) {
 		ManageDeckController.getInstance().addDeck(deckAdded);
 		ManageDeckController.getInstance().updateDecks();
