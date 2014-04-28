@@ -83,14 +83,12 @@ public class Deck extends AbstractModel{
 	
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
-		
+		// Left Empty on purpose	
 	}
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-		
+		// Left Empty on purpose	
 	}
 
 	@Override
@@ -127,7 +125,7 @@ public class Deck extends AbstractModel{
 	 */
 	public void addCard(Integer cardValue){
 		cardValues.add(cardValue);
-		 Collections.sort(cardValues);
+		Collections.sort(cardValues);
 	}
 	
 	/**
