@@ -143,7 +143,8 @@ public class DeckControlsPanel extends JPanel {
 			
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				if(!fieldAddCard.getText().trim().equals("")){
+				if(!fieldAddCard.getText().trim().equals("") &&
+						fieldAddCard.getText().trim().matches("[0-9]+")){
 					btnAddCard.setEnabled(true);
 				}
 				else {
@@ -153,7 +154,8 @@ public class DeckControlsPanel extends JPanel {
 			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				if(!fieldAddCard.getText().trim().equals("")){
+				if(!fieldAddCard.getText().trim().equals("") &&
+						fieldAddCard.getText().trim().matches("[0-9]+")){
 					btnAddCard.setEnabled(true);
 				}
 				else {
