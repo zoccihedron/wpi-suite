@@ -537,7 +537,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 	 * 
 	 * @return List<User> a list of all users
 	 */
-	public List<Class<User>> getAllUsers() {
-		return db.retrieveAll(User.class);
+	public List<User> getAllUsers()
+	{
+		return db.retrieveAll(new User());
 	}
 }

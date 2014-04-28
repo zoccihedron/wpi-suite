@@ -110,6 +110,7 @@ public class UpdateGameController implements ActionListener {
 		updatedGame = returnGame;
 		view.reportMessage("<html>Success: Game Updated!</html>");
 		OverviewPanelController.getInstance().refreshListGames();
+		OverviewPanelController.getInstance().updateGameSummary(returnGame);
 		view.closeNewGameTab();
 	}
 	

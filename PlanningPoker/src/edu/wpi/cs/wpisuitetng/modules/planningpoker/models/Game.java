@@ -41,6 +41,7 @@ public class Game extends AbstractModel {
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
 	private String deck = "";
+	
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
@@ -125,7 +126,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**
@@ -135,7 +136,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**
@@ -368,6 +369,113 @@ public class Game extends AbstractModel {
 				status = GameStatus.ENDED;
 			}
 		}
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getMaxVotes(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getMaxVoteCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getUserMaxVotes(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count ++;
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getVoteCount(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getVoteCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @param user - the user to check for
+	 * @return the number of total votes needed
+	 */
+	public int getUserVoteCount(String user){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.hasMadeAnEstimation(user) ? 1 : 0;
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
+	 * @return the number of total votes needed
+	 */
+	public int getReqVoteCount(int reqid){
+		return findEstimate(reqid).getVoteCount();
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
+	 * @return the number of total votes needed
+	 */
+	public int getReqMaxVotes(int reqid){
+		return findEstimate(reqid).getMaxVoteCount();
+	}
+	
+	/**
+	 * Checks to see if the game has been changed
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if the game has been changed
+	 */
+	public boolean isChanged(Game returnedGame, String user) {
+		boolean result = false;
+		result |= !(equalUserVotes(returnedGame, user));
+		result |= (getVoteCount() != returnedGame.getVoteCount());
+		result |= !(equalFinalEstimates(returnedGame));
+		return result;
+	}
+
+	private boolean equalFinalEstimates(Game returnedGame) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getFinalEstimate() == 
+					returnedGame.findEstimate(reqid).getFinalEstimate();
+		}
+		return result;
+	}
+
+	/**
+	 * Checks to see if all the users votes are the same
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if all the votes are the same
+	 */
+	private boolean equalUserVotes(Game returnedGame, String user) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getEstimate(user) == 
+					returnedGame.findEstimate(reqid).getEstimate(user);
+		}
+		return result;
 	}
 	
 	/**
