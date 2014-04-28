@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -210,12 +211,17 @@ public class Game extends AbstractModel {
 		} else {
 
 			if (isParticipant(user)) {
-				for (String u : participants) {
+				
+				Iterator<String> iterator = participants.iterator();
+				
+				while(iterator.hasNext()) {
+					String u = iterator.next();
 					if (u.equals(user)) {
 						newCreator = u;
-						participants.remove(u);
+						iterator.remove();
 					}
 				}
+				
 			} else {
 				newCreator = user;
 			}
@@ -250,7 +256,7 @@ public class Game extends AbstractModel {
 	public boolean isParticipant(String user) {
 		boolean result = false;
 
-		if (participants == null) {
+		if (participants.size() == 0) {
 			result = false;
 		} else {
 			for (String temp : participants) {
@@ -384,7 +390,7 @@ public class Game extends AbstractModel {
 	}
 	
 	/**
-	 * Returns the number of total votes needed for the game to be done.
+	 * Returns the number of total votes needed for the user to be done.
 	 * @return the number of total votes needed
 	 */
 	public int getUserMaxVotes(){
