@@ -63,7 +63,7 @@ public class CardViewPanel extends JScrollPane{
 	 * @param deck the deck to get cards from 
 	 */
 	public void cardView(Deck deck){
-		GridBagConstraints constraints = new GridBagConstraints();
+		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = -1;
 		constraints.gridy = 0;
