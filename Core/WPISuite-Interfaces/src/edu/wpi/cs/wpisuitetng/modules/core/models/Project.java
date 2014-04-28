@@ -50,6 +50,10 @@ public class Project extends AbstractModel
 	 * @param owner - The User who owns this project
 	 * @param team - The User[] who are associated with the project
 	 * @param supportedModules - the modules supported by this project
+	 * @param mailAccount - the email address to send notifications from
+	 * @param mailServer - the server to connect to for email
+	 * @param port - the port to use to connect
+	 * @param password - teh email account password
 	 */
 	public Project(String name, String idNum, User owner, User[] team, String[] supportedModules,
 			String mailAccount, String mailServer, String port, String password)
@@ -179,13 +183,13 @@ public class Project extends AbstractModel
 			json += "]";
 		}
 		
-		json += ",\"mailAccount\":\"" + this.mailAccount+"\"";
+		json += ",\"mailAccount\":\"" + mailAccount + "\"";
 		
-		json += ",\"mailServer\":\"" + this.mailServer+"\"";
+		json += ",\"mailServer\":\"" + mailServer + "\"";
 		
-		json += ",\"port\":\"" + this.port+"\"";
+		json += ",\"port\":\"" + port + "\"";
 		
-		json += ",\"password\":\"" + this.password+"\"";
+		json += ",\"password\":\"" + password + "\"";
 		
 		json += "}";
 		

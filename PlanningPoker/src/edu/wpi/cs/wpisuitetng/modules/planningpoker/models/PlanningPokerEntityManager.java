@@ -112,8 +112,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 		if (newGame.getStatus().equals(GameStatus.IN_PROGRESS)) {
 			final Mailer mailer = new Mailer(newGame, db.retrieveAll(new User(
 					"", "", "", 0)), Notification.STARTED, s.getProject());
-			ExecutorService thread = Executors.newSingleThreadExecutor();
-			Future<Boolean> future = thread.submit(mailer);
+			final ExecutorService thread = Executors.newSingleThreadExecutor();
+			thread.submit(mailer);
 		}
 
 		return db.retrieve(Game.class, "id", newGame.getId(), s.getProject())
@@ -245,8 +245,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			final Mailer mailer = new Mailer(existingGame,
 					db.retrieveAll(new User("", "", "", 0)),
 					Notification.STARTED, s.getProject());
-			ExecutorService thread = Executors.newSingleThreadExecutor();
-			Future<Boolean> future = thread.submit(mailer);
+			final ExecutorService thread = Executors.newSingleThreadExecutor();
+			thread.submit(mailer);
 		}
 
 		return existingGame;
@@ -377,8 +377,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 					final Mailer mailer = new Mailer(game,
 							db.retrieveAll(new User("", "", "", 0)),
 							Notification.ENDED, s.getProject());
-					ExecutorService thread = Executors.newSingleThreadExecutor();
-					Future<Boolean> future = thread.submit(mailer);
+					final ExecutorService thread = Executors.newSingleThreadExecutor();
+					thread.submit(mailer);
 				}
 
 				if (!db.save(game, s.getProject())) {
@@ -453,8 +453,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			if (game.getStatus().equals(GameStatus.ENDED)) {
 				final Mailer mailer = new Mailer(game, db.retrieveAll(new User(
 						"", "", "", 0)), Notification.ENDED, s.getProject());
-				ExecutorService thread = Executors.newSingleThreadExecutor();
-				Future<Boolean> future = thread.submit(mailer);
+				final ExecutorService thread = Executors.newSingleThreadExecutor();
+				thread.submit(mailer);
 			}
 
 			if (!db.save(game, s.getProject())) {

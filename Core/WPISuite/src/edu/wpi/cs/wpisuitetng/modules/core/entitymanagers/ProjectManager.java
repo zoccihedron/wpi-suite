@@ -102,27 +102,31 @@ public class ProjectManager implements EntityManager<Project>{
 				if(p.getMailAccount().equals("") && p.getMailServer().equals("") && 
 						p.getPort().equals("") && p.getPassword().equals(""))
 				{
-					save(s,p);
+					save(s, p);
 				}
 				else 
 				{
-					ExecutorService thread = Executors.newSingleThreadExecutor();
-					List<User> u = new ArrayList<User>();
+					final ExecutorService thread = Executors.newSingleThreadExecutor();
+					final List<User> u = new ArrayList<User>();
 					u.add(new User("", "", "", 0));
-					Mailer mailer = new Mailer(new Game(), u, Notification.TEST, p);
-					Future<Boolean> future = thread.submit(mailer);
+					final Mailer mailer = new Mailer(new Game(), u, Notification.TEST, p);
+					final Future<Boolean> future = thread.submit(mailer);
 					
 					try {
 						if(future.get()) {
-							save(s,p);
+							save(s, p);
 						} else {
-							logger.log(Level.WARNING, "Invalid but non-empty email credentials during project creation.");
-							throw new ConflictException("The email account provided is invalid. Entity String: " + content);
+							logger.log(Level.WARNING, "Invalid but non-empty email" +
+									" credentials during project creation.");
+							throw new ConflictException("The email account provided" +
+									"is invalid. Entity String: " + content);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
-						logger.log(Level.WARNING, "Invalid but non-empty email credentials during project creation.");
-						throw new ConflictException("There was an error accessing the email account provided. Entity String: " + content);
+						logger.log(Level.WARNING, "Invalid but non-empty email credentials" +
+								"during project creation.");
+						throw new ConflictException("There was an error accessing the email" + 
+								"account provided. Entity String: " + content);
 
 					}
 				}

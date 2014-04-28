@@ -70,6 +70,8 @@ public class Mailer implements Callable<Boolean> {
 	 *            the list of users to which we send
 	 * @param method
 	 *            is this game just started or ended
+	 * @param project
+	 * 			  project to send mail from
 	 */
 	public Mailer(Game game, List<User> users, Notification method,
 			Project project) {
@@ -77,10 +79,10 @@ public class Mailer implements Callable<Boolean> {
 		this.users = users;
 		this.method = method;
 
-		this.from = project.getMailAccount();
-		this.host = project.getMailServer();
-		this.port = project.getPort();
-		this.password = project.getPassword();
+		from = project.getMailAccount();
+		host = project.getMailServer();
+		port = project.getPort();
+		password = project.getPassword();
 	}
 
 	@Override
@@ -162,7 +164,8 @@ public class Mailer implements Callable<Boolean> {
 	 * @throws AddressException
 	 */
 	public void notifyTest() throws AddressException, MessagingException {
-		String messageText = "Hello, this is a test email to verify that the credentials provided are functional.";
+		final String messageText = "Hello, this is a test email to verify that" + 
+				"the credentials provided are functional.";
 
 		final MimeMessage message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(from));

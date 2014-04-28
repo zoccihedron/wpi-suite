@@ -104,7 +104,9 @@ public class ProjectDeserializer implements JsonDeserializer<Project> {
 			 password = deflated.get("password").getAsString();
 		 }
 		 
-		 Project inflated = new Project(name, idNum, owner, team, supportedModules, mailAccount, mailServer, port, password);
+		 final Project inflated = new Project(name, idNum,
+				 owner, team, supportedModules,
+				 mailAccount, mailServer, port, password);
 		 
 		 if(deflated.has("team"))
 		 {
