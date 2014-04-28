@@ -71,7 +71,7 @@ public class CreateDeckPanel extends JPanel{
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if(deckName.getText().trim().equals("") ||
-						deckName.getText().trim().equals("Deck")){
+						deckName.getText().trim().equals(PLACEHOLDER_TEXT)){
 					btnSubmit.setEnabled(false);
 				}
 				else{
