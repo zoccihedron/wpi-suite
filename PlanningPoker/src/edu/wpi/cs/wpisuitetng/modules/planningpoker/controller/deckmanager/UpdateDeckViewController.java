@@ -24,17 +24,29 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager.DeckManager
  */
 public class UpdateDeckViewController {
 
-	private DeckManager deckManager;
+	private final DeckManager deckManager;
 	
+	/**
+	 * Constructor for UpdateDeckViewController
+	 * @param deckManager the deck manager
+	 */
 	public UpdateDeckViewController(DeckManager deckManager) {
 		
 		this.deckManager = deckManager;
 	}
 
+	/**
+	 * Update the right hand views with the passed deck
+	 * @param deck the deck to update with
+	 */
 	public void updateDeckManager(Deck deck) {
 		deckManager.updateDeck(deck);
 	}
 
+	/**
+	 * Updates the right hand views with the passed, uneditable deck.
+	 * @param deck the deck to update with
+	 */
 	public void updateInUse(Deck deck) {
 		deckManager.updateInUse(deck);
 	}
