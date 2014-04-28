@@ -56,10 +56,10 @@ public class DeckControlsPanel extends JPanel {
 	private Deck deck;
 	private CardViewPanel cardView;
 	private ListDecksPanel listDecksPanel;
-	
+
 	private JTextField fieldDeckName;
 	private JButton btnUpdateDeckName;
-	
+
 	private JLabel deckRemovedMessage;
 	private JLabel message;
 	private ButtonGroup cardSelectGroup;
@@ -79,7 +79,7 @@ public class DeckControlsPanel extends JPanel {
 
 		final GridBagConstraints constraints = new GridBagConstraints();
 		this.setLayout(new GridBagLayout());
-		
+
 		//DECK NAME TEXT FIELD
 		fieldDeckName = new JTextField("");
 		constraints.fill = GridBagConstraints.BOTH;
@@ -90,7 +90,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.insets = new Insets(2, 0, 0, 2);
 		constraints.anchor = GridBagConstraints.SOUTH;
 		this.add(fieldDeckName, constraints);
-		
+
 		//DECK NAME BUTTON
 		btnUpdateDeckName = new JButton("Rename Deck");
 		constraints.fill = GridBagConstraints.BOTH;
@@ -101,7 +101,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.insets = new Insets(2, 2, 0, 0);
 		constraints.anchor = GridBagConstraints.SOUTH;
 		this.add(btnUpdateDeckName, constraints);
-				
+
 		//REMOVE DECK BUTTON
 		btnRemoveDeck = new JButton("Remove Deck");
 		constraints.fill = GridBagConstraints.BOTH;
@@ -138,37 +138,59 @@ public class DeckControlsPanel extends JPanel {
 		constraints.insets = new Insets(0, 0, 2, 2);
 		this.add(fieldAddCard, constraints);
 		fieldAddCard.setEnabled(false);
-		
+
 		fieldAddCard.getDocument().addDocumentListener(new DocumentListener() {
-			
+
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if(!fieldAddCard.getText().trim().equals("") &&
 						fieldAddCard.getText().trim().matches("[0-9]+")){
-					btnAddCard.setEnabled(true);
+					try{
+						if(Integer.parseInt(fieldAddCard.getText().trim()) >= 0){
+								btnAddCard.setEnabled(true);
+						}
+						else{
+							btnAddCard.setEnabled(false);
+						}
+					}
+					
+					catch(Exception exception){
+						btnAddCard.setEnabled(false);
+					}
 				}
 				else {
 					btnAddCard.setEnabled(false);
 				}
 			}
-			
+
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if(!fieldAddCard.getText().trim().equals("") &&
 						fieldAddCard.getText().trim().matches("[0-9]+")){
-					btnAddCard.setEnabled(true);
+					try{
+						if(Integer.parseInt(fieldAddCard.getText().trim()) >= 0){
+								btnAddCard.setEnabled(true);
+						}
+						else{
+							btnAddCard.setEnabled(false);
+						}
+					}
+					
+					catch(NumberFormatException exception){
+						btnAddCard.setEnabled(false);
+					}
 				}
 				else {
 					btnAddCard.setEnabled(false);
 				}
 			}
-			
+
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				//Intentionally Left Blank
-				
+
 			}
-			
+
 		});
 
 		//MULTI SELECT RADIO BUTTONS
@@ -206,11 +228,11 @@ public class DeckControlsPanel extends JPanel {
 		this.add(saveStatusMessage, constraints);
 
 		deck = null;
-		
+
 		btnAddCard.setEnabled(false);
-		
+
 		final ActionListener removeCardListener = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Integer> selected = cardView.getSelected();
@@ -222,9 +244,9 @@ public class DeckControlsPanel extends JPanel {
 				}
 			}
 		};
-		
+
 		final Timer timer = new Timer(250, removeCardListener);
-		
+
 		timer.start();
 
 		btnAddCard.setVisible(false);
@@ -267,7 +289,7 @@ public class DeckControlsPanel extends JPanel {
 
 			if (!(btnAddCard.getActionListeners().length == 0)) {
 				btnAddCard
-						.removeActionListener(btnAddCard.getActionListeners()[0]);
+				.removeActionListener(btnAddCard.getActionListeners()[0]);
 			}
 			if (!(btnRemoveCard.getActionListeners().length == 0)) {
 				btnRemoveCard.removeActionListener(btnRemoveCard
@@ -307,7 +329,7 @@ public class DeckControlsPanel extends JPanel {
 				singleSelectBtn.setSelected(true);
 				multiSelectBtn.setSelected(false);
 			}
-			
+
 			fieldDeckName.setText(deck.getName());
 
 		} else {
@@ -481,7 +503,7 @@ public class DeckControlsPanel extends JPanel {
 		saveStatusMessage.setText(message);
 		saveStatusMessage.setForeground(Color.BLUE);
 	}
-	
+
 	public String getFieldDeckNameText(){
 		return fieldDeckName.getText();
 	}
