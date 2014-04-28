@@ -258,7 +258,7 @@ public class DeckControlsPanel extends JPanel {
 		fieldDeckName.setVisible(false);
 		deckRemovedMessage.setVisible(false);
 		btnUpdateDeckName.setVisible(false);
-
+		saveStatusMessage.setVisible(false);
 
 	}
 
@@ -271,6 +271,7 @@ public class DeckControlsPanel extends JPanel {
 	public void setActionListeners(Deck newDeck) {
 		deck = newDeck;
 
+		saveStatusMessage.setText("");
 		ConfigManager.getInstance();
 		if (deck.getDeckCreator().equals(
 				ConfigManager.getConfig().getUserName())) {
@@ -286,6 +287,9 @@ public class DeckControlsPanel extends JPanel {
 			multiSelectBtn.setVisible(true);
 			fieldDeckName.setVisible(true);
 			btnUpdateDeckName.setVisible(true);
+			saveStatusMessage.setVisible(!deck.isInUse());
+			saveStatusMessage.setForeground(Color.BLUE);
+			saveStatusMessage.setText("<html>No changes made.</html>");
 
 
 			if (!(btnAddCard.getActionListeners().length == 0)) {
@@ -343,7 +347,7 @@ public class DeckControlsPanel extends JPanel {
 			fieldDeckName.setVisible(false);
 			btnUpdateDeckName.setVisible(false);
 			fieldDeckName.setVisible(false);
-
+			saveStatusMessage.setVisible(false);
 
 
 			deckRemovedMessage.setVisible(true);
@@ -366,6 +370,7 @@ public class DeckControlsPanel extends JPanel {
 		multiSelectBtn.setVisible(false);
 		btnUpdateDeckName.setVisible(false);
 		fieldDeckName.setVisible(false);
+		saveStatusMessage.setVisible(false);
 	}
 
 	/**

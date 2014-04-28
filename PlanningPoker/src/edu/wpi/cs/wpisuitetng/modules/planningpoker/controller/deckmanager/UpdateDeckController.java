@@ -42,6 +42,7 @@ public class UpdateDeckController implements ActionListener{
 		
 		updatedDeck  = deckControlsPanel.getDeck();
 		updatedDeck.setName(deckControlsPanel.getFieldDeckNameText());
+		deckControlsPanel.saveMessage("<html>Saving changes...</html>");
 		// Send a request to the core to save this game
 		final Request request = Network.getInstance().makeRequest(
 				"planningpoker/deck", HttpMethod.POST);
@@ -62,6 +63,7 @@ public class UpdateDeckController implements ActionListener{
 		deckControlsPanel.getCardView().updateView(deck);
 		ManageDeckController.getInstance().updateName(deck);
 		deckControlsPanel.getListDecksPanel().refresh();
+		deckControlsPanel.saveMessage("<html>Changes saved.</html>");
 	}
 
 }
