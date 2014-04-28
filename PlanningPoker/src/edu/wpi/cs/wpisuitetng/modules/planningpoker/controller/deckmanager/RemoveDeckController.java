@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2014 WPI-Suite
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * Creator:
+ *    Code On Bleu
+ ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager;
 
 import java.awt.event.ActionEvent;
@@ -13,12 +22,21 @@ import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
+/**
+ * The controller for removing decks form the database
+ * @author Code on Bleu
+ * @version 1.0
+ */
 public class RemoveDeckController implements ActionListener{
-	private DeckControlsPanel view;
-	private CardViewPanel cardView;
-	private ListDecksPanel listDecksPanel;
+	private final DeckControlsPanel view;
+	private final CardViewPanel cardView;
+	private final ListDecksPanel listDecksPanel;
 	private Deck toDelete;
 	
+	/**
+	 * Constructor for RemoveDeckController
+	 * @param view the deck controls panel
+	 */
 	public RemoveDeckController(DeckControlsPanel view){
 		this.view = view;
 		cardView = view.getCardView();
@@ -53,6 +71,11 @@ public class RemoveDeckController implements ActionListener{
 		
 	}
 
+	/**
+	 * Remove the deck from the list of decks, update the right hand side
+	 * of Deck Manager to be empty, and display a message that the
+	 * deck was successfully deleted
+	 */
 	public void successfulRemoval(){
 		ManageDeckController.getInstance().removeDeck(toDelete);
 		cardView.updateView();
