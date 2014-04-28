@@ -15,6 +15,9 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -22,6 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
@@ -66,7 +72,7 @@ public class DeckControlsPanel extends JPanel {
 	 * @param cardView the card view panel
 	 * @param listDecksPanel the list deck panel
 	 */
-	public DeckControlsPanel(CardViewPanel cardView, ListDecksPanel listDecksPanel) {
+	public DeckControlsPanel(final CardViewPanel cardView, ListDecksPanel listDecksPanel) {
 		this.cardView = cardView;
 		this.listDecksPanel = listDecksPanel;
 
@@ -129,6 +135,37 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 2, 2);
 		this.add(fieldAddCard, constraints);
+		fieldAddCard.setEnabled(false);
+		
+		fieldAddCard.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!fieldAddCard.getText().trim().equals("")){
+					btnAddCard.setEnabled(true);
+				}
+				else {
+					btnAddCard.setEnabled(false);
+				}
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!fieldAddCard.getText().trim().equals("")){
+					btnAddCard.setEnabled(true);
+				}
+				else {
+					btnAddCard.setEnabled(false);
+				}
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				//Intentionally Left Blank
+				
+			}
+			
+		});
 
 		//MULTI SELECT RADIO BUTTONS
 		singleSelectBtn = new JRadioButton("Single Selection");
@@ -166,6 +203,26 @@ public class DeckControlsPanel extends JPanel {
 		this.add(saveStatusMessage, constraints);
 
 		deck = null;
+		
+		btnAddCard.setEnabled(false);
+		
+		final ActionListener removeCardListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Integer> selected = cardView.getSelected();
+				if(selected.size() == 0){
+					btnRemoveCard.setEnabled(false);
+				}
+				else {
+					btnRemoveCard.setEnabled(true);
+				}
+			}
+		};
+		
+		final Timer timer = new Timer(250, removeCardListener);
+		
+		timer.start();
 
 
 	}
@@ -188,6 +245,7 @@ public class DeckControlsPanel extends JPanel {
 			btnRemoveCard.setVisible(true);
 			btnRemoveDeck.setVisible(true);
 			fieldAddCard.setVisible(true);
+			fieldAddCard.setEnabled(true);
 			singleSelectBtn.setVisible(true);
 			multiSelectBtn.setVisible(true);
 			fieldDeckName.setVisible(true);
