@@ -156,17 +156,16 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 
 		// creates deck selector and sets it to default deck
-		decks = ManageDeckController.getInstance().getDecks();
+		List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
 		textEntry.setId(-2);
-		
+		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
-		List<Deck> copyDecks =  decks;
-		for(Deck d:copyDecks){
-			if(!d.isUsable()){
-				decks.remove(d);
+		for(Deck d:allDecks){
+			if(d.isUsable()){
+				decks.add(d);
 			}
 		}
 		decks.add(textEntry);
@@ -216,24 +215,23 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 		
 	
-		decks = ManageDeckController.getInstance().getDecks();
+		// creates deck selector and sets it to default deck
+		List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
 		textEntry.setId(-2);
-		
+		decks = new ArrayList<Deck>();		
 		lblDeck = new JLabel("Deck:");
-		List<Deck> copyDecks =  decks;
-		for(Deck d:copyDecks){
-			if(!d.isUsable()){
-				decks.remove(d);
+		for(Deck d:allDecks){
+			if(d.isUsable()){
+				decks.add(d);
 			}
 		}
 		decks.add(textEntry);
 		decks.add(defaultDeck);
 		deckBox = new JComboBox(decks.toArray());
-		
-		deckBox.setSelectedItem(editingGame.getDeck());
+		deckBox.setSelectedItem(decks.get(passedInGame.getDeck()));
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
