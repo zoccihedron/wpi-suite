@@ -17,7 +17,6 @@ import java.awt.Insets;
 
 import javax.swing.JPanel;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
 /**
@@ -25,27 +24,26 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  * holds the view of the cards in a deck as well as the
  * button panel for the deck
  * @author Code On Bleu
+ * @version 1.0
  *
  */
 public class DeckManager extends JPanel{
 	
-	private CardViewPanel cardViewPanel;
-	private DeckControlsPanel deckControlsPanel;
-	private ManageDeckController controller;
+	private final CardViewPanel cardViewPanel;
+	private final DeckControlsPanel deckControlsPanel;
 	
-	private ListDecksPanel listDecksPanel;
 	
 	/**
 	 * Constructs the two sub panels and places them in their correct positions
+	 * @param listDecksPanel is the list decks panel to be passed to deck controls panel
 	 */
 	public DeckManager(ListDecksPanel listDecksPanel){
-		this.listDecksPanel = listDecksPanel;
 		
 		cardViewPanel = new CardViewPanel();
 		deckControlsPanel = new DeckControlsPanel(cardViewPanel, listDecksPanel);
 		
 		this.setLayout(new GridBagLayout());
-		GridBagConstraints constraints = new GridBagConstraints();
+		final GridBagConstraints constraints = new GridBagConstraints();
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
@@ -78,9 +76,15 @@ public class DeckManager extends JPanel{
 
 	}
 
+	/**
+	 * Update the card view and deck controls panel with the uneditable deck
+	 * (as it is in use)
+	 * @param deck the deck to update cardview with
+	 */
 	public void updateInUse(Deck deck) {
 		deckControlsPanel.disableControls();
-		deckControlsPanel.updateDeckRemovalMessage("The deck is currently in use and unable to be edited");
+		deckControlsPanel.updateDeckRemovalMessage("The deck is currently in use "
+				+ "and unable to be edited");
 		
 		cardViewPanel.updateView(deck);
 
