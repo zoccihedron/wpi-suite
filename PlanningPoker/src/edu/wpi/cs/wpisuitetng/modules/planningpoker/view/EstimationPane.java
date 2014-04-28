@@ -437,7 +437,7 @@ public class EstimationPane extends JPanel {
 	 * @param value is the numerical value of the vote
 	 */
 	public void reportSuccess(int value) {
-		message.setText("<html>Success: Vote Updated! You voted " + value + "</html>");
+		message.setText("<html>Vote Updated! You voted " + value + "</html>");
 		message.setForeground(Color.BLUE);
 
 	}
