@@ -26,8 +26,6 @@ import javax.swing.tree.TreeSelectionModel;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -107,7 +105,8 @@ TreeSelectionListener {
 		notInUseDecksCategory = new DefaultMutableTreeNode("Decks Not In Use");
 		inUseDecksCategory = new DefaultMutableTreeNode("Decks In Use");
 		
-		final String user = ConfigManager.getInstance().getConfig().getUserName();
+		ConfigManager.getInstance();
+		final String user = ConfigManager.getConfig().getUserName();
 		
 		for(Deck d : decks) {
 			d.setMyDeck(d.getDeckCreator().equals(user));
