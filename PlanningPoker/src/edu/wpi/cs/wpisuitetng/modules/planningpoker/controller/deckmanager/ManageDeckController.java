@@ -108,11 +108,15 @@ public class ManageDeckController {
 		
 	}
 	
+	/**
+	 * Sets the decks variable to be all decks that are currently
+	 * being used in a game
+	 */
 	public void setDecksInUse(){
 	
-		List<Game> games = 
+		final List<Game> games = 
 				PlanningPokerModel.getInstance().getAllGames();
-		List<Integer> deckIds = new ArrayList<Integer>();
+		final List<Integer> deckIds = new ArrayList<Integer>();
 		for(Game g: games){
 			deckIds.add(g.getDeck());
 		}
@@ -136,6 +140,10 @@ public class ManageDeckController {
 		this.decks = decks;
 	}
 
+	/**
+	 * Remove the passed deck from the list of decks
+	 * @param toDelete the deck to be removed from the list
+	 */
 	public void removeDeck(Deck toDelete) {
 		Deck d = null;
 		for(Deck deck : decks){
@@ -147,6 +155,11 @@ public class ManageDeckController {
 		decks.remove(d);
 	}
 
+	/**
+	 * Get the deck with the passed id
+	 * @param id the id of the deck
+	 * @return the deck with the passed id
+	 */
 	public Deck getDeckWithId(Integer id){
 		Deck tempDeck = null;
 		for(Deck d: decks){
@@ -158,10 +171,18 @@ public class ManageDeckController {
 	}
 
 	
+	/**
+	 * Add the passed deck to the list of decks
+	 * @param deck the deck to add
+	 */
 	public void addDeck(Deck deck) {
 		decks.add(deck);
 	}
 
+	/**
+	 * Updated the name of the deck in the list of decks
+	 * @param toChange the deck to change
+	 */
 	public void updateName(Deck toChange) {
 		int i = 0;
 		int index = -1;
