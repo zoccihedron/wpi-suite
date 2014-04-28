@@ -17,7 +17,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -54,17 +54,17 @@ public class DeckControlsPanel extends JPanel {
 	private final String PLACEHOLDER_TEXT = "Enter Card Value Here";
 
 	private Deck deck;
-	private CardViewPanel cardView;
-	private ListDecksPanel listDecksPanel;
+	private final CardViewPanel cardView;
+	private final ListDecksPanel listDecksPanel;
 
-	private JTextField fieldDeckName;
-	private JButton btnUpdateDeckName;
+	private final JTextField fieldDeckName;
+	private final JButton btnUpdateDeckName;
 
-	private JLabel deckRemovedMessage;
-	private JLabel message;
-	private ButtonGroup cardSelectGroup;
-	private JRadioButton singleSelectBtn;
-	private JRadioButton multiSelectBtn;
+	private final JLabel deckRemovedMessage;
+	private final JLabel message;
+	private final ButtonGroup cardSelectGroup;
+	private final JRadioButton singleSelectBtn;
+	private final JRadioButton multiSelectBtn;
 	private final JLabel saveStatusMessage;
 
 	/**
@@ -235,7 +235,7 @@ public class DeckControlsPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Integer> selected = (ArrayList<Integer>) cardView.getSelected();
+				final List<Integer> selected = cardView.getSelected();
 				if(selected.size() == 0){
 					btnRemoveCard.setEnabled(false);
 				}
@@ -271,8 +271,9 @@ public class DeckControlsPanel extends JPanel {
 	public void setActionListeners(Deck newDeck) {
 		deck = newDeck;
 
+		ConfigManager.getInstance();
 		if (deck.getDeckCreator().equals(
-				ConfigManager.getInstance().getConfig().getUserName())) {
+				ConfigManager.getConfig().getUserName())) {
 
 			deckRemovedMessage.setVisible(false);
 
@@ -317,7 +318,7 @@ public class DeckControlsPanel extends JPanel {
 			btnRemoveDeck.addActionListener(new RemoveDeckController(this));
 			btnUpdateDeckName.addActionListener(new UpdateDeckController(this));
 
-			MultiSelectController multiSelectController = new MultiSelectController(
+			final MultiSelectController multiSelectController = new MultiSelectController(
 					this);
 			singleSelectBtn.addActionListener(multiSelectController);
 			multiSelectBtn.addActionListener(multiSelectController);
@@ -347,7 +348,8 @@ public class DeckControlsPanel extends JPanel {
 
 			deckRemovedMessage.setVisible(true);
 			deckRemovedMessage.setForeground(Color.BLUE);
-			deckRemovedMessage.setText("Deck: " + deck.getName() + " was not created by you. You cannot edit this deck");
+			deckRemovedMessage.setText("Deck: " + deck.getName() + " was not created by you. "
+					+ "You cannot edit this deck");
 		}
 	}
 
