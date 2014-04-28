@@ -99,7 +99,7 @@ public class UpdateGameController implements ActionListener {
 	 * Reports a successful message
 	 */
 	public void addGameToView() {
-		view.reportMessage("<html>Success: Game Updated!</html>");
+		view.reportMessage("<html>Game Updated</html>");
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class UpdateGameController implements ActionListener {
 	 */
 	public void returnGame(Game returnGame) {
 		updatedGame = returnGame;
-		view.reportMessage("<html>Success: Game Updated!</html>");
+		view.reportMessage("<html>Game Updated</html>");
 		OverviewPanelController.getInstance().refreshListGames();
 		OverviewPanelController.getInstance().updateGameSummary(returnGame);
 		view.closeNewGameTab();

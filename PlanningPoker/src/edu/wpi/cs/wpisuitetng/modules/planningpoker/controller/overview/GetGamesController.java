@@ -57,9 +57,7 @@ public class GetGamesController implements ActionListener {
 		// add an observer to process the response
 		request.addObserver(new GetGamesRequestObserver(this));
 		request.send(); // send the request
-	}
-	
-	
+	}	
 	
 	/**
 	 * Removes all data from the PlanningPokerModel and then adds the 
