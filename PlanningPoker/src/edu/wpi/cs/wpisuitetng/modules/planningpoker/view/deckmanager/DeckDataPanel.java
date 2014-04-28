@@ -17,6 +17,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
@@ -31,6 +32,8 @@ public class DeckDataPanel extends JPanel{
 	private ListDecksPanel listDecksPanel;
 	private CreateDeckPanel createDeckPanel;
 	
+	private JLabel currentlySelectedDeckName;
+	
 	public DeckDataPanel(){
 		listDecksPanel = new ListDecksPanel();
 
@@ -43,6 +46,8 @@ public class DeckDataPanel extends JPanel{
 //			}
 //			
 //		});
+		
+		currentlySelectedDeckName = new JLabel();
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();

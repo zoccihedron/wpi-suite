@@ -33,10 +33,14 @@ public class DeckManager extends JPanel{
 	private DeckControlsPanel deckControlsPanel;
 	private ManageDeckController controller;
 	
+	private ListDecksPanel listDecksPanel;
+	
 	/**
 	 * Constructs the two sub panels and places them in their correct positions
 	 */
 	public DeckManager(ListDecksPanel listDecksPanel){
+		this.listDecksPanel = listDecksPanel;
+		
 		cardViewPanel = new CardViewPanel();
 		deckControlsPanel = new DeckControlsPanel(cardViewPanel, listDecksPanel);
 		
@@ -69,7 +73,9 @@ public class DeckManager extends JPanel{
 	 */
 	public void updateDeck(Deck deck){
 		deckControlsPanel.setActionListeners(deck);
+
 		cardViewPanel.updateView(deck);
+
 	}
 
 }

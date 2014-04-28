@@ -15,6 +15,9 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -22,6 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
@@ -29,6 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddCa
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.MultiSelectController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveCardController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.RemoveDeckController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
 /**
@@ -39,34 +46,60 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  *
  */
 public class DeckControlsPanel extends JPanel {
+
 	private final JButton btnRemoveDeck;
 	private final JButton btnRemoveCard;
 	private final JButton btnAddCard;
 	private final JPlaceholderTextField fieldAddCard;
 	private final String PLACEHOLDER_TEXT = "Enter Card Value Here";
+
 	private Deck deck;
-	private final CardViewPanel cardView;
-	private final ListDecksPanel listDecksPanel;
-	private final JLabel deckRemovedMessage;
-	private final JLabel message;
+	private CardViewPanel cardView;
+	private ListDecksPanel listDecksPanel;
+	
+	private JTextField fieldDeckName;
+	private JButton btnUpdateDeckName;
+	
+	private JLabel deckRemovedMessage;
+	private JLabel message;
+	private ButtonGroup cardSelectGroup;
+	private JRadioButton singleSelectBtn;
+	private JRadioButton multiSelectBtn;
 	private final JLabel saveStatusMessage;
-	private final ButtonGroup cardSelectGroup;
-	private final JRadioButton singleSelectBtn;
-	private final JRadioButton multiSelectBtn;
 
 	/**
 	 * Construct all the buttons and their action listeners.
 	 * @param cardView the card view panel
 	 * @param listDecksPanel the list deck panel
 	 */
-	public DeckControlsPanel(CardViewPanel cardView, ListDecksPanel listDecksPanel) {
+	public DeckControlsPanel(final CardViewPanel cardView, ListDecksPanel listDecksPanel) {
 		this.cardView = cardView;
 		this.listDecksPanel = listDecksPanel;
 
 
 		final GridBagConstraints constraints = new GridBagConstraints();
 		this.setLayout(new GridBagLayout());
-
+		
+		//DECK NAME TEXT FIELD
+		fieldDeckName = new JTextField("");
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		constraints.weightx = 0.5;
+		constraints.gridwidth = 2;
+		constraints.anchor = GridBagConstraints.SOUTH;
+		this.add(fieldDeckName, constraints);
+		
+		//DECK NAME TEXT FIELD
+		btnUpdateDeckName = new JButton("Rename Deck");
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 2;
+		constraints.gridy = 4;
+		constraints.weightx = 0.5;
+		constraints.gridwidth = 1;
+		constraints.anchor = GridBagConstraints.SOUTH;
+		this.add(btnUpdateDeckName, constraints);
+				
 		//REMOVE DECK BUTTON
 		btnRemoveDeck = new JButton("Remove Deck");
 		constraints.fill = GridBagConstraints.BOTH;
@@ -102,6 +135,37 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 2, 2);
 		this.add(fieldAddCard, constraints);
+		fieldAddCard.setEnabled(false);
+		
+		fieldAddCard.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(!fieldAddCard.getText().trim().equals("")){
+					btnAddCard.setEnabled(true);
+				}
+				else {
+					btnAddCard.setEnabled(false);
+				}
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(!fieldAddCard.getText().trim().equals("")){
+					btnAddCard.setEnabled(true);
+				}
+				else {
+					btnAddCard.setEnabled(false);
+				}
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				//Intentionally Left Blank
+				
+			}
+			
+		});
 
 		//MULTI SELECT RADIO BUTTONS
 		singleSelectBtn = new JRadioButton("Single Selection");
@@ -139,6 +203,26 @@ public class DeckControlsPanel extends JPanel {
 		this.add(saveStatusMessage, constraints);
 
 		deck = null;
+		
+		btnAddCard.setEnabled(false);
+		
+		final ActionListener removeCardListener = new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Integer> selected = cardView.getSelected();
+				if(selected.size() == 0){
+					btnRemoveCard.setEnabled(false);
+				}
+				else {
+					btnRemoveCard.setEnabled(true);
+				}
+			}
+		};
+		
+		final Timer timer = new Timer(250, removeCardListener);
+		
+		timer.start();
 
 
 	}
@@ -161,8 +245,10 @@ public class DeckControlsPanel extends JPanel {
 			btnRemoveCard.setVisible(true);
 			btnRemoveDeck.setVisible(true);
 			fieldAddCard.setVisible(true);
+			fieldAddCard.setEnabled(true);
 			singleSelectBtn.setVisible(true);
 			multiSelectBtn.setVisible(true);
+			fieldDeckName.setVisible(true);
 
 			if (!(btnAddCard.getActionListeners().length == 0)) {
 				btnAddCard
@@ -188,6 +274,7 @@ public class DeckControlsPanel extends JPanel {
 			btnAddCard.addActionListener(new AddCardController(this));
 			btnRemoveCard.addActionListener(new RemoveCardController(this));
 			btnRemoveDeck.addActionListener(new RemoveDeckController(this));
+			btnUpdateDeckName.addActionListener(new UpdateDeckController(this));
 
 			MultiSelectController multiSelectController = new MultiSelectController(
 					this);
@@ -201,6 +288,8 @@ public class DeckControlsPanel extends JPanel {
 				singleSelectBtn.setSelected(true);
 				multiSelectBtn.setSelected(false);
 			}
+			
+			fieldDeckName.setText(deck.getName());
 
 		} else {
 			btnAddCard.setVisible(false);
@@ -209,10 +298,11 @@ public class DeckControlsPanel extends JPanel {
 			fieldAddCard.setVisible(false);
 			singleSelectBtn.setVisible(false);
 			multiSelectBtn.setVisible(false);
+			fieldDeckName.setVisible(false);
 
 			deckRemovedMessage.setVisible(true);
 			deckRemovedMessage.setForeground(Color.BLUE);
-			deckRemovedMessage.setText("You cannot edit this deck");
+			deckRemovedMessage.setText("Deck: " + deck.getName() + " was not created by you. You cannot edit this deck");
 		}
 	}
 
@@ -366,4 +456,9 @@ public class DeckControlsPanel extends JPanel {
 		saveStatusMessage.setText(message);
 		saveStatusMessage.setForeground(Color.BLUE);
 	}
+	
+	public String getFieldDeckNameText(){
+		return fieldDeckName.getText();
+	}
+
 }

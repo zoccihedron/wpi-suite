@@ -26,6 +26,7 @@ public class AddDeckController implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		deck  = new Deck(createDeckPanel.getDeckName(), false, new ArrayList<Integer>());
 		if(!deck.getName().equals("") && !deck.getName().equals(defaultDeckText)){
 			// Send a request to the core to save this game
