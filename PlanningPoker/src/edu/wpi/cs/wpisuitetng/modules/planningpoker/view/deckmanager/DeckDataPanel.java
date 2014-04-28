@@ -45,7 +45,7 @@ public class DeckDataPanel extends JPanel{
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.8;
@@ -54,7 +54,7 @@ public class DeckDataPanel extends JPanel{
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 0;
 		constraints.weightx = 1.0;
 		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.gridwidth = 1;

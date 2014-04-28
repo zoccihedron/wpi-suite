@@ -11,10 +11,12 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
@@ -31,6 +33,7 @@ public class DeckManager extends JPanel{
 	
 	private final CardViewPanel cardViewPanel;
 	private final DeckControlsPanel deckControlsPanel;
+	private final JLabel saveMessage;
 	
 	
 	/**
@@ -39,20 +42,12 @@ public class DeckManager extends JPanel{
 	 */
 	public DeckManager(ListDecksPanel listDecksPanel){
 		
+		saveMessage = new JLabel();
 		cardViewPanel = new CardViewPanel();
-		deckControlsPanel = new DeckControlsPanel(cardViewPanel, listDecksPanel);
+		deckControlsPanel = new DeckControlsPanel(cardViewPanel, listDecksPanel, this);
 		
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
-		
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.insets = new Insets(5, 5, 5, 5);
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.8;
-		this.add(cardViewPanel, constraints);
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
@@ -60,8 +55,27 @@ public class DeckManager extends JPanel{
 		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
-		constraints.weighty = 0.2;
+		constraints.weighty = 0.8;
+		this.add(cardViewPanel, constraints);
+		
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.insets = new Insets(5, 5, 5, 5);
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
 		this.add(deckControlsPanel, constraints);
+		
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.insets = new Insets(5, 5, 5, 5);
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		this.add(saveMessage, constraints);
 	}
 	
 	/**
@@ -88,6 +102,15 @@ public class DeckManager extends JPanel{
 		
 		cardViewPanel.updateView(deck);
 
+	}
+	
+	public void setSaveText(String message){
+		saveMessage.setText(message);
+		saveMessage.setForeground(Color.BLUE);
+	}
+	
+	public void setSaveVisible(boolean check){
+		saveMessage.setVisible(check);
 	}
 
 }

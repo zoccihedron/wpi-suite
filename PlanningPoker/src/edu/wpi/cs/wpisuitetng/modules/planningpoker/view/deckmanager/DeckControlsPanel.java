@@ -56,6 +56,7 @@ public class DeckControlsPanel extends JPanel {
 	private Deck deck;
 	private final CardViewPanel cardView;
 	private final ListDecksPanel listDecksPanel;
+	private final DeckManager deckManager;
 
 	private final JTextField fieldDeckName;
 	private final JButton btnUpdateDeckName;
@@ -65,16 +66,17 @@ public class DeckControlsPanel extends JPanel {
 	private final ButtonGroup cardSelectGroup;
 	private final JRadioButton singleSelectBtn;
 	private final JRadioButton multiSelectBtn;
-	private final JLabel saveStatusMessage;
 
 	/**
 	 * Construct all the buttons and their action listeners.
 	 * @param cardView the card view panel
 	 * @param listDecksPanel the list deck panel
+	 * @param deckManager 
 	 */
-	public DeckControlsPanel(final CardViewPanel cardView, ListDecksPanel listDecksPanel) {
+	public DeckControlsPanel(final CardViewPanel cardView, ListDecksPanel listDecksPanel, DeckManager deckManager) {
 		this.cardView = cardView;
 		this.listDecksPanel = listDecksPanel;
+		this.deckManager = deckManager;
 
 
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -84,9 +86,9 @@ public class DeckControlsPanel extends JPanel {
 		fieldDeckName = new JTextField("");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridy = 0;
 		constraints.weightx = 0.5;
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 1;
 		constraints.insets = new Insets(2, 0, 0, 2);
 		constraints.anchor = GridBagConstraints.SOUTH;
 		this.add(fieldDeckName, constraints);
@@ -94,8 +96,8 @@ public class DeckControlsPanel extends JPanel {
 		//DECK NAME BUTTON
 		btnUpdateDeckName = new JButton("Rename Deck");
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 2;
-		constraints.gridy = 3;
+		constraints.gridx = 1;
+		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.5;
 		constraints.insets = new Insets(2, 2, 0, 0);
@@ -106,16 +108,16 @@ public class DeckControlsPanel extends JPanel {
 		btnRemoveDeck = new JButton("Remove Deck");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 2;
-		constraints.gridy = 1;
+		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(2, 2, 2, 0);
+		constraints.insets = new Insets(2, 2, 0, 0);
 		this.add(btnRemoveDeck, constraints);
 
 		//REMOVE CARD BUTTON
 		btnRemoveCard = new JButton("Remove Card");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 2;
-		constraints.gridy = 0;
+		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 2, 2, 0);
 		this.add(btnRemoveCard, constraints);
@@ -124,7 +126,7 @@ public class DeckControlsPanel extends JPanel {
 		btnAddCard = new JButton("Add Card");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 1;
-		constraints.gridy = 0;
+		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 2, 2, 2);
 		this.add(btnAddCard, constraints);
@@ -133,7 +135,7 @@ public class DeckControlsPanel extends JPanel {
 		fieldAddCard = new JPlaceholderTextField(PLACEHOLDER_TEXT);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
-		constraints.gridy = 0;
+		constraints.gridy = 2;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 2, 2);
 		this.add(fieldAddCard, constraints);
@@ -199,7 +201,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(2, 2, 2, 2);
+		constraints.insets = new Insets(8, 2, 8, 2);
 		this.add(singleSelectBtn, constraints);
 
 		multiSelectBtn = new JRadioButton("Multiple Selection");
@@ -207,7 +209,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(2, 0, 2, 2);
+		constraints.insets = new Insets(8, 0, 8, 2);
 		this.add(multiSelectBtn, constraints);
 
 		cardSelectGroup = new ButtonGroup();
@@ -219,13 +221,6 @@ public class DeckControlsPanel extends JPanel {
 		this.add(deckRemovedMessage);
 
 		message = new JLabel();
-
-		saveStatusMessage = new JLabel();
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		constraints.gridwidth = 3;
-		constraints.anchor = GridBagConstraints.WEST;
-		this.add(saveStatusMessage, constraints);
 
 		deck = null;
 
@@ -258,7 +253,7 @@ public class DeckControlsPanel extends JPanel {
 		fieldDeckName.setVisible(false);
 		deckRemovedMessage.setVisible(false);
 		btnUpdateDeckName.setVisible(false);
-		saveStatusMessage.setVisible(false);
+		deckManager.setSaveVisible(false);
 
 	}
 
@@ -271,7 +266,7 @@ public class DeckControlsPanel extends JPanel {
 	public void setActionListeners(Deck newDeck) {
 		deck = newDeck;
 
-		saveStatusMessage.setText("");
+		deckManager.setSaveText("");
 		ConfigManager.getInstance();
 		if (deck.getDeckCreator().equals(
 				ConfigManager.getConfig().getUserName())) {
@@ -287,9 +282,8 @@ public class DeckControlsPanel extends JPanel {
 			multiSelectBtn.setVisible(true);
 			fieldDeckName.setVisible(true);
 			btnUpdateDeckName.setVisible(true);
-			saveStatusMessage.setVisible(!deck.isInUse());
-			saveStatusMessage.setForeground(Color.BLUE);
-			saveStatusMessage.setText("<html>No changes made.</html>");
+			deckManager.setSaveVisible(!deck.isInUse());
+			deckManager.setSaveText("<html>No changes made.</html>");
 
 
 			if (!(btnAddCard.getActionListeners().length == 0)) {
@@ -347,7 +341,7 @@ public class DeckControlsPanel extends JPanel {
 			fieldDeckName.setVisible(false);
 			btnUpdateDeckName.setVisible(false);
 			fieldDeckName.setVisible(false);
-			saveStatusMessage.setVisible(false);
+			deckManager.setSaveVisible(false);
 
 
 			deckRemovedMessage.setVisible(true);
@@ -370,7 +364,7 @@ public class DeckControlsPanel extends JPanel {
 		multiSelectBtn.setVisible(false);
 		btnUpdateDeckName.setVisible(false);
 		fieldDeckName.setVisible(false);
-		saveStatusMessage.setVisible(false);
+		deckManager.setSaveVisible(false);
 	}
 
 	/**
@@ -507,8 +501,7 @@ public class DeckControlsPanel extends JPanel {
 	 * @param message the save message
 	 */
 	public void saveMessage(String message) {
-		saveStatusMessage.setText(message);
-		saveStatusMessage.setForeground(Color.BLUE);
+		deckManager.setSaveText(message);
 	}
 
 	public String getFieldDeckNameText(){
