@@ -34,5 +34,9 @@ public class UpdateDeckViewController {
 	public void updateDeckManager(Deck deck) {
 		deckManager.updateDeck(deck);
 	}
+
+	public void updateInUse(Deck deck) {
+		deckManager.updateInUse(deck);
+	}
 	
 }

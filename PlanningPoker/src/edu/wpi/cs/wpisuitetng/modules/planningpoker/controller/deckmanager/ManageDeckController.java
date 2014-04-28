@@ -109,8 +109,7 @@ public class ManageDeckController {
 	}
 	
 	public void setDecksInUse(){
-		//TODO decks need to be changed to stored as 
-		//ints in the game, not strings
+	
 		List<Game> games = 
 				PlanningPokerModel.getInstance().getAllGames();
 		List<Integer> deckIds = new ArrayList<Integer>();
@@ -119,7 +118,7 @@ public class ManageDeckController {
 		}
 		
 		for(Deck d: decks){
-			d.setInUse(deckIds.contains(d.getName()));
+			d.setInUse(deckIds.contains(d.getId()));
 		}
 	}
 

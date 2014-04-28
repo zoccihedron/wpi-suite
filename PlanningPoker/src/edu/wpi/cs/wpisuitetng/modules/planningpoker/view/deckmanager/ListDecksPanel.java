@@ -41,6 +41,9 @@ import edu.wpi.cs.wpisuitetng.network.Network;
 public class ListDecksPanel  extends JScrollPane implements
 TreeSelectionListener {
 	
+	DefaultMutableTreeNode deckNode;
+	DefaultMutableTreeNode notInUseDecksCategory;
+	DefaultMutableTreeNode inUseDecksCategory;
 	private JTree deckTree;
 	private UpdateDeckViewController updateDeckViewController;
 
@@ -56,6 +59,10 @@ TreeSelectionListener {
 		catch(RuntimeException exception){
 			exception.printStackTrace();
 		}
+		
+		deckNode = null;
+		notInUseDecksCategory = null;
+		inUseDecksCategory = null;
 		
 		this.refresh();
 
@@ -95,9 +102,7 @@ TreeSelectionListener {
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
 				"Decks"); // makes a starting node
 	
-		DefaultMutableTreeNode deckNode = null;
-		DefaultMutableTreeNode notInUseDecksCategory = null;
-		DefaultMutableTreeNode inUseDecksCategory = null;
+		
 		
 		notInUseDecksCategory = new DefaultMutableTreeNode("Decks Not In Use");
 		inUseDecksCategory = new DefaultMutableTreeNode("Decks In Use");
@@ -193,7 +198,12 @@ TreeSelectionListener {
 			final Object nodeInfo = node.getUserObject();
 			if (nodeInfo instanceof Deck) {
 				final Deck deck = (Deck) nodeInfo;
-				updateDeckViewController.updateDeckManager(deck);
+				if(notInUseDecksCategory.isNodeDescendant(node)){
+					updateDeckViewController.updateDeckManager(deck);
+				}
+				else {
+					updateDeckViewController.updateInUse(deck);
+				}
 			}
 		}
 
