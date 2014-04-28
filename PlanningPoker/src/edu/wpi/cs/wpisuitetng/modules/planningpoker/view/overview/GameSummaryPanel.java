@@ -20,6 +20,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -188,6 +191,15 @@ public class GameSummaryPanel extends JPanel {
 		constraints.insets = new Insets(0, 20, 5, 0);
 		add(startGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
+		// listener to update tree
+		startGameButton.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				game.setStatus(GameStatus.IN_PROGRESS);
+				OverviewPanelController.getInstance().refreshListGames();
+			}
+		});
+		// listener to make game playable
 		startGameButton.addActionListener(new UpdateGameController(new CreateGameInfoPanel(new NewGamePanel(game,false), game), game, true));
 		
 		// Button to play game
@@ -353,6 +365,7 @@ public class GameSummaryPanel extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 	}
+
 	
 	/**
 	 * fills empty fields with values specific to game
