@@ -9,6 +9,8 @@ import java.awt.event.FocusListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.gui.widgets.JPlaceholderTextField;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.AddDeckController;
@@ -48,10 +50,41 @@ public class CreateDeckPanel extends JPanel{
 		constraints.weightx = 0.25;
 		constraints.anchor = constraints.EAST;
 		this.add(btnSubmit, constraints);
+		btnSubmit.setEnabled(false);
 
 		deck = null;
 
 		btnSubmit.addActionListener(new AddDeckController(this, PLACEHOLDER_TEXT, listDecksPanel));
+		deckName.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				if(deckName.getText().trim().equals("") ||
+						deckName.getText().trim().equals(PLACEHOLDER_TEXT)){
+					btnSubmit.setEnabled(false);
+				}
+				else{
+					btnSubmit.setEnabled(true);
+				}
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				if(deckName.getText().trim().equals("") ||
+						deckName.getText().trim().equals("Deck")){
+					btnSubmit.setEnabled(false);
+				}
+				else{
+					btnSubmit.setEnabled(true);
+				}
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				//Intentionally Left Blank
+				
+			}
+		});
 	}
 
 	/**
