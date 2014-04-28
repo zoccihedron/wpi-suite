@@ -90,10 +90,10 @@ public class EndGameManuallyController implements ActionListener {
 		OverviewPanelController.getInstance().refreshListGames();
 		OverviewPanelController.getInstance().updateGameSummary(endedGame);
 		if(endedGame.getStatus().equals(Game.GameStatus.ENDED)){
-			view.reportSuccess("Game ended successfully!");
+			view.reportSuccess("Game ended.");
 		}
 		else{
-			view.reportSuccess("Game closed successfully!");
+			view.reportSuccess("Game closed.");
 		}
 	}
 
