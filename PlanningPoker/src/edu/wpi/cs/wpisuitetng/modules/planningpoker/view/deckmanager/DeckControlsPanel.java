@@ -235,7 +235,7 @@ public class DeckControlsPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<Integer> selected = cardView.getSelected();
+				ArrayList<Integer> selected = (ArrayList<Integer>) cardView.getSelected();
 				if(selected.size() == 0){
 					btnRemoveCard.setEnabled(false);
 				}

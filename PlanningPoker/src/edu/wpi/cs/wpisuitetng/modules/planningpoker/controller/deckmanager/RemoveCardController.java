@@ -22,7 +22,7 @@ public class RemoveCardController implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ArrayList<Integer> toRemove = cardView.getSelected();
+		ArrayList<Integer> toRemove = (ArrayList<Integer>) cardView.getSelected();
 		view.saveMessage("<html>Saving changes...</html>");
 		
 		for(Integer cardValue: toRemove){
