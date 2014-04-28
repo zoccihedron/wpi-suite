@@ -16,12 +16,12 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.UpdateDeckViewController;
 
 /**
  * Overraching tab for the Deck Manager
  * @author Code On Bleu
+ * @version 1.0
  *
  */
 @SuppressWarnings("serial")
@@ -33,9 +33,10 @@ public class DeckManagerPanel extends JPanel{
 	 */
 	public DeckManagerPanel(){
 		setLayout(new BorderLayout());
-		DeckDataPanel deckData = new DeckDataPanel();
-		DeckManager deckManager = new DeckManager(deckData.getListDecksPanel());
-		UpdateDeckViewController updateDeckViewController = new UpdateDeckViewController(deckManager);
+		final DeckDataPanel deckData = new DeckDataPanel();
+		final DeckManager deckManager = new DeckManager(deckData.getListDecksPanel());
+		final UpdateDeckViewController updateDeckViewController = 
+				new UpdateDeckViewController(deckManager);
 		deckData.setListDecksController(updateDeckViewController);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(deckData);
