@@ -84,19 +84,21 @@ public class DeckControlsPanel extends JPanel {
 		fieldDeckName = new JTextField("");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 3;
 		constraints.weightx = 0.5;
 		constraints.gridwidth = 2;
+		constraints.insets = new Insets(2, 0, 0, 2);
 		constraints.anchor = GridBagConstraints.SOUTH;
 		this.add(fieldDeckName, constraints);
 		
-		//DECK NAME TEXT FIELD
+		//DECK NAME BUTTON
 		btnUpdateDeckName = new JButton("Rename Deck");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 2;
-		constraints.gridy = 4;
-		constraints.weightx = 0.5;
+		constraints.gridy = 3;
 		constraints.gridwidth = 1;
+		constraints.weightx = 0.5;
+		constraints.insets = new Insets(2, 2, 0, 0);
 		constraints.anchor = GridBagConstraints.SOUTH;
 		this.add(btnUpdateDeckName, constraints);
 				
@@ -106,7 +108,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 2;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(2, 2, 0, 0);
+		constraints.insets = new Insets(2, 2, 2, 0);
 		this.add(btnRemoveDeck, constraints);
 
 		//REMOVE CARD BUTTON
@@ -173,7 +175,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(2, 2, 0, 2);
+		constraints.insets = new Insets(2, 2, 2, 2);
 		this.add(singleSelectBtn, constraints);
 
 		multiSelectBtn = new JRadioButton("Multiple Selection");
@@ -181,7 +183,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(2, 0, 0, 2);
+		constraints.insets = new Insets(2, 0, 2, 2);
 		this.add(multiSelectBtn, constraints);
 
 		cardSelectGroup = new ButtonGroup();
@@ -190,14 +192,13 @@ public class DeckControlsPanel extends JPanel {
 
 
 		deckRemovedMessage = new JLabel();
-		deckRemovedMessage.setVisible(false);
 		this.add(deckRemovedMessage);
 
 		message = new JLabel();
 
 		saveStatusMessage = new JLabel();
 		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.gridwidth = 3;
 		constraints.anchor = GridBagConstraints.WEST;
 		this.add(saveStatusMessage, constraints);
@@ -224,6 +225,16 @@ public class DeckControlsPanel extends JPanel {
 		
 		timer.start();
 
+		btnAddCard.setVisible(false);
+		btnRemoveCard.setVisible(false);
+		btnRemoveDeck.setVisible(false);
+		fieldAddCard.setVisible(false);
+		singleSelectBtn.setVisible(false);
+		multiSelectBtn.setVisible(false);
+		fieldDeckName.setVisible(false);
+		deckRemovedMessage.setVisible(false);
+		btnUpdateDeckName.setVisible(false);
+
 
 	}
 
@@ -249,6 +260,8 @@ public class DeckControlsPanel extends JPanel {
 			singleSelectBtn.setVisible(true);
 			multiSelectBtn.setVisible(true);
 			fieldDeckName.setVisible(true);
+			btnUpdateDeckName.setVisible(true);
+
 
 			if (!(btnAddCard.getActionListeners().length == 0)) {
 				btnAddCard
@@ -268,6 +281,10 @@ public class DeckControlsPanel extends JPanel {
 			}
 			if (!(multiSelectBtn.getActionListeners().length == 0)) {
 				multiSelectBtn.removeActionListener(multiSelectBtn
+						.getActionListeners()[0]);
+			}
+			if (!(btnUpdateDeckName.getActionListeners().length == 0)) {
+				btnUpdateDeckName.removeActionListener(btnUpdateDeckName
 						.getActionListeners()[0]);
 			}
 
@@ -299,6 +316,10 @@ public class DeckControlsPanel extends JPanel {
 			singleSelectBtn.setVisible(false);
 			multiSelectBtn.setVisible(false);
 			fieldDeckName.setVisible(false);
+			btnUpdateDeckName.setVisible(false);
+			fieldDeckName.setVisible(false);
+
+
 
 			deckRemovedMessage.setVisible(true);
 			deckRemovedMessage.setForeground(Color.BLUE);
@@ -317,6 +338,8 @@ public class DeckControlsPanel extends JPanel {
 		fieldAddCard.setVisible(false);
 		singleSelectBtn.setVisible(false);
 		multiSelectBtn.setVisible(false);
+		btnUpdateDeckName.setVisible(false);
+		fieldDeckName.setVisible(false);
 	}
 
 	/**
