@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -27,6 +28,7 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
 
 import java.util.Date;
@@ -39,26 +41,28 @@ import java.util.Date;
  */
 public class PlanningPokerEntityManagerTest {
 	
-	static MockData db;
-	static Game draftGame;
-	static Game draftGameYouCreated;
-	static Game inProgressGame;
-	static PlanningPokerEntityManager manager;
-	static User dummyUser, dummyUser2;
-	static Session s1, s2;
-	static String mockSsid = "abc123";
-	static Project testProject;
-	static Project otherProject;
+	MockData db;
+	Game draftGame;
+	Game draftGameYouCreated;
+	Game inProgressGame;
+	PlanningPokerEntityManager manager;
+	User dummyUser, dummyUser2;
+	Session s1, s2;
+	String mockSsid = "abc123";
+	Project testProject;
+	Project otherProject;
+	Date start;
+	Date end;
 	
 	
 	@Before
 	public void setUp() throws WPISuiteException{
 		
-		User dummyUser = new User("Bob", "bob", "abc123", 1);
-		Date start = new Date();
+		dummyUser = new User("Bob", "bob", "abc123", 1);
+		start = new Date();
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
-		Date end = endTime.getTime();
+		end = endTime.getTime();
 		
 		dummyUser.setRole(Role.ADMIN);
 		
@@ -76,6 +80,7 @@ public class PlanningPokerEntityManagerTest {
 		s2 = new Session(dummyUser2, testProject, mockSsid);
 		
 		db = new MockData(new HashSet<Object>());
+		db.save(dummyUser);
 		manager = new PlanningPokerEntityManager(db);
 		
 		draftGame.setGameCreator(dummyUser.getUsername());
@@ -85,10 +90,6 @@ public class PlanningPokerEntityManagerTest {
 		manager.save(s1, draftGame);
 		manager.save(s1, draftGameYouCreated);
 		manager.save(s1, inProgressGame);
-
-		db.save(dummyUser);
-		
-		manager = new PlanningPokerEntityManager(db);
 	}
 	
 	@Test
@@ -200,6 +201,85 @@ public class PlanningPokerEntityManagerTest {
 	}
 	
 	@Test
+	public void getAllForEveryoneTest() throws WPISuiteException{
+		//test for session 1
+		Game[] retrievedGames = (Game[])manager.getAllForEveryone(s1);
+
+		boolean containedDraftsOwnedByUser = false;
+		boolean containedGameInProgress = false;
+		boolean containedGames = false;
+
+		for(Game g: retrievedGames){
+			if(g.getName().equals("game")||g.getName().equals("game2")){
+				containedDraftsOwnedByUser = true;
+			}
+			if(g.getName().equals("game3")){
+				containedGameInProgress = true;
+			}
+			if((g.getStatus()==Game.GameStatus.DRAFT)&&(g.getGameCreator().equals(s2.getUser().getName()))){
+				containedDraftsOwnedByUser = true;
+			}
+			containedGames = true;
+		}
+
+		assertTrue(containedDraftsOwnedByUser);
+		assertTrue(containedGames);
+		assertTrue(containedGameInProgress);
+
+		//test for session 2
+		retrievedGames = (Game[])manager.getAllForEveryone(s2);
+
+		containedDraftsOwnedByUser = false;
+		containedGameInProgress = false;
+		containedGames = false;
+
+
+		for(Game g: retrievedGames){
+			if(g.getName().equals("game")||g.getName().equals("game2")){
+				containedDraftsOwnedByUser = true;
+			}
+			if(g.getName().equals("game3")){
+				containedGameInProgress = true;
+			}
+			if((g.getStatus()==Game.GameStatus.DRAFT)&&(g.getGameCreator().equals(s2.getUser().getName()))){
+				containedDraftsOwnedByUser = true;
+			}
+			containedGames = true;
+		}
+
+		assertTrue(containedDraftsOwnedByUser);
+		assertTrue(containedGames);
+		assertTrue(containedGameInProgress);
+
+	}
+
+	@Test 
+	public void updateGameTest() throws WPISuiteException{
+		draftGame.setName("gameWithNewName");
+		draftGame.setDescription("new description");
+		manager.update(s1,draftGame.toJSON());
+		Game updatedGame = (Game)db.retrieve(Game.class, "id", draftGame.getId()).get(0);
+
+		assertEquals(updatedGame, draftGame);
+		assertEquals(updatedGame.getName(), "gameWithNewName");
+		assertEquals(updatedGame.getDescription(),"new description");
+
+	}
+
+	@Test
+	public void saveGameTest() throws WPISuiteException{
+		Game newGame = new Game("newgame", start, end, "default");
+		manager.save(s1, newGame);
+		assertSame(newGame, db.retrieve(Game.class, "id", newGame.getId()).get(0));
+
+	}
+
+	@Test
+	public void getCountTest() throws WPISuiteException{
+		assertEquals(manager.Count(), 3);
+	}
+
+	@Test
 	public void getHighestIdTest() throws WPISuiteException{
 		Game[] retrievedGames = (Game[])manager.getAll(s1);
 		int largestId = manager.getGameWithLargestId(retrievedGames);
@@ -221,4 +301,99 @@ public class PlanningPokerEntityManagerTest {
 			} 
 		}
 	}
+	
+
+
+	@Test
+	public void getAllUsersTest() throws WPISuiteException{
+		List<User> userList = manager.getAllUsers();
+		int size = userList.size();
+		assertEquals(size,1);
+
+	}
+
+
+	@Test
+	public void advancedPostCloseTest() throws WPISuiteException{
+		Game closedGame = Game.fromJson(manager.advancedPost(s1,"close",draftGame.toJSON()));
+		assertEquals(closedGame.getId(), draftGame.getId());
+		assertEquals(closedGame.getName(), draftGame.getName());
+		assertEquals(closedGame.getStatus(),Game.GameStatus.CLOSED);
+	}
+
+
+	@Test
+	public void advancedPostEndTest() throws WPISuiteException{
+		Game endedGame = Game.fromJson(manager.advancedPost(s1,"close",draftGame.toJSON()));
+		assertEquals(endedGame.getId(), draftGame.getId());
+		assertEquals(endedGame.getName(), draftGame.getName());
+		assertEquals(endedGame.getStatus(),Game.GameStatus.CLOSED);
+
+	}
+
+	@Test
+	public void advancedPostEditTest() throws WPISuiteException{
+		String ableToEdit = manager.advancedPost(s1, "edit", draftGame.toJSON());
+		assertEquals(ableToEdit, "true");
+
+		draftGame.setHasBeenEstimated(true);
+		String hasBeenVotedOn = manager.advancedPost(s1, "edit", draftGame.toJSON());
+		Game edittedGame = (Game) db.retrieve(Game.class, "id", draftGame.getId()).get(0);
+		assertEquals(hasBeenVotedOn, "*This game has been recently voted on. Editing is no longer available");
+		assertTrue(edittedGame.isEditing());
+
+	}
+
+	@Test
+	public void advancedPostEndEditTest() throws WPISuiteException{
+		String ableToEdit = manager.advancedPost(s1, "endEdit", draftGame.toJSON());
+		assertEquals(ableToEdit, "true");
+
+		draftGame.setHasBeenEstimated(true);
+		String hasBeenVotedOn = manager.advancedPost(s1, "endEdit", draftGame.toJSON());
+		Game edittedGame = (Game) db.retrieve(Game.class, "id", draftGame.getId()).get(0);
+		assertEquals(hasBeenVotedOn, "*This game has been recently voted on. Editing is no longer available");
+		assertFalse(edittedGame.isEditing());
+
+	}
+
+
+	@Test
+	public void advancedPostVoteTest() throws WPISuiteException{
+		Estimate newEstimate = new Estimate(0, inProgressGame.getId());
+		inProgressGame.addEstimate(newEstimate);
+		newEstimate.makeEstimate(dummyUser.getUsername(),3);
+		String makeNewEstimate = manager.advancedPost(s1, "vote", newEstimate.toJSON());
+		assertEquals(makeNewEstimate, "true");
+		Game votedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		assertEquals(votedGame.findEstimate(newEstimate.getReqID()).getEstimate(dummyUser.getUsername()),3);
+
+		inProgressGame.setStatus(Game.GameStatus.ENDED);
+		manager.update(s1,inProgressGame.toJSON());
+
+		String estimateOnEndedGame = manager.advancedPost(s1, "vote", newEstimate.toJSON());
+		assertEquals(estimateOnEndedGame, "*Voting is not currently allowed: The game has ended.");
+
+	}
+
+
+	@Test
+	public void advancedPostSendTest() throws WPISuiteException{
+		Estimate newEstimate = new Estimate(0, inProgressGame.getId());
+		inProgressGame.addEstimate(newEstimate);
+		newEstimate.makeEstimate(dummyUser.getUsername(),3);
+		String makeNewEstimate = manager.advancedPost(s1, "send", newEstimate.toJSON());
+		assertEquals(makeNewEstimate, "true");
+		Game votedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		assertTrue(votedGame.findEstimate(newEstimate.getReqID()).estimationHasBeenSent());
+
+	}
+
+	@Test
+	public void getIdCountTest() throws WPISuiteException{
+		int count = manager.getIdCount();
+		assertEquals(count, 4); 
+		
+	}
+	
 }
