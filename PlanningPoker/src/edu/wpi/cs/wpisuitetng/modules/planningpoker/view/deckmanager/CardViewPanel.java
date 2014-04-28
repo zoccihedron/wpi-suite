@@ -15,6 +15,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -30,11 +31,11 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  * in a grid format
  * 
  * @author Code On Bleu
- *
+ * @version 1.0
  */
 public class CardViewPanel extends JScrollPane{
 	private JPanel currentView;
-	private ArrayList<JToggleButton> toggleBtns;
+	private List<JToggleButton> toggleBtns;
 	private ImageIcon img;
 	private final int NUM_OF_COLUMNS = 4;  
 	
@@ -57,7 +58,11 @@ public class CardViewPanel extends JScrollPane{
 		this.setViewportView(currentView);
 	}
 	
-	public JPanel cardView(Deck deck){
+	/**
+	 * Fill the card view of the deck with the cards held in the deck
+	 * @param deck the deck to get cards from 
+	 */
+	public void cardView(Deck deck){
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = -1;
@@ -75,7 +80,7 @@ public class CardViewPanel extends JScrollPane{
 			cardToAdd.setVerticalTextPosition(SwingConstants.CENTER);
 			
 			
-			if(constraints.gridx % (NUM_OF_COLUMNS-1) == 0 && constraints.gridx != 0){
+			if(constraints.gridx % (NUM_OF_COLUMNS - 1) == 0 && constraints.gridx != 0){
 				constraints.gridx = 0;
 				constraints.gridy++;
 			}else{
@@ -90,24 +95,32 @@ public class CardViewPanel extends JScrollPane{
 			toggleBtns.add(cardToAdd);
 		}
 		
-		return currentView;
-		
-		
 	}
 	
+	/**
+	 * update and refresh the card view panel with the passed deck
+	 * @param deck the deck to update the cardview with
+	 */
 	public void updateView(Deck deck){
 		cardView(deck);
 		this.setViewportView(currentView);
 		this.revalidate();
 	}
 	
+	/**
+	 * set the card view to blank. Used when deleting decks
+	 */
 	public void updateView() {
 		currentView = new JPanel();
 		this.setViewportView(currentView);
 	}
 
-	public ArrayList<Integer> getSelected() {
-		ArrayList<Integer> toBeRemoved = new ArrayList<Integer>();
+	/**
+	 * Find and return the list of selected cards in the card view
+	 * @return the list of selected cards
+	 */
+	public List<Integer> getSelected() {
+		final List<Integer> toBeRemoved = new ArrayList<Integer>();
 		
 		for(JToggleButton button : toggleBtns){
 			if(button.isSelected()){
