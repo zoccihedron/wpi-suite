@@ -59,7 +59,8 @@ public class MailerTest {
 		u2.setEmail("codonbleu@gmail.com");
 		p = new Project("test", "1", u1,
 				new User[] {u1, u2},
-				new String[] {"PlanningPoker", "PostBoard", "RequirementManager"});
+				new String[] {"PlanningPoker", "PostBoard", "RequirementManager"},
+				"", "", "", "");
 
 		g.setProject(p);
 		
@@ -70,7 +71,7 @@ public class MailerTest {
 	
 	@Test
 	public void testConstructor(){
-		assertNotNull(new Mailer(g, users, Mailer.Notification.STARTED));
+		assertNotNull(new Mailer(g, users, Mailer.Notification.STARTED, p));
 	}
 	
 }
