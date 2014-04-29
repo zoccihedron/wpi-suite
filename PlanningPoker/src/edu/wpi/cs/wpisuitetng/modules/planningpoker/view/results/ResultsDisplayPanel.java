@@ -46,6 +46,11 @@ public class ResultsDisplayPanel extends JPanel {
 	private final JLabel mean;
 	private final JLabel median;
 	private final JLabel lblFinalEstimate;
+	private final JLabel min;
+	private final JLabel max;
+	private final JLabel zeroEstimates;
+	private final JLabel emptyLabel;
+	private final JLabel notes;
 	private final JTextField finalEstimate;
 	private final JTextArea noteArea;
 	private final JButton saveFinalEstimateBtn;
@@ -73,7 +78,12 @@ public class ResultsDisplayPanel extends JPanel {
 		mean = new JLabel();
 		median = new JLabel();
 		message = new JLabel();
+		min = new JLabel();
+		max = new JLabel();
+		zeroEstimates = new JLabel();
 		lblFinalEstimate = new JLabel();
+		notes = new JLabel();
+		emptyLabel = new JLabel();
 		finalEstimate = new JTextField();
 		noteArea = new JTextArea();
 		noteArea.setBorder(finalEstimate.getBorder());
@@ -116,11 +126,27 @@ public class ResultsDisplayPanel extends JPanel {
 		mean.setText("Mean: ");
 		median.setText("Median: ");
 		median.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		min.setText("Minimum: ");
+		min.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		max.setText("Maximum: ");
+		max.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		emptyLabel.setText("               ");
+		emptyLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		zeroEstimates.setText("Number of 0 estimates: ");
+		zeroEstimates.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblFinalEstimate.setText("Final Estimate: ");
+		notes.setText("Notes: ");
+		notes.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
 
 		mean.setBorder(new EmptyBorder(0, 0, 5, 0));
 		median.setBorder(new EmptyBorder(5, 0, 5, 0));
+		min.setBorder(new EmptyBorder(5, 0, 5, 0));
+		max.setBorder(new EmptyBorder(5, 0, 5, 0));
+		zeroEstimates.setBorder(new EmptyBorder(5, 0, 5, 0));
 		lblFinalEstimate.setBorder(new EmptyBorder(5, 0, 5, 0));
+		emptyLabel.setBorder(new EmptyBorder(5, 0, 5, 0));
+		notes.setBorder(new EmptyBorder(5, 0, 5, 0));
 
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -132,40 +158,72 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.weightx = 0.5;
 		add(scrollUsersAndEstimates, constraints);
 
+		constraints.fill = GridBagConstraints.NONE;
 		final JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new GridBagLayout());
 
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.weighty = 0.0;
 		constraints.weightx = 0.0;
-
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.gridwidth = 2;
-		rightPanel.add(mean, constraints);
-
+		
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 1;
+		rightPanel.add(mean, constraints);
+		
+		constraints.gridx = 3;
+		constraints.gridy = 1;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 3, 0, 3);
 		rightPanel.add(median, constraints);
 
-		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		rightPanel.add(min, constraints);
+		
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 3;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		rightPanel.add(max, constraints);
+
+		constraints.gridx = 0;
+		constraints.gridy = 3;
 		constraints.gridwidth = 1;
 		rightPanel.add(lblFinalEstimate, constraints);
 
-		constraints.gridx = 1;
-		constraints.gridy = 2;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 2;
+		constraints.gridy = 3;
 		constraints.gridwidth = 1;
-		finalEstimate.setSize(50, finalEstimate.getHeight());
-		rightPanel.add(finalEstimate, constraints);
+		rightPanel.add(emptyLabel, constraints);
 
-		constraints.gridwidth = 2;
+		constraints.gridx = 1;
+		constraints.gridy = 3;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		//finalEstimate.setSize(50, finalEstimate.getHeight());
+		rightPanel.add(finalEstimate, constraints);
+		
+		constraints.fill = GridBagConstraints.NONE;
+
+		constraints.gridx = 3;
+		constraints.gridy = 3;
+		constraints.gridwidth = 1;
+		rightPanel.add(zeroEstimates, constraints);
+		
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
 		constraints.gridy = 4;
+		constraints.gridwidth = 1;
+		rightPanel.add(notes, constraints);
+
+		constraints.gridwidth = 4;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 9;
 		rightPanel.add(saveFinalEstimateBtn, constraints);
 
 		try {
@@ -176,15 +234,15 @@ public class ResultsDisplayPanel extends JPanel {
 		}
 
 		constraints.gridx = 0;
-		constraints.gridy = 5;
-		constraints.gridwidth = 2;
+		constraints.gridy = 8;
+		constraints.gridwidth = 4;
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(message, constraints);
 
 		constraints.gridx = 0;
-		constraints.gridy = 3;
-		constraints.gridwidth = 2;
+		constraints.gridy = 8;
+		constraints.gridwidth = 4;
 		constraints.weighty = 1;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
@@ -280,6 +338,9 @@ public class ResultsDisplayPanel extends JPanel {
 
 		mean.setText("Mean: " + Double.toString(estimate.getMean()));
 		median.setText("Median: " + Double.toString(estimate.getMedian()));
+		min.setText("Minimum: " + Double.toString(estimate.getMin()));
+		max.setText("Maximum: " + Double.toString(estimate.getMax()));
+		zeroEstimates.setText("Number of 0 estimates: " + Integer.toString(estimate.getzeroEstimates()));
 		noteArea.setText(estimate.getNote());
 		noteArea.setVisible(true);
 		noteArea.setEnabled(true);
