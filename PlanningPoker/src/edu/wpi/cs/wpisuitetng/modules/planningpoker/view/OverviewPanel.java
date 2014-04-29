@@ -77,7 +77,7 @@ public class OverviewPanel extends JSplitPane {
 
 						@Override
 						public void responseSuccess(IRequest iReq) {
-							
+
 							ResponseModel response = iReq.getResponse();
 							Game[] games = Game.fromJsonArray(response.getBody());
 							List<Game> updatedGames = new ArrayList<Game>();
@@ -85,14 +85,23 @@ public class OverviewPanel extends JSplitPane {
 								updatedGames.add(game);
 							List<Game> listPanelGames = listGamePanel.getGames();
 							if(updatedGames.size() == listPanelGames.size()){
+								boolean hasChange = false;
 								for(Game game: updatedGames){
-									if(!listPanelGames.contains(game)){
-										listGamePanel.refresh();
-										break;
+									if(hasChange) break;
+									for(Game g: listPanelGames){
+										if(g.getId() == game.getId())
+											if(!g.equals(game)){
+												System.out.println("Game not currently in panel");
+												listGamePanel.refresh();
+												hasChange = true;
+												break;
+											}
 									}
+									
 								}
 							}
 							else {
+								System.out.println("Not the same size list");
 								listGamePanel.refresh();
 							}
 						}
@@ -119,7 +128,7 @@ public class OverviewPanel extends JSplitPane {
 			}
 
 		};
-		
+
 		updateTreeTimer = new Timer(5000, updateTreeListener);
 		updateTreeTimer.start();
 

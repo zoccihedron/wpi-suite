@@ -48,6 +48,8 @@ implements TreeSelectionListener {
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private List<Game> games;
+	private boolean hasRefreshed = false;
+	private Object selectedObject;
 
 
 	/**
@@ -134,11 +136,15 @@ implements TreeSelectionListener {
 	public void updateTree(){
 		//makes a starting node
 		DefaultMutableTreeNode node = null;
-		Game selectedGame = null;
-		if(tree != null){
+		if(hasRefreshed){
+			try{
 			node = (DefaultMutableTreeNode)
 					tree.getLastSelectedPathComponent();
-			selectedGame = (Game) node.getUserObject();
+			selectedObject = node.getUserObject();
+			}
+			catch(NullPointerException e){
+				//Intentionally Left Blank
+			}
 		}
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 
 		games = PlanningPokerModel.getInstance().getAllGames();
@@ -154,9 +160,12 @@ implements TreeSelectionListener {
 
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
-			if(selectedGame != null &&
-					game.getId() == selectedGame.getId()){
-				node = gameNode;
+			if(selectedObject != null) {
+				if(selectedObject instanceof Game){
+					if(((Game) selectedObject).getId() == game.getId()){
+						node = gameNode;
+					}
+				}
 			}
 			switch (game.getStatus()){
 			case IN_PROGRESS: 
@@ -172,7 +181,22 @@ implements TreeSelectionListener {
 				gameClosedCategory.add(gameNode);
 				break;
 			}
-
+			if(selectedObject != null) {
+				if(selectedObject instanceof String){
+					if(((String) selectedObject).equals("Ended")){
+						node = gameEndedCategory;
+					}
+					else if(((String) selectedObject).equals("Draft")){
+						node = gameDraftCategory;
+					}
+					else if(((String) selectedObject).equals("Archive")){
+						node = gameClosedCategory;
+					}
+					else if(((String) selectedObject).equals("In Progress")){
+						node = gameInProgressCategory;
+					}
+				}
+			}
 			top.add(gameDraftCategory);
 			top.add(gameInProgressCategory);
 			top.add(gameEndedCategory);
@@ -207,6 +231,8 @@ implements TreeSelectionListener {
 
 		System.out.println("# of Games:" + games.size());
 		System.out.println("finished refreshing the tree");
+		
+		hasRefreshed = true;
 	}
 
 	public List<Game> getGames() {
