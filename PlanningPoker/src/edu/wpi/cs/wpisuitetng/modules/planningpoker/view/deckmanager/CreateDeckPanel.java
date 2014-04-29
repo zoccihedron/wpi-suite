@@ -13,8 +13,12 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
@@ -71,6 +75,14 @@ public class CreateDeckPanel extends JPanel{
 		this.add(btnSubmit, constraints);
 		btnSubmit.setEnabled(false);
 
+		try {
+		    Image img = ImageIO.read(getClass().getResource("addDeck.png"));
+		    btnSubmit.setIcon(new ImageIcon(img));   
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
+		
 		deck = null;
 
 		btnSubmit.addActionListener(new AddDeckController(this, PLACEHOLDER_TEXT, listDecksPanel));
