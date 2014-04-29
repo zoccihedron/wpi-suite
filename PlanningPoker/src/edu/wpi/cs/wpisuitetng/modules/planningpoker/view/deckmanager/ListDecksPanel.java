@@ -215,4 +215,12 @@ TreeSelectionListener {
 	public void setDeckViewController(UpdateDeckViewController updateDeckViewController) {
 		this.updateDeckViewController = updateDeckViewController;
 	}
+	
+	/**
+	 * Sets the deck to be viewed on the DeckManagerPanel
+	 * @param deck - the deck to be viewed
+	 */
+	public void setDeckViewed(Deck deck){
+		updateDeckViewController.updateDeckManager(deck);
+	}
 }

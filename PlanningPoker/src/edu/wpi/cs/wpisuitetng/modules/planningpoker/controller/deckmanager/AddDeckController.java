@@ -68,6 +68,7 @@ public class AddDeckController implements ActionListener {
 		ManageDeckController.getInstance().addDeck(deckAdded);
 		ManageDeckController.getInstance().updateDecks();
 		listDecksPanel.refresh();
+		listDecksPanel.setDeckViewed(deckAdded);
 	}
 
 }
