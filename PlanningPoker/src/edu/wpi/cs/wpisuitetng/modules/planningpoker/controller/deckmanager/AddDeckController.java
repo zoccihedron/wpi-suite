@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ public class AddDeckController implements ActionListener {
 
 		deck  = new Deck(createDeckPanel.getDeckName(), false, new ArrayList<Integer>());
 		if(!deck.getName().equals("") && !deck.getName().equals(defaultDeckText)){
+			
 			// Send a request to the core to save this game
 			final Request request = Network.getInstance().makeRequest(
 					"planningpoker/deck", HttpMethod.PUT);
@@ -58,7 +60,9 @@ public class AddDeckController implements ActionListener {
 			request.addObserver(new AddDeckRequestObserver(this));
 			request.send(); // send the request
 			
-			createDeckPanel.setDeckNameJTextField("");
+			createDeckPanel.getDeckNameTextfield().clearText();
+			createDeckPanel.getBtnSubmit().grabFocus();
+			
 		}
 	}
 	
