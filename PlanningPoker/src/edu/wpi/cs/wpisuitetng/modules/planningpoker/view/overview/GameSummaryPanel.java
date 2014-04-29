@@ -238,12 +238,9 @@ public class GameSummaryPanel extends JPanel {
 		startGameButton.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				game.setStatus(GameStatus.IN_PROGRESS);
-				OverviewPanelController.getInstance().refreshListGames();
+				OverviewPanelController.getInstance().startGame(game);
 			}
 		});
-		// listener to make game playable
-		startGameButton.addActionListener(new UpdateGameController(new CreateGameInfoPanel(new NewGamePanel(game,false), game), game, true));
 		
 		// Button to play game
 		playGameButton = new JButton("Play");
