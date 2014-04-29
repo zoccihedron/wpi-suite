@@ -63,14 +63,6 @@ public class Estimate {
 	public int getReqID() {
 		return reqID;
 	}
-
-	/**
-	 * update new requirement
-	 * @param requirement the given requirement
-	 */
-	public void setRequirement(Requirement requirement) {
-		reqID = requirement.getId();
-	}
 	
 	/**
 	 * Add user to the hashMap of this estimate by creating a new

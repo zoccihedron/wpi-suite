@@ -2,6 +2,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -13,6 +14,7 @@ import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class EstimateTest {
 
@@ -50,16 +52,20 @@ public class EstimateTest {
 	@Test
 	public void canAddUserTest() {
 		assertFalse(est.hasUser(dummyUser.getUsername()));
-		est.addUser(dummyUser.getUsername());
+		assertFalse(est.canAddUser(dummyUser.getUsername()));
+		
 		assertTrue(est.hasUser(dummyUser.getUsername()));
+		assertTrue(est.canAddUser(dummyUser.getUsername()));
 	}
 	
 	@Test
 	public void userHadMadeEstimateTest(){
+		assertFalse(est.hasMadeAnEstimation(dummyUser.getUsername()));
 		est.addUser(dummyUser.getUsername());
 		assertFalse(est.hasMadeAnEstimation(dummyUser.getUsername()));
 		est.makeEstimate(dummyUser.getUsername(), ESTIMATE_VALUE);
 		assertTrue(est.hasMadeAnEstimation(dummyUser.getUsername()));
+		
 	}
 	
 	@Test
@@ -118,6 +124,17 @@ public class EstimateTest {
 	}
 	
 	@Test
+	public void getVoteCountTest(){
+		est.addUser(dummyUser.getUsername());
+		est.addUser(dummyUser2.getUsername());
+		
+		assertEquals(2, est.getMaxVoteCount());
+		assertEquals(0, est.getVoteCount());
+		est.makeEstimate(dummyUser.getUsername(), ESTIMATE_VALUE);
+		assertEquals(1, est.getVoteCount());
+	}
+	
+	@Test
 	public void medianTest(){
 		est.addUser(dummyUser.getUsername());
 		est.addUser(dummyUser2.getUsername());
@@ -126,13 +143,41 @@ public class EstimateTest {
 		
 		est.makeEstimate(dummyUser.getUsername(), ESTIMATE_VALUE);
 		assertEquals(ESTIMATE_VALUE , est.getMedian(), 0.1);
+		
+		est.makeEstimate(dummyUser2.getUsername(), ESTIMATE_VALUE);
+		assertEquals(ESTIMATE_VALUE , est.getMedian(), 0.1);
 	}
 	
 	@Test
 	public void copyTest(){
 		Estimate copy = est.getCopy();
 		assertEquals(copy.getGameID(), est.getGameID());
-		assertEquals(copy.getReqID(), est.getReqID());
+		assertEquals(copy.getReqID(), est.getReqID());	
+	}
+	
+	@Test
+	public void settersTest(){
+		est.setGameID(77);
+		est.setReqID(77);
+		est.setGameModifiedVersion(77);
+		est.setNote("test");
+		est.setFinalEstimate(77);
+		est.setSentBefore(true);
+		est.estimationSent(true);
 		
+		ArrayList<Boolean> selection = new ArrayList<Boolean>();
+		selection.add(true);
+		selection.add(false);
+		est.setUserCardSelection(dummyUser.getUsername(), selection );
+		
+		assertTrue(est.estimationHasBeenSent());
+		assertTrue(est.isFinalEstimateSet());
+		assertTrue(est.isSentBefore());
+		assertEquals("test", est.getNote());
+		assertEquals(77, est.getGameID());
+		assertEquals(77, est.getReqID());
+		assertEquals(77, est.getGameModifiedVersion());
+		assertEquals(77, est.getFinalEstimate());
+		assertEquals(selection, est.getUserCardSelection(dummyUser.getUsername()));
 	}
 }
