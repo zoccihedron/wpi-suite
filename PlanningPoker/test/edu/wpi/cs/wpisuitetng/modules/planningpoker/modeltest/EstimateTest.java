@@ -30,7 +30,7 @@ public class EstimateTest {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(start.getYear() + 1, 1,1);
 		Date end = endTime.getTime();
-		game = new Game(game1name,start,end, "default");
+		game = new Game(game1name,start,end, -2);
 		
 
 		dummyUser = new User("Bob", "bob", "abc123", 1);

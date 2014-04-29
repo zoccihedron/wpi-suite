@@ -53,7 +53,6 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		
 		buttonPanel.add(crtGameBtn);
 		buttonPanel.add(crtDeckBtn);
-		crtDeckBtn.setVisible(false);
 		buttonPanel.add(userPrefBtn);
 		buttonPanel.add(Box.createHorizontalStrut(50));
 		
@@ -96,6 +95,13 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainViewTabController.getInstance().userPreferencesTab();
+			}
+		});
+		
+		crtDeckBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainViewTabController.getInstance().DeckManagerTab();
 			}
 		});
 	}

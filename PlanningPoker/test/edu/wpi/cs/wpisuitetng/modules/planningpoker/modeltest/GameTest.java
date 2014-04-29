@@ -9,20 +9,22 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -46,10 +48,10 @@ public class GameTest {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(start.getYear(), 1,1);
 		Date end = endTime.getTime();
-		game1 = new Game(game1name,start,end, "default");
+		game1 = new Game(game1name,start,end, -2);
 		
 		String game2name = "Game2";
-		game2 = new Game(game2name,start,end, "default");
+		game2 = new Game(game2name,start,end, -2);
 
 		dummyUser = new User("Bob", "bob", "abc123", 1);
 
@@ -73,12 +75,12 @@ public class GameTest {
 		endTime.set(start.getYear() + 1, 1,1);
 		Date end = endTime.getTime();
 		
-		Game testGameConstructor = new Game("test",start,end, "default");
+		Game testGameConstructor = new Game("test",start,end, -2);
 		
 		assertEquals("test", testGameConstructor.getName());
 		assertEquals(start, testGameConstructor.getStart());
 		assertEquals(end, testGameConstructor.getEnd());
-		assertEquals("default", testGameConstructor.getDeck());
+		assertEquals(-2, testGameConstructor.getDeck());
 		
 		assertEquals(0, testGameEmptyConstructor.getId());
 		
@@ -170,7 +172,7 @@ public class GameTest {
 		endTime.set(start.getYear(), 1,1);
 		Date end = endTime.getTime();
 		
-		Game testGameConstructor = new Game("test",start,end, "default");
+		Game testGameConstructor = new Game("test",start,end, -2);
 		String jsonMessage = testGameConstructor.toJSON();
 		Game fromMessage = Game.fromJson(jsonMessage);
 		
