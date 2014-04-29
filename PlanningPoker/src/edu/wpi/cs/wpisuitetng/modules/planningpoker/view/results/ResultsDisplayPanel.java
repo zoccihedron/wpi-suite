@@ -130,7 +130,7 @@ public class ResultsDisplayPanel extends JPanel {
 		min.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		max.setText("Maximum: ");
 		max.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		emptyLabel.setText("               ");
+		emptyLabel.setText("");
 		emptyLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		zeroEstimates.setText("Number of 0 estimates: ");
 		zeroEstimates.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -162,7 +162,7 @@ public class ResultsDisplayPanel extends JPanel {
 		final JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new GridBagLayout());
 
-		constraints.anchor = GridBagConstraints.NORTH;
+		constraints.anchor = GridBagConstraints.WEST;
 		constraints.weighty = 0.0;
 		constraints.weightx = 0.0;
 		
@@ -202,11 +202,12 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 3;
 		constraints.gridwidth = 1;
-		constraints.weightx = 1;
+		constraints.weightx = 1.0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		//finalEstimate.setSize(50, finalEstimate.getHeight());
 		rightPanel.add(finalEstimate, constraints);
 		
+		constraints.weightx = 0.0;
 		constraints.fill = GridBagConstraints.NONE;
 
 		constraints.gridx = 3;
@@ -224,7 +225,9 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
 		constraints.gridy = 9;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(saveFinalEstimateBtn, constraints);
+		constraints.fill = GridBagConstraints.NONE;
 
 		try {
 			final Image img = ImageIO.read(getClass().getResource("pen.png"));
