@@ -160,7 +160,7 @@ public class CreateGameInfoPanel extends JPanel {
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
-		textEntry.setId(-2);
+		defaultDeck.setId(-2);
 		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
 
@@ -223,7 +223,7 @@ public class CreateGameInfoPanel extends JPanel {
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
-		textEntry.setId(-2);
+		defaultDeck.setId(-2);
 		decks = new ArrayList<Deck>();		
 		lblDeck = new JLabel("Deck:");
 		for(Deck d:allDecks){
@@ -234,7 +234,12 @@ public class CreateGameInfoPanel extends JPanel {
 		decks.add(textEntry);
 		decks.add(defaultDeck);
 		deckBox = new JComboBox(decks.toArray());
-		deckBox.setSelectedItem(decks.get(passedInGame.getDeck()));
+		for(Deck d: decks){
+			if(passedInGame.getDeck() == d.getId())
+			{
+				deckBox.setSelectedItem(d);
+			}
+		}
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
