@@ -14,12 +14,16 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -140,6 +144,24 @@ public class DeckControlsPanel extends JPanel {
 		constraints.insets = new Insets(0, 0, 2, 2);
 		this.add(fieldAddCard, constraints);
 		fieldAddCard.setEnabled(false);
+		
+		try {
+		    Image img = ImageIO.read(getClass().getResource("editIcon.png"));
+		    btnUpdateDeckName.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("removeDeck.png"));
+		    btnRemoveDeck.setIcon(new ImageIcon(img));
+		    
+		    img = ImageIO.read(getClass().getResource("removeCard.png"));
+		    btnRemoveCard.setIcon(new ImageIcon(img));
+
+		    img = ImageIO.read(getClass().getResource("addCard.png"));
+		    btnAddCard.setIcon(new ImageIcon(img));
+		    
+		} 
+		catch (IOException ex) {
+			System.err.println(ex.getMessage());
+		}
 
 		fieldAddCard.getDocument().addDocumentListener(new DocumentListener() {
 
