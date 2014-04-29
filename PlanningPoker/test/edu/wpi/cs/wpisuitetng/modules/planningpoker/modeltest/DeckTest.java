@@ -64,11 +64,16 @@ public class DeckTest {
 		ArrayList<Integer> cards = new ArrayList<Integer>();
 		cards.add(5);
 		cards.add(2);
+		Deck testDeck0 = new Deck();
 		Deck testDeck = new Deck("Test Deck", false, cards);
+		testDeck.setId(1);
 		Deck testDeck2 = new Deck("Test Deck2", false, cards);
+		testDeck2.setId(2);
 		
-		assertTrue(testDeck.identify("Test Deck"));
-		assertFalse(testDeck.identify("Test Deck2"));
+		assertTrue(testDeck0.identify(0));
+		assertTrue(testDeck.identify(1));
+		assertTrue(testDeck2.identify(2));
+		assertTrue(testDeck0.identify(testDeck0));
 		assertTrue(testDeck.identify(testDeck));
 		assertFalse(testDeck.identify(testDeck2));
 	}
