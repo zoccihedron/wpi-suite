@@ -16,6 +16,12 @@
 package edu.wpi.cs.wpisuitetng.modules.core.entitymanagers;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +29,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import edu.wpi.cs.wpisuitetng.ManagerLayer;
+import edu.wpi.cs.wpisuitetng.Permission;
+import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.database.Data;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
 import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
@@ -30,9 +39,6 @@ import edu.wpi.cs.wpisuitetng.exceptions.DatabaseException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.UnauthorizedException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
-import edu.wpi.cs.wpisuitetng.ManagerLayer;
-import edu.wpi.cs.wpisuitetng.Permission;
-import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.modules.AbstractEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.EntityManager;
 import edu.wpi.cs.wpisuitetng.modules.Model;
@@ -40,6 +46,9 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.ProjectDeserializer;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.utils.Mailer.Notification;
 
 public class ProjectManager implements EntityManager<Project>{
 
@@ -90,7 +99,37 @@ public class ProjectManager implements EntityManager<Project>{
 		{
 			if(getEntityByName(s, p.getName())[0] == null)
 			{
-				save(s,p);
+				if(p.getMailAccount().equals("") && p.getMailServer().equals("") && 
+						p.getPort().equals("") && p.getPassword().equals(""))
+				{
+					save(s, p);
+				}
+				else 
+				{
+					final ExecutorService thread = Executors.newSingleThreadExecutor();
+					final List<User> u = new ArrayList<User>();
+					u.add(new User("", "", "", 0));
+					final Mailer mailer = new Mailer(new Game(), u, Notification.TEST, p);
+					final Future<Boolean> future = thread.submit(mailer);
+					
+					try {
+						if(future.get()) {
+							save(s, p);
+						} else {
+							logger.log(Level.WARNING, "Invalid but non-empty email" +
+									" credentials during project creation.");
+							throw new ConflictException("The email account provided" +
+									"is invalid. Entity String: " + content);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						logger.log(Level.WARNING, "Invalid but non-empty email credentials" +
+								"during project creation.");
+						throw new ConflictException("There was an error accessing the email" + 
+								"account provided. Entity String: " + content);
+
+					}
+				}
 			}
 			else
 			{
