@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
 
 /**
@@ -27,8 +28,12 @@ import edu.wpi.cs.wpisuitetng.modules.AbstractModel;
  */
 public class Deck extends AbstractModel{
 	private String name = "";
+	private String deckCreator = "";
 	private boolean canSelectMultipleCards = false;
 	private List<Integer> cardValues = new ArrayList<Integer>();
+	private int id;
+	private boolean inUse = false;
+	private boolean myDeck = false;
 	
 	/**
 	 * Constructor for Deck
@@ -40,9 +45,18 @@ public class Deck extends AbstractModel{
 		this.name = name;
 		this.canSelectMultipleCards = canSelectMultipleCards;
 		this.cardValues = cardValues;
+		this.deckCreator = ConfigManager.getInstance().getConfig().getUserName();
 		Collections.sort(this.cardValues);
 	}
 	
+	public Deck() {
+		id = 0;
+	}
+	
+	public Deck (String name){
+		this(name, false, new ArrayList<Integer>());
+	}
+
 	/**
 	 * Returns a deck from JSON encoded string
 	 *
@@ -93,12 +107,16 @@ public class Deck extends AbstractModel{
 	@Override
 	public Boolean identify(Object o) {
 		boolean result = false;
-		if(o instanceof String){
-			result = (name.equals((String)(o)));
+		if(o instanceof Integer){
+			result = (id == (Integer)o);
 		} else if (o instanceof Deck){
-			result = name.equals(((Deck)(o)).getName());
+			result = (id == ((Deck)o).getId());
 		} 
 		return result;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	/**
@@ -120,11 +138,44 @@ public class Deck extends AbstractModel{
 	}
 	
 	/**
+	 * return a boolean that tell you if is usable for the new game tab
+	 * @return if the deck is usable in new game tab
+	 */
+	public boolean isUsable(){
+		int nonZeroCards = 0;
+		for(Integer card: this.getCards()){
+			if(card > 0){
+				nonZeroCards++;
+			}
+		}
+		if(nonZeroCards >= 2){
+		return true;
+		}
+		else{
+		return false;
+		}
+	}
+	
+	/**
 	 * Getter for the name field
 	 * @return The name of the deck
 	 */
 	public String getName(){
 		return name;
+	}
+	/**
+	 * Getter for the name field
+	 * @return The name of the deck
+	 */
+	public String ToString(){
+		return name;
+	}
+	
+	/**
+	 * Setter for the name field
+	 */
+	public void setName(String name){
+		this.name = name;
 	}
 	
 	/**
@@ -149,5 +200,68 @@ public class Deck extends AbstractModel{
 	 */
 	public void setCanSelectMultipleCards(boolean newValue){
 		canSelectMultipleCards = newValue;
+	}
+
+	public void copyFrom(Deck updatedDeck) {
+		this.name = updatedDeck.getName();
+		this.canSelectMultipleCards = updatedDeck.canSelectMultipleCards();
+		this.cardValues = updatedDeck.getCards();
+		this.id = updatedDeck.getId();
+		this.deckCreator = updatedDeck.getDeckCreator();
+	}
+
+	public String getDeckCreator() {
+		return deckCreator;
+	}
+
+	public void setId(int id_count) {
+		id = id_count;
+	}
+	
+	/**
+	 * A boolean that keeps track if the deck
+	 * is being used by a game
+	 * @return the inUse
+	 */
+	public boolean isInUse() {
+		return inUse;
+	}
+
+	/**
+	 * set the deck if it's in use or not
+	 * @param inUse the inUse to set
+	 */
+	public void setInUse(boolean inUse) {
+		this.inUse = inUse;
+	}
+
+	public String toString() {
+		String returnString = name;
+		
+		if(myDeck){
+			returnString = name + " (Owner)";
+		}
+		
+		return returnString;
+	}
+
+	/**
+	 * A boolean to set before to claim a deck
+	 * @return the myDeck
+	 */
+	public boolean isMyDeck() {
+		return myDeck;
+	}
+
+	/**
+	 * use this to claim the deck as the current users
+	 * @param myDeck the myDeck to set
+	 */
+	public void setMyDeck(boolean myDeck) {
+		this.myDeck = myDeck;
+	}
+	
+	public boolean equals(Deck deck){
+		return this.id == deck.getId();
 	}
 }

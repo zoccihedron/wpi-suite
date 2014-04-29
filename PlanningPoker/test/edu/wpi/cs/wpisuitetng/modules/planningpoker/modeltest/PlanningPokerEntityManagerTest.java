@@ -67,9 +67,9 @@ public class PlanningPokerEntityManagerTest {
 		
 		dummyUser.setRole(Role.ADMIN);
 		
-		draftGame = new Game("game", start, end, "default");
-		draftGameYouCreated = new Game("game2", start, end, "default");
-		inProgressGame = new Game("game3", start, end, "default");
+		draftGame = new Game("game", start, end, -2);
+		draftGameYouCreated = new Game("game2", start, end, -2);
+		inProgressGame = new Game("game3", start, end, -2);
 		
 		inProgressGame.setStatus(Game.GameStatus.IN_PROGRESS);
 		
@@ -269,7 +269,7 @@ public class PlanningPokerEntityManagerTest {
 
 	@Test
 	public void saveGameTest() throws WPISuiteException{
-		Game newGame = new Game("newgame", start, end, "default");
+		Game newGame = new Game("newgame", start, end, -2);
 		manager.save(s1, newGame);
 		assertSame(newGame, db.retrieve(Game.class, "id", newGame.getId()).get(0));
 
