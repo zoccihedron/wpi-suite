@@ -15,6 +15,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -30,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -56,6 +59,7 @@ public class DeckPanel extends JScrollPane {
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
 	private final ViewSumController controller;
+	private Timer getDeckTimer = null;
 	
 	/**
 	 * Constructs the DeckPanel
@@ -65,7 +69,7 @@ public class DeckPanel extends JScrollPane {
 	 * @param deck name of the deck
 	 */
 
-	public DeckPanel(int deck, ViewSumController controller) {
+	public DeckPanel(final int deck, ViewSumController controller) {
 		this.controller = controller;
 		if(deck == -2){
 
@@ -91,7 +95,21 @@ public class DeckPanel extends JScrollPane {
 			Deck tempDeck;
 			tempDeck = ManageDeckController.getInstance().getDeckWithId(deck);
 			if(tempDeck == null){
-				this.setViewportView(textVersion());
+				getDeckTimer = new Timer(1000, new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+					Deck tempDeck;
+					tempDeck = ManageDeckController.getInstance().getDeckWithId(deck);
+						if(tempDeck != null)
+						{
+							stopTimer();
+							setViewportView(deckVersion(tempDeck));
+						}
+						
+					}
+				});
+				getDeckTimer.start();
 			}
 			else{
 			this.setViewportView(deckVersion(tempDeck));
@@ -100,7 +118,15 @@ public class DeckPanel extends JScrollPane {
 		}
 		disableVoting();
 	}
-
+	
+	/**
+	 * stop timer that checks for deck
+	 * @param editable
+	 */
+	private void stopTimer(){
+		getDeckTimer.stop();
+	}
+	
 	public String getEstimateField() {
 		return estimateField.getText();
 	}
