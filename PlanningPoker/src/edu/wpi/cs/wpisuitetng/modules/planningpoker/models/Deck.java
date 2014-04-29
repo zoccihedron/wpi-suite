@@ -110,7 +110,7 @@ public class Deck extends AbstractModel{
 		if(o instanceof Integer){
 			result = (id == (Integer)o);
 		} else if (o instanceof Deck){
-			result = id == ((Deck)o).getId();
+			result = (id == ((Deck)o).getId());
 		} 
 		return result;
 	}
