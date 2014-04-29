@@ -9,17 +9,20 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
-import java.util.ArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import edu.wpi.cs.wpisuitetng.Session;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
 import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
@@ -27,11 +30,9 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
-
-import java.util.Date;
 
 /**
  * Entity Manager testing class for Planning Poker
@@ -66,9 +67,9 @@ public class PlanningPokerEntityManagerTest {
 		
 		dummyUser.setRole(Role.ADMIN);
 		
-		draftGame = new Game("game", start, end, "default");
-		draftGameYouCreated = new Game("game2", start, end, "default");
-		inProgressGame = new Game("game3", start, end, "default");
+		draftGame = new Game("game", start, end, -2);
+		draftGameYouCreated = new Game("game2", start, end, -2);
+		inProgressGame = new Game("game3", start, end, -2);
 		
 		inProgressGame.setStatus(Game.GameStatus.IN_PROGRESS);
 		
@@ -268,7 +269,7 @@ public class PlanningPokerEntityManagerTest {
 
 	@Test
 	public void saveGameTest() throws WPISuiteException{
-		Game newGame = new Game("newgame", start, end, "default");
+		Game newGame = new Game("newgame", start, end, -2);
 		manager.save(s1, newGame);
 		assertSame(newGame, db.retrieve(Game.class, "id", newGame.getId()).get(0));
 

@@ -50,7 +50,7 @@ public class MailerTest {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(2015, 1,1);
 		Date end = endTime.getTime();
-		g = new Game("Game", start, end, "default");
+		g = new Game("Game", start, end, -2);
 		u1 = new User("Bob", "bob", "abc123", 1);
 		u1.setAllowEmail(true);
 		u1.setEmail("codonbleu@gmail.com");

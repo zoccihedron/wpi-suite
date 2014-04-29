@@ -11,18 +11,26 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 
@@ -64,21 +72,28 @@ public class CardViewPanel extends JScrollPane{
 	 */
 	public void cardView(Deck deck){
 		final GridBagConstraints constraints = new GridBagConstraints();
-		constraints.fill = GridBagConstraints.BOTH;
+		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = -1;
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(2, 2, 2, 2);
 		constraints.weighty = 1.0;
 		
 		currentView.removeAll();
 		toggleBtns = new ArrayList<JToggleButton>();
 		
+
+		final Border unselectedBorder = BorderFactory.createLineBorder(Color.WHITE, 3);
+		final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN, 3);
+		
 		for(Integer card: deck.getCards()){
+			
 			
 			final JToggleButton cardToAdd = new JToggleButton(Integer.toString(card), img);
 			cardToAdd.setHorizontalTextPosition(SwingConstants.CENTER);
 			cardToAdd.setVerticalTextPosition(SwingConstants.CENTER);
-			
+			cardToAdd.setBorder(unselectedBorder);
+
 			
 			if(constraints.gridx % (NUM_OF_COLUMNS - 1) == 0 && constraints.gridx != 0){
 				constraints.gridx = 0;
@@ -91,6 +106,39 @@ public class CardViewPanel extends JScrollPane{
 			if(constraints.gridy == deck.getCards().size() / NUM_OF_COLUMNS){
 				constraints.anchor = GridBagConstraints.PAGE_END;
 			}
+
+			cardToAdd.addChangeListener(new ChangeListener() {
+				@Override
+				public void stateChanged(ChangeEvent arg0) {
+					if(cardToAdd.isSelected()){
+						cardToAdd.setBorder(selectedBorder);
+					}else{
+						cardToAdd.setBorder(unselectedBorder);
+					}
+									
+				}
+			});
+			
+			cardToAdd.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseExited(MouseEvent e) {
+					if(cardToAdd.isSelected()){
+						cardToAdd.setBorder(selectedBorder);
+					}else{
+						cardToAdd.setBorder(unselectedBorder);
+					}
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					if(cardToAdd.isSelected()){
+					}else{
+						cardToAdd.setBorder(selectedBorder);
+					}
+				}
+			});
+
+
 			currentView.add(cardToAdd, constraints); 
 			toggleBtns.add(cardToAdd);
 		}
