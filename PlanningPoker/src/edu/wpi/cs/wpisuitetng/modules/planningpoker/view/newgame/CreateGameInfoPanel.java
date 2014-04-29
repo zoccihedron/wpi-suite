@@ -160,7 +160,7 @@ public class CreateGameInfoPanel extends JPanel {
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
-		textEntry.setId(-2);
+		defaultDeck.setId(-2);
 		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
 
@@ -223,7 +223,7 @@ public class CreateGameInfoPanel extends JPanel {
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
-		textEntry.setId(-2);
+		defaultDeck.setId(-2);
 		decks = new ArrayList<Deck>();		
 		lblDeck = new JLabel("Deck:");
 		for(Deck d:allDecks){
