@@ -54,7 +54,7 @@ public class DeckEntityManagerTest {
 	Deck deck2;
 	Deck deck3;
 	DeckEntityManager manager;
-	Session s1;
+	Session s1, s2;
 	Project testProject;
 	User dummyUser;
 	String mockSsid = "abc123";
@@ -84,6 +84,8 @@ public class DeckEntityManagerTest {
 
 		testProject = new Project("test", "1");
 		s1 = new Session(dummyUser, testProject, mockSsid);
+		s2 = new Session(dummyUser, testProject, mockSsid);
+
 
 		manager.save(s1, deck1);
 		manager.save(s1, deck2);
@@ -122,7 +124,7 @@ public class DeckEntityManagerTest {
 	}
 	
 	@Test
-	public void getAllTest() throws WPISuiteException{///////////////
+	public void getAllTest() throws WPISuiteException{
 		manager.save(s1,deck3);
 		Deck[] decks = manager.getAll(s1);
 		boolean contains1 = false, contains2 = false, contains3 = false;
@@ -195,8 +197,38 @@ public class DeckEntityManagerTest {
 		assertEquals(count ,2);
 	}
 	
-
 	
+	@Test
+	public void saveTest() throws WPISuiteException{
+		boolean containsIdEquals1 = false, containsIdEquals2 = false;
+		int counter = 0;
+		MockData db2 = new MockData(new HashSet<Object>());
+		DeckEntityManager newManager = new DeckEntityManager(db2);
+		Deck newDeck = new Deck("NewDeck", false, new ArrayList<Integer>());
+		newManager.save(s2, newDeck);
+		
+		Deck newDeck2 = new Deck("NewDeck2", false, new ArrayList<Integer>());
+		newManager.save(s2,newDeck2);
+		Deck[] retrievedDecks = newManager.getAll(s2);
+		for(Deck d: retrievedDecks){
+			if(d.getId() == 1) containsIdEquals1 = true;
+			if(d.getId() == 2) containsIdEquals2 = true;
+			counter++;
+			
+		}
+		assertTrue(containsIdEquals1);
+		assertTrue(containsIdEquals2);
+		assertEquals(counter,2);
+		
+
+		
+
+		
+		
+	}
+	
+
+
 	
 
 	
