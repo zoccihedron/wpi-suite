@@ -34,14 +34,16 @@ public class Game extends AbstractModel {
 	private String gameCreator = "";
 	private boolean hasDeadline = false;
 	private Date start = new Date();
+	private int modifiedVersion = 0;
 
 	private Date end = new Date();
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
-	private String deck = "";
+	private int deck;
+
 	public enum GameStatus {
-		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended");
+		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
 		private final String text;
 
@@ -56,6 +58,7 @@ public class Game extends AbstractModel {
 	}
 
 	private GameStatus status = GameStatus.DRAFT;
+	private boolean editing = false;
 
 	// TODO: timestamp, countdown or time for deadline, estimate, boolean for
 	// termination
@@ -70,15 +73,17 @@ public class Game extends AbstractModel {
 	 *            start time of the game
 	 * @param endTime
 	 *            end time of the game
+	 * @param deckName
+	 * 			  name of the deck
 	 * 
 	 */
-	public Game(String name, Date startTime, Date endTime, String deckName) {
+	public Game(String name, Date startTime, Date endTime, int deckId) {
 		// TODO: whether a session could be add to the parameter of game's
 		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
-		this.setDeck(deckName);
+		this.setDeck(deckId);
 	}
 
 	/**
@@ -121,7 +126,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**
@@ -131,7 +136,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**
@@ -183,6 +188,7 @@ public class Game extends AbstractModel {
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
 		hasDeadline = updatedGame.isHasDeadline();
+		deck = updatedGame.getDeck();
 	}
 
 	/**
@@ -334,13 +340,15 @@ public class Game extends AbstractModel {
 	 * Checks if the deadline has passed and updates the status
 	 */
 	public void updateStatus() {
-		if (hasDeadline) {
-			final Date now = Calendar.getInstance().getTime();
-			if (now.compareTo(end) >= 0) {
-				status = GameStatus.ENDED;
+		if(!status.equals(GameStatus.CLOSED) && !status.equals(GameStatus.ENDED)){
+			if (hasDeadline) {
+				final Date now = Calendar.getInstance().getTime();
+				if (now.compareTo(end) >= 0) {
+					status = GameStatus.ENDED;
+				}
 			}
+			endIfAllEstimated();
 		}
-		endIfAllEstimated();
 	}
 
 	/**
@@ -353,7 +361,7 @@ public class Game extends AbstractModel {
 		boolean shouldEnd = true;
 
 		if (status != GameStatus.DRAFT && !estimates.isEmpty()) {
-			
+
 			for (Estimate estimate : estimates) {
 				shouldEnd &= estimate.areAllEstimationsMade();
 			}
@@ -362,6 +370,122 @@ public class Game extends AbstractModel {
 				status = GameStatus.ENDED;
 			}
 		}
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getMaxVotes(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getMaxVoteCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getUserMaxVotes(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count ++;
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getVoteCount(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getVoteCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @param user - the user to check for
+	 * @return the number of total votes needed
+	 */
+	public int getUserVoteCount(String user){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.hasMadeAnEstimation(user) ? 1 : 0;
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
+	 * @return the number of total votes needed
+	 */
+	public int getReqVoteCount(int reqid){
+		return findEstimate(reqid).getVoteCount();
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
+	 * @return the number of total votes needed
+	 */
+	public int getReqMaxVotes(int reqid){
+		return findEstimate(reqid).getMaxVoteCount();
+	}
+	
+	/**
+	 * Checks to see if the game has been changed
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if the game has been changed
+	 */
+	public boolean isChanged(Game returnedGame, String user) {
+		boolean result = false;
+		result |= !(equalUserVotes(returnedGame, user));
+		result |= (getVoteCount() != returnedGame.getVoteCount());
+		result |= !(equalFinalEstimates(returnedGame));
+		return result;
+	}
+
+	private boolean equalFinalEstimates(Game returnedGame) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getFinalEstimate() == 
+					returnedGame.findEstimate(reqid).getFinalEstimate();
+		}
+		return result;
+	}
+
+	/**
+	 * Checks to see if all the users votes are the same
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if all the votes are the same
+	 */
+	private boolean equalUserVotes(Game returnedGame, String user) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getEstimate(user) == 
+					returnedGame.findEstimate(reqid).getEstimate(user);
+		}
+		return result;
+	}
+	
+	/**
+	 * Checks to see if the game's version matches the other
+	 * @param otherGameVersion int of the game to compare to.
+	 * @return true if they match.
+	 */
+	public boolean isSameModifiedVersion(int otherGameVersion){
+		return otherGameVersion == modifiedVersion;
 	}
 
 	/**
@@ -593,7 +717,7 @@ public class Game extends AbstractModel {
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets whether the game was voted on or not
 	 * @return if the game was voted on or not
@@ -613,15 +737,44 @@ public class Game extends AbstractModel {
 	/**
 	 * @return the deck
 	 */
-	public String getDeck() {
+	public int getDeck() {
 		return deck;
 	}
 
 	/**
 	 * @param deck the deck to set
 	 */
-	public void setDeck(String deck) {
+	public void setDeck(int deck) {
 		this.deck = deck;
+	}
+
+	/**
+	 * sets whether the games is being edited or not
+	 * @param editing true if the game is being edited.
+	 */
+	public void setEditing(boolean editing) {
+		this.editing = editing;
+	}
+
+	/**
+	 * @return true if the game is being edited
+	 */
+	public boolean isEditing() {
+		return editing;
+	}
+
+	/**
+	 * @return the modifiedVersion from the game
+	 */
+	public int getModifiedVersion() {
+		return modifiedVersion;
+	}
+
+	/**
+	 * @param modifiedVersion the modifiedVersion to set in the game
+	 */
+	public void setModifiedVersion(int modifiedVersion) {
+		this.modifiedVersion = modifiedVersion;
 	}
 
 }

@@ -276,7 +276,7 @@ public class MockData implements Data{
 	/**
 	 * Method retrieveAll.
 	 * @param arg0 T
-	 * @param arg1 Project
+	 * @param arg1 Projects
 	
 	 * @return List<Model> * @see edu.wpi.cs.wpisuitetng.database.Data#retrieveAll(T, Project) * @see edu.wpi.cs.wpisuitetng.database.Data#retrieveAll(T, Project)
 	 */

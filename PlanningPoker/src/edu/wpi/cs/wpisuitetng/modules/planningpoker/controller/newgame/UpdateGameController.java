@@ -27,7 +27,7 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * This controller responds when the user clicks the Update button by
  * sending the contents of the fields to the server as an Updated Game.
  * 
- * @author Code On Bleu
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class UpdateGameController implements ActionListener {
@@ -65,7 +65,7 @@ public class UpdateGameController implements ActionListener {
 		if (view.checkFields())
 		{
 			view.disableOrEnableButtonsOnParent(false);
-			view.setDefaults();
+			view.initDefaults();
 			final Game currentGame = view.getGameObject();
 
 			if(startingGame){
@@ -99,7 +99,7 @@ public class UpdateGameController implements ActionListener {
 	 * Reports a successful message
 	 */
 	public void addGameToView() {
-		view.reportMessage("<html>Success: Game Updated!</html>");
+		view.reportMessage("<html>Game Updated</html>");
 	}
 
 	/**
@@ -108,8 +108,9 @@ public class UpdateGameController implements ActionListener {
 	 */
 	public void returnGame(Game returnGame) {
 		updatedGame = returnGame;
-		view.reportMessage("<html>Success: Game Updated!</html>");
+		view.reportMessage("<html>Game Updated</html>");
 		OverviewPanelController.getInstance().refreshListGames();
+		OverviewPanelController.getInstance().updateGameSummary(returnGame);
 		view.closeNewGameTab();
 	}
 	

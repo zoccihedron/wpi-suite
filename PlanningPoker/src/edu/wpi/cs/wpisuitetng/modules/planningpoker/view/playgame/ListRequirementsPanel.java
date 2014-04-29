@@ -44,10 +44,11 @@ implements TreeSelectionListener {
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private final Game game;
-	private PlayGameController playGameController;
+	private final PlayGameController playGameController;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
+	 * @param playGameController
 	 */
 	public ListRequirementsPanel(final Game game, PlayGameController playGameController) {
 		
@@ -120,7 +121,7 @@ implements TreeSelectionListener {
 		DefaultMutableTreeNode votedCategory = null;
 		notVotedCategory = new DefaultMutableTreeNode("Not Voted On");
 		votedCategory = new DefaultMutableTreeNode("Voted On");
-		String user = ConfigManager.getInstance().getConfig().getUserName();
+		final String user = ConfigManager.getInstance().getConfig().getUserName();
 		for(Requirement req: requirements){
 
 			// add new node to requirement tree

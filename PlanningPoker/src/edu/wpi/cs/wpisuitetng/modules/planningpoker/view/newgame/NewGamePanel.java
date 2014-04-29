@@ -34,6 +34,9 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.AddGameCo
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.CloseNewGameTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 
 
@@ -51,9 +54,10 @@ public class NewGamePanel extends JSplitPane {
 	private JButton btnSave;
 	private JButton btnCancel;
 	private JButton btnStart;
-	private JLabel lblMessage;
-	private boolean changesSaved = false;
-	
+	private final JLabel lblMessage;
+	private final boolean changesSaved = false;
+	private final boolean isInProgress;
+	private Game game;
 	/**
 	 * Use this constructor when starting a new game panel from scratch
 	 */
@@ -61,12 +65,18 @@ public class NewGamePanel extends JSplitPane {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
 		lblMessage = new JLabel("*Error");
-
+		isInProgress = false;
+		
+		btnSave = new JButton("Save");
+		btnStart = new JButton("Start");
+		btnCancel = new JButton("Cancel");
+		btnCancel.setToolTipText("This will close the current tab.");
+		
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
 		
-		setUpPanel();
+		populatePanel();
 		
 		// Maps Create Game button to AddGameController class
 		btnSave.addActionListener(new AddGameController(createGameInfoPanel, false, false));
@@ -77,22 +87,35 @@ public class NewGamePanel extends JSplitPane {
 	/**
 	 * Use this constructor when you want to edit an existing game
 	 * @param editingGame the game to be updated
+	 * @param isInProgress whether the game is in progress or not
 	 */
-	public NewGamePanel(Game editingGame) {
+	public NewGamePanel(Game editingGame, boolean isInProgress) {
 		super(JSplitPane.VERTICAL_SPLIT);
 		
 		lblMessage = new JLabel("*Error");
+		this.isInProgress = isInProgress;
+		game = editingGame;
 
+		btnSave = new JButton("Save");
+		btnStart = new JButton("Start");
+		btnCancel = new JButton("Cancel");
+		btnCancel.setToolTipText("This will close the current tab.");
+		
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
 		createGameInfoPanel.setMinimumSize(new Dimension(50, 300));
 		
-		setUpPanel();
+		
+		populatePanel();
 		
 		// Maps Create Game button to UpdateGameController class
-		btnSave.addActionListener(new UpdateGameController(createGameInfoPanel,
-															editingGame,
-															false));
+
+		if(isInProgress){
+			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, true));
+		}
+		else{
+			btnSave.addActionListener(new UpdateGameController(createGameInfoPanel, editingGame, false));
+		}
 		
 		btnStart.addActionListener(
 				new UpdateGameController(createGameInfoPanel, editingGame, true));
@@ -101,9 +124,9 @@ public class NewGamePanel extends JSplitPane {
 	/**
 	 * Sets up constraints on panel that are shared for each constructor
 	 */
-	private void setUpPanel(){
+	private void populatePanel(){
 
-		// Add some lovely padding to the requirements tables and labels
+		// Add some lovely padding to the requirements tables and labels 
 		selectRequirementsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
 		final JSplitPane topPanel = new JSplitPane();
@@ -115,18 +138,14 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.setLayout(null);
 		
 		
-		btnSave = new JButton("Save");
 		btnSave.setBounds(141, 5, 118, 25);
 		btnSave.setEnabled(false);
 		bottomPanel.add(btnSave);
-	
 				
-		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
 		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
-		bottomPanel.add(btnCancel); 
+		bottomPanel.add(btnCancel);
 		
-		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
 		btnStart.setEnabled(false);
 		bottomPanel.add(btnStart);
@@ -191,8 +210,24 @@ public class NewGamePanel extends JSplitPane {
 	 * @param check
 	 */
 	public void disableOrEnableButtons(boolean check){
-		btnStart.setEnabled(check);
-		btnSave.setEnabled(check);
+		if(isInProgress){
+			btnStart.setEnabled(false);
+			btnStart.setToolTipText("The game is already in progress.");
+			btnSave.setEnabled(check);
+		}
+		else{
+			btnStart.setEnabled(check);
+			btnSave.setEnabled(check);
+		}
+	}
+	
+	/**
+	 * Changes the tooltips on buttons.
+	 * @param check
+	 */
+	public void toolTipChanger(String startToolTip, String saveToolTip) {
+		btnStart.setToolTipText(startToolTip);
+		btnSave.setToolTipText(saveToolTip);
 	}
 	
 	/**Fills the text box with a red warning based on the error Message
@@ -216,6 +251,16 @@ public class NewGamePanel extends JSplitPane {
 	}
 	
 	/**
+	 * Either enables or disables a red border around elements
+	 * on the panel if there is problem with the requirements.
+	 * @param check
+	 */
+	public void displayErrorBorders(boolean check) {
+		selectRequirementsPanel.displayErrorBorders(check);
+	}
+
+	
+	/**
 	 * Set if the error message is visible or not
 	 * @param bool 
 	 */
@@ -236,6 +281,7 @@ public class NewGamePanel extends JSplitPane {
 	 * @return boolean if it's ready to close
 	 */
 	public boolean isReadyToClose() {
+		
 		boolean result;
 		if(createGameInfoPanel.isPageEdited()){
 			final Object options[] = {
@@ -250,6 +296,13 @@ public class NewGamePanel extends JSplitPane {
 			result = (i == 0);
 		} else {
 			result = true;
+		}
+		if (isInProgress && result) {
+			final Request request = Network.getInstance()
+					.makeRequest("Advanced/planningpoker/game/endEdit",
+							HttpMethod.POST);
+			request.setBody(game.toJSON());
+			request.send();
 		}
 		return result;
 	}

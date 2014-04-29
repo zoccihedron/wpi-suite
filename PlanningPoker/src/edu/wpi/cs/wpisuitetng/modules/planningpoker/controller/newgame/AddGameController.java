@@ -66,7 +66,7 @@ public class AddGameController implements ActionListener {
 		if (view.checkFields())
 		{
 			view.disableOrEnableButtonsOnParent(false);
-			view.setDefaults();
+			view.initDefaults();
 			final Game currentGame = view.getGameObject();
 			
 			if(startingGame){
@@ -101,9 +101,10 @@ public class AddGameController implements ActionListener {
 	/**
 	 * Shows the used that the game has been saved
 	 */
-	public void addGameToView() {
-		view.reportMessage("<html>Success: Game Saved!</html>");
+	public void addGameToView(Game game) {
+		view.reportMessage("<html>Game Saved.</html>");
 		OverviewPanelController.getInstance().refreshListGames();
+		OverviewPanelController.getInstance().updateGameSummary(game);
 		view.closeNewGameTab();
 	}
 

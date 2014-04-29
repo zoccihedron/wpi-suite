@@ -16,18 +16,21 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.EstimationPane;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame.GameInfoPanel;
 
 /**
- * 
+ * This controller sets and updates the estimation pane and game info panel.
  *
- * @author Codon Bleu
+ * @author Team Code On Bleu
  * @version Apr 9, 2014
  */
 public class PlayGameController {
 	
-	
-	private EstimationPane estimationPane = null;
-	private GameInfoPanel infoPanel = null;
+	private EstimationPane estimationPane;
+	private GameInfoPanel infoPanel;
+	private boolean firstTime;
 	
 	public PlayGameController() {
+		estimationPane = null;
+		infoPanel = null;
+		firstTime = true;
 	}
 
 	public void setEstimationPane(EstimationPane ep){
@@ -54,11 +57,11 @@ public class PlayGameController {
 	 * @param game the game
 	 */
 	public void updateEstimationPane(int id, Game game) {
+		if (firstTime) {
+			estimationPane.initEstimationPane();
+		}
+		firstTime = false;
 		estimationPane.getDeckPanel().enableVoting();
 		estimationPane.setGameAndRequirement(id, game);
 	}
-	
-	
-	
-
 }

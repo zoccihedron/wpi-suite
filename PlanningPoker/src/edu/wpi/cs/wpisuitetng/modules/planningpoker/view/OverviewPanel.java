@@ -12,10 +12,13 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+
 
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 
@@ -40,14 +43,13 @@ public class OverviewPanel extends JSplitPane {
 		summaryPanel = new GameSummaryPanel();
 		listGamePanel = new ListGamePanel();
 		
-		Dimension minimumSize = new Dimension(250, 300);
+		final Dimension minimumSize = new Dimension(250, 300);
 		listGamePanel.setMinimumSize(minimumSize);
 	
 		OverviewPanelController.getInstance().setGameSummary(summaryPanel);
 		OverviewPanelController.getInstance().setListGames(listGamePanel);
 		
 		setLeftComponent(listGamePanel);
-
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
 		
