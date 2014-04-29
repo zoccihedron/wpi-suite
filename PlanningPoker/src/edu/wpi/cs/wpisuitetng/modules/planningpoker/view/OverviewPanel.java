@@ -12,12 +12,26 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JSplitPane;
+import javax.swing.Timer;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import edu.wpi.cs.wpisuitetng.network.models.ResponseModel;
 
 
 
@@ -33,26 +47,81 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 public class OverviewPanel extends JSplitPane {
 	private final ListGamePanel listGamePanel;
 	private final GameSummaryPanel summaryPanel;
-	
+	private final Timer updateTreeTimer;
+
 	public OverviewPanel()
 
 	{
 		summaryPanel = new GameSummaryPanel();
 		listGamePanel = new ListGamePanel();
-		
+
 		final Dimension minimumSize = new Dimension(250, 300);
 		listGamePanel.setMinimumSize(minimumSize);
-	
+
 		OverviewPanelController.getInstance().setGameSummary(summaryPanel);
 		OverviewPanelController.getInstance().setListGames(listGamePanel);
-		
+
 		setLeftComponent(listGamePanel);
 
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
+
+		ActionListener updateTreeListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					System.out.println("Updating Tree");
+					Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET);
+					request.addObserver(new RequestObserver() {
+
+						@Override
+						public void responseSuccess(IRequest iReq) {
+							
+							ResponseModel response = iReq.getResponse();
+							Game[] games = Game.fromJsonArray(response.getBody());
+							List<Game> updatedGames = new ArrayList<Game>();
+							for(Game game: games)
+								updatedGames.add(game);
+							List<Game> listPanelGames = listGamePanel.getGames();
+							if(updatedGames.size() == listPanelGames.size()){
+								for(Game game: updatedGames){
+									if(!listPanelGames.contains(game)){
+										listGamePanel.refresh();
+										break;
+									}
+								}
+							}
+							else {
+								listGamePanel.refresh();
+							}
+						}
+
+						@Override
+						public void responseError(IRequest iReq) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void fail(IRequest iReq, Exception exception) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+					request.send();
+
+				}
+				catch(NullPointerException exception){
+
+				}
+
+			}
+
+		};
 		
-		
-		
+		updateTreeTimer = new Timer(5000, updateTreeListener);
+		updateTreeTimer.start();
+
 	}
-	
 }

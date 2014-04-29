@@ -22,6 +22,9 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
@@ -45,7 +48,8 @@ implements TreeSelectionListener {
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private List<Game> games;
-	
+
+
 	/**
 	 * Constructs the panel
 	 * @param draftGame Taken in to get all requirements for the game
@@ -53,7 +57,7 @@ implements TreeSelectionListener {
 	public ListGamePanel() {
 
 		this.setViewportView(tree);
-		
+
 
 		//Create the nodes.
 		this.addComponentListener(new ComponentListener()
@@ -74,7 +78,7 @@ implements TreeSelectionListener {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				refresh();
-				
+
 			}
 
 			@Override
@@ -108,7 +112,7 @@ implements TreeSelectionListener {
 	 */
 	public void refresh(){
 		System.out.println("Refreshing Game Tree...");
-		
+
 
 		try{
 			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
@@ -121,14 +125,21 @@ implements TreeSelectionListener {
 		catch(RuntimeException exception){
 			exception.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * This function updates the listGame tree
 	 */
 	public void updateTree(){
 		//makes a starting node
+		DefaultMutableTreeNode node = null;
+		Game selectedGame = null;
+		if(tree != null){
+			node = (DefaultMutableTreeNode)
+					tree.getLastSelectedPathComponent();
+			selectedGame = (Game) node.getUserObject();
+		}
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 
 		games = PlanningPokerModel.getInstance().getAllGames();
 		DefaultMutableTreeNode gameNode = null;
@@ -138,24 +149,28 @@ implements TreeSelectionListener {
 		final DefaultMutableTreeNode gameEndedCategory = new DefaultMutableTreeNode("Ended");
 		final DefaultMutableTreeNode gameDraftCategory = new DefaultMutableTreeNode("Draft");
 		final DefaultMutableTreeNode gameClosedCategory = new DefaultMutableTreeNode("Archive");
-		
+
 		for(Game game: games){
 
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
+			if(selectedGame != null &&
+					game.getId() == selectedGame.getId()){
+				node = gameNode;
+			}
 			switch (game.getStatus()){
-				case IN_PROGRESS: 
-					gameInProgressCategory.add(gameNode);
-					break;
-				case DRAFT: 
-					gameDraftCategory.add(gameNode);
-					break;
-				case ENDED: 
-					gameEndedCategory.add(gameNode);
-					break;
-				case CLOSED:
-					gameClosedCategory.add(gameNode);
-					break;
+			case IN_PROGRESS: 
+				gameInProgressCategory.add(gameNode);
+				break;
+			case DRAFT: 
+				gameDraftCategory.add(gameNode);
+				break;
+			case ENDED: 
+				gameEndedCategory.add(gameNode);
+				break;
+			case CLOSED:
+				gameClosedCategory.add(gameNode);
+				break;
 			}
 
 			top.add(gameDraftCategory);
@@ -163,7 +178,7 @@ implements TreeSelectionListener {
 			top.add(gameEndedCategory);
 			top.add(gameClosedCategory);
 		}
-		
+
 		//create the tree with the top node as the top
 		tree = new JTree(top); 
 		//have all of the nodes expand automatically after refreshing, except for the
@@ -182,9 +197,23 @@ implements TreeSelectionListener {
 		tree.setDragEnabled(true);
 		tree.setDropMode(DropMode.ON);
 
+		if(node != null){
+			TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(node);
+			TreePath tpath = new TreePath(nodes);
+			tree.setSelectionPath(tpath);
+		}
+
 		this.setViewportView(tree); //make panel display the tree
 
 		System.out.println("# of Games:" + games.size());
 		System.out.println("finished refreshing the tree");
+	}
+
+	public List<Game> getGames() {
+		return games;
+	}
+
+	public void setGames(List<Game> games) {
+		this.games = games;
 	}
 }
