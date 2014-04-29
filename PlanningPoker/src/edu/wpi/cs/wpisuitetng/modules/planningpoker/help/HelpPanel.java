@@ -9,7 +9,7 @@
  * Creator:
  *    Team Code On Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.help;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -33,7 +33,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTre
 @SuppressWarnings("serial")
 public class HelpPanel extends JPanel
 implements TreeSelectionListener {
-	private JPanel helpInfoPane;
+	private HelpTopics helpInfoPane;
 	private JTree tree;
 
 	public HelpPanel() {
@@ -60,7 +60,8 @@ implements TreeSelectionListener {
 
 		helpInfoPane = new HelpTopics();
 		JScrollPane helpInfoView = new JScrollPane(helpInfoPane);
-
+		helpInfoView.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		//Add the scroll panes to a split pane.
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPane.setLeftComponent(treeView);
@@ -70,9 +71,12 @@ implements TreeSelectionListener {
 		helpInfoView.setMinimumSize(minimumSize);
 		treeView.setMinimumSize(minimumSize);
 		splitPane.setDividerLocation(300);
-
-		//Add the split pane to this panel.
-		add(splitPane);
+		add(splitPane);		
+		
+		for(int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
+		}
+		
 	}
 
 	/** Required by TreeSelectionListener interface. */
@@ -84,8 +88,8 @@ implements TreeSelectionListener {
 
 		Object nodeInfo = node.getUserObject();
 		if (node.isLeaf()) {
-			HelpTopics helpTopic = (HelpTopics)nodeInfo;
-			helpInfoPane.add(helpTopic);
+			HelpTopicObject hto = (HelpTopicObject)nodeInfo;
+			helpInfoPane.pullHelpInfo(hto);
 		}
 	}
 
@@ -96,11 +100,24 @@ implements TreeSelectionListener {
 		category = new DefaultMutableTreeNode("Creating a Game");
 		top.add(category);
 
-		//original Tutorial
-		topic = new DefaultMutableTreeNode(new HelpTopics
+		topic = new DefaultMutableTreeNode(new HelpTopicObject
 				("Validation Fields",
-						"Hello"));
+						"DescriptionTest.txt"));
 		category.add(topic);
+		
+		category = new DefaultMutableTreeNode("Playing a Game");
+		top.add(category);
+		
+		topic = new DefaultMutableTreeNode(new HelpTopicObject
+				("Navigating the Game Types",
+						"DescriptionTest.txt"));
+		category.add(topic);
+		
+		topic = new DefaultMutableTreeNode(new HelpTopicObject
+				("Submitting an Estimate",
+						"DescriptionTest.txt"));
+		category.add(topic);
+		
 	}
 
 	/**
