@@ -37,6 +37,17 @@ public class DeckTest {
 		assertTrue(testDeck.getName().equals("Test Deck"));
 		assertFalse(testDeck.canSelectMultipleCards());
 		assertEquals(5, (int) testDeck.getCards().get(1));
+		
+		Deck testDeck2 = new Deck();
+		assertNotNull(testDeck2);
+		assertEquals(testDeck2.getId(),0);
+		
+		Deck testDeck3 = new Deck("Test Deck3");
+		assertNotNull(testDeck3);
+		assertFalse(testDeck3.canSelectMultipleCards());
+		assertNotNull(testDeck3.getCards());
+		
+
 	}
 	
 	@Test
@@ -78,6 +89,20 @@ public class DeckTest {
 		assertFalse(testDeck.identify(testDeck2));
 	}
 	
+	
+	@Test
+	public void testEquals(){
+		ArrayList<Integer> cards = new ArrayList<Integer>();
+		Deck testDeck = new Deck("Test Deck", false, cards);
+		testDeck.setId(0);
+		Deck testDeck2 = new Deck("Test Deck2", false, cards);
+		testDeck2.setId(1);
+		
+		assertTrue(testDeck.equals(testDeck));
+		assertTrue(testDeck2.equals(testDeck2));
+		assertFalse(testDeck2.equals(testDeck));
+	}
+	
 	@Test
 	public void testJSON(){
 		ArrayList<Integer> cards = new ArrayList<Integer>();
@@ -91,4 +116,82 @@ public class DeckTest {
 		assertEquals(testDeck.getCards(), fromMessage.getCards());
 		assertEquals(testDeck.canSelectMultipleCards(), fromMessage.canSelectMultipleCards());
 	}
+	
+	@Test
+	public void testGetAndSetName(){
+		ArrayList<Integer> cards = new ArrayList<Integer>();
+		Deck testDeck = new Deck("Test Deck", false, cards);
+		assertEquals(testDeck.getName(), testDeck.getName());
+		assertEquals(testDeck.toString(), testDeck.getName());
+
+		testDeck.setName("New Name");
+		assertEquals(testDeck.getName(), "New Name");
+		assertEquals(testDeck.toString(), "New Name");
+
+
+	}
+	
+	@Test
+	public void testToStringAndIsMyDeck(){
+		ArrayList<Integer> cards = new ArrayList<Integer>();
+		Deck testDeck = new Deck("Test Deck", false, cards);
+		assertFalse(testDeck.isMyDeck());
+		assertEquals(testDeck.toString(),"Test Deck");
+		assertEquals(testDeck.ToString(),"Test Deck");
+		
+		testDeck.setMyDeck(true);
+		assertTrue(testDeck.isMyDeck());
+		assertEquals(testDeck.toString(),"Test Deck (Owner)");
+		assertEquals(testDeck.ToString(),"Test Deck");
+
+	}
+	
+	
+	
+	@Test
+	public void testCopyFrom(){
+		ArrayList<Integer> cards = new ArrayList<Integer>();
+		Deck testDeck = new Deck("Test Deck", false, cards);
+		testDeck.setCanSelectMultipleCards(true);
+		
+		Deck copiedDeck = new Deck();
+		copiedDeck.copyFrom(testDeck);
+		
+		assertEquals(copiedDeck.getName(), "Test Deck");
+		assertEquals(copiedDeck.getDeckCreator(),testDeck.getDeckCreator());
+		assertTrue(copiedDeck.canSelectMultipleCards());
+
+		
+	}
+	
+	@Test
+	public void testInUse(){
+		ArrayList<Integer> cards = new ArrayList<Integer>();
+		Deck testDeck = new Deck("Test Deck", false, cards);
+		assertFalse(testDeck.isInUse());
+		testDeck.setInUse(true);
+		assertTrue(testDeck.isInUse());
+
+	}
+	
+	@Test
+	public void testIsUsable(){
+		ArrayList<Integer> cards = new ArrayList<Integer>();
+		cards.add(-1);
+		cards.add(0);
+		Deck testDeck = new Deck("Test Deck", false, cards);
+		assertFalse(testDeck.isUsable());
+		
+		cards.add(3);
+		cards.add(4);
+		assertTrue(testDeck.isUsable());
+
+		
+	}
+	
+	@Test
+	public void testFromJsonArray(){
+		
+	}
+	
 }
