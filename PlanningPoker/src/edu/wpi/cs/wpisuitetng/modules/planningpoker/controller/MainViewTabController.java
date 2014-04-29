@@ -20,6 +20,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewResultsPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager.DeckManagerPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 
 
@@ -31,16 +32,16 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
  * @version 1.0
  */
 public class MainViewTabController {
-	
+
 
 	private static MainViewTabController instance = null;
 	private MainView mainView = null;
 
-	
+
 	private MainViewTabController() {
-		
+
 	}
-	
+
 
 	/**
 	 * 
@@ -60,7 +61,7 @@ public class MainViewTabController {
 	public void setMainView(MainView mainView) {
 		this.mainView = mainView;
 	}
-	
+
 	/**
 	 * Adds a new instance of a newGamePanel to tab bar of mainView
 	 */
@@ -71,7 +72,7 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(newGamePanel);
 	}
-	
+
 	/**
 	 * Creates a createGameTab given a game
 	 * @param game The game that is being modified
@@ -84,7 +85,7 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(newGamePanel);
 	}
-	
+
 	/**
 	 * Creates a playGameTab given a game
 	 * @param game the game to be played
@@ -97,7 +98,7 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(playGamePanel);
 	}
-	
+
 	/**
 	 * Creates a user preferences tab, but only if
 	 * there are no other preference tabs open.
@@ -115,7 +116,7 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(userPrefPanel);
 	}
-	
+
 	/**
 	 * Creates a view results tab given a game
 	 * @param game the game to be viewed
@@ -127,7 +128,7 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(resultsPanel);
 	}
-	
+
 	/**
 	 * Creates a help tab, but only if
 	 * there are no other help tabs open.
@@ -145,7 +146,26 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(helpPanel);
 	}
-	
+
+	/**
+	 * Creates an instance of the deck manager tab. There can
+	 * only be one open at a time. If the button is pressed
+	 * a second time, it simply switches back to that tab.
+	 */
+	public void DeckManagerTab() {
+		for (int i = 0; i < mainView.getTabCount(); i++) {
+			if (mainView.getComponentAt(i).getClass() == DeckManagerPanel.class) {
+				mainView.setSelectedComponent(mainView.getComponentAt(i));
+				return;
+			}
+		}
+		final DeckManagerPanel deckManagerPanel = new DeckManagerPanel();
+		mainView.insertTab("Deck Manager", deckManagerPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(deckManagerPanel);
+	}
+
 	/**
 	 * Closes a given tab
 	 * @param tabToClose the tab to close
@@ -165,6 +185,10 @@ public class MainViewTabController {
 			}
 		} else if(tabToClose instanceof ViewResultsPanel){
 			if(((ViewResultsPanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
+		} else if (tabToClose instanceof DeckManagerPanel) {
+			if(((DeckManagerPanel) tabToClose).isReadyToClose()){
 				mainView.remove(tabToClose);
 			}
 		} else if(tabToClose instanceof HelpPanel){

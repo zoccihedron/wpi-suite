@@ -43,7 +43,7 @@ public class PlanningPokerModelTest {
 		model.emptyModel();
 		assertEquals(model.getSize(), 0);
 		
-		Game newGame1 = new Game("newGame1", start, end, "default");
+		Game newGame1 = new Game("newGame1", start, end, -2);
 		newGame1.setId(1);
 		model.AddGame(newGame1);
 		assertEquals(model.getSize(), 1);
@@ -61,7 +61,7 @@ public class PlanningPokerModelTest {
 		model = PlanningPokerModel.getInstance();
 		model.emptyModel();
 		
-		Game newGame1 = new Game("newGame1", start, end, "default");
+		Game newGame1 = new Game("newGame1", start, end, -2);
 		newGame1.setId(1);
 		model.AddGame(newGame1);
 
@@ -78,15 +78,15 @@ public class PlanningPokerModelTest {
 		model = PlanningPokerModel.getInstance();
 		model.emptyModel();
 
-		Game newGame1 = new Game("newGame1", start, end, "default");
+		Game newGame1 = new Game("newGame1", start, end, -2);
 		newGame1.setId(1);
 		model.AddGame(newGame1);
 
-		Game newGame2 = new Game("newGame2", start, end, "default");
+		Game newGame2 = new Game("newGame2", start, end, -2);
 		newGame2.setId(2);
 		model.AddGame(newGame2);
 		
-		Game newGame3 = new Game("newGame3", start, end, "default");
+		Game newGame3 = new Game("newGame3", start, end, -2);
 		newGame2.setId(3);
 		model.AddGame(newGame3);
 		
@@ -103,15 +103,15 @@ public class PlanningPokerModelTest {
 		model = PlanningPokerModel.getInstance();
 		model.emptyModel();
 
-		Game newGame1 = new Game("newGame1", start, end, "default");
+		Game newGame1 = new Game("newGame1", start, end, -2);
 		newGame1.setId(1);
 		model.AddGame(newGame1);
 
-		Game newGame2 = new Game("newGame2", start, end, "default");
+		Game newGame2 = new Game("newGame2", start, end, -2);
 		newGame2.setId(2);
 		model.AddGame(newGame2);
 		
-		Game newGame3 = new Game("newGame3", start, end, "default");
+		Game newGame3 = new Game("newGame3", start, end, -2);
 		newGame2.setId(3);
 		model.AddGame(newGame3);
 		
@@ -129,13 +129,13 @@ public class PlanningPokerModelTest {
 		model.emptyModel();
 		
 		Game[] gameArray = new Game[3];
-		Game newGame1 = new Game("newGame1", start, end, "default");
+		Game newGame1 = new Game("newGame1", start, end, -2);
 		newGame1.setId(1);
 		gameArray[0] = newGame1;
-		Game newGame2 = new Game("newGame2", start, end, "default");
+		Game newGame2 = new Game("newGame2", start, end, -2);
 		newGame2.setId(2);
 		gameArray[1] = newGame2;
-		Game newGame3 = new Game("newGame3", start, end, "default");
+		Game newGame3 = new Game("newGame3", start, end, -2);
 		newGame3.setId(3);
 		gameArray[2] = newGame3;
 	
