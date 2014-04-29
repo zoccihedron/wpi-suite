@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,8 +56,9 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 		buttonPanel.add(crtGameBtn);
 		buttonPanel.add(crtDeckBtn);
 		buttonPanel.add(userPrefBtn);
-		buttonPanel.add(helpBtn);
+		buttonPanel.add(Box.createHorizontalGlue());
 		buttonPanel.add(Box.createHorizontalStrut(50));
+		buttonPanel.add(helpBtn);
 
 		buttonPanel.setOpaque(false);
 
