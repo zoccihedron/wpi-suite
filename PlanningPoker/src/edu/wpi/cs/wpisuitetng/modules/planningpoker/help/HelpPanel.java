@@ -97,25 +97,45 @@ implements TreeSelectionListener {
 		DefaultMutableTreeNode category = null;
 		DefaultMutableTreeNode topic = null;
 
-		category = new DefaultMutableTreeNode("Creating a Game");
+		category = new DefaultMutableTreeNode("Administrator Help");
 		top.add(category);
+		
+		topic = new DefaultMutableTreeNode(new HelpTopicObject
+				("Deck Manager",
+						"deckManagerHelp.txt"));
+		category.add(topic);
 
 		topic = new DefaultMutableTreeNode(new HelpTopicObject
-				("Fields",
+				("Creating a New Game",
 						"creatingGameHelp.txt"));
 		category.add(topic);
 		
-		category = new DefaultMutableTreeNode("Playing a Game");
-		top.add(category);
-		
 		topic = new DefaultMutableTreeNode(new HelpTopicObject
-				("Navigating the Game Types",
-						"DescriptionTest.txt"));
+				("Ending a Game",
+						"endingGameHelp.txt"));
 		category.add(topic);
 		
 		topic = new DefaultMutableTreeNode(new HelpTopicObject
-				("Submitting an Estimate",
-						"DescriptionTest.txt"));
+				("Choosing and Submitting Final Estimates",
+						"finalEstimatesHelp.txt"));
+		category.add(topic);
+		
+		topic = new DefaultMutableTreeNode(new HelpTopicObject
+				("Closing a Game",
+						"closingGameHelp.txt"));
+		category.add(topic);
+		
+		category = new DefaultMutableTreeNode("User Help");
+		top.add(category);
+		
+		topic = new DefaultMutableTreeNode(new HelpTopicObject
+				("Playing a Game",
+						"playGameHelp.txt"));
+		category.add(topic);
+		
+		topic = new DefaultMutableTreeNode(new HelpTopicObject
+				("User Preferences",
+						"userPrefHelp.txt"));
 		category.add(topic);
 		
 	}

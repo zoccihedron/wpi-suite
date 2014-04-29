@@ -1,0 +1,9 @@
+   To access the Deck Manager tab, click the "Manage Decks" button on the toolbar at the top of the window.
+   
+   To start creating a new deck, enter a name for the deck in the text box on the left, upper corner of the Deck Manager tab, then click "Create Deck". The deck creation options will appear in the right-hand panel. If you do not like the name you have chosen, you can type a new name in the textbox towards the top of this panel and then click "Rename Deck".
+   
+   The first choice to make is whether your deck will be single selection or multiple selection. A single selection deck only allows players to choose one card for each estimate, while a multiple selection deck allows players to combine cards to create different values.
+   
+   The next step is to build the deck. Type any whole number greater than or equal to zero and less than 2^31 (about 2 billion) and then click "Add Card". The card will show up in the preview pane below. You can add as many cards as you like, including duplicate card values. If you decide you don't want a certain card in your deck, simply select it and click "Remove Card".
+   
+   All changes in the Deck Manager are saved automatically. When you are done editing your deck, simply close the Deck Manager tab.
