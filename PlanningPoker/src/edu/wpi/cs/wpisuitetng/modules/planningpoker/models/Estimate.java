@@ -223,10 +223,13 @@ public class Estimate {
 			return median;
 		}
 		if(length % 2 == 0){
-			median = ((double) estimates.get(halfLength) + (double)estimates.get(halfLength - 1)) / 2;
+			int mid1 = estimates.get(length / 2);
+			int mid2 = estimates.get((length / 2) - 1);
+			median = (mid1 + mid2) / 2.0;
 		}
 		else {
-			median = (double)estimates.get(halfLength);
+			int mid = estimates.get(length / 2);
+			median = (double)mid;
 		}
 		return median;
 	}
