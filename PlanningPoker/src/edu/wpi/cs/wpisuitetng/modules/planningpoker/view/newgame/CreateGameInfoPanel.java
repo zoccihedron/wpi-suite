@@ -234,7 +234,12 @@ public class CreateGameInfoPanel extends JPanel {
 		decks.add(textEntry);
 		decks.add(defaultDeck);
 		deckBox = new JComboBox(decks.toArray());
-		deckBox.setSelectedItem(decks.get(passedInGame.getDeck()));
+		for(Deck d: decks){
+			if(passedInGame.getDeck() == d.getId())
+			{
+				deckBox.setSelectedItem(d);
+			}
+		}
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
