@@ -12,13 +12,10 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-
 
 import javax.swing.JSplitPane;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
 

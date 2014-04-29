@@ -208,7 +208,7 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void getAllForEveryoneTest() throws WPISuiteException{
 		//test for session 1
-		Game[] retrievedGames = (Game[])manager.getAllForEveryone(s1);
+		Game[] retrievedGames = manager.getAllForEveryone(s1);
 
 		boolean containedDraftsOwnedByUser = false;
 		boolean containedGameInProgress = false;
@@ -232,7 +232,7 @@ public class PlanningPokerEntityManagerTest {
 		assertTrue(containedGameInProgress);
 
 		//test for session 2
-		retrievedGames = (Game[])manager.getAllForEveryone(s2);
+		retrievedGames = manager.getAllForEveryone(s2);
 
 		containedDraftsOwnedByUser = false;
 		containedGameInProgress = false;
