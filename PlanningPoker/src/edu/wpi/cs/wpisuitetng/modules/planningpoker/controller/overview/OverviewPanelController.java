@@ -87,6 +87,7 @@ public class OverviewPanelController {
 		request.setBody(game.toJSON());
 		request.send(); // send the request
 		updateGameSummary(game);
+		refreshListGames();
 	}
 
 }

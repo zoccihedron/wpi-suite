@@ -228,13 +228,12 @@ public class GameSummaryPanel extends JPanel {
 		startGameButton = new JButton("Start Game");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 5, 0);
-		add(startGameButton, constraints);
+		constraints.insets = new Insets(0, 10, 5, 0);
+		buttonsPanel.add(startGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
-		// listener to update tree
 		startGameButton.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e) {
