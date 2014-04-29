@@ -57,6 +57,8 @@ public class AddDeckController implements ActionListener {
 			// add an observer to process the response
 			request.addObserver(new AddDeckRequestObserver(this));
 			request.send(); // send the request
+			
+			createDeckPanel.setDeckNameJTextField("");
 		}
 	}
 	

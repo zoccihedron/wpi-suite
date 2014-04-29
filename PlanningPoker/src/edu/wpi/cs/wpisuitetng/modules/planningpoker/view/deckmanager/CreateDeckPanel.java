@@ -123,4 +123,8 @@ public class CreateDeckPanel extends JPanel{
 	public JButton getBtnSubmit() {
 		return btnSubmit;
 	}
+
+	public void setDeckNameJTextField(String text) {
+		deckName.setText("");
+	}
 }
