@@ -14,6 +14,7 @@ import org.junit.Test;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 public class EstimateTest {
 
@@ -161,13 +162,17 @@ public class EstimateTest {
 		est.setGameModifiedVersion(77);
 		est.setNote("test");
 		est.setFinalEstimate(77);
+		est.setSentBefore(true);
+		est.estimationSent(true);
 		
 		ArrayList<Boolean> selection = new ArrayList<Boolean>();
 		selection.add(true);
 		selection.add(false);
 		est.setUserCardSelection(dummyUser.getUsername(), selection );
 		
-		
+		assertTrue(est.estimationHasBeenSent());
+		assertTrue(est.isFinalEstimateSet());
+		assertTrue(est.isSentBefore());
 		assertEquals("test", est.getNote());
 		assertEquals(77, est.getGameID());
 		assertEquals(77, est.getReqID());
