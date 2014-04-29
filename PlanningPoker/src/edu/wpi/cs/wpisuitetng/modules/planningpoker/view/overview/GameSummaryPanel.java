@@ -36,9 +36,13 @@ import javax.swing.border.EmptyBorder;
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.UpdateGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.CreateGameInfoPanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -60,6 +64,7 @@ public class GameSummaryPanel extends JPanel {
 	private JButton editGameButton;
 	private JButton playGameButton;
 	private JButton endGameButton;
+	private JButton startGameButton;
 	private JButton viewResultsButton;
 	private JButton closeGameButton;
 	private JLabel helpTitle;
@@ -219,6 +224,23 @@ public class GameSummaryPanel extends JPanel {
  			
  		});
 		
+		// Button to start game
+		startGameButton = new JButton("Start Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 2;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 5, 0);
+		buttonsPanel.add(startGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		startGameButton.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OverviewPanelController.getInstance().startGame(game);
+			}
+		});
+		
 		// Button to play game
 		playGameButton = new JButton("Play");
 		constraints.anchor = GridBagConstraints.EAST;
@@ -239,6 +261,8 @@ public class GameSummaryPanel extends JPanel {
  				mvt.playGameTab(game);
 			}
  		});
+		
+		// Button to view results
 		viewResultsButton = new JButton("View Results");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
@@ -393,6 +417,7 @@ public class GameSummaryPanel extends JPanel {
 		    
 		    img = ImageIO.read(getClass().getResource("playIcon.png"));
 		    playGameButton.setIcon(new ImageIcon(img));
+		    startGameButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("checkmark.png"));
 		    viewResultsButton.setIcon(new ImageIcon(img));   
@@ -404,6 +429,7 @@ public class GameSummaryPanel extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 	}
+
 	
 	/**
 	 * fills empty fields with values specific to game
@@ -420,6 +446,7 @@ public class GameSummaryPanel extends JPanel {
 			editGameButton.setEnabled(true);
 			endGameButton.setEnabled(true);
 			closeGameButton.setEnabled(true);
+			startGameButton.setEnabled(true);
 			
 			// If the game is a draft.
 			if(game.getStatus().equals(GameStatus.DRAFT)) {
@@ -437,6 +464,7 @@ public class GameSummaryPanel extends JPanel {
 				endGameButton.setVisible(true);
 				closeGameButton.setVisible(false);
 				viewResultsButton.setVisible(false);
+				startGameButton.setVisible(false);
 			}
 			// If the game is ended.
 			else if(game.getStatus().equals(GameStatus.ENDED)){
@@ -444,6 +472,7 @@ public class GameSummaryPanel extends JPanel {
 				editGameButton.setVisible(false);
 				endGameButton.setVisible(false);
 				closeGameButton.setVisible(true);
+				startGameButton.setVisible(false);
 			}
 			// If the game is closed.
 			else {
@@ -452,6 +481,7 @@ public class GameSummaryPanel extends JPanel {
 				endGameButton.setVisible(false);
 				closeGameButton.setVisible(false);
 				viewResultsButton.setVisible(true);
+				startGameButton.setVisible(false);
 			}
 		}
 		// If the user is not the game creator.
@@ -459,6 +489,7 @@ public class GameSummaryPanel extends JPanel {
 			editGameButton.setVisible(false);
 			endGameButton.setVisible(false);
 			closeGameButton.setVisible(false);
+			startGameButton.setVisible(false);
 		
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
