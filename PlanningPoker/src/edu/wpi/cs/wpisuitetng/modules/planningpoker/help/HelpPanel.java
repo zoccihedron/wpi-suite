@@ -101,8 +101,8 @@ implements TreeSelectionListener {
 		top.add(category);
 
 		topic = new DefaultMutableTreeNode(new HelpTopicObject
-				("Validation Fields",
-						"DescriptionTest.txt"));
+				("Fields",
+						"creatingGameHelp.txt"));
 		category.add(topic);
 		
 		category = new DefaultMutableTreeNode("Playing a Game");

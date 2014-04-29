@@ -3,18 +3,16 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.help;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 
 /**
  * @author Codon Bleu
@@ -33,9 +31,6 @@ public class HelpTopics extends JPanel {
 		final Dimension minimumSize = new Dimension(250, 300);
 		this.setMinimumSize(minimumSize);
 		textHere = null;
-		
-		Border border = BorderFactory.createLineBorder(Color.GREEN, 3);
-		this.setBorder(border);
 		
 		if (this.getComponentCount() > 0) {
 			this.remove(titleText);
@@ -74,8 +69,10 @@ public class HelpTopics extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.ipady = 20;
+		constraints.insets = new Insets(5, 0, 0, 0);
 		add(titleText, constraints);
 		constraints.ipady = 0;
+		constraints.insets = new Insets(0, 0, 0, 0);
 		
 		textHere = new JTextArea();
 		textHere.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -89,7 +86,9 @@ public class HelpTopics extends JPanel {
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
+		constraints.insets = new Insets(10, 10, 10, 10);
 		add(textHere, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
 	}
 	
 	public void pullHelpInfo(HelpTopicObject hto) {
