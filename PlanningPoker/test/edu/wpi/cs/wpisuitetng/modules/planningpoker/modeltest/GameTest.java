@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
+
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
@@ -47,10 +48,10 @@ public class GameTest {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(start.getYear(), 1,1);
 		Date end = endTime.getTime();
-		game1 = new Game(game1name,start,end, "default");
+		game1 = new Game(game1name,start,end, -2);
 		
 		String game2name = "Game2";
-		game2 = new Game(game2name,start,end, "default");
+		game2 = new Game(game2name,start,end, -2);
 
 		dummyUser = new User("Bob", "bob", "abc123", 1);
 
@@ -74,12 +75,12 @@ public class GameTest {
 		endTime.set(start.getYear() + 1, 1,1);
 		Date end = endTime.getTime();
 		
-		Game testGameConstructor = new Game("test",start,end, "default");
+		Game testGameConstructor = new Game("test",start,end, -2);
 		
 		assertEquals("test", testGameConstructor.getName());
 		assertEquals(start, testGameConstructor.getStart());
 		assertEquals(end, testGameConstructor.getEnd());
-		assertEquals("default", testGameConstructor.getDeck());
+		assertEquals(-2, testGameConstructor.getDeck());
 		
 		assertEquals(0, testGameEmptyConstructor.getId());
 		
@@ -171,7 +172,7 @@ public class GameTest {
 		endTime.set(start.getYear(), 1,1);
 		Date end = endTime.getTime();
 		
-		Game testGameConstructor = new Game("test",start,end, "default");
+		Game testGameConstructor = new Game("test",start,end, -2);
 		String jsonMessage = testGameConstructor.toJSON();
 		Game fromMessage = Game.fromJson(jsonMessage);
 		
