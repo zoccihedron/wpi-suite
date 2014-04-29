@@ -436,7 +436,7 @@ public class DeckControlsPanel extends JPanel {
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
 			btnAddCard.setEnabled(false);
-			System.err.println(e);
+			System.err.println(e.getMessage());
 			return false;
 		}
 

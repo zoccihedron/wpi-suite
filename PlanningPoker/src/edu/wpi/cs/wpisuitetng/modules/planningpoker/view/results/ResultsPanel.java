@@ -189,7 +189,7 @@ public class ResultsPanel extends JPanel{
 		}
 		catch(NotFoundException exception){
 			System.err.println("Exception: Requirement Not Found");
-			System.err.println(exception);
+			System.err.println(exception.getMessage());
 		}
 
 	}
@@ -208,7 +208,7 @@ public class ResultsPanel extends JPanel{
 		}
 		catch(NotFoundException exception){
 			System.err.println("Exception: Requirement Not Found");
-			System.err.println(exception);
+			System.err.println(exception.getMessage());
 		}
 
 	}

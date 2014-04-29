@@ -375,7 +375,7 @@ public class ResultsDisplayPanel extends JPanel {
 				} catch (NumberFormatException e) {
 					reportError("<html>Final estimate must be a positive integer.</html>");
 					result = false;
-					System.err.println(e);
+					System.err.println(e.getMessage());
 				}
 			}
 		}
