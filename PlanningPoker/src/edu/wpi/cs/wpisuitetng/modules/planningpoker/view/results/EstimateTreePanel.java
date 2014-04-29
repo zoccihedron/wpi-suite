@@ -75,12 +75,13 @@ public class EstimateTreePanel extends JPanel{
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));
 		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
-	
+		
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		add(sendEstimateToReqButton, constraints);
+		sendEstimateButtonToolTip();
 		
 		try {
 			final Image img = ImageIO.read(getClass().getResource("sendMail.png"));
@@ -106,6 +107,7 @@ public class EstimateTreePanel extends JPanel{
 				facade.sendEstimates(estimates, estimateTreePane);
 				listEstimateReqPanel.refresh();
 				sendEstimateToReqButton.setEnabled(false);
+				sendEstimateToReqButton.setToolTipText("The selected requirements were sent to the requirement manager.");
 				controller.refreshResultsInfo();
 			}
 			
@@ -138,10 +140,21 @@ public class EstimateTreePanel extends JPanel{
 			}
 			else{
 				sendEstimateToReqButton.setEnabled(false);
-			}	
+			}
+			sendEstimateButtonToolTip();
 		}		
 	}
 	
-
+	/**
+	 * 
+	 */
+	public void sendEstimateButtonToolTip() {
+		if(sendEstimateToReqButton.isEnabled()) {
+			sendEstimateToReqButton.setToolTipText("Click here to send the selected requirements to the requirement manager.");
+		}
+		else {
+			sendEstimateToReqButton.setToolTipText("Please set an estimate in order to select a requirement to send.");
+		}
+	}
 	
 }

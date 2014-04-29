@@ -308,6 +308,7 @@ public class EstimationPane extends JPanel {
 		voteButton.addActionListener(new VoteActionController(this, game));
 		
 		voteButton.setEnabled(true);
+		voteButton.setToolTipText("Click here to vote!");
 
 		this.reqid = reqid;
 		try{
@@ -354,6 +355,7 @@ public class EstimationPane extends JPanel {
 		if(!deckPanel.hasDeckSelected()) {
 			reportError("<html>Error: Select a card.</html>");
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("Please select a card");
 			return false;
 		}
 		
@@ -365,27 +367,32 @@ public class EstimationPane extends JPanel {
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("Please enter an integer");
 			return false;
 		}
 
 		if(estimate < 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("Please enter an integer greater than 0");
 			return false;
 		}
 		
 		if(estimate == 0){
 			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
 			voteButton.setEnabled(true);
+			voteButton.setToolTipText("Click here to vote!");
 			return true;
 		}
 		
 		if(game.getStatus() == GameStatus.ENDED){
 			reportError("<html>Error: Game has ended</html>");
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("You cannot vote on an ended game.");
 			return false;
 		}
 		voteButton.setEnabled(true);
+		voteButton.setToolTipText("Click here to vote!");
 		return true;
 	}
 
@@ -437,7 +444,7 @@ public class EstimationPane extends JPanel {
 	 * @param value is the numerical value of the vote
 	 */
 	public void reportSuccess(int value) {
-		message.setText("<html>Success: Vote Updated! You voted " + value + "</html>");
+		message.setText("<html>Vote Updated! You voted " + value + "</html>");
 		message.setForeground(Color.BLUE);
 
 	}

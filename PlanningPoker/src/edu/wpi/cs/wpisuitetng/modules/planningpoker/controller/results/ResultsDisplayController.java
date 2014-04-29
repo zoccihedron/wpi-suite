@@ -15,6 +15,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsDisplayPanel;
@@ -65,6 +66,7 @@ public class ResultsDisplayController implements ActionListener{
 				@Override
 				public void responseSuccess(IRequest iReq) {
 					System.out.println("Final estimate has been sent----------");
+					OverviewPanelController.getInstance().updateGameSummary(game);
 				}
 
 				@Override

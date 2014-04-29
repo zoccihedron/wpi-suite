@@ -57,7 +57,7 @@ public class ProjectTest {
 		support1[0] = "defecttracker";
 		support1[1] = "postboard";
 		
-		p3 = new Project("calendar", "proj3", u1, team1, support1);
+		p3 = new Project("calendar", "proj3", u1, team1, support1, "", "", "", "");
 	}
 	
 	@Test

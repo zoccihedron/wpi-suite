@@ -67,6 +67,11 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage = new JLabel("*Error");
 		isInProgress = false;
 		
+		btnSave = new JButton("Save");
+		btnStart = new JButton("Start");
+		btnCancel = new JButton("Cancel");
+		btnCancel.setToolTipText("This will close the current tab.");
+		
 		selectRequirementsPanel = new SelectRequirementsPanel();
 		createGameInfoPanel = new CreateGameInfoPanel(this);
 		createGameInfoPanel.setMinimumSize(new Dimension(250, 300));
@@ -90,6 +95,11 @@ public class NewGamePanel extends JSplitPane {
 		lblMessage = new JLabel("*Error");
 		this.isInProgress = isInProgress;
 		game = editingGame;
+
+		btnSave = new JButton("Save");
+		btnStart = new JButton("Start");
+		btnCancel = new JButton("Cancel");
+		btnCancel.setToolTipText("This will close the current tab.");
 		
 		selectRequirementsPanel = new SelectRequirementsPanel(editingGame);
 		createGameInfoPanel = new CreateGameInfoPanel(this, editingGame);
@@ -128,18 +138,14 @@ public class NewGamePanel extends JSplitPane {
 		bottomPanel.setLayout(null);
 		
 		
-		btnSave = new JButton("Save");
 		btnSave.setBounds(141, 5, 118, 25);
 		btnSave.setEnabled(false);
 		bottomPanel.add(btnSave);
-	
 				
-		btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(269, 5, 118, 25);
 		btnCancel.addActionListener(new CloseNewGameTabController(createGameInfoPanel));
-		bottomPanel.add(btnCancel); 
+		bottomPanel.add(btnCancel);
 		
-		btnStart = new JButton("Start");
 		btnStart.setBounds(12, 5, 118, 25);
 		btnStart.setEnabled(false);
 		bottomPanel.add(btnStart);
@@ -206,12 +212,22 @@ public class NewGamePanel extends JSplitPane {
 	public void disableOrEnableButtons(boolean check){
 		if(isInProgress){
 			btnStart.setEnabled(false);
+			btnStart.setToolTipText("The game is already in progress.");
 			btnSave.setEnabled(check);
 		}
 		else{
 			btnStart.setEnabled(check);
 			btnSave.setEnabled(check);
 		}
+	}
+	
+	/**
+	 * Changes the tooltips on buttons.
+	 * @param check
+	 */
+	public void toolTipChanger(String startToolTip, String saveToolTip) {
+		btnStart.setToolTipText(startToolTip);
+		btnSave.setToolTipText(saveToolTip);
 	}
 	
 	/**Fills the text box with a red warning based on the error Message
@@ -235,7 +251,7 @@ public class NewGamePanel extends JSplitPane {
 	}
 	
 	/**
-	 * Either enables or disables a pink border around elements
+	 * Either enables or disables a red border around elements
 	 * on the panel if there is problem with the requirements.
 	 * @param check
 	 */
