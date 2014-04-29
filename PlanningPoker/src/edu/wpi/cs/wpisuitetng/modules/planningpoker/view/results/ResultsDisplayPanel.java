@@ -86,7 +86,9 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
 				.getUserName().equals(game.getGameCreator()));
 		finalEstimate.setEditable(false);
-
+		saveFinalEstimateBtn.setEnabled(false);
+		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
+		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
 			public boolean isCellEditable(int row, int column) {
@@ -210,6 +212,7 @@ public class ResultsDisplayPanel extends JPanel {
 				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
+				finalEstimateBtnToolTip();
 			}
 
 			@Override
@@ -220,6 +223,7 @@ public class ResultsDisplayPanel extends JPanel {
 				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
+				finalEstimateBtnToolTip();
 			}
 
 			@Override
@@ -246,8 +250,13 @@ public class ResultsDisplayPanel extends JPanel {
 				{
 					saveFinalEstimateBtn.setVisible(false);
 				}
-				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
-						&& !game.getStatus().equals(GameStatus.CLOSED));
+				if(canMakeEstimate() && !game.getStatus().equals(GameStatus.CLOSED)) {
+					saveFinalEstimateBtn.setEnabled(true);
+				}
+				else {
+					saveFinalEstimateBtn.setEnabled(false);
+					saveFinalEstimateBtn.setToolTipText("The estimate has been set.");
+				}
 			}
 
 			@Override
@@ -429,5 +438,17 @@ public class ResultsDisplayPanel extends JPanel {
 	public void setNote(String note){
 		noteArea.setText(note);
 	}
-
+	
+	/**
+	 * Sets the tool tip on the final estimate button
+	 * based on whether or not the button is enabled.
+	 */
+	public void finalEstimateBtnToolTip() {
+		if(saveFinalEstimateBtn.isEnabled()) {
+			saveFinalEstimateBtn.setToolTipText("Click here to change the estimate.");
+		}
+		else {
+			saveFinalEstimateBtn.setToolTipText("Please enter an integer greater than 0.");
+		}
+	}
 }

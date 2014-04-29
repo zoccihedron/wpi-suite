@@ -161,7 +161,7 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void retrieveAllExcludingDraftsYouDidntCreateTest() throws WPISuiteException{
-		Game[] retrievedGames  = (Game[])manager.getAll(s2);
+		Game[] retrievedGames  = manager.getAll(s2);
 		
 		boolean containedDraftNotOwnedByUser = false;
 		boolean containedGames = false;
@@ -182,7 +182,7 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void retrieveAllIncludingDraftsYouDidCreateTest() throws WPISuiteException{
-		Game[] retrievedGames  = (Game[])manager.getAll(s1);
+		Game[] retrievedGames  = manager.getAll(s1);
 		
 		boolean containedDraftsOwnedByUser = false;
 		boolean containedGames = false;
@@ -282,14 +282,14 @@ public class PlanningPokerEntityManagerTest {
 
 	@Test
 	public void getHighestIdTest() throws WPISuiteException{
-		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		Game[] retrievedGames = manager.getAll(s1);
 		int largestId = manager.getGameWithLargestId(retrievedGames);
 		assertEquals(largestId, retrievedGames.length);
 	}
 	
 	@Test
 	public void autoIncrementGameIdTest() throws WPISuiteException{
-		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		Game[] retrievedGames = manager.getAll(s1);
 		for(Game game : retrievedGames){
 			if (game.getName().equals("game")){
 				assertEquals(1, game.getId());

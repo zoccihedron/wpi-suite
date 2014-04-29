@@ -163,6 +163,7 @@ public class CreateGameInfoPanel extends JPanel {
 		textEntry.setId(-2);
 		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
+
 		for(Deck d:allDecks){
 			if(d.isUsable()){
 				decks.add(d);
@@ -172,7 +173,9 @@ public class CreateGameInfoPanel extends JPanel {
 		decks.add(defaultDeck);
 		deckBox = new JComboBox(decks.toArray());
 		deckBox.setSelectedItem(defaultDeck);
-		
+
+		deckBox.setToolTipText("Please select a deck to be used in the game.");
+
 		// creates deadline checkbox
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
@@ -553,20 +556,22 @@ public class CreateGameInfoPanel extends JPanel {
 		reportError(" ");
 		boolean result = true;
 		parentPanel.displayErrorBorders(false);
+		parentPanel.toolTipChanger("Click here to start the game.", "Click here to save the game.");
 		if (parentPanel.getGameRequirements().size() == 0 && result) {
 			reportError("<html>*Pick at least one requirement.</html>");
 			result = false;
 			parentPanel.displayErrorBorders(true);
+			parentPanel.toolTipChanger("Please add at least one requirement.", "Please add at least one requirement.");
 		}
 		
 		datePicker.setBorder(null);
 		if (chckbxDeadline.isSelected()) {
 			if (datePicker.getModel().getValue() == null) {
-				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 				reportError("<html>*Please choose a date or turn off the deadline.</html>");
 				result = false;
 			} else if (getDeadline().compareTo(new Date()) <= 0) {
-				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 				reportError("<html>*The deadline must not be in the past.</html>");
 				result = false;
 			}
@@ -575,7 +580,7 @@ public class CreateGameInfoPanel extends JPanel {
 		gameNameText.setBorder(null);
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*A name is required.</html>");
-			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+			gameNameText.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 			result = false;
 		}
 		
