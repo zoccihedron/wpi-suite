@@ -267,7 +267,22 @@ public class DeckControlsPanel extends JPanel {
 		deck = null;
 
 		btnAddCard.setEnabled(false);
+		
+		final ActionListener changeRemoveButtonText = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if(cardView.getSelected().size() > 1){
+					btnRemoveCard.setText("Remove Cards");
+				} else {
+					btnRemoveCard.setText("Remove Card");
+				}
+			}
+		};
+		
+		final Timer removeButtonTimer = new Timer(250, changeRemoveButtonText);
 
+		removeButtonTimer.start();
+		
 		final ActionListener removeCardListener = new ActionListener() {
 
 			@Override
