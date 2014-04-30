@@ -38,8 +38,6 @@ public class HelpTopicObject {
 		BufferedReader reader = null;
 		
 		try {
-			System.out.println("Working Directory = " + 
-					System.getProperty("user.dir"));
 			reader = new BufferedReader(
 					new InputStreamReader(getClass().getResourceAsStream(fileName)));
 			String text = null;
