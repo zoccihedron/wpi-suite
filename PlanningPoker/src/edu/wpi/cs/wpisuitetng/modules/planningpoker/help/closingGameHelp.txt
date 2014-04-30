@@ -1,1 +1,3 @@
+   When you are finished sending the estimates for your requirements to the Requirement Manager (see "Choosing and Submitting Final Estimates"), you can archive the game by clicking "Close Game".
    
+   A closed game can be viewed under the "Archive" category. However, once a game is closed, the final estimates for its requirements cannot be modified or sent to the Requirement Manager. There is no way to re-open a game, so make sure you are really done with a game before you click "Close Game".

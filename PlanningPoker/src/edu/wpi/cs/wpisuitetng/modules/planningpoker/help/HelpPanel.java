@@ -71,7 +71,7 @@ implements TreeSelectionListener {
 		helpInfoView.setMinimumSize(minimumSize);
 		treeView.setMinimumSize(minimumSize);
 		splitPane.setDividerLocation(300);
-		add(splitPane);		
+		add(splitPane);
 		
 		for(int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);

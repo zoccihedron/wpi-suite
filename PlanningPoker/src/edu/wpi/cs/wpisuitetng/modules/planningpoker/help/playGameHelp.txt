@@ -1,1 +1,11 @@
-   How to play a game!
+   On the left side of the overview panel in the Planning Poker tab, all current planning poker games that you are a part of are displayed in the tree under "In Progress". If a game that you know exists does not show up here, try clicking "Games" at the top of the tree to refresh it.
+   
+   When a game is selected, its information is displayed in the right-hand panel. From here, you can see the overall game progress, your progress in voting in this particular game, and which requirements you have or have not voted on. To play, click the "Play" button on the bottom right-hand corner of the panel. This will bring you to the Play Game tab.
+   
+   In this view, all requirements associated with this game of planning poker are listed in a tree on the left-hand side of the window. They are separated into requirements you have voted on, and requirements you still need to vote on. To cast your vote, click on one of the requirement names.
+   
+   To vote, select the card (or cards) that match your estimate on the requirement. Depending on the game creator's choices, you may or may not be able to select multiple cards for one estimation. Card(s) you have selected will be displayed with a green border. The total of your current vote will be displayed on the left part of the panel, just above where the cards sit.
+   
+   In some games, a custom text field is displayed in lieu of a deck of cards. In this case, you may simply type in a positive number corresponding to your vote. When you are happy with your vote, click the "VOTE" button located on the bottom of the panel to submit it. The requirement should move into the "Voted On" category in the left panel's tree, and you can move on to the next requirement.
+   
+   You can edit your vote at any time until the game is ended.

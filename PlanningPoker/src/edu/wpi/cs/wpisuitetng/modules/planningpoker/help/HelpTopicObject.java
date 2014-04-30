@@ -26,6 +26,11 @@ public class HelpTopicObject {
 	public String fileName;
 	public String fileText = "";
 	
+	/**
+	 * 
+	 * @param title
+	 * @param fileName
+	 */
 	public HelpTopicObject(String title, String fileName) {
 		this.title = title;
 		this.fileName = fileName;
@@ -34,7 +39,8 @@ public class HelpTopicObject {
 		try {
 			System.out.println("Working Directory = " + 
 					System.getProperty("user.dir"));
-			reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(fileName)));
+			reader = new BufferedReader(
+					new InputStreamReader(getClass().getResourceAsStream(fileName)));
 			String text = null;
 			
 			while ((text = reader.readLine()) != null) {

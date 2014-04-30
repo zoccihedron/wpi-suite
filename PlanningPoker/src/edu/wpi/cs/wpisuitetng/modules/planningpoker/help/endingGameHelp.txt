@@ -1,1 +1,5 @@
-   To end a game,
+   To end a game, select the game from the "In Progress" list on the overview panel tree. Please note that you may only end games for which you are the creator. Clicking the "End Game" button on the left, bottom part of the Game Information panel will end the game.
+   
+   Please remember that a game cannot be restarted once ended, nor may any votes be cast or changed for an ended game.
+   
+   Once the game is ended, the final estimates may be chosen and submitted. For more information on this, please see "Choosing and Submitting Final Estimates".
