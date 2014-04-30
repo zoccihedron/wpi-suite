@@ -24,10 +24,13 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
 import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -141,11 +144,35 @@ implements TreeSelectionListener {
 		
 		for(Game game: games){
 
+			// make the name of the game to render
+			// bold if the user had not voted on all requirements
+			boolean boldTheName = false;
+			for (Estimate e : game.getEstimates())
+			{
+				if (!e.hasMadeAnEstimation(ConfigManager.getConfig().getUserName()))
+				{
+					boldTheName = true;
+					break;
+				}
+			}
+			if (boldTheName && game.getStatus().equals(GameStatus.IN_PROGRESS))
+			{
+				game.setName("<html><b>" + game.getName() + "</b></html>");
+			}
+
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
 			switch (game.getStatus()){
 				case IN_PROGRESS: 
 					gameInProgressCategory.add(gameNode);
+					Game temp = (Game) gameNode.getUserObject();
+					if(temp.getName().contains("<html>"))
+					{
+						game.setName(game.getName().replace("<html>", ""));
+						game.setName(game.getName().replace("</html>", ""));
+						game.setName(game.getName().replace("<b>", ""));
+						game.setName(game.getName().replace("</b>", ""));
+					}
 					break;
 				case DRAFT: 
 					gameDraftCategory.add(gameNode);
