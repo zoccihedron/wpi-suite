@@ -107,7 +107,6 @@ implements TreeSelectionListener {
 	 * This method is used to refresh the requirements tree
 	 */
 	public void refresh(){
-		System.out.println("Refreshing Game Tree...");
 		
 
 		try{
@@ -186,8 +185,5 @@ implements TreeSelectionListener {
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); //make panel display the tree
-
-		System.out.println("# of Games:" + games.size());
-		System.out.println("finished refreshing the tree");
 	}
 }

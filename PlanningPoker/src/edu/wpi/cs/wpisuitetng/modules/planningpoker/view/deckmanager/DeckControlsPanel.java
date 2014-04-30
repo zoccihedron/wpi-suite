@@ -30,7 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -150,6 +149,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.insets = new Insets(2, 2, 0, 0);
 		constraints.anchor = GridBagConstraints.SOUTH;
 		this.add(btnUpdateDeckName, constraints);
+		btnUpdateDeckName.setToolTipText("Click here to change the deck's name.");
 
 		// REMOVE DECK BUTTON
 		btnRemoveDeck = new JButton("Remove Deck");
@@ -159,6 +159,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(2, 2, 0, 0);
 		this.add(btnRemoveDeck, constraints);
+		btnRemoveDeck.setToolTipText("Click here to permanently remove the deck.");
 
 		// REMOVE CARD BUTTON
 		btnRemoveCard = new JButton("Remove Card");
@@ -216,21 +217,25 @@ public class DeckControlsPanel extends JPanel {
 								(Integer.parseInt(fieldAddCard.getText().trim()) <= 999999)) {
 								btnAddCard.setEnabled(true);
 								invalidCardValueMessage.setVisible(false);
+								addRemoveCardToolTip();
 						}
 						else{
 
 							btnAddCard.setEnabled(false);
 							invalidCardValueMessage.setVisible(true);
+							addRemoveCardToolTip();
 						}
 					}
 
 					catch (Exception exception) {
 						btnAddCard.setEnabled(false);
 						invalidCardValueMessage.setVisible(true);
+						addRemoveCardToolTip();
 					}
 				} else {
 					btnAddCard.setEnabled(false);
 					invalidCardValueMessage.setVisible(true);
+					addRemoveCardToolTip();
 				}
 			}
 
@@ -243,21 +248,25 @@ public class DeckControlsPanel extends JPanel {
 								(Integer.parseInt(fieldAddCard.getText().trim()) <= 999999)){
 								btnAddCard.setEnabled(true);
 								invalidCardValueMessage.setVisible(false);
+								addRemoveCardToolTip();
 						}
 						else{
 
 							btnAddCard.setEnabled(false);
 							invalidCardValueMessage.setVisible(true);
+							addRemoveCardToolTip();
 						}
 					}
 
 					catch (NumberFormatException exception) {
 						btnAddCard.setEnabled(false);
 						invalidCardValueMessage.setVisible(true);
+						addRemoveCardToolTip();
 					}
 				} else {
 					btnAddCard.setEnabled(false);
 					invalidCardValueMessage.setVisible(true);
+					addRemoveCardToolTip();
 				}
 			}
 
@@ -298,6 +307,7 @@ public class DeckControlsPanel extends JPanel {
 		deck = null;
 
 		btnAddCard.setEnabled(false);
+		addRemoveCardToolTip();
 
 		final ActionListener removeCardListener = new ActionListener() {
 
@@ -308,6 +318,7 @@ public class DeckControlsPanel extends JPanel {
 					btnRemoveCard.setEnabled(false);
 				} else {
 					btnRemoveCard.setEnabled(true);
+					addRemoveCardToolTip();
 				}
 			}
 		};
@@ -568,6 +579,21 @@ public class DeckControlsPanel extends JPanel {
 
 	public String getFieldDeckNameText() {
 		return fieldDeckName.getText();
+	}
+	
+	private void addRemoveCardToolTip() {
+		if(btnRemoveCard.isEnabled()) {
+			btnRemoveCard.setToolTipText("Click here to remove the selected cards.");
+		}
+		else {
+			btnRemoveCard.setToolTipText("Please select a card to be able to remove it.");
+		}
+		if(btnAddCard.isEnabled()) {
+			btnAddCard.setToolTipText("Click here to add a card of the chosen value.");
+		}
+		else {
+			btnAddCard.setToolTipText("Please insert a value to be able to add a card of that value.");
+		}
 	}
 
 }

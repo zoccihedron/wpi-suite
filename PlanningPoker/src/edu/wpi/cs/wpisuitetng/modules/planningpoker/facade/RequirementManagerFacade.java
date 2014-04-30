@@ -134,7 +134,6 @@ public class RequirementManagerFacade {
 			request.addObserver(new RequestObserver(){
 				@Override
 				public void responseSuccess(IRequest iReq) {
-					System.out.println("Mark this estimate as sent-----------");
 				}
 
 				@Override
@@ -158,7 +157,6 @@ public class RequirementManagerFacade {
 					@Override
 					public void responseSuccess(IRequest iReq) {
 						GetRequirementsController.getInstance().retrieveRequirements();
-						System.out.println("Selected estimates sent!");
 					}
 
 				@Override
