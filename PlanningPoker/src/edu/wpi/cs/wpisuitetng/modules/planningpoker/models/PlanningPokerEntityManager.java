@@ -421,7 +421,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 
 		else if (string.equals("sendFinalEstimate")) {
 			final Estimate oldEst = Estimate.fromJson(content);
-			System.out.println(content);
 			final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
 			final Estimate newEst = game.findEstimate(oldEst.getReqID());
 
