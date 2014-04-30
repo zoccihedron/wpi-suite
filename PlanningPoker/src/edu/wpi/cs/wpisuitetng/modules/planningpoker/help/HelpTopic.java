@@ -15,11 +15,12 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 /**
+ * Facade for help topic panes
  * @author Codon Bleu
- *
+ * @version 1.0
  */
 @SuppressWarnings("serial")
-public class HelpTopics extends JPanel {
+public class HelpTopic extends JPanel {
 	public String topicTitle;
 	public String showThisText;
 	
@@ -27,20 +28,20 @@ public class HelpTopics extends JPanel {
 	public JLabel titleText;
 	public JTextArea textHere;
 	
-	public HelpTopics() {
+	public HelpTopic() {
 		final Dimension minimumSize = new Dimension(250, 300);
 		this.setMinimumSize(minimumSize);
 		textHere = null;
 		
-		if (this.getComponentCount() > 0) {
-			this.remove(titleText);
-			this.remove(textHere);
-		}
-		
 		setUpHelpTopic();
 	}
 
-	public HelpTopics(String topic, String showThisText) {
+	/**
+	 * An explanation or walk-through of a topic (a help file)
+	 * @param topic - title of topic
+	 * @param showThisText - text (explanation, etc)
+	 */
+	public HelpTopic(String topic, String showThisText) {
 		topicTitle = topic;
 		this.showThisText = showThisText;
 		
@@ -55,6 +56,9 @@ public class HelpTopics extends JPanel {
 		return showThisText;
 	}
 
+	/**
+	 * Sets up the GUI for a help topic screen
+	 */
 	public void setUpHelpTopic() {
 		this.setLayout(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -78,6 +82,7 @@ public class HelpTopics extends JPanel {
 		textHere.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		textHere.setLineWrap(true);
 		textHere.setWrapStyleWord(true);
+		textHere.setAutoscrolls(true);
 		textHere.setEditable(false);
 		textHere.setBackground(this.getBackground());
 		constraints.fill = GridBagConstraints.BOTH;
@@ -91,6 +96,10 @@ public class HelpTopics extends JPanel {
 		constraints.insets = new Insets(0, 0, 0, 0);
 	}
 	
+	/**
+	 * Gets the information from a help topic object
+	 * @param hto - help topic object in question
+	 */
 	public void pullHelpInfo(HelpTopicObject hto) {
 		titleText.setText(hto.getTitle());
 		textHere.setText(hto.getFileText());

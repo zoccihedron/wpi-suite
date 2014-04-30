@@ -17,19 +17,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
+ * Object for a Help Topic
  * @author Codon Bleu
- *
+ * @version 1.0
  */
 public class HelpTopicObject {
 	
-	public String title;
-	public String fileName;
-	public String fileText = "";
+	private final String title;
+	private final String fileName;
+	private String fileText = "";
 	
 	/**
-	 * 
-	 * @param title
-	 * @param fileName
+	 * Constructor for a Help Topic object
+	 * @param title - title of help topic
+	 * @param fileName - name of text file containing information to display
 	 */
 	public HelpTopicObject(String title, String fileName) {
 		this.title = title;
@@ -64,6 +65,7 @@ public class HelpTopicObject {
 				}
 			}
 			catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
