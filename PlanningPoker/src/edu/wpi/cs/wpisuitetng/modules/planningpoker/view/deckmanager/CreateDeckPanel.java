@@ -126,7 +126,6 @@ public class CreateDeckPanel extends JPanel{
 
 	public void setDeckNameJTextField(String text) {
 		deckName.setText(text);
-		System.out.println("setDeckNameJTextfield");
 	}
 	
 	public JPlaceholderTextField getDeckNameTextfield(){
