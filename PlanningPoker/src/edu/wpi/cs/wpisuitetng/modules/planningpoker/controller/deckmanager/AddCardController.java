@@ -21,64 +21,64 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
- * Controller for adding cards to a deck and saving it 
- * to the database
+ * Controller for adding cards to a deck and saving it to the database
+ * 
  * @author Code on Bleu
  * @version 1.0
  */
-public class AddCardController implements ActionListener{
+public class AddCardController implements ActionListener {
 	private final DeckControlsPanel view;
 	private final CardViewPanel cardView;
-	
+
 	/**
 	 * Constructor for add card controller
-	 * @param view the deck controls panel
+	 * 
+	 * @param view
+	 *            the deck controls panel
 	 */
-	public AddCardController(DeckControlsPanel view){
+	public AddCardController(DeckControlsPanel view) {
 		this.view = view;
 		cardView = view.getCardView();
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		final int cardValue = view.getCardValue();
-		
+
 		view.addToDeck(cardValue);
 		view.saveMessage("<html>Saving changes...</html>");
-		
-		if(view.checkFields())
-		{
-			final Request request = Network.getInstance().makeRequest(
-					"planningpoker/deck", HttpMethod.POST);
-			request.setBody(view.getDeck().toJSON());
-			request.addObserver(new RequestObserver(){
 
-				@Override
-				public void responseSuccess(IRequest iReq) {
-					successfulAdditon();
-				}
+		final Request request = Network.getInstance().makeRequest(
+				"planningpoker/deck", HttpMethod.POST);
+		request.setBody(view.getDeck().toJSON());
+		request.addObserver(new RequestObserver() {
 
-				@Override
-				public void responseError(IRequest iReq) {
-					System.err.println("The request to update the deck failed");
-				}
+			@Override
+			public void responseSuccess(IRequest iReq) {
+				successfulAdditon();
+			}
 
-				@Override
-				public void fail(IRequest iReq, Exception exception) {
-					System.err.println("The request to update the deck failed");
-					
-				}
-				
-			});
-			request.send();
-		}
-		
+			@Override
+			public void responseError(IRequest iReq) {
+				System.err.println("The request to update the deck failed");
+			}
+
+			@Override
+			public void fail(IRequest iReq, Exception exception) {
+				System.err.println("The request to update the deck failed");
+
+			}
+
+		});
+		request.send();
+
 		view.clearCardValue();
 	}
-	
+
 	/**
 	 * update he card view and save message when a card is successfully added
 	 */
-	public void successfulAdditon(){
+	public void successfulAdditon() {
 		cardView.updateView(view.getDeck());
 		view.saveMessage("<html>Changes saved.</html>");
 	}

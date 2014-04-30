@@ -35,6 +35,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  * @author Code on Bleu
  * @version 1.0
  */
+@SuppressWarnings("serial")
 public class CreateDeckPanel extends JPanel{
 
 	private final JPlaceholderTextField deckName;
@@ -77,7 +78,7 @@ public class CreateDeckPanel extends JPanel{
 		btnSubmit.setToolTipText("Please type in the name for your new deck.");
 
 		try {
-		    Image img = ImageIO.read(getClass().getResource("addDeck.png"));
+		    final Image img = ImageIO.read(getClass().getResource("addDeck.png"));
 		    btnSubmit.setIcon(new ImageIcon(img));   
 		} 
 		catch (IOException ex) {
@@ -141,6 +142,10 @@ public class CreateDeckPanel extends JPanel{
 		return btnSubmit;
 	}
 
+	/**
+	 * Sets the text for the deck name
+	 * @param text - new deck name
+	 */
 	public void setDeckNameJTextField(String text) {
 		deckName.setText(text);
 	}
