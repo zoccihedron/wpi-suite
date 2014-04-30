@@ -426,6 +426,21 @@ public class DeckControlsPanel extends JPanel {
 	public void addToDeck(int cardValue) {
 		deck.addCard(cardValue);
 	}
+	
+	/**
+	 * Clears card value and returns field to hint text
+	 */
+	public void clearCardValue(){
+		fieldAddCard.setText("");
+		// remove focus from textfield
+		try{
+			fieldAddCard.grabFocus();
+		}
+		finally{
+			fieldDeckName.grabFocus();
+		}
+		
+	}
 
 	/**
 	 * Returns the deck being constructed.
