@@ -58,6 +58,7 @@ public class DeckPanel extends JScrollPane {
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
+	private boolean isMultipleSelection = true;
 	private final ViewSumController controller;
 	private Timer getDeckTimer = null;
 	
@@ -105,6 +106,7 @@ public class DeckPanel extends JScrollPane {
 						{
 							stopTimer();
 							setViewportView(deckVersion(tempDeck));
+							isMultipleSelection = tempDeck.canSelectMultipleCards();
 						}
 						
 					}
@@ -113,6 +115,7 @@ public class DeckPanel extends JScrollPane {
 			}
 			else{
 			this.setViewportView(deckVersion(tempDeck));
+			isMultipleSelection = tempDeck.canSelectMultipleCards();
 			}
 			
 		}
@@ -382,6 +385,10 @@ public class DeckPanel extends JScrollPane {
 		if(isDeckView){
 			this.getViewport().setVisible(true);
 		}
+	}
+	
+	public boolean isMultipleSelection() {
+		return isMultipleSelection;
 	}
 
 }

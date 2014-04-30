@@ -161,8 +161,6 @@ implements TreeSelectionListener {
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); //make panel display the tree
-
-		System.out.println("Finished Refreshing JTree:ListRequirementsPanel");
 	}
 	
 	

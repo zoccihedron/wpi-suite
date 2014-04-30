@@ -1,4 +1,4 @@
-   On the left side of the overview panel in the Planning Poker tab, all current planning poker games that you are a part of are displayed in the tree under "In Progress". If a game that you know exists does not show up here, try clicking "Games" at the top of the tree to refresh it.
+   On the left side of the overview panel in the Planning Poker tab, all current planning poker games that you are a part of are displayed in the tree under "In Progress". If a game that you know exists does not show up here, try clicking "Games" at the top of the tree to refresh it. Games that are in "Bold" font are games that you have not finished voting on.
    
    When a game is selected, its information is displayed in the right-hand panel. From here, you can see the overall game progress, your progress in voting in this particular game, and which requirements you have or have not voted on. To play, click the "Play" button on the bottom right-hand corner of the panel. This will bring you to the Play Game tab.
    

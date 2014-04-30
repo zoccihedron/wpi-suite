@@ -209,8 +209,6 @@ public class Mailer implements Callable<Boolean> {
 
 			// Send message
 			Transport.send(message);
-			System.out.println("Sent message to " + sendToEmail
-					+ " successfully!");
 		} catch (MessagingException mex) {
 			mex.printStackTrace();
 		}
