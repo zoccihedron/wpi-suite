@@ -50,6 +50,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
  * @version 1.0
  *
  */
+@SuppressWarnings("serial")
 public class DeckControlsPanel extends JPanel {
 
 	private final JButton btnRemoveDeck;
@@ -80,7 +81,9 @@ public class DeckControlsPanel extends JPanel {
 	 * @param listDecksPanel the list deck panel
 	 * @param deckManager 
 	 */
-	public DeckControlsPanel(final CardViewPanel cardView, ListDecksPanel listDecksPanel, DeckManager deckManager) {
+	public DeckControlsPanel(final CardViewPanel cardView,
+									ListDecksPanel listDecksPanel,
+									DeckManager deckManager) {
 		this.cardView = cardView;
 		this.listDecksPanel = listDecksPanel;
 		this.deckManager = deckManager;
@@ -190,7 +193,8 @@ public class DeckControlsPanel extends JPanel {
 				if(!fieldAddCard.getText().trim().equals("") &&
 						fieldAddCard.getText().trim().matches("[0-9]+")){
 					try{
-						if(Integer.parseInt(fieldAddCard.getText().trim()) >= 0){
+						if((Integer.parseInt(fieldAddCard.getText().trim()) >= 0) &&
+								(Integer.parseInt(fieldAddCard.getText().trim()) <= 999999)) {
 								btnAddCard.setEnabled(true);
 						}
 						else{
@@ -212,7 +216,8 @@ public class DeckControlsPanel extends JPanel {
 				if(!fieldAddCard.getText().trim().equals("") &&
 						fieldAddCard.getText().trim().matches("[0-9]+")){
 					try{
-						if(Integer.parseInt(fieldAddCard.getText().trim()) >= 0){
+						if((Integer.parseInt(fieldAddCard.getText().trim()) >= 0) &&
+								(Integer.parseInt(fieldAddCard.getText().trim()) <= 999999)){
 								btnAddCard.setEnabled(true);
 						}
 						else{
@@ -509,8 +514,13 @@ public class DeckControlsPanel extends JPanel {
 			btnAddCard.setEnabled(true);
 			return true;
 		}
-
-
+		
+		if(estimate > 999999) {
+			reportError("<html>Error: Estimate must be less than 1,000,000.</html>");
+			btnAddCard.setEnabled(false);
+			return false;
+		}
+		
 		btnAddCard.setEnabled(true);
 		return true;
 	}
