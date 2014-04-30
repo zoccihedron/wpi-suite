@@ -12,6 +12,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -67,6 +68,8 @@ public class DeckControlsPanel extends JPanel {
 
 	private final JLabel deckRemovedMessage;
 	private final JLabel message;
+	private final JLabel helpTitle;
+	private final JLabel helpText;
 	private final ButtonGroup cardSelectGroup;
 	private final JRadioButton singleSelectBtn;
 	private final JRadioButton multiSelectBtn;
@@ -86,6 +89,23 @@ public class DeckControlsPanel extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		this.setLayout(new GridBagLayout());
 
+		helpTitle = new JLabel();
+		helpText = new JLabel();
+		
+		helpTitle.setText("Deck Overview");
+		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
+		
+		helpText.setText("To begin, please select a deck from the tree on the left.");
+		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		this.add(helpTitle, constraints);
+		
+		constraints.gridy = 1;
+		constraints.gridx = 0;
+		this.add(helpText, constraints);
+		
 		//DECK NAME TEXT FIELD
 		fieldDeckName = new JTextField("");
 		constraints.fill = GridBagConstraints.BOTH;
