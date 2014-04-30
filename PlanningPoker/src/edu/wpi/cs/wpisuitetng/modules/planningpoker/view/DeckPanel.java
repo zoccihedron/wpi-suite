@@ -58,7 +58,7 @@ public class DeckPanel extends JScrollPane {
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
-	private boolean isMultipleSelection;
+	private boolean isMultipleSelection = true;
 	private final ViewSumController controller;
 	private Timer getDeckTimer = null;
 	
