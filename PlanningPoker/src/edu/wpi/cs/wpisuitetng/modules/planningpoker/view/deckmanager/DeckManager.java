@@ -85,7 +85,7 @@ public class DeckManager extends JPanel{
 	 */
 	public void updateDeck(Deck deck){
 		deckControlsPanel.setActionListeners(deck);
-
+		
 		cardViewPanel.updateView(deck);
 
 	}
@@ -97,11 +97,8 @@ public class DeckManager extends JPanel{
 	 */
 	public void updateInUse(Deck deck) {
 		deckControlsPanel.disableControls();
-		deckControlsPanel.updateDeckRemovalMessage("The deck is currently in use "
-				+ "and unable to be edited");
-		
+		deckControlsPanel.showDeckInUseMessage();
 		cardViewPanel.updateView(deck);
-
 	}
 	
 	public void setSaveText(String message){
