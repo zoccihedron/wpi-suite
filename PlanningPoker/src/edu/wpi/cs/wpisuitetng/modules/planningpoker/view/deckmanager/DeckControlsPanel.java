@@ -194,18 +194,22 @@ public class DeckControlsPanel extends JPanel {
 					try{
 						if(Integer.parseInt(fieldAddCard.getText().trim()) >= 0){
 								btnAddCard.setEnabled(true);
+								addRemoveCardToolTip();
 						}
 						else{
 							btnAddCard.setEnabled(false);
+							addRemoveCardToolTip();
 						}
 					}
 					
 					catch(Exception exception){
 						btnAddCard.setEnabled(false);
+						addRemoveCardToolTip();
 					}
 				}
 				else {
 					btnAddCard.setEnabled(false);
+					addRemoveCardToolTip();
 				}
 			}
 
@@ -216,18 +220,22 @@ public class DeckControlsPanel extends JPanel {
 					try{
 						if(Integer.parseInt(fieldAddCard.getText().trim()) >= 0){
 								btnAddCard.setEnabled(true);
+								addRemoveCardToolTip();
 						}
 						else{
 							btnAddCard.setEnabled(false);
+							addRemoveCardToolTip();
 						}
 					}
 					
 					catch(NumberFormatException exception){
 						btnAddCard.setEnabled(false);
+						addRemoveCardToolTip();
 					}
 				}
 				else {
 					btnAddCard.setEnabled(false);
+					addRemoveCardToolTip();
 				}
 			}
 
@@ -269,6 +277,7 @@ public class DeckControlsPanel extends JPanel {
 		deck = null;
 
 		btnAddCard.setEnabled(false);
+		addRemoveCardToolTip();
 
 		final ActionListener removeCardListener = new ActionListener() {
 
@@ -277,9 +286,11 @@ public class DeckControlsPanel extends JPanel {
 				final List<Integer> selected = cardView.getSelected();
 				if(selected.size() == 0){
 					btnRemoveCard.setEnabled(false);
+					addRemoveCardToolTip();
 				}
 				else {
 					btnRemoveCard.setEnabled(true);
+					addRemoveCardToolTip();
 				}
 			}
 		};
@@ -498,6 +509,7 @@ public class DeckControlsPanel extends JPanel {
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
 			btnAddCard.setEnabled(false);
+			addRemoveCardToolTip();
 			System.err.println(e.getMessage());
 			return false;
 		}
@@ -505,6 +517,7 @@ public class DeckControlsPanel extends JPanel {
 		if(estimate < 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
 			btnAddCard.setEnabled(false);
+			addRemoveCardToolTip();
 			return false;
 		}
 
@@ -512,11 +525,13 @@ public class DeckControlsPanel extends JPanel {
 			reportInfo("<html>0 indicates that you are unable to "
 					+ "estimate this requirement. </html>");
 			btnAddCard.setEnabled(true);
+			addRemoveCardToolTip();
 			return true;
 		}
 
 
 		btnAddCard.setEnabled(true);
+		addRemoveCardToolTip();
 		return true;
 	}
 
@@ -571,7 +586,7 @@ public class DeckControlsPanel extends JPanel {
 		return fieldDeckName.getText();
 	}
 	
-	private void addRemoveCardToolTip(String string) {
+	private void addRemoveCardToolTip() {
 		if(btnRemoveCard.isEnabled()) {
 			btnRemoveCard.setToolTipText("Click here to remove the selected cards.");
 		}
