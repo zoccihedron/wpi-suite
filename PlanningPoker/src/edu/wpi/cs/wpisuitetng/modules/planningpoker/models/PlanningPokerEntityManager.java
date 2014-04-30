@@ -427,7 +427,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 
 			newEst.setFinalEstimate(oldEst.getFinalEstimate());
 			newEst.setNote(oldEst.getNote());
-			newEst.estimationSent(true);
+			newEst.estimationSent(false);
 			newEst.setSentBefore(true);
 
 			final List<Estimate> newEstimates = new ArrayList<Estimate>();

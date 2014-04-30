@@ -95,7 +95,7 @@ public class ResultsDisplayPanel extends JPanel {
 		unselectEstimateBtn = new JButton("Unselect this estimate");
 		unselectEstimateBtn.addActionListener(new UnselectEstimateController());
 		unselectEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
-				.getUserName().equals(game.getGameCreator()) );
+				.getUserName().equals(game.getGameCreator()));
 		unselectEstimateBtn.setEnabled(false);
 		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
 		

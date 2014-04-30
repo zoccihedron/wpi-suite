@@ -241,7 +241,7 @@ public class GameSummaryPanel extends JPanel {
 			}
 		});
 		
-		// Button to play game
+		// Button to end game manually
 		endGameButton = new JButton("End Game");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;

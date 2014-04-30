@@ -141,12 +141,12 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 			if (game.getRequirements().contains(req.getId())) {
 				for (Estimate e : game.getEstimates()) {
 					if (e.getReqID() == req.getId()) {
-						if (!e.estimationHasBeenSent()
+						if (!e.isFinalEstimateSet()
 								&& e.getFinalEstimate() == 0) {
 							reqNode = new DefaultMutableTreeNode(req);
 							notSelectedCategory.add(reqNode);
 						} else if (!e.estimationHasBeenSent()
-								&& e.getFinalEstimate() != 0) {
+								&& e.isFinalEstimateSet()) {
 							System.out
 									.println("---------add element to selected");
 							reqNode = new DefaultMutableTreeNode(req);
