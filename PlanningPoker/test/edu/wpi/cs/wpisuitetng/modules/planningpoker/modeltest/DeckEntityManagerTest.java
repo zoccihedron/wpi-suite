@@ -13,34 +13,24 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 
-
-
 import edu.wpi.cs.wpisuitetng.Session;
-import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.exceptions.BadRequestException;
-import edu.wpi.cs.wpisuitetng.exceptions.ConflictException;
 import edu.wpi.cs.wpisuitetng.exceptions.NotFoundException;
-import edu.wpi.cs.wpisuitetng.exceptions.NotImplementedException;
+import edu.wpi.cs.wpisuitetng.exceptions.WPISuiteException;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.Role;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.DeckEntityManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
 
 
 /**
@@ -108,6 +98,7 @@ public class DeckEntityManagerTest {
 			Deck[] decks1 = manager.getEntity(s1, ""+0);
 		} catch (NotFoundException e){
 			notFoundE = "ID not valid";
+			System.err.println(e.getMessage());
 		}
 		assertEquals(notFoundE, "ID not valid");
 		
@@ -115,6 +106,7 @@ public class DeckEntityManagerTest {
 			Deck[] deck2 = manager.getEntity(s1,""+100);
 		} catch (NotFoundException e){
 			notFoundE = "There are no decks in the list";
+			System.err.println(e.getMessage());
 		}
 		assertEquals(notFoundE, "There are no decks in the list");
 		
@@ -156,6 +148,7 @@ public class DeckEntityManagerTest {
 
 		} catch (BadRequestException e){
 			errorMessage = "Deck with ID does not exist";
+			System.err.println(e.getMessage());
 		}
 		assertEquals(errorMessage, "Deck with ID does not exist");
 		
