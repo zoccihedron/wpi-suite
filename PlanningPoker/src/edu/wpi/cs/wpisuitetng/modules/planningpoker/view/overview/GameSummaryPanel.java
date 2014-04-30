@@ -242,7 +242,7 @@ public class GameSummaryPanel extends JPanel {
 		});
 		
 		// Button to play game
-		playGameButton = new JButton("Play");
+		endGameButton = new JButton("End Game");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
@@ -251,16 +251,11 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 10, 5, 0);
-		buttonsPanel.add(playGameButton, constraints);
+		buttonsPanel.add(endGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
-		playGameButton.setEnabled(false);
-		playGameButton.addActionListener(new ActionListener () {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final MainViewTabController mvt = MainViewTabController.getInstance();
- 				mvt.playGameTab(game);
-			}
- 		});
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
 		// Button to view results
 		viewResultsButton = new JButton("View Results");
@@ -284,19 +279,24 @@ public class GameSummaryPanel extends JPanel {
 		
 		
 		
-		// Button to end game manually
-		endGameButton = new JButton("End Game");
+		// Button to play game
+		playGameButton = new JButton("Play");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 20, 5, 0);
-		add(endGameButton, constraints);
+		add(playGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
-		endGameButton.setVisible(false);
-		endGameButton.setEnabled(false);
-		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		playGameButton.setEnabled(false);
+		playGameButton.addActionListener(new ActionListener () {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final MainViewTabController mvt = MainViewTabController.getInstance();
+ 				mvt.playGameTab(game);
+			}
+ 		});
 		
 		closeGameButton = new JButton("Close Game");
 		constraints.fill = GridBagConstraints.NONE;

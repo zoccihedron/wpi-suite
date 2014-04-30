@@ -32,6 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ResultsDisplayController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.UnselectEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -49,6 +50,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final JTextField finalEstimate;
 	private final JTextArea noteArea;
 	private final JButton saveFinalEstimateBtn;
+	private final JButton unselectEstimateBtn;
 	private final Game game;
 	private int reqid;
 	private final JLabel message;
@@ -88,6 +90,15 @@ public class ResultsDisplayPanel extends JPanel {
 		finalEstimate.setEditable(false);
 		saveFinalEstimateBtn.setEnabled(false);
 		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
+		
+		
+		unselectEstimateBtn = new JButton("Unselect this estimate");
+		unselectEstimateBtn.addActionListener(new UnselectEstimateController());
+		unselectEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
+				.getUserName().equals(game.getGameCreator()) );
+		unselectEstimateBtn.setEnabled(false);
+		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
+		
 		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
@@ -177,6 +188,7 @@ public class ResultsDisplayPanel extends JPanel {
 			System.err.println(e.getMessage());
 		}
 
+		
 		constraints.gridx = 0;
 		constraints.gridy = 5;
 		constraints.gridwidth = 2;
@@ -191,6 +203,16 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		constraints.gridwidth = 2;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(5, 0, 5, 0);
+		rightPanel.add(unselectEstimateBtn, constraints);
+		
 
 
 		constraints.gridx = 1;
