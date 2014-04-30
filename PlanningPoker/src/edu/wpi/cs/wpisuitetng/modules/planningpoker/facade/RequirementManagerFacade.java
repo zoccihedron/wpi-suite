@@ -119,9 +119,7 @@ public class RequirementManagerFacade {
 	public void sendEstimates(List<Estimate> estimates, final EstimateTreePanel view){
 
 		for(Estimate estimate : estimates){
-			Requirement req = requirements.get(estimate.getReqID());
-
-			
+			Requirement req = getRequirementFromID(requirements, estimate.getReqID());
 						
 			final Estimate newEstimate = new Estimate(estimate.getReqID(), estimate.getGameID());
 			newEstimate.estimationSent(true);
@@ -180,6 +178,8 @@ public class RequirementManagerFacade {
 	}
 	
 	
+
+
 	/**
 	 * Send the final estimate value of a single requirement to 
 	 * the requirement panel
@@ -260,6 +260,16 @@ public class RequirementManagerFacade {
 
 		});
 		request.send(); 
+	}
+	
+	
+	
+	private Requirement getRequirementFromID(List<Requirement> requirements, int id) {
+		for(Requirement r: requirements){
+			if(r.getId() == id)
+				return r;
+		}
+		return null;
 	}
 
 }
