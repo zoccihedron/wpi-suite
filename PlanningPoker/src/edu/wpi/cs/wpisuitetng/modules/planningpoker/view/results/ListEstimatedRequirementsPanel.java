@@ -147,15 +147,11 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 							notSelectedCategory.add(reqNode);
 						} else if (!e.estimationHasBeenSent()
 								&& e.getFinalEstimate() != 0) {
-							System.out
-									.println("---------add element to selected");
 							reqNode = new DefaultMutableTreeNode(req);
 							selectedCategory.add(reqNode);
 						} else { // estimation is sent
 							reqNode = new DefaultMutableTreeNode(req);
 							sentCategory.add(reqNode);
-							System.out
-									.println("-----------add element to sent");
 						}
 					}
 				}
@@ -188,8 +184,6 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); // make panel display the tree
-
-		System.out.println("finished refreshing the tree");
 	}
 
 	/**
