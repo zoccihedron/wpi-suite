@@ -30,7 +30,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.Overview
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
@@ -108,7 +107,6 @@ implements TreeSelectionListener {
 	 * This method is used to refresh the requirements tree
 	 */
 	public void refresh(){
-		System.out.println("Refreshing Game Tree...");
 		
 
 		try{
@@ -180,15 +178,12 @@ implements TreeSelectionListener {
 		tree.setToggleClickCount(0);
 
 		//set to custom cell renderer so that icons make sense
-		tree.setCellRenderer(new CustomTreeCellRenderer());
+		tree.setCellRenderer(new GameTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
 
 		tree.setDragEnabled(true);
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); //make panel display the tree
-
-		System.out.println("# of Games:" + games.size());
-		System.out.println("finished refreshing the tree");
 	}
 }

@@ -9,7 +9,7 @@
  * Creator:
  *    Code On Bleu
  ******************************************************************************/
-package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
+package edu.wpi.cs.wpisuitetng.modules.planningpoker.viewtest;
 
 /** @author Patrick Lynch (pelynch / zoccihedron)
  * 
