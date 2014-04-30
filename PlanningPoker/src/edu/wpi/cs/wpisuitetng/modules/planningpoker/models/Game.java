@@ -191,6 +191,7 @@ public class Game extends AbstractModel {
 		status = updatedGame.getStatus();
 		hasDeadline = updatedGame.isHasDeadline();
 		deck = updatedGame.getDeck();
+		myGame = false;
 	}
 
 	/**
@@ -791,14 +792,18 @@ public class Game extends AbstractModel {
 	}
 
 	/**
-	 * @return the myGame
+	 * @return myGame - A boolean that returns 
+	 * if the game is the owner's 
+	 * (Does not automatically update. Must be set 
+	 * by the setMyGame function.
+	 * Default: false)
 	 */
 	public boolean isMyGame() {
 		return myGame;
 	}
 
 	/**
-	 * @param myGame the myGame to set
+	 * @param myGame - set the game to be the current users or not.
 	 */
 	public void setMyGame(boolean myGame) {
 		this.myGame = myGame;

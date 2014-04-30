@@ -208,6 +208,7 @@ public class Deck extends AbstractModel{
 		this.cardValues = updatedDeck.getCards();
 		this.id = updatedDeck.getId();
 		this.deckCreator = updatedDeck.getDeckCreator();
+		myDeck = false;
 	}
 
 	public String getDeckCreator() {
