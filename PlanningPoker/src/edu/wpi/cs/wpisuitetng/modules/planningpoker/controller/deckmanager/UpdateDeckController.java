@@ -48,7 +48,6 @@ public class UpdateDeckController implements ActionListener{
 				"planningpoker/deck", HttpMethod.POST);
 		request.setBody(updatedDeck.toJSON()); // put the new message in the body of the request
 		// add an observer to process the response
-		System.out.println(updatedDeck.toJSON());
 		request.addObserver(new UpdateDeckRequestObserver(this));
 		request.send(); // send the request
 		

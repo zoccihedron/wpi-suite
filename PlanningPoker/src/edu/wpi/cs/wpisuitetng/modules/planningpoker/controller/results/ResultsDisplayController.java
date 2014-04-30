@@ -65,7 +65,6 @@ public class ResultsDisplayController implements ActionListener{
 			request.addObserver(new RequestObserver(){
 				@Override
 				public void responseSuccess(IRequest iReq) {
-					System.out.println("Final estimate has been sent----------");
 					OverviewPanelController.getInstance().updateGameSummary(game);
 				}
 

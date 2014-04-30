@@ -277,7 +277,6 @@ public class UserPreferencesPanel extends JPanel {
 
 					@Override
 					public void responseSuccess(IRequest iReq) {
-						System.out.println("submit button clicked");
 					}
 
 					@Override
