@@ -258,7 +258,10 @@ public class Deck extends AbstractModel{
 		this.myDeck = myDeck;
 	}
 	
-	public boolean equals(Deck deck){
-		return this.id == deck.getId();
+	public boolean equals(Object deck){
+		if(deck instanceof Deck) {
+			return this.id == ((Deck) deck).getId();
+		}
+		return false;
 	}
 }
