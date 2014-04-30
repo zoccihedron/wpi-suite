@@ -81,7 +81,7 @@ public class ResultsPanel extends JPanel{
 		descriptionScroll = new JScrollPane();
 		descriptionScroll.add(descriptionText);
 
-		titleLabel = new JLabel("Game Information");
+		titleLabel = new JLabel("Requirement Information");
 
 		nameLabel = new JLabel("Name:");
 
