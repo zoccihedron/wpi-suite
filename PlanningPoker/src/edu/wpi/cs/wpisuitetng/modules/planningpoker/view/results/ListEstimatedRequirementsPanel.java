@@ -47,9 +47,7 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private final Game game;
-	private PlayGameController playGameController;
 	private final ViewResultsController controller;
-	private JButton sendSelectedRequirement;
 
 	/**
 	 * Constructs the panel
@@ -141,8 +139,7 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 			if (game.getRequirements().contains(req.getId())) {
 				for (Estimate e : game.getEstimates()) {
 					if (e.getReqID() == req.getId()) {
-						if (!e.isFinalEstimateSet()
-								&& e.getFinalEstimate() == 0) {
+						if (!e.isFinalEstimateSet() && !e.estimationHasBeenSent()) {
 							reqNode = new DefaultMutableTreeNode(req);
 							notSelectedCategory.add(reqNode);
 						} else if (!e.estimationHasBeenSent()
@@ -199,7 +196,7 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 	public List<Estimate> getSelectedEstimates() {
 		final List<Estimate> estimates = new ArrayList<Estimate>();
 		for (Estimate e : game.getEstimates()) {
-			if (!e.estimationHasBeenSent() && e.getFinalEstimate() != 0) {
+			if (!e.estimationHasBeenSent() && e.isFinalEstimateSet()) {
 				estimates.add(e);
 
 			}

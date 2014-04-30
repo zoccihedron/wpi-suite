@@ -12,6 +12,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,10 +34,14 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ResultsDisplayController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.UnselectEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * Panel for displaying detailed results, the right subpanel in ResultsPanel
@@ -94,7 +100,6 @@ public class ResultsDisplayPanel extends JPanel {
 		
 		unselectEstimateBtn = new JButton("Unselect this estimate");
 		unselectEstimateBtn.setVisible(false);
-		unselectEstimateBtn.setEnabled(false);
 		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
 		
 		
@@ -364,9 +369,44 @@ public class ResultsDisplayPanel extends JPanel {
 			ConfigManager.getInstance().getConfig()
 				.getUserName().equals(game.getGameCreator())){
 			unselectEstimateBtn.setVisible(true);
+			unselectEstimateBtn.setEnabled(true);
+			unselectEstimateBtn.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// Send a request to the core to mark this estimate as being sent
+					final Request request = Network.getInstance().makeRequest(
+							"Advanced/planningpoker/game/unselectEstimate", 
+							HttpMethod.POST); // POST is update
+					estimate.setGameID(game.getId());
+					estimate.unSelectFinalEstimate();
+					request.setBody(estimate.toJSON()); 
+					request.addObserver(new RequestObserver(){
+						@Override
+						public void responseSuccess(IRequest iReq) {
+							treePanel.refresh();	
+						}
+
+						@Override
+						public void responseError(IRequest iReq) {
+							
+						}
+
+						@Override
+						public void fail(IRequest iReq, Exception exception) {
+							
+						}
+						
+					}); 
+
+					request.send();
+
+				}
+				
+			});
+
 		} else {
 			unselectEstimateBtn.setVisible(false);
-			unselectEstimateBtn.addActionListener(new UnselectEstimateController(estimate));
 
 		}
 	}
@@ -387,7 +427,9 @@ public class ResultsDisplayPanel extends JPanel {
 				try {
 					reportError("<html></html>");
 					estimate = Integer.parseInt(finalEstimate.getText());
-					if (estimate == estimateObject.getFinalEstimate()){
+					
+					if (estimate == estimateObject.getFinalEstimate() 
+							&& estimateObject.isFinalEstimateSet()){
 						reportError("");
 						result &= false;
 					}
@@ -398,7 +440,8 @@ public class ResultsDisplayPanel extends JPanel {
 					}
 
 					if (result && estimateObject.isSentBefore()){
-						if(noteArea.getText().trim().isEmpty() && estimate != estimateObject.getFinalEstimate()){
+						if(noteArea.getText().trim().isEmpty() 
+								&& estimate != estimateObject.getFinalEstimate()){
 							reportError("<html>A note must be included when modifying"
 									+ " a sent final estimate.</html>");
 							result &= false;

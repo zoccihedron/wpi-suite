@@ -57,7 +57,7 @@ public class ResultsDisplayController implements ActionListener{
 			estimate.setNote(view.getNote());
 			estimate.estimationSent(false);
 			
-			// Send a request to the core to mark this estimate as being sent
+			// Send a request to the core to mark this estimate as being set
 			final Request request = Network.getInstance().makeRequest(
 					"Advanced/planningpoker/game/sendFinalEstimate", 
 					HttpMethod.POST); // POST is update
@@ -65,7 +65,6 @@ public class ResultsDisplayController implements ActionListener{
 			request.addObserver(new RequestObserver(){
 				@Override
 				public void responseSuccess(IRequest iReq) {
-					System.out.println("Final estimate has been sent----------");
 					OverviewPanelController.getInstance().updateGameSummary(game);
 				}
 
