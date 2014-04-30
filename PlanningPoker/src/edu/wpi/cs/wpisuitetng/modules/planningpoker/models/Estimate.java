@@ -261,7 +261,14 @@ public class Estimate {
 	 */
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
-		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		if (userWithEstimate != null)
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		}
+		else
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>();
+		}
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
