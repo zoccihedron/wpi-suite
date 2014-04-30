@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DropMode;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -26,7 +25,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;

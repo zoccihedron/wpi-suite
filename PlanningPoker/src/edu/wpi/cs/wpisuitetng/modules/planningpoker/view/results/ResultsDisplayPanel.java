@@ -34,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ResultsDisplayController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.UnselectEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -215,6 +216,8 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(unselectEstimateBtn, constraints);
+		unselectEstimateBtn.addActionListener(new UnselectEstimateController(game, this));
+
 		
 
 
@@ -370,43 +373,6 @@ public class ResultsDisplayPanel extends JPanel {
 				.getUserName().equals(game.getGameCreator())){
 			unselectEstimateBtn.setVisible(true);
 			unselectEstimateBtn.setEnabled(true);
-			unselectEstimateBtn.addActionListener(new ActionListener(){
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					estimate.setGameID(game.getId());
-					estimate.unSelectFinalEstimate();
-
-					// Send a request to the core to mark this estimate as being sent
-					final Request request = Network.getInstance().makeRequest(
-							"Advanced/planningpoker/game/unselectEstimate", 
-							HttpMethod.POST); // POST is update
-					request.setBody(estimate.toJSON()); 
-					request.addObserver(new RequestObserver(){
-						@Override
-						public void responseSuccess(IRequest iReq) {
-							
-						}
-
-						@Override
-						public void responseError(IRequest iReq) {
-							
-						}
-
-						@Override
-						public void fail(IRequest iReq, Exception exception) {
-							
-						}
-						
-					}); 
-
-					request.send();
-					treePanel.refresh();
-
-				}
-				
-			});
 
 		} else {
 			unselectEstimateBtn.setVisible(false);
