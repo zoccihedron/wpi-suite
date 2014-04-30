@@ -49,7 +49,7 @@ public class GameTreeCellRenderer extends CustomTreeCellRenderer{
 	      final Object userObject = ((DefaultMutableTreeNode) value).getUserObject();
 	      if (userObject instanceof Game) {
 	        final Game g = (Game) userObject;
-	        returnValue.setForeground(Color.BLUE);
+	        returnValue.setForeground(Color.BLACK);
 	        if(g.getStatus().equals(GameStatus.IN_PROGRESS) && 
 	        		(g.getUserVoteCount(ConfigManager.getConfig().getUserName()) 
 	        			!= g.getUserMaxVotes())){
