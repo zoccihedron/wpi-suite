@@ -103,6 +103,7 @@ public class HelpTopic extends JPanel {
 	public void pullHelpInfo(HelpTopicObject hto) {
 		titleText.setText(hto.getTitle());
 		textHere.setText(hto.getFileText());
+		textHere.setCaretPosition(0);
 	}
 
 }
