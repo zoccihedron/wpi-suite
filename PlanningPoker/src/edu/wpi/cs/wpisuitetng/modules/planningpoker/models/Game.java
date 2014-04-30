@@ -42,6 +42,7 @@ public class Game extends AbstractModel {
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
 	private int deck;
+	private boolean myGame = false;
 
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
@@ -699,10 +700,16 @@ public class Game extends AbstractModel {
 
 	/**
 	 * returns the name of the game
+	 * With an owner tag if the current user (client side) 
+	 * is the owner
 	 */
 	@Override
 	public String toString() {
-		return name;
+		String returnString = name;
+		if (myGame){
+			returnString = returnString + " (Owner)";
+		}
+		return returnString;
 	}
 
 	/**
@@ -781,6 +788,20 @@ public class Game extends AbstractModel {
 	 */
 	public void setModifiedVersion(int modifiedVersion) {
 		this.modifiedVersion = modifiedVersion;
+	}
+
+	/**
+	 * @return the myGame
+	 */
+	public boolean isMyGame() {
+		return myGame;
+	}
+
+	/**
+	 * @param myGame the myGame to set
+	 */
+	public void setMyGame(boolean myGame) {
+		this.myGame = myGame;
 	}
 
 }
