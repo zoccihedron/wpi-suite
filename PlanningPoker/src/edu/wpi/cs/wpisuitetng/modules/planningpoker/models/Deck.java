@@ -148,12 +148,8 @@ public class Deck extends AbstractModel{
 				nonZeroCards++;
 			}
 		}
-		if(nonZeroCards >= 2){
-		return true;
-		}
-		else{
-		return false;
-		}
+		
+		return nonZeroCards >= 2;
 	}
 	
 	/**
@@ -208,6 +204,7 @@ public class Deck extends AbstractModel{
 		this.cardValues = updatedDeck.getCards();
 		this.id = updatedDeck.getId();
 		this.deckCreator = updatedDeck.getDeckCreator();
+		myDeck = false;
 	}
 
 	public String getDeckCreator() {
@@ -261,7 +258,10 @@ public class Deck extends AbstractModel{
 		this.myDeck = myDeck;
 	}
 	
-	public boolean equals(Deck deck){
-		return this.id == deck.getId();
+	public boolean equals(Object deck){
+		if(deck instanceof Deck) {
+			return this.id == ((Deck) deck).getId();
+		}
+		return false;
 	}
 }

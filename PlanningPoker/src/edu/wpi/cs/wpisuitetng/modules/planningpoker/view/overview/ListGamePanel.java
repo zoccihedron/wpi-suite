@@ -24,12 +24,12 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
@@ -141,6 +141,9 @@ implements TreeSelectionListener {
 		
 		for(Game game: games){
 
+			String user = ConfigManager.getConfig().getUserName();
+			game.setMyGame(game.isCreator(user));
+			
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
 			switch (game.getStatus()){
@@ -176,7 +179,7 @@ implements TreeSelectionListener {
 		tree.setToggleClickCount(0);
 
 		//set to custom cell renderer so that icons make sense
-		tree.setCellRenderer(new CustomTreeCellRenderer());
+		tree.setCellRenderer(new GameTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
 
 		tree.setDragEnabled(true);

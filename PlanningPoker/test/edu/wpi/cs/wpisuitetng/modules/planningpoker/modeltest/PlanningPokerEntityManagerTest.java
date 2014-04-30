@@ -32,8 +32,9 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
+
 
 /**
  * Entity Manager testing class for Planning Poker
@@ -99,10 +100,9 @@ public class PlanningPokerEntityManagerTest {
 		
 		boolean PermissionDenied = false;
 		String exceptionMessage = "";
-		Game[] retrievedGames;
 		
 		try{
-			retrievedGames = manager.getEntity(s2, "" + draftGame.getId());
+			manager.getEntity(s2, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			exceptionMessage=e.getMessage();
@@ -113,10 +113,11 @@ public class PlanningPokerEntityManagerTest {
 		
 		boolean PermissionAllowed = true;
 		try{
-			retrievedGames = manager.getEntity(s1, "" + draftGame.getId());
+			manager.getEntity(s1, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			PermissionAllowed = false;
+			System.err.println(e.getMessage());
 		}
 		assertTrue(PermissionAllowed);
 	}
@@ -128,17 +129,19 @@ public class PlanningPokerEntityManagerTest {
 		boolean successfulRetrievalByNotOwner = true;
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s1,"" + inProgressGame.getId());
+			manager.getEntity(s1,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByOwner = false;
+			System.err.println(e.getMessage());
 		}
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s2,"" + inProgressGame.getId());
+			manager.getEntity(s2,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByNotOwner = false;
+			System.err.println(e.getMessage());
 		}
 		
 		assertTrue(successfulRetrievalByOwner);
@@ -205,7 +208,7 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void getAllForEveryoneTest() throws WPISuiteException{
 		//test for session 1
-		Game[] retrievedGames = (Game[])manager.getAllForEveryone(s1);
+		Game[] retrievedGames = manager.getAllForEveryone(s1);
 
 		boolean containedDraftsOwnedByUser = false;
 		boolean containedGameInProgress = false;
@@ -229,7 +232,7 @@ public class PlanningPokerEntityManagerTest {
 		assertTrue(containedGameInProgress);
 
 		//test for session 2
-		retrievedGames = (Game[])manager.getAllForEveryone(s2);
+		retrievedGames = manager.getAllForEveryone(s2);
 
 		containedDraftsOwnedByUser = false;
 		containedGameInProgress = false;

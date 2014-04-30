@@ -70,9 +70,9 @@ public class AddCardController implements ActionListener{
 				
 			});
 			request.send();
-			
-			
 		}
+		
+		view.clearCardValue();
 	}
 	
 	/**
