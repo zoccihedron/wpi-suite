@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.Component;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.help.HelpPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
@@ -22,21 +23,25 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewResultsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.deckmanager.DeckManagerPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame.NewGamePanel;
 
+
+
 /**
- * This is a controller created for the purpose of interfacing with the main
- * view. There is only one instance of MainViewTabController.
- * 
- * @author Codon Bleu
+ * This is a controller created for the purpose of interfacing with the main view.
+ * There is only one instance of MainViewTabController.
+ * @author Team Code On Bleu
  * @version 1.0
  */
 public class MainViewTabController {
 
+
 	private static MainViewTabController instance = null;
 	private MainView mainView = null;
+
 
 	private MainViewTabController() {
 
 	}
+
 
 	/**
 	 * 
@@ -51,7 +56,7 @@ public class MainViewTabController {
 
 	/**
 	 * 
-	 * @param mainView
+	 * @param mainView 
 	 */
 	public void setMainView(MainView mainView) {
 		this.mainView = mainView;
@@ -70,11 +75,8 @@ public class MainViewTabController {
 
 	/**
 	 * Creates a createGameTab given a game
-	 *
-	 * @param game
-	 * 	The game that is being modified
-	 * @param isInProgress
-	 * 	check if game has been started
+	 * @param game The game that is being modified
+	 * @param isInProgress check if game has been started
 	 */
 	public void createGameTab(Game game, boolean isInProgress) {
 		final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
@@ -86,26 +88,24 @@ public class MainViewTabController {
 
 	/**
 	 * Creates a playGameTab given a game
-	 * 
-	 * @param game
-	 *            the game to be played
+	 * @param game the game to be played
 	 */
-	public void playGameTab(Game game) {
+	public void playGameTab(Game game)
+	{
 		final PlayGamePanel playGamePanel = new PlayGamePanel(game);
-		mainView.insertTab(game.getName(), playGamePanel,
-				mainView.getTabCount());
+		mainView.insertTab(game.getName(), playGamePanel, mainView.getTabCount());
 		mainView.invalidate();
 		mainView.repaint();
 		mainView.setSelectedComponent(playGamePanel);
 	}
 
 	/**
-	 * Creates a user preferences tab, but only if there are no other preference
-	 * tabs open.
+	 * Creates a user preferences tab, but only if
+	 * there are no other preference tabs open.
 	 */
 	public void userPreferencesTab() {
-		for (int i = 0; i < mainView.getTabCount(); i++) {
-			if (mainView.getComponentAt(i).getClass() == UserPreferencesPanel.class) {
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == UserPreferencesPanel.class){
 				mainView.setSelectedComponent(mainView.getComponentAt(i));
 				return;
 			}
@@ -119,9 +119,7 @@ public class MainViewTabController {
 
 	/**
 	 * Creates a view results tab given a game
-	 * 
-	 * @param game
-	 *            the game to be viewed
+	 * @param game the game to be viewed
 	 */
 	public void viewResultsTab(Game game) {
 		final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
@@ -130,7 +128,25 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(resultsPanel);
 	}
-	
+
+	/**
+	 * Creates a help tab, but only if
+	 * there are no other help tabs open.
+	 */
+	public void helpTab() {
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == HelpPanel.class){
+				mainView.setSelectedComponent(mainView.getComponentAt(i));
+				return;
+			}
+		}
+		final HelpPanel helpPanel = new HelpPanel();
+		mainView.insertTab("Help", helpPanel, mainView.getTabCount());
+		mainView.invalidate();
+		mainView.repaint();
+		mainView.setSelectedComponent(helpPanel);
+	}
+
 	/**
 	 * Creates an instance of the deck manager tab. There can
 	 * only be one open at a time. If the button is pressed
@@ -152,33 +168,33 @@ public class MainViewTabController {
 
 	/**
 	 * Closes a given tab
-	 * 
-	 * @param tabToClose
-	 *            the tab to close
+	 * @param tabToClose the tab to close
 	 */
 	public void closeTab(Component tabToClose) {
-		if (tabToClose instanceof NewGamePanel) {
-			if (((NewGamePanel) tabToClose).isReadyToClose()) {
+		if(tabToClose instanceof NewGamePanel) {
+			if(((NewGamePanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
-		} else if (tabToClose instanceof PlayGamePanel) {
-			if (((PlayGamePanel) tabToClose).isReadyToClose()) {
+		} else if(tabToClose instanceof PlayGamePanel) {
+			if(((PlayGamePanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
-		} else if (tabToClose instanceof UserPreferencesPanel) {
-			if (((UserPreferencesPanel) tabToClose).isReadyToClose()) {
+		} else if(tabToClose instanceof UserPreferencesPanel) {
+			if(((UserPreferencesPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
-		} else if (tabToClose instanceof ViewResultsPanel) {
-			if (((ViewResultsPanel) tabToClose).isReadyToClose()) {
+		} else if(tabToClose instanceof ViewResultsPanel){
+			if(((ViewResultsPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
 			}
 		} else if (tabToClose instanceof DeckManagerPanel) {
 			if(((DeckManagerPanel) tabToClose).isReadyToClose()){
 				mainView.remove(tabToClose);
 			}
+		} else if(tabToClose instanceof HelpPanel){
+			if(((HelpPanel)tabToClose).isReadyToClose()) {
+				mainView.remove(tabToClose);
+			}
 		}
 	}
-
-
 }
