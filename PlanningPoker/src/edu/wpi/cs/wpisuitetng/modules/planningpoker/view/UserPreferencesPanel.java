@@ -65,7 +65,6 @@ public class UserPreferencesPanel extends JPanel {
 	private final JTextField emailField;
 	private final JLabel lblTitle;
 	private final JLabel lblAllow;
-	private final JLabel lblUserInfo;
 	private final JLabel lblEmailCheck;
 	private final JLabel lblPrefstatus;
 	private final JLabel lblEmail;
@@ -92,7 +91,6 @@ public class UserPreferencesPanel extends JPanel {
 		add(preferencesPanel, BorderLayout.CENTER);
 		final GridBagLayout gbl_panel = new GridBagLayout();
 
-		//gbl_panel.columnWidths = new int[]{16, 31, 86, 40, 0, 0, 0, 0, 0};
 		gbl_panel.columnWidths = new int[]{15, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{39, 21, 33, 21, 23, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]
@@ -111,20 +109,7 @@ public class UserPreferencesPanel extends JPanel {
 		lblTitle = new JLabel("User Preferences");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titlePanel.add(lblTitle);
-
 		
-		// TODO - is this doing anything??
-		lblUserInfo = new JLabel("User name: " + 
-				ConfigManager.getInstance().getConfig().getUserName());
-		lblUserInfo.setVerticalAlignment(SwingConstants.BOTTOM);
-		final GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
-		gbc_lblUserInfo.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUserInfo.gridwidth = 3;
-		gbc_lblUserInfo.gridx = 1;
-		gbc_lblUserInfo.gridy = 0;
-		//preferencesPanel.add(lblUserInfo, gbc_lblUserInfo);
-		
-
 		lblAllow = new JLabel("Allow:");
 		lblAllow.setVerticalAlignment(SwingConstants.BOTTOM);
 		final GridBagConstraints gbc_lblAllow = new GridBagConstraints();
@@ -132,10 +117,6 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblAllow.gridx = 1;
 		gbc_lblAllow.gridy = 1;
 		preferencesPanel.add(lblAllow, gbc_lblAllow);
-
-		
-		
-		
 		
 		emailPanel = new JPanel();
 		final GridBagConstraints gbc_emailPanel = new GridBagConstraints();
@@ -185,10 +166,6 @@ public class UserPreferencesPanel extends JPanel {
 		lblEmailCheck.setVisible(false);
 		emailPanel.add(lblEmailCheck, gbc_lblEmailCheck);
 
-		
-		
-		
-		
 		btnSubmit = new JButton("Submit");
 		final GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
 		gbc_btnSubmit.anchor = GridBagConstraints.NORTH;
@@ -218,8 +195,9 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(lblPrefstatus, gbc_lblPrefstatus);
 
 
+		ConfigManager.getInstance();
 		final Request request = Network.getInstance().makeRequest("core/user/" + 
-				ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+				ConfigManager.getConfig().getUserName(), HttpMethod.GET);
 		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 		request.send();
 
