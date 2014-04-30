@@ -374,17 +374,19 @@ public class ResultsDisplayPanel extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					
+					estimate.setGameID(game.getId());
+					estimate.unSelectFinalEstimate();
+
 					// Send a request to the core to mark this estimate as being sent
 					final Request request = Network.getInstance().makeRequest(
 							"Advanced/planningpoker/game/unselectEstimate", 
 							HttpMethod.POST); // POST is update
-					estimate.setGameID(game.getId());
-					estimate.unSelectFinalEstimate();
 					request.setBody(estimate.toJSON()); 
 					request.addObserver(new RequestObserver(){
 						@Override
 						public void responseSuccess(IRequest iReq) {
-							treePanel.refresh();	
+							
 						}
 
 						@Override
@@ -400,6 +402,7 @@ public class ResultsDisplayPanel extends JPanel {
 					}); 
 
 					request.send();
+					treePanel.refresh();
 
 				}
 				
