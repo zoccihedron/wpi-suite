@@ -148,12 +148,8 @@ public class Deck extends AbstractModel{
 				nonZeroCards++;
 			}
 		}
-		if(nonZeroCards >= 2){
-		return true;
-		}
-		else{
-		return false;
-		}
+		
+		return nonZeroCards >= 2;
 	}
 	
 	/**
