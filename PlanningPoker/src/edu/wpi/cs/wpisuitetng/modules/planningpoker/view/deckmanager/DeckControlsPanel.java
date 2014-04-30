@@ -70,9 +70,11 @@ public class DeckControlsPanel extends JPanel {
 	private final JLabel message;
 	private final JLabel helpTitle;
 	private final JLabel helpText;
+	private final JLabel inUse;
 	private final ButtonGroup cardSelectGroup;
 	private final JRadioButton singleSelectBtn;
 	private final JRadioButton multiSelectBtn;
+	private final GridBagConstraints constraints = new GridBagConstraints();
 
 	/**
 	 * Construct all the buttons and their action listeners.
@@ -85,8 +87,6 @@ public class DeckControlsPanel extends JPanel {
 		this.listDecksPanel = listDecksPanel;
 		this.deckManager = deckManager;
 
-
-		final GridBagConstraints constraints = new GridBagConstraints();
 		this.setLayout(new GridBagLayout());
 
 		helpTitle = new JLabel();
@@ -105,6 +105,16 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridy = 1;
 		constraints.gridx = 0;
 		this.add(helpText, constraints);
+		
+		inUse = new JLabel();
+		inUse.setText("This deck is currently in use and unable to be edited.");
+		inUse.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		inUse.setForeground(Color.BLUE);
+		
+		inUse.setVisible(false);
+		constraints.gridy = 2;
+		constraints.gridx = 0;
+		this.add(inUse, constraints);
 		
 		//DECK NAME TEXT FIELD
 		fieldDeckName = new JTextField("");
@@ -477,6 +487,15 @@ public class DeckControlsPanel extends JPanel {
 	public void updateDeckRemovalMessage(String text) {
 		deckRemovedMessage.setVisible(true);
 		deckRemovedMessage.setText(text);
+	}
+	
+	/**
+	 * Shows deck in use message on screen
+	 *
+	 */
+	public void showDeckInUseMessage() {
+		inUse.setVisible(true);
+		helpText.setVisible(false);
 	}
 
 	/**
