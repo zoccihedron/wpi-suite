@@ -24,6 +24,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
@@ -140,6 +141,9 @@ implements TreeSelectionListener {
 		
 		for(Game game: games){
 
+			String user = ConfigManager.getConfig().getUserName();
+			game.setMyGame(game.isCreator(user));
+			
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
 			switch (game.getStatus()){

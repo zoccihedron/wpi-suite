@@ -42,6 +42,7 @@ public class Game extends AbstractModel {
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
 	private int deck;
+	private boolean myGame = false;
 
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
@@ -190,6 +191,7 @@ public class Game extends AbstractModel {
 		status = updatedGame.getStatus();
 		hasDeadline = updatedGame.isHasDeadline();
 		deck = updatedGame.getDeck();
+		myGame = false;
 	}
 
 	/**
@@ -699,10 +701,16 @@ public class Game extends AbstractModel {
 
 	/**
 	 * returns the name of the game
+	 * With an owner tag if the current user (client side) 
+	 * is the owner
 	 */
 	@Override
 	public String toString() {
-		return name;
+		String returnString = name;
+		if (myGame){
+			returnString = returnString + " (Owner)";
+		}
+		return returnString;
 	}
 
 	/**
@@ -781,6 +789,24 @@ public class Game extends AbstractModel {
 	 */
 	public void setModifiedVersion(int modifiedVersion) {
 		this.modifiedVersion = modifiedVersion;
+	}
+
+	/**
+	 * @return myGame - A boolean that returns 
+	 * if the game is the owner's 
+	 * (Does not automatically update. Must be set 
+	 * by the setMyGame function.
+	 * Default: false)
+	 */
+	public boolean isMyGame() {
+		return myGame;
+	}
+
+	/**
+	 * @param myGame - set the game to be the current users or not.
+	 */
+	public void setMyGame(boolean myGame) {
+		this.myGame = myGame;
 	}
 
 }
