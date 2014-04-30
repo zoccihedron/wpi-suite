@@ -313,6 +313,9 @@ public class DeckControlsPanel extends JPanel {
 	public void setActionListeners(Deck newDeck) {
 		deck = newDeck;
 
+		helpText.setVisible(false);
+		helpTitle.setVisible(false);
+		
 		deckManager.setSaveText("");
 		ConfigManager.getInstance();
 		if (deck.getDeckCreator().equals(

@@ -30,7 +30,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.Overview
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
@@ -180,7 +179,7 @@ implements TreeSelectionListener {
 		tree.setToggleClickCount(0);
 
 		//set to custom cell renderer so that icons make sense
-		tree.setCellRenderer(new CustomTreeCellRenderer());
+		tree.setCellRenderer(new GameTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
 
 		tree.setDragEnabled(true);
