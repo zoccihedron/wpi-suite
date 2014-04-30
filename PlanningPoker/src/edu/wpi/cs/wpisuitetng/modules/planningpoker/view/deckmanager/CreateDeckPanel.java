@@ -74,6 +74,7 @@ public class CreateDeckPanel extends JPanel{
 		constraints.anchor = GridBagConstraints.EAST;
 		this.add(btnSubmit, constraints);
 		btnSubmit.setEnabled(false);
+		btnSubmit.setToolTipText("Please type in the name for your new deck.");
 
 		try {
 		    Image img = ImageIO.read(getClass().getResource("addDeck.png"));
@@ -93,9 +94,11 @@ public class CreateDeckPanel extends JPanel{
 				if(deckName.getText().trim().equals("") ||
 						deckName.getText().trim().equals(PLACEHOLDER_TEXT)){
 					btnSubmit.setEnabled(false);
+					btnSubmit.setToolTipText("Please type in the name for your new deck.");
 				}
 				else{
 					btnSubmit.setEnabled(true);
+					btnSubmit.setToolTipText("Click here to add your new deck.");
 				}
 			}
 			
@@ -104,9 +107,11 @@ public class CreateDeckPanel extends JPanel{
 				if(deckName.getText().trim().equals("") ||
 						deckName.getText().trim().equals(PLACEHOLDER_TEXT)){
 					btnSubmit.setEnabled(false);
+					btnSubmit.setToolTipText("Please type in the name for your new deck.");
 				}
 				else{
 					btnSubmit.setEnabled(true);
+					btnSubmit.setToolTipText("Click here to add your new deck.");
 				}
 			}
 			

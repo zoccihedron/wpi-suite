@@ -127,6 +127,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.insets = new Insets(2, 2, 0, 0);
 		constraints.anchor = GridBagConstraints.SOUTH;
 		this.add(btnUpdateDeckName, constraints);
+		btnUpdateDeckName.setToolTipText("Click here to change the deck's name.");
 
 		//REMOVE DECK BUTTON
 		btnRemoveDeck = new JButton("Remove Deck");
@@ -136,6 +137,7 @@ public class DeckControlsPanel extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(2, 2, 0, 0);
 		this.add(btnRemoveDeck, constraints);
+		btnRemoveDeck.setToolTipText("Click here to permanently remove the deck.");
 
 		//REMOVE CARD BUTTON
 		btnRemoveCard = new JButton("Remove Card");
@@ -564,6 +566,21 @@ public class DeckControlsPanel extends JPanel {
 
 	public String getFieldDeckNameText(){
 		return fieldDeckName.getText();
+	}
+	
+	private void addRemoveCardToolTip(String string) {
+		if(btnRemoveCard.isEnabled()) {
+			btnRemoveCard.setToolTipText("Click here to remove the selected cards.");
+		}
+		else {
+			btnRemoveCard.setToolTipText("Please select a card to be able to remove it.");
+		}
+		if(btnAddCard.isEnabled()) {
+			btnAddCard.setToolTipText("Click here to add a card of the chosen value.");
+		}
+		else {
+			btnAddCard.setToolTipText("Please insert a value to be able to add a card of that value.");
+		}
 	}
 
 }
