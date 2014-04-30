@@ -77,6 +77,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JTextArea fldDescription;
 	private boolean newReqNameValid = false;
 	private boolean newReqDescValid = false;
+	private boolean creatingNewReq = false;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
@@ -572,6 +573,7 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqButtonsPanel.setEnabled(true);
 		newReqPanel.setVisible(true);
 		newReqPanel.setEnabled(true);
+		creatingNewReq = true;
 	}
 	
 	/**
@@ -595,6 +597,8 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqPanel.setVisible(false);
 		newReqPanel.setEnabled(false);
 		
+		creatingNewReq = false;
+		
 		// empty the newReqPanel
 		fldDescription.setText("");
 		fldName.setText("");
@@ -612,7 +616,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.repaint();
 		
 	}
-	
+
 	/**
 	 * Fills the table with a list of requirements
 	 */
@@ -744,5 +748,14 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public List<Integer> getSelectedRequirementIds() {
 		return getRequirementIdsFromTable(requirementsToAddTable);
+	}
+	
+	/**
+	 * Checks if the panel is currently creating a new requirement.
+	 *
+	 * @return if the user is creating a new requirement.
+	 */
+	public boolean isCreatingNewReq() {
+		return creatingNewReq;
 	}
 }
