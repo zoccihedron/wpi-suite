@@ -421,14 +421,13 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 
 		else if (string.equals("sendFinalEstimate")) {
 			final Estimate oldEst = Estimate.fromJson(content);
-			System.out.println(content);
 			final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
 			final Estimate newEst = game.findEstimate(oldEst.getReqID());
 
 			newEst.setFinalEstimate(oldEst.getFinalEstimate());
 			newEst.setNote(oldEst.getNote());
 			newEst.estimationSent(false);
-			newEst.setSentBefore(true);
+			newEst.setSentBefore(false);
 
 			final List<Estimate> newEstimates = new ArrayList<Estimate>();
 			for (Estimate e : game.getEstimates()) {
@@ -501,7 +500,29 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			} else {
 				returnString = "*This game has been recently voted on. Editing is no longer available";
 			}
+		} else if (string.equals("unselectEstimate")) {
+			final Estimate oldEst = Estimate.fromJson(content);
+			final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
+			final Estimate newEst = game.findEstimate(oldEst.getReqID());
+
+			newEst.estimationSent(false);
+			newEst.setSentBefore(false);
+			newEst.unSelectFinalEstimate();
+
+			final List<Estimate> newEstimates = new ArrayList<Estimate>();
+			for (Estimate e : game.getEstimates()) {
+				Estimate tempEst = e.getCopy();
+				newEstimates.add(tempEst);
+			}
+			game.setEstimates(newEstimates);
+
+			if (!db.save(game, s.getProject())) {
+				throw new WPISuiteException("Save was not successful");
+			}
+			returnString = "true";
+			
 		}
+		
 		return returnString;
 	}
 
