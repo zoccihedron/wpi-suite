@@ -110,6 +110,8 @@ public class EstimationPane extends JPanel {
 		
 		fldReqName.setEditable(false);
 		fldReqName.setBackground(Color.WHITE);
+		fldReqName.setMargin(new Insets(3, 3, 3, 3));
+		
 		fldReqDescription.setBorder(new JTextField().getBorder());
 		fldReqDescription.setEditable(false);
 		fldReqDescription.setLineWrap(true);
@@ -169,6 +171,7 @@ public class EstimationPane extends JPanel {
 
 		// NAME LABEL
 		lblReqName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 5));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
@@ -176,7 +179,6 @@ public class EstimationPane extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		add(lblReqName, constraints);
-		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 10));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -262,7 +264,7 @@ public class EstimationPane extends JPanel {
 		constraints.fill = GridBagConstraints.NONE;
 		voteButton.setAlignmentX(LEFT_ALIGNMENT);
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;

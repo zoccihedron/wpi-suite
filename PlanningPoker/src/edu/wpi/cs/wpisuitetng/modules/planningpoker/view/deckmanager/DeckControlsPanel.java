@@ -222,19 +222,19 @@ public class DeckControlsPanel extends JPanel {
 						else{
 
 							btnAddCard.setEnabled(false);
-							invalidCardValueMessage.setVisible(true);
+							invalidCardValueMessage.setVisible(btnAddCard.isVisible());
 							addRemoveCardToolTip();
 						}
 					}
 
 					catch (Exception exception) {
 						btnAddCard.setEnabled(false);
-						invalidCardValueMessage.setVisible(true);
+						invalidCardValueMessage.setVisible(btnAddCard.isVisible());
 						addRemoveCardToolTip();
 					}
 				} else {
 					btnAddCard.setEnabled(false);
-					invalidCardValueMessage.setVisible(true);
+					invalidCardValueMessage.setVisible(btnAddCard.isVisible());
 					addRemoveCardToolTip();
 				}
 			}
@@ -253,19 +253,19 @@ public class DeckControlsPanel extends JPanel {
 						else{
 
 							btnAddCard.setEnabled(false);
-							invalidCardValueMessage.setVisible(true);
+							invalidCardValueMessage.setVisible(btnAddCard.isVisible());
 							addRemoveCardToolTip();
 						}
 					}
 
 					catch (NumberFormatException exception) {
 						btnAddCard.setEnabled(false);
-						invalidCardValueMessage.setVisible(true);
+						invalidCardValueMessage.setVisible(btnAddCard.isVisible());
 						addRemoveCardToolTip();
 					}
 				} else {
 					btnAddCard.setEnabled(false);
-					invalidCardValueMessage.setVisible(true);
+					invalidCardValueMessage.setVisible(btnAddCard.isVisible());
 					addRemoveCardToolTip();
 				}
 			}
@@ -318,9 +318,21 @@ public class DeckControlsPanel extends JPanel {
 				}
 			}
 		};
+			
+		final ActionListener renameDeckListener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if(fieldDeckName.getText().equals("")){
+					btnUpdateDeckName.setEnabled(false);
+				}else{
+					btnUpdateDeckName.setEnabled(true);
+				}
+			}
+		};
 		
 		final Timer removeButtonTimer = new Timer(250, changeRemoveButtonText);
-
+		final Timer renameDeckTimer = new Timer(250, renameDeckListener);
+		renameDeckTimer.start();
 		removeButtonTimer.start();
 		
 		final ActionListener removeCardListener = new ActionListener() {
@@ -361,6 +373,9 @@ public class DeckControlsPanel extends JPanel {
 	 *            the deck that is being edited
 	 */
 	public void setActionListeners(Deck newDeck) {
+		
+		invalidCardValueMessage.setVisible(false);
+		
 		deck = newDeck;
 
 		helpText.setVisible(false);
@@ -441,7 +456,8 @@ public class DeckControlsPanel extends JPanel {
 			btnUpdateDeckName.setVisible(false);
 			fieldDeckName.setVisible(false);
 			deckManager.setSaveVisible(false);
-
+			invalidCardValueMessage.setVisible(false);
+			
 			deckRemovedMessage.setVisible(true);
 			deckRemovedMessage.setForeground(Color.BLUE);
 			deckRemovedMessage
@@ -465,6 +481,7 @@ public class DeckControlsPanel extends JPanel {
 		btnUpdateDeckName.setVisible(false);
 		fieldDeckName.setVisible(false);
 		deckManager.setSaveVisible(false);
+		invalidCardValueMessage.setVisible(false);
 	}
 
 	/**
