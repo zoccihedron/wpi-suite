@@ -16,6 +16,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -362,7 +363,10 @@ public class SelectRequirementsPanel extends JPanel {
 		fldName = new JTextField();
 		final JLabel lblDescription = new JLabel("Description: *");
 		fldDescription = new JTextArea();
+		
+		final JScrollPane descriptionScrollPane = new JScrollPane(fldDescription);
 		fldDescription.setLineWrap(true);
+		fldDescription.setEditable(true);
 		
 		newReqPanel.setLayout(new GridBagLayout());
 		
@@ -398,7 +402,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
-		newReqPanel.add(fldDescription, constraints);
+		newReqPanel.add(descriptionScrollPane, constraints);
 		
 		// Put in scroll pane for overflow
 		constraints.fill = GridBagConstraints.BOTH;
