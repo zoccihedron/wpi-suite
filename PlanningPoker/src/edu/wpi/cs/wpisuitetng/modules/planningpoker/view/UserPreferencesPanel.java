@@ -110,7 +110,7 @@ public class UserPreferencesPanel extends JPanel {
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titlePanel.add(lblTitle);
 		
-		lblAllow = new JLabel("Allow:");
+		lblAllow = new JLabel("Receive Notifications Via:");
 		lblAllow.setVerticalAlignment(SwingConstants.BOTTOM);
 		final GridBagConstraints gbc_lblAllow = new GridBagConstraints();
 		gbc_lblAllow.insets = new Insets(0, 0, 5, 5);
