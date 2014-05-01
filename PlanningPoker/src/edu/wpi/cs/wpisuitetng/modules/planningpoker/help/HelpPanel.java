@@ -116,7 +116,7 @@ implements TreeSelectionListener {
 		category.add(topic);
 		
 		topic = new DefaultMutableTreeNode(new HelpTopicObject
-				("Choosing and Submitting Final Estimates",
+				("Submitting Final Estimates",
 						"finalEstimatesHelp.txt"));
 		category.add(topic);
 		

@@ -14,6 +14,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.Component;
 
+import javax.swing.JFrame;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.help.HelpPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
@@ -36,6 +38,7 @@ public class MainViewTabController {
 
 	private static MainViewTabController instance = null;
 	private MainView mainView = null;
+	private JFrame helpWindow = null;
 
 
 	private MainViewTabController() {
@@ -134,7 +137,7 @@ public class MainViewTabController {
 	 * there are no other help tabs open.
 	 */
 	public void helpTab() {
-		for(int i = 0; i < mainView.getTabCount(); i++){
+		/*for(int i = 0; i < mainView.getTabCount(); i++){
 			if(mainView.getComponentAt(i).getClass() == HelpPanel.class){
 				mainView.setSelectedComponent(mainView.getComponentAt(i));
 				return;
@@ -145,6 +148,19 @@ public class MainViewTabController {
 		mainView.invalidate();
 		mainView.repaint();
 		mainView.setSelectedComponent(helpPanel);
+		*/
+		if(helpWindow == null){
+			helpWindow = new JFrame("Planning Poker Help");
+			helpWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			helpWindow.setContentPane(new HelpPanel());
+			helpWindow.pack();   
+			helpWindow.setLocationByPlatform(true);
+			helpWindow.setVisible(true);
+		}
+		else{
+			helpWindow.setExtendedState(JFrame.NORMAL);
+			helpWindow.setVisible(true);
+		}
 	}
 
 	/**
