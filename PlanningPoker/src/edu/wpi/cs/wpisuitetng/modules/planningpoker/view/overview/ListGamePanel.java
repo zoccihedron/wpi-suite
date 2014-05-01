@@ -17,6 +17,7 @@ import java.awt.event.ComponentListener;
 import java.util.List;
 
 import javax.swing.DropMode;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -50,6 +51,7 @@ implements TreeSelectionListener {
 	private List<Game> games;
 	private boolean hasRefreshed = false;
 	private Object selectedObject;
+	private boolean fakeSelected = false;
 
 
 	/**
@@ -99,13 +101,14 @@ implements TreeSelectionListener {
 		if(!node.isLeaf() || node.isRoot()){
 			refresh();
 		}
-		if(node.isLeaf() && !node.isRoot()){
+		if(node.isLeaf() && !node.isRoot()  && !fakeSelected){
 			final Object nodeInfo = node.getUserObject();
 			if(nodeInfo instanceof Game) {
 				final Game gme = (Game) nodeInfo;
 				OverviewPanelController.getInstance().updateGameSummary(gme);
 			}
 		}
+		fakeSelected = false;
 	}
 
 
@@ -224,7 +227,13 @@ implements TreeSelectionListener {
 		if(node != null){
 			TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(node);
 			TreePath tpath = new TreePath(nodes);
+			fakeSelected = true;
+			tree.isFocusOwner();
 			tree.setSelectionPath(tpath);
+			if(tree.isFocusOwner()){
+				tree.requestFocus();
+			}
+			tree.getCellRenderer().getTreeCellRendererComponent(tree, node, true, false, false, 0, true).requestFocus();
 		}
 
 		this.setViewportView(tree); //make panel display the tree
