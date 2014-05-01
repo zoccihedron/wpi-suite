@@ -79,6 +79,26 @@ public class MainViewTabController {
 	 * @param isInProgress check if game has been started
 	 */
 	public void createGameTab(Game game, boolean isInProgress) {
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					return;
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+		}
 		final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
 		mainView.insertTab(game.getName(), newGamePanel, mainView.getTabCount());
 		mainView.invalidate();
@@ -92,6 +112,27 @@ public class MainViewTabController {
 	 */
 	public void playGameTab(Game game)
 	{
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					return;
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			
+		}
 		final PlayGamePanel playGamePanel = new PlayGamePanel(game);
 		mainView.insertTab(game.getName(), playGamePanel, mainView.getTabCount());
 		mainView.invalidate();
@@ -122,6 +163,27 @@ public class MainViewTabController {
 	 * @param game the game to be viewed
 	 */
 	public void viewResultsTab(Game game) {
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					return;
+				}
+			}
+			
+		}
 		final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
 		mainView.insertTab(game.getName(), resultsPanel, mainView.getTabCount());
 		mainView.invalidate();

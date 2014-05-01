@@ -63,7 +63,7 @@ public class NewGamePanel extends JSplitPane {
 	 */
 	public NewGamePanel() {
 		super(JSplitPane.VERTICAL_SPLIT);
-		
+		game=null;
 		lblMessage = new JLabel("*Error");
 		isInProgress = false;
 		
@@ -306,5 +306,11 @@ public class NewGamePanel extends JSplitPane {
 		}
 		return result;
 	}
-	
+	/**
+	 *getter for game
+	 * @return game with the tab
+	 */
+	public Game getGame(){
+		return game;
+	}
 }
