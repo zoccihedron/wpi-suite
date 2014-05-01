@@ -228,12 +228,7 @@ implements TreeSelectionListener {
 			TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(node);
 			TreePath tpath = new TreePath(nodes);
 			fakeSelected = true;
-			tree.isFocusOwner();
 			tree.setSelectionPath(tpath);
-			if(tree.isFocusOwner()){
-				tree.requestFocus();
-			}
-			tree.getCellRenderer().getTreeCellRendererComponent(tree, node, true, false, false, 0, true).requestFocus();
 		}
 
 		this.setViewportView(tree); //make panel display the tree
