@@ -32,6 +32,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -81,7 +82,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private final JLabel lblDescription;
 	private Timer verificationChecker;
 	private List<Deck> decks;
-	
+
 	//Saved fields for checking page editing
 	private String defaultName;
 	private String defaultDescription;
@@ -118,7 +119,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		// creates a date picker and sets its position
 		final UtilDateModel model = new UtilDateModel();
-		
+
 		final Calendar tempCalendar = new GregorianCalendar();
 		tempCalendar.setTime(now);
 		model.setDate(tempCalendar.get(Calendar.YEAR),
@@ -179,10 +180,10 @@ public class CreateGameInfoPanel extends JPanel {
 		// creates deadline checkbox
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
-			new ChangeDeadlineVisibilityController(this));
+				new ChangeDeadlineVisibilityController(this));
 		chckbxDeadline.setSelected(true);
 		lblDescription = new JLabel("Description:");
-		
+
 		// adds constraints
 		panelSetup();
 	}
@@ -216,15 +217,15 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 		description.setText(editingGame.getDescription());
 		description.setBorder(jtextFieldBorder);
-		
-	
+
+
 		// creates deck selector and sets it to default deck
 		List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
 		defaultDeck.setId(-2);
-		decks = new ArrayList<Deck>();		
+		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
 		for(Deck d:allDecks){
 			if(d.isUsable()){
@@ -243,7 +244,7 @@ public class CreateGameInfoPanel extends JPanel {
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
-			new ChangeDeadlineVisibilityController(this));
+				new ChangeDeadlineVisibilityController(this));
 		lblDeadline = new JLabel("Deadline:");
 
 		// creates a date picker and sets its position
@@ -253,7 +254,7 @@ public class CreateGameInfoPanel extends JPanel {
 		model.setDate(tempCalendar.get(Calendar.YEAR),
 				tempCalendar.get(Calendar.MONTH),
 				tempCalendar.get(Calendar.DATE));
-		
+
 		model.setSelected(true);
 		final JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
@@ -288,7 +289,7 @@ public class CreateGameInfoPanel extends JPanel {
 		ForceEnableOrDisableDeadline(editingGame.isHasDeadline());
 
 		chckbxDeadline.addActionListener(
-			new ChangeDeadlineVisibilityController(this));
+				new ChangeDeadlineVisibilityController(this));
 		panelSetup();
 	}
 
@@ -492,7 +493,7 @@ public class CreateGameInfoPanel extends JPanel {
 		initDefaults();
 		checkFields();
 	}
-	
+
 	/**
 	 * Calls the function for changing the buttons' enabled status on the parent.
 	 * Also stops if false and starts if true the timer from changing the status of the buttons.
@@ -565,7 +566,7 @@ public class CreateGameInfoPanel extends JPanel {
 			parentPanel.displayErrorBorders(true);
 			parentPanel.toolTipChanger("Please add at least one requirement.", "Please add at least one requirement.");
 		}
-		
+
 		datePicker.setBorder(null);
 		if (chckbxDeadline.isSelected()) {
 			if (datePicker.getModel().getValue() == null) {
@@ -578,17 +579,17 @@ public class CreateGameInfoPanel extends JPanel {
 				result = false;
 			}
 		}
-		
+
 		gameNameText.setBorder(null);
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*A name is required.</html>");
 			gameNameText.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 			result = false;
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Sets the defaults for the fields at game start up.
 	 */
@@ -609,7 +610,7 @@ public class CreateGameInfoPanel extends JPanel {
 		defaultReqs = parentPanel.getGameRequirements();
 		defaultDeckObject = (Deck) deckBox.getSelectedItem();
 	}
-	
+
 	/**
 	 * Checks to see if the page has changed
 	 * @return true if the page has changed
@@ -623,7 +624,7 @@ public class CreateGameInfoPanel extends JPanel {
 			if(!(datePicker.getModel().getValue() == null)){
 				tempDate = getDeadline();
 			}
-			
+
 			if (defaultDate != null){
 				result &= defaultDate.equals(tempDate);
 			}
@@ -701,9 +702,26 @@ public class CreateGameInfoPanel extends JPanel {
 
 	/**
 	 * Sends the signal to Mainview to close the NewgameTab
+	 * 
+	 * @param checkForNewReq whether or not to check if a new req is being made
 	 */
-	public void closeNewGameTab() {
-		mainViewTabController.closeTab(parentPanel);
+	public void closeNewGameTab(boolean checkForNewReq) {
+		boolean readyToClose = true;
+		if(!isPageEdited() && checkForNewReq) {
+			if(getReqPanel().isCreatingNewReq()){
+				final Object options[] = {
+						"Yes", "No"
+				};
+				final int i = JOptionPane.showOptionDialog(getParent().getParent(), 
+						"Your new requirement will not be saved, would you like to exit anyways?",
+						"Exit?",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null, options, options[1]);
+				readyToClose = (i == 0);
+			}
+		}
+		if(readyToClose) mainViewTabController.closeTab(parentPanel);
 	}
 
 	/**
@@ -783,7 +801,7 @@ public class CreateGameInfoPanel extends JPanel {
 		final int minuteInt = Integer.parseInt(minuteString);
 		return minuteInt;
 	}
-	
+
 	/**
 	 * Returns the SelectRequirementsPanel associated with the NewGamePanel
 	 *

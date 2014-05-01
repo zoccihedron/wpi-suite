@@ -98,7 +98,8 @@ public class AddGameController implements ActionListener {
 				// Send a request to the core to save this game
 				final Request request = Network.getInstance().makeRequest(
 						"planningpoker/game", HttpMethod.PUT);
-				request.setBody(currentGame.toJSON()); // put the new message in the body of the request
+				// put the new message in the body of the request
+				request.setBody(currentGame.toJSON()); 
 				// add an observer to process the response
 				request.addObserver(new AddGameRequestObserver(this));
 				request.send(); // send the request
@@ -118,12 +119,14 @@ public class AddGameController implements ActionListener {
 
 	/**
 	 * Shows the used that the game has been saved
+	 * 
+	 * @param game the game to update the summary with
 	 */
 	public void addGameToView(Game game) {
 		view.reportMessage("<html>Game Saved.</html>");
 		OverviewPanelController.getInstance().refreshListGames();
 		OverviewPanelController.getInstance().updateGameSummary(game);
-		view.closeNewGameTab();
+		view.closeNewGameTab(false);
 	}
 
 	/**

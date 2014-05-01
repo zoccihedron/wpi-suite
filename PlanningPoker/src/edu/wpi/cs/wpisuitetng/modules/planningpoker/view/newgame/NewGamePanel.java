@@ -223,7 +223,8 @@ public class NewGamePanel extends JSplitPane {
 	
 	/**
 	 * Changes the tooltips on buttons.
-	 * @param check
+	 * @param startToolTip tool tip for the start button
+	 * @param saveToolTip tool tip for the save button
 	 */
 	public void toolTipChanger(String startToolTip, String saveToolTip) {
 		btnStart.setToolTipText(startToolTip);
