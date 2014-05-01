@@ -404,7 +404,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
-		constraints.weighty = 0.5;
+		constraints.weighty = 0.42;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.add(newReqPanel, constraints);
