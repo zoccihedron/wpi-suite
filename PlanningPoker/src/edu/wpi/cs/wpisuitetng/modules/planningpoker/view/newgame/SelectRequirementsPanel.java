@@ -35,6 +35,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -373,6 +374,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
+		lblName.setBorder(new EmptyBorder(0, 0, 0, 5));
 		newReqPanel.add(lblName, constraints);
 		
 		constraints.gridx = 1;
@@ -382,23 +384,25 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		newReqPanel.add(fldName, constraints);
+	
 		
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.NONE;
 		newReqPanel.add(lblDescription, constraints);
 		
-
+		JScrollPane scrollDescription = new JScrollPane(fldDescription);
+		fldDescription.setCaretPosition(0);
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 2;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
-		newReqPanel.add(fldDescription, constraints);
+		newReqPanel.add(scrollDescription, constraints);
 		
 		// Put in scroll pane for overflow
 		constraints.fill = GridBagConstraints.BOTH;
