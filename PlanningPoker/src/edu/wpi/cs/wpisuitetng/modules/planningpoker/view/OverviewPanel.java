@@ -22,6 +22,7 @@ import java.util.List;
 import javax.swing.JSplitPane;
 import javax.swing.Timer;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
@@ -83,13 +84,18 @@ public class OverviewPanel extends JSplitPane {
 							for(Game game: games)
 								updatedGames.add(game);
 							List<Game> listPanelGames = listGamePanel.getGames();
+							
+							String user = ConfigManager.getConfig().getUserName();
+							
 							if(updatedGames.size() == listPanelGames.size()){
 								boolean hasChange = false;
 								for(Game game: updatedGames){
 									if(hasChange) break;
 									for(Game g: listPanelGames){
 										if(g.getId() == game.getId())
-											if(!g.equals(game)){
+											if(!g.isSameModifiedVersion(game.getModifiedVersion())
+													|| !g.getStatus().equals(game.getStatus())
+													|| g.isChanged(game, user)){
 												System.out.println("Game not currently in panel");
 												listGamePanel.refresh();
 												hasChange = true;

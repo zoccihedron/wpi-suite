@@ -98,7 +98,7 @@ implements TreeSelectionListener {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)
 				tree.getLastSelectedPathComponent();
 
-		if(!node.isLeaf() || node.isRoot()){
+		if(node.isRoot()){
 			refresh();
 		}
 		if(node.isLeaf() && !node.isRoot()  && !fakeSelected){
