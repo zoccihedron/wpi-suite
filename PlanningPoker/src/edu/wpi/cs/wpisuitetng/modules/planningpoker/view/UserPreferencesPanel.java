@@ -74,7 +74,7 @@ public class UserPreferencesPanel extends JPanel {
 	private Pattern pattern;
 	private Matcher matcher;
 	private final String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+			+ "[A-Za-z0-9-]+([_A-Za-z0-9-])*+(\\.[_A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private boolean emailVerified = true;
 	private final UserPreferencesPanel userPreferencesPane = this;
 	private String initEmail = "";
