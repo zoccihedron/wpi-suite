@@ -21,6 +21,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -44,7 +45,9 @@ import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.ChangeDeadlineVisibilityController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 /**
@@ -71,12 +74,13 @@ public class CreateGameInfoPanel extends JPanel {
 	private final JRadioButton rdbtnPm;
 	private final ButtonGroup AMPMSelection;
 	private final JLabel lblDeck;
-	private final JComboBox deck;
+	private final JComboBox deckBox;
 	private final JCheckBox chckbxDeadline;
 	private Game editingGame;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
 	private Timer verificationChecker;
+	private List<Deck> decks;
 	
 	//Saved fields for checking page editing
 	private String defaultName;
@@ -84,7 +88,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private Date defaultDate;
 	private boolean defaultDeadlineCheck;
 	private List<Integer> defaultReqs;
-	private String defaultDeck;
+	private Deck defaultDeckObject;
 
 	/**
 	 * This constructor is to be used when starting from a new game
@@ -152,10 +156,25 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 
 		// creates deck selector and sets it to default deck
+		List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
+		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		textEntry.setId(-1);
+		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
+		defaultDeck.setId(-2);
+		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
 
-		final String[] decks = { "default", "text entry"};
-		deck = new JComboBox(decks);
+		for(Deck d:allDecks){
+			if(d.isUsable()){
+				decks.add(d);
+			}
+		}
+		decks.add(textEntry);
+		decks.add(defaultDeck);
+		deckBox = new JComboBox(decks.toArray());
+		deckBox.setSelectedItem(defaultDeck);
+
+		deckBox.setToolTipText("Please select a deck to be used in the game.");
 
 		// creates deadline checkbox
 		chckbxDeadline = new JCheckBox("Deadline?");
@@ -197,11 +216,30 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 		description.setText(editingGame.getDescription());
 		description.setBorder(jtextFieldBorder);
-
+		
+	
+		// creates deck selector and sets it to default deck
+		List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
+		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		textEntry.setId(-1);
+		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
+		defaultDeck.setId(-2);
+		decks = new ArrayList<Deck>();		
 		lblDeck = new JLabel("Deck:");
-		final String[] decks = { "default", "text entry"};
-		deck = new JComboBox(decks);
-		deck.setSelectedItem(editingGame.getDeck());
+		for(Deck d:allDecks){
+			if(d.isUsable()){
+				decks.add(d);
+			}
+		}
+		decks.add(textEntry);
+		decks.add(defaultDeck);
+		deckBox = new JComboBox(decks.toArray());
+		for(Deck d: decks){
+			if(passedInGame.getDeck() == d.getId())
+			{
+				deckBox.setSelectedItem(d);
+			}
+		}
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
@@ -345,14 +383,14 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblDeck, constraints);
 
 		// DECK SELECTOR
-		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deckBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 2;
 		constraints.gridy = 9;
-		add(deck, constraints);
+		add(deckBox, constraints);
 
 		// DEADLINE CHECKBOX
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -478,7 +516,6 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return the string corresponding to the minuteSelector object
 	 */
 	private static String getMinuteStringFromCalendar(int minute) {
-		System.out.println("Minute:" + minute);
 		String result = "00";
 		if (minute < 15) {
 			result = "00";
@@ -500,9 +537,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return the string corresponding to the hourSelector object
 	 */
 	private static String getHourStringFromCalendar(int hour) {
-		System.out.println("Hour:" + hour);
 		hour %= 12;
-		System.out.println("Hour % 12:" + hour);
 		String result = "";
 		if (hour < 10) {
 			result = "0" + String.valueOf(hour);
@@ -523,20 +558,22 @@ public class CreateGameInfoPanel extends JPanel {
 		reportError(" ");
 		boolean result = true;
 		parentPanel.displayErrorBorders(false);
+		parentPanel.toolTipChanger("Click here to start the game.", "Click here to save the game.");
 		if (parentPanel.getGameRequirements().size() == 0 && result) {
 			reportError("<html>*Pick at least one requirement.</html>");
 			result = false;
 			parentPanel.displayErrorBorders(true);
+			parentPanel.toolTipChanger("Please add at least one requirement.", "Please add at least one requirement.");
 		}
 		
 		datePicker.setBorder(null);
 		if (chckbxDeadline.isSelected()) {
 			if (datePicker.getModel().getValue() == null) {
-				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 				reportError("<html>*Please choose a date or turn off the deadline.</html>");
 				result = false;
 			} else if (getDeadline().compareTo(new Date()) <= 0) {
-				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 				reportError("<html>*The deadline must not be in the past.</html>");
 				result = false;
 			}
@@ -545,7 +582,7 @@ public class CreateGameInfoPanel extends JPanel {
 		gameNameText.setBorder(null);
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*A name is required.</html>");
-			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+			gameNameText.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 			result = false;
 		}
 		
@@ -570,7 +607,7 @@ public class CreateGameInfoPanel extends JPanel {
 			defaultDate = null;
 		}
 		defaultReqs = parentPanel.getGameRequirements();
-		defaultDeck = (String) deck.getSelectedItem();
+		defaultDeckObject = (Deck) deckBox.getSelectedItem();
 	}
 	
 	/**
@@ -592,7 +629,7 @@ public class CreateGameInfoPanel extends JPanel {
 			}
 		}
 
-		result &= defaultDeck.equals(deck.getSelectedItem());
+		result &= defaultDeckObject.equals(deckBox.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
 		return !result;
 	}
@@ -680,12 +717,11 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date(), "default");
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), -2);
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
-		newGame.setDeck((String) deck.getSelectedItem());
-
+		newGame.setDeck(((Deck)deckBox.getSelectedItem()).getId());
 		if (chckbxDeadline.isSelected()) {
 			newGame.setHasDeadline(true);
 			newGame.setEnd(getDeadline());

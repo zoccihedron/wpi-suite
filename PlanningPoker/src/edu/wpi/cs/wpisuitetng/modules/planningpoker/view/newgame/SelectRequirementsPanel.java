@@ -137,10 +137,12 @@ public class SelectRequirementsPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(existingRequirementsTable.getSelectedRow() == - 1){
 					btnAddSelectedReq.setEnabled(DISABLED);
+					btnAddSelectedReq.setToolTipText("Please select at least one of the above requirements to be added.");
 				}
 				else {
 					requirementsToAddTable.clearSelection();
 					btnAddSelectedReq.setEnabled(ENABLED);
+					btnAddSelectedReq.setToolTipText("Click here to add the selected requirement(s).");
 				}
 			}
 
@@ -180,6 +182,7 @@ public class SelectRequirementsPanel extends JPanel {
 		// Add requirement button
 		btnAddSelectedReq = new JButton("Add");
 		btnAddSelectedReq.setEnabled(DISABLED);
+		btnAddSelectedReq.setToolTipText("Please select at least one of the above requirements to be added.");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -189,7 +192,8 @@ public class SelectRequirementsPanel extends JPanel {
 		
 		// Add requirement button
 		btnNewRequirement = new JButton("New Requirement");
-		btnAddSelectedReq.setEnabled(true);
+		btnNewRequirement.setEnabled(ENABLED);
+		btnNewRequirement.setToolTipText("Click here to create a new requirement.");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -200,6 +204,7 @@ public class SelectRequirementsPanel extends JPanel {
 		// Remove requirement button
 		final JButton btnRemoveSelectedReq = new JButton("Remove");
 		btnRemoveSelectedReq.setEnabled(DISABLED);
+		btnRemoveSelectedReq.setToolTipText("Please select at least one of the below requirements to be removed.");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -213,6 +218,7 @@ public class SelectRequirementsPanel extends JPanel {
 				moveRequirementsBetweenTables(existingRequirementsTable,
 						requirementsToAddTable);
 				btnAddSelectedReq.setEnabled(DISABLED);
+				btnAddSelectedReq.setToolTipText("Please select at least one of the above requirements to be added.");
 			}
 		});
 		
@@ -237,6 +243,7 @@ public class SelectRequirementsPanel extends JPanel {
 				moveRequirementsBetweenTables(requirementsToAddTable,
 						existingRequirementsTable);
 				btnRemoveSelectedReq.setEnabled(DISABLED);
+				btnRemoveSelectedReq.setToolTipText("Please select at least one of the below requirements to be removed.");
 			}
 
 		});
@@ -285,10 +292,12 @@ public class SelectRequirementsPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(requirementsToAddTable.getSelectedRow() == - 1){
 					btnRemoveSelectedReq.setEnabled(DISABLED);
+					btnRemoveSelectedReq.setToolTipText("Please select at least one of the below requirements to be removed.");
 				}
 				else {
 					existingRequirementsTable.clearSelection();
 					btnRemoveSelectedReq.setEnabled(ENABLED);
+					btnRemoveSelectedReq.setToolTipText("Click here to remove the selected requirement(s).");
 				}
 			}
 
@@ -401,7 +410,10 @@ public class SelectRequirementsPanel extends JPanel {
 		this.add(newReqPanel, constraints);
 		
 		btnCreateAndAdd = new JButton("Create and Add");
+		btnCreateAndAdd.setToolTipText("Click here to create the new requirement.");
 		btnCancelNewReq = new JButton("Cancel New Requirement");
+		btnCancelNewReq.setToolTipText("Click here to go back to the select requirements screen.");
+		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("create_and_add.png"));
 		    btnCreateAndAdd.setIcon(new ImageIcon(img));

@@ -94,11 +94,13 @@ public class JPlaceholderTextField extends JTextField {
 	public void clearText() {
 		setText(placeholderText);
 		this.setForeground(Color.gray);
+		this.setCaretPosition(0);
 	}
 	
 	@Override
 	public void setText(String newText) {
 		super.setText(newText);
 		this.setForeground(Color.black);
+		this.setCaretPosition(0);
 	}
 }

@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -40,8 +41,9 @@ public class Game extends AbstractModel {
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
-	private String deck = "";
-	
+	private int deck;
+	private boolean myGame = false;
+
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
@@ -77,13 +79,13 @@ public class Game extends AbstractModel {
 	 * 			  name of the deck
 	 * 
 	 */
-	public Game(String name, Date startTime, Date endTime, String deckName) {
+	public Game(String name, Date startTime, Date endTime, int deckId) {
 		// TODO: whether a session could be add to the parameter of game's
 		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
-		this.setDeck(deckName);
+		this.setDeck(deckId);
 	}
 
 	/**
@@ -199,6 +201,8 @@ public class Game extends AbstractModel {
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
 		hasDeadline = updatedGame.isHasDeadline();
+		deck = updatedGame.getDeck();
+		myGame = false;
 	}
 
 	/**
@@ -221,12 +225,17 @@ public class Game extends AbstractModel {
 		} else {
 
 			if (isParticipant(user)) {
-				for (String u : participants) {
+				
+				Iterator<String> iterator = participants.iterator();
+				
+				while(iterator.hasNext()) {
+					String u = iterator.next();
 					if (u.equals(user)) {
 						newCreator = u;
-						participants.remove(u);
+						iterator.remove();
 					}
 				}
+				
 			} else {
 				newCreator = user;
 			}
@@ -261,7 +270,7 @@ public class Game extends AbstractModel {
 	public boolean isParticipant(String user) {
 		boolean result = false;
 
-		if (participants == null) {
+		if (participants.size() == 0) {
 			result = false;
 		} else {
 			for (String temp : participants) {
@@ -395,7 +404,7 @@ public class Game extends AbstractModel {
 	}
 	
 	/**
-	 * Returns the number of total votes needed for the game to be done.
+	 * Returns the number of total votes needed for the user to be done.
 	 * @return the number of total votes needed
 	 */
 	public int getUserMaxVotes(){
@@ -703,10 +712,16 @@ public class Game extends AbstractModel {
 
 	/**
 	 * returns the name of the game
+	 * With an owner tag if the current user (client side) 
+	 * is the owner
 	 */
 	@Override
 	public String toString() {
-		return name;
+		String returnString = name;
+		if (myGame){
+			returnString = returnString + " (Owner)";
+		}
+		return returnString;
 	}
 
 	/**
@@ -747,14 +762,14 @@ public class Game extends AbstractModel {
 	/**
 	 * @return the deck
 	 */
-	public String getDeck() {
+	public int getDeck() {
 		return deck;
 	}
 
 	/**
 	 * @param deck the deck to set
 	 */
-	public void setDeck(String deck) {
+	public void setDeck(int deck) {
 		this.deck = deck;
 	}
 
@@ -785,6 +800,24 @@ public class Game extends AbstractModel {
 	 */
 	public void setModifiedVersion(int modifiedVersion) {
 		this.modifiedVersion = modifiedVersion;
+	}
+
+	/**
+	 * @return myGame - A boolean that returns 
+	 * if the game is the owner's 
+	 * (Does not automatically update. Must be set 
+	 * by the setMyGame function.
+	 * Default: false)
+	 */
+	public boolean isMyGame() {
+		return myGame;
+	}
+
+	/**
+	 * @param myGame - set the game to be the current users or not.
+	 */
+	public void setMyGame(boolean myGame) {
+		this.myGame = myGame;
 	}
 
 }

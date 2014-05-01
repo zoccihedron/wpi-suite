@@ -119,9 +119,7 @@ public class RequirementManagerFacade {
 	public void sendEstimates(List<Estimate> estimates, final EstimateTreePanel view){
 
 		for(Estimate estimate : estimates){
-			Requirement req = requirements.get(estimate.getReqID());
-
-			
+			Requirement req = getRequirementFromID(requirements, estimate.getReqID());
 						
 			final Estimate newEstimate = new Estimate(estimate.getReqID(), estimate.getGameID());
 			newEstimate.estimationSent(true);
@@ -134,7 +132,6 @@ public class RequirementManagerFacade {
 			request.addObserver(new RequestObserver(){
 				@Override
 				public void responseSuccess(IRequest iReq) {
-					System.out.println("Mark this estimate as sent-----------");
 				}
 
 				@Override
@@ -158,7 +155,6 @@ public class RequirementManagerFacade {
 					@Override
 					public void responseSuccess(IRequest iReq) {
 						GetRequirementsController.getInstance().retrieveRequirements();
-						System.out.println("Selected estimates sent!");
 					}
 
 				@Override
@@ -182,6 +178,8 @@ public class RequirementManagerFacade {
 	}
 	
 	
+
+
 	/**
 	 * Send the final estimate value of a single requirement to 
 	 * the requirement panel
@@ -262,6 +260,16 @@ public class RequirementManagerFacade {
 
 		});
 		request.send(); 
+	}
+	
+	
+	
+	private Requirement getRequirementFromID(List<Requirement> requirements, int id) {
+		for(Requirement r: requirements){
+			if(r.getId() == id)
+				return r;
+		}
+		return null;
 	}
 
 }

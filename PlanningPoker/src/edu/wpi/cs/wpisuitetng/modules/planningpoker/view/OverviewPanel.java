@@ -62,7 +62,6 @@ public class OverviewPanel extends JSplitPane {
 		OverviewPanelController.getInstance().setListGames(listGamePanel);
 
 		setLeftComponent(listGamePanel);
-
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
 

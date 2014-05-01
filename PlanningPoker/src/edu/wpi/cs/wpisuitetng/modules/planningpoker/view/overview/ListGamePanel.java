@@ -28,12 +28,12 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
@@ -116,7 +116,6 @@ implements TreeSelectionListener {
 	 * This method is used to refresh the requirements tree
 	 */
 	public void refresh(){
-		System.out.println("Refreshing Game Tree...");
 
 
 		try{
@@ -161,6 +160,9 @@ implements TreeSelectionListener {
 
 		for(Game game: games){
 
+			String user = ConfigManager.getConfig().getUserName();
+			game.setMyGame(game.isCreator(user));
+			
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
 			if(selectedObject != null) {
@@ -218,7 +220,7 @@ implements TreeSelectionListener {
 		tree.setToggleClickCount(0);
 
 		//set to custom cell renderer so that icons make sense
-		tree.setCellRenderer(new CustomTreeCellRenderer());
+		tree.setCellRenderer(new GameTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
 
 		tree.setDragEnabled(true);
@@ -232,9 +234,6 @@ implements TreeSelectionListener {
 		}
 
 		this.setViewportView(tree); //make panel display the tree
-
-		System.out.println("# of Games:" + games.size());
-		System.out.println("finished refreshing the tree");
 		
 		hasRefreshed = true;
 	}

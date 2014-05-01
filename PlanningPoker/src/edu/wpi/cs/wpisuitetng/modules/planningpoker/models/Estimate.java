@@ -63,14 +63,6 @@ public class Estimate {
 	public int getReqID() {
 		return reqID;
 	}
-
-	/**
-	 * update new requirement
-	 * @param requirement the given requirement
-	 */
-	public void setRequirement(Requirement requirement) {
-		reqID = requirement.getId();
-	}
 	
 	/**
 	 * Add user to the hashMap of this estimate by creating a new
@@ -231,10 +223,13 @@ public class Estimate {
 			return median;
 		}
 		if(length % 2 == 0){
-			median = ((double) estimates.get(halfLength) + (double)estimates.get(halfLength - 1)) / 2;
+			int mid1 = estimates.get(length / 2);
+			int mid2 = estimates.get((length / 2) - 1);
+			median = (mid1 + mid2) / 2.0;
 		}
 		else {
-			median = (double)estimates.get(halfLength);
+			int mid = estimates.get(length / 2);
+			median = (double)mid;
 		}
 		return median;
 	}
@@ -269,7 +264,14 @@ public class Estimate {
 	 */
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
-		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		if (userWithEstimate != null)
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		}
+		else
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>();
+		}
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;

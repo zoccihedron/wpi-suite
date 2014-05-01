@@ -32,7 +32,9 @@ import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockData;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerEntityManager;
+
 
 /**
  * Entity Manager testing class for Planning Poker
@@ -67,9 +69,9 @@ public class PlanningPokerEntityManagerTest {
 		
 		dummyUser.setRole(Role.ADMIN);
 		
-		draftGame = new Game("game", start, end, "default");
-		draftGameYouCreated = new Game("game2", start, end, "default");
-		inProgressGame = new Game("game3", start, end, "default");
+		draftGame = new Game("game", start, end, -2);
+		draftGameYouCreated = new Game("game2", start, end, -2);
+		inProgressGame = new Game("game3", start, end, -2);
 		
 		inProgressGame.setStatus(Game.GameStatus.IN_PROGRESS);
 		
@@ -98,10 +100,9 @@ public class PlanningPokerEntityManagerTest {
 		
 		boolean PermissionDenied = false;
 		String exceptionMessage = "";
-		Game[] retrievedGames;
 		
 		try{
-			retrievedGames = manager.getEntity(s2, "" + draftGame.getId());
+			manager.getEntity(s2, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			exceptionMessage=e.getMessage();
@@ -112,10 +113,11 @@ public class PlanningPokerEntityManagerTest {
 		
 		boolean PermissionAllowed = true;
 		try{
-			retrievedGames = manager.getEntity(s1, "" + draftGame.getId());
+			manager.getEntity(s1, "" + draftGame.getId());
 		}
 		catch(NotFoundException e){
 			PermissionAllowed = false;
+			System.err.println(e.getMessage());
 		}
 		assertTrue(PermissionAllowed);
 	}
@@ -127,17 +129,19 @@ public class PlanningPokerEntityManagerTest {
 		boolean successfulRetrievalByNotOwner = true;
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s1,"" + inProgressGame.getId());
+			manager.getEntity(s1,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByOwner = false;
+			System.err.println(e.getMessage());
 		}
 		
 		try{
-			Game[] retrievedGames = manager.getEntity(s2,"" + inProgressGame.getId());
+			manager.getEntity(s2,"" + inProgressGame.getId());
 		}
 		catch(NotFoundException e){
 			successfulRetrievalByNotOwner = false;
+			System.err.println(e.getMessage());
 		}
 		
 		assertTrue(successfulRetrievalByOwner);
@@ -161,7 +165,7 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void retrieveAllExcludingDraftsYouDidntCreateTest() throws WPISuiteException{
-		Game[] retrievedGames  = (Game[])manager.getAll(s2);
+		Game[] retrievedGames  = manager.getAll(s2);
 		
 		boolean containedDraftNotOwnedByUser = false;
 		boolean containedGames = false;
@@ -182,7 +186,7 @@ public class PlanningPokerEntityManagerTest {
 	
 	@Test
 	public void retrieveAllIncludingDraftsYouDidCreateTest() throws WPISuiteException{
-		Game[] retrievedGames  = (Game[])manager.getAll(s1);
+		Game[] retrievedGames  = manager.getAll(s1);
 		
 		boolean containedDraftsOwnedByUser = false;
 		boolean containedGames = false;
@@ -204,7 +208,7 @@ public class PlanningPokerEntityManagerTest {
 	@Test
 	public void getAllForEveryoneTest() throws WPISuiteException{
 		//test for session 1
-		Game[] retrievedGames = (Game[])manager.getAllForEveryone(s1);
+		Game[] retrievedGames = manager.getAllForEveryone(s1);
 
 		boolean containedDraftsOwnedByUser = false;
 		boolean containedGameInProgress = false;
@@ -228,7 +232,7 @@ public class PlanningPokerEntityManagerTest {
 		assertTrue(containedGameInProgress);
 
 		//test for session 2
-		retrievedGames = (Game[])manager.getAllForEveryone(s2);
+		retrievedGames = manager.getAllForEveryone(s2);
 
 		containedDraftsOwnedByUser = false;
 		containedGameInProgress = false;
@@ -269,7 +273,7 @@ public class PlanningPokerEntityManagerTest {
 
 	@Test
 	public void saveGameTest() throws WPISuiteException{
-		Game newGame = new Game("newgame", start, end, "default");
+		Game newGame = new Game("newgame", start, end, -2);
 		manager.save(s1, newGame);
 		assertSame(newGame, db.retrieve(Game.class, "id", newGame.getId()).get(0));
 
@@ -282,14 +286,14 @@ public class PlanningPokerEntityManagerTest {
 
 	@Test
 	public void getHighestIdTest() throws WPISuiteException{
-		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		Game[] retrievedGames = manager.getAll(s1);
 		int largestId = manager.getGameWithLargestId(retrievedGames);
 		assertEquals(largestId, retrievedGames.length);
 	}
 	
 	@Test
 	public void autoIncrementGameIdTest() throws WPISuiteException{
-		Game[] retrievedGames = (Game[])manager.getAll(s1);
+		Game[] retrievedGames = manager.getAll(s1);
 		for(Game game : retrievedGames){
 			if (game.getName().equals("game")){
 				assertEquals(1, game.getId());
@@ -323,14 +327,6 @@ public class PlanningPokerEntityManagerTest {
 	}
 
 
-	@Test
-	public void advancedPostEndTest() throws WPISuiteException{
-		Game endedGame = Game.fromJson(manager.advancedPost(s1,"close",draftGame.toJSON()));
-		assertEquals(endedGame.getId(), draftGame.getId());
-		assertEquals(endedGame.getName(), draftGame.getName());
-		assertEquals(endedGame.getStatus(),Game.GameStatus.CLOSED);
-
-	}
 
 	@Test
 	public void advancedPostEditTest() throws WPISuiteException{
@@ -368,12 +364,27 @@ public class PlanningPokerEntityManagerTest {
 		assertEquals(makeNewEstimate, "true");
 		Game votedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
 		assertEquals(votedGame.findEstimate(newEstimate.getReqID()).getEstimate(dummyUser.getUsername()),3);
+		
+		inProgressGame.setStatus(Game.GameStatus.IN_PROGRESS);
+		manager.update(s1,inProgressGame.toJSON());
+		newEstimate.setGameModifiedVersion(5);
+		String estimateOnDifferentVersion = manager.advancedPost(s1, "vote", newEstimate.toJSON());
+		assertEquals(estimateOnDifferentVersion, "*Voting is not currently allowed: The game is outdated.");
 
+		
 		inProgressGame.setStatus(Game.GameStatus.ENDED);
 		manager.update(s1,inProgressGame.toJSON());
 
 		String estimateOnEndedGame = manager.advancedPost(s1, "vote", newEstimate.toJSON());
 		assertEquals(estimateOnEndedGame, "*Voting is not currently allowed: The game has ended.");
+		
+		Estimate newEstimate2 = new Estimate(0, draftGame.getId());
+		draftGame.addEstimate(newEstimate2);
+		newEstimate2.makeEstimate(dummyUser.getUsername(),3);
+		String voteOnDraftGame = manager.advancedPost(s1, "vote", newEstimate2.toJSON());
+		assertEquals(voteOnDraftGame, "*Voting is not currently allowed.");
+
+
 
 	}
 
@@ -390,11 +401,40 @@ public class PlanningPokerEntityManagerTest {
 
 	}
 
+	
+	@Test 
+	public void advancedPostSendFinalEstimateTest() throws WPISuiteException{
+		Estimate newEstimate = new Estimate(0, inProgressGame.getId());
+		newEstimate.setFinalEstimate(5);
+		newEstimate.setNote("note");
+		inProgressGame.addEstimate(newEstimate);
+		newEstimate.makeEstimate(dummyUser.getUsername(),3);
+		String sendFinalEstimate = manager.advancedPost(s1, "sendFinalEstimate", newEstimate.toJSON());
+		assertEquals(sendFinalEstimate, "true");
+		Game retrievedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		Estimate returnedEstimate = retrievedGame.findEstimate(newEstimate.getReqID());
+		assertEquals(returnedEstimate.getFinalEstimate(), 5);
+		assertEquals(returnedEstimate.getNote(), "note");
+
+	}
+	
+	
+	@Test
+	public void advancedPostEndTest() throws WPISuiteException{
+		Game endedGame = Game.fromJson(manager.advancedPost(s1, "end", inProgressGame.toJSON()));
+		assertEquals(endedGame.getName(), inProgressGame.getName());
+		assertEquals(endedGame.getId(), inProgressGame.getId());
+		assertEquals(endedGame.getStatus(),GameStatus.ENDED);
+
+	}
+
+	
 	@Test
 	public void getIdCountTest() throws WPISuiteException{
 		int count = manager.getIdCount();
 		assertEquals(count, 4); 
 		
 	}
+	
 	
 }
