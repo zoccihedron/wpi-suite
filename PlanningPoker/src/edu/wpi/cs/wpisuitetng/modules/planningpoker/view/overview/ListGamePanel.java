@@ -227,8 +227,8 @@ implements TreeSelectionListener {
 		tree.setDropMode(DropMode.ON);
 
 		if(node != null){
-			TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(node);
-			TreePath tpath = new TreePath(nodes);
+			final TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(node);
+			final TreePath tpath = new TreePath(nodes);
 			fakeSelected = true;
 			tree.setSelectionPath(tpath);
 		}

@@ -15,8 +15,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JSplitPane;
@@ -66,47 +64,47 @@ public class OverviewPanel extends JSplitPane {
 		setRightComponent(summaryPanel);
 		setDividerLocation(300);
 
-		ActionListener updateTreeListener = new ActionListener() {
+		final ActionListener updateTreeListener = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try{
-					System.out.println("Updating Tree");
-					Request request = Network.getInstance().makeRequest("planningpoker/game", HttpMethod.GET);
+					final Request request = Network.getInstance().makeRequest(
+							"planningpoker/game", HttpMethod.GET);
 					request.addObserver(new RequestObserver() {
 
 						@Override
 						public void responseSuccess(IRequest iReq) {
 
-							ResponseModel response = iReq.getResponse();
-							Game[] games = Game.fromJsonArray(response.getBody());
-							List<Game> updatedGames = new ArrayList<Game>();
-							for(Game game: games)
+							final ResponseModel response = iReq.getResponse();
+							final Game[] games = Game.fromJsonArray(response.getBody());
+							final List<Game> updatedGames = new ArrayList<Game>();
+							for(Game game: games){
 								updatedGames.add(game);
-							List<Game> listPanelGames = listGamePanel.getGames();
+							}
+							final List<Game> listPanelGames = listGamePanel.getGames();
 							
-							String user = ConfigManager.getConfig().getUserName();
+							final String user = ConfigManager.getConfig().getUserName();
 							
 							if(updatedGames.size() == listPanelGames.size()){
 								boolean hasChange = false;
 								for(Game game: updatedGames){
 									if(hasChange) break;
 									for(Game g: listPanelGames){
-										if(g.getId() == game.getId())
+										if(g.getId() == game.getId()){
 											if(!g.isSameModifiedVersion(game.getModifiedVersion())
 													|| !g.getStatus().equals(game.getStatus())
 													|| g.isChanged(game, user)){
-												System.out.println("Game not currently in panel");
 												listGamePanel.refresh();
 												hasChange = true;
 												break;
 											}
+										}
 									}
 									
 								}
 							}
 							else {
-								System.out.println("Not the same size list");
 								listGamePanel.refresh();
 							}
 						}
@@ -127,7 +125,7 @@ public class OverviewPanel extends JSplitPane {
 
 				}
 				catch(NullPointerException exception){
-
+				
 				}
 
 			}
