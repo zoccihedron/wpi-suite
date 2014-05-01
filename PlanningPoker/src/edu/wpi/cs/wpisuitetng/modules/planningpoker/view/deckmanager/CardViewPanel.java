@@ -83,7 +83,7 @@ public class CardViewPanel extends JScrollPane{
 		toggleBtns = new ArrayList<JToggleButton>();
 		
 
-		final Border unselectedBorder = BorderFactory.createLineBorder(Color.WHITE, 3);
+		final Border unselectedBorder = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1), BorderFactory.createLineBorder(Color.WHITE, 2));
 		final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN, 3);
 		
 		for(Integer card: deck.getCards()){

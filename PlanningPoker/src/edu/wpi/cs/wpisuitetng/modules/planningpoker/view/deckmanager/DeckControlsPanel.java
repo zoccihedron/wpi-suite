@@ -307,7 +307,20 @@ public class DeckControlsPanel extends JPanel {
 		deck = null;
 
 		btnAddCard.setEnabled(false);
-		addRemoveCardToolTip();
+		
+		final ActionListener renameDeckListener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if(fieldDeckName.getText().equals("")){
+					btnUpdateDeckName.setEnabled(false);
+				}else{
+					btnUpdateDeckName.setEnabled(true);
+				}
+			}
+		};
+		
+		final Timer renameDeckTimer = new Timer(250, renameDeckListener);
+		renameDeckTimer.start();
 
 		final ActionListener removeCardListener = new ActionListener() {
 
