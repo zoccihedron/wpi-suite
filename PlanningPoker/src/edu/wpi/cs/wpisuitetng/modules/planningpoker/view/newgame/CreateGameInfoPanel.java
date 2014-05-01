@@ -784,6 +784,11 @@ public class CreateGameInfoPanel extends JPanel {
 		return minuteInt;
 	}
 	
+	/**
+	 * Returns the SelectRequirementsPanel associated with the NewGamePanel
+	 *
+	 * @return the associated SelectRequirementsPanel
+	 */
 	public SelectRequirementsPanel getReqPanel(){
 		return parentPanel.getSelectRequirementsPanel();
 	}

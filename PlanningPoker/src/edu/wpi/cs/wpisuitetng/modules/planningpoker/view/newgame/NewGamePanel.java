@@ -307,6 +307,11 @@ public class NewGamePanel extends JSplitPane {
 		return result;
 	}
 	
+	/**
+	 * Returns the SelectRequirementsPanel linked to the NewGamePanel
+	 *
+	 * @return the SelectRequirementsPanel
+	 */
 	public SelectRequirementsPanel getSelectRequirementsPanel(){
 		return selectRequirementsPanel;
 	}
