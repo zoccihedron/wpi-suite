@@ -137,7 +137,7 @@ public class EstimationPane extends JPanel {
 		helpTitle.setText("Play Game");
 		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
 		
-		helpText.setText("To begin, please select a requirement from the tree on the left.");
+		helpText.setText("To begin, please select a requirement from the panel on the left.");
 		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		constraints.gridx = 0;
