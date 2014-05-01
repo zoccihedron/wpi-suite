@@ -173,17 +173,6 @@ public class Game extends AbstractModel {
 		}
 		return result;
 	}
-	
-	public boolean equals(Game game){
-		return id == game.getId() &&
-				name.equals(game.getName()) &&
-				description.equals(game.getDescription()) &&
-				participants == game.getParticipants() &&
-				end == game.getEnd() &&
-				estimates == game.getEstimates() &&
-				deck == game.getDeck() &&
-				status == game.getStatus();
-	}
 
 	/**
 	 * Copies all of the values from the given game to this game.
