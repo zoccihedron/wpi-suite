@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.io.IOException;
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class EstimationPane extends JPanel {
 	private JLabel lblReqName;
 	private JTextField fldReqName;
 	private JLabel lblReqDescription;
+	private JLabel lblDeckSelection;
 	private JTextArea fldReqDescription;
 	private JScrollPane scrollDescription;
 	private DeckPanel deckPanel;
@@ -96,6 +98,7 @@ public class EstimationPane extends JPanel {
 		lblReqName = new JLabel();
 		fldReqName = new JTextField();
 		lblReqDescription = new JLabel();
+		lblDeckSelection = new JLabel();
 		fldReqDescription = new JTextArea();
 		scrollDescription = new JScrollPane(fldReqDescription);
 		message = new JLabel();
@@ -107,6 +110,8 @@ public class EstimationPane extends JPanel {
 		
 		fldReqName.setEditable(false);
 		fldReqName.setBackground(Color.WHITE);
+		fldReqName.setMargin(new Insets(3, 3, 3, 3));
+		
 		fldReqDescription.setBorder(new JTextField().getBorder());
 		fldReqDescription.setEditable(false);
 		fldReqDescription.setLineWrap(true);
@@ -166,6 +171,7 @@ public class EstimationPane extends JPanel {
 
 		// NAME LABEL
 		lblReqName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 5));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
@@ -173,7 +179,6 @@ public class EstimationPane extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		add(lblReqName, constraints);
-		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 10));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -233,15 +238,37 @@ public class EstimationPane extends JPanel {
 		constraints.gridy = 5;
 		add(deckPanel, constraints);
 		
+		// DECK SELECTION LABEL
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.insets = new Insets(5, 0, 5, 0);
+		add(lblDeckSelection, constraints);
+		
+		if(deckPanel.isDeckView()){
+			if(deckPanel.isMultipleSelection()){
+				lblDeckSelection.setText("Deck Settings: Multiple Selection");
+			}
+			else{
+				lblDeckSelection.setText("Deck Settings: Single Selection");
+			}
+		}
+		else {
+			lblDeckSelection.setVisible(false);
+		}
+		
 		// VOTE BUTTON
 		constraints.fill = GridBagConstraints.NONE;
 		voteButton.setAlignmentX(LEFT_ALIGNMENT);
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
-		constraints.gridy = 6;
+		constraints.gridy = 7;
 		constraints.ipadx = 40;
 		add(voteButton, constraints);
 		
@@ -254,7 +281,7 @@ public class EstimationPane extends JPanel {
 		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 2;
-		constraints.gridy = 6;
+		constraints.gridy = 7;
 		constraints.weightx = 0.0;
 		constraints.gridwidth = 3;
 		add(message, constraints);
