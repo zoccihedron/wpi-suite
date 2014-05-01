@@ -294,17 +294,6 @@ public class NewGamePanel extends JSplitPane {
 					JOptionPane.QUESTION_MESSAGE,
 					null, options, options[1]);
 			result = (i == 0);
-		} else if(selectRequirementsPanel.isCreatingNewReq()){
-			final Object options[] = {
-					"Yes", "No"
-					};
-			final int i = JOptionPane.showOptionDialog(this, 
-					"You are currently creating a new requirement, would you like to exit anyways?",
-					"Exit?",
-					JOptionPane.YES_NO_OPTION,
-					JOptionPane.QUESTION_MESSAGE,
-					null, options, options[1]);
-			result = (i == 0);
 		} else {
 			result = true;
 		}
@@ -316,6 +305,10 @@ public class NewGamePanel extends JSplitPane {
 			request.send();
 		}
 		return result;
+	}
+	
+	public SelectRequirementsPanel getSelectRequirementsPanel(){
+		return selectRequirementsPanel;
 	}
 	
 }

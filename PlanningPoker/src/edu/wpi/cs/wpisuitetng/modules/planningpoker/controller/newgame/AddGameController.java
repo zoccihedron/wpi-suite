@@ -15,6 +15,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import edu.wpi.cs.wpisuitetng.modules.core.models.Project;
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
@@ -34,13 +36,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  *
  */
 public class AddGameController implements ActionListener {
-	
+
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
 	private static User[] users = {};
 	private boolean startingGame = false;
 	private boolean endingGame = false;
-	
+	private boolean disregardingNewReq = true;
+
 	/**
 	 * Construct an AddMessageController for the given model, view pair
 	 * @param createGameInfoPanel the view where the user enters new messages
@@ -65,29 +68,44 @@ public class AddGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
-			view.disableOrEnableButtonsOnParent(false);
-			view.initDefaults();
-			final Game currentGame = view.getGameObject();
-			
-			if(startingGame){
-				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+			if(view.getReqPanel().isCreatingNewReq()){
+				final Object options[] = {
+						"Yes", "No"
+				};
+				final int i = JOptionPane.showOptionDialog(view.getParent().getParent(), 
+						"Your new requirement will not be saved, would you like to exit anyways?",
+						"Exit?",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null, options, options[1]);
+				disregardingNewReq = (i == 0);
 			}
-			else if(endingGame){
-				currentGame.setStatus(Game.GameStatus.ENDED);
-			}
-			else{
-				currentGame.setStatus(Game.GameStatus.DRAFT);
-			}
+			if(disregardingNewReq){
+				view.disableOrEnableButtonsOnParent(false);
+				view.initDefaults();
+				final Game currentGame = view.getGameObject();
 
-			// Send a request to the core to save this game
-			final Request request = Network.getInstance().makeRequest(
-					"planningpoker/game", HttpMethod.PUT);
-			request.setBody(currentGame.toJSON()); // put the new message in the body of the request
-			// add an observer to process the response
-			request.addObserver(new AddGameRequestObserver(this));
-			request.send(); // send the request
+				if(startingGame){
+					currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+				}
+				else if(endingGame){
+					currentGame.setStatus(Game.GameStatus.ENDED);
+				}
+				else{
+					currentGame.setStatus(Game.GameStatus.DRAFT);
+				}
+
+				// Send a request to the core to save this game
+				final Request request = Network.getInstance().makeRequest(
+						"planningpoker/game", HttpMethod.PUT);
+				request.setBody(currentGame.toJSON()); // put the new message in the body of the request
+				// add an observer to process the response
+				request.addObserver(new AddGameRequestObserver(this));
+				request.send(); // send the request
+			}
+			disregardingNewReq = true;
 		}
-	
+
 	}
 
 	/**
@@ -115,7 +133,7 @@ public class AddGameController implements ActionListener {
 	public static void receivedProject(Project project) {
 		users = project.getTeam();
 	}
-	
+
 	public static User[] getUsers()
 	{
 		return users;

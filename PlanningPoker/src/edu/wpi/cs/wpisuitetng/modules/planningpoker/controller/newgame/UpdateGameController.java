@@ -15,6 +15,8 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
@@ -31,13 +33,14 @@ import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
  * @version 1.0
  */
 public class UpdateGameController implements ActionListener {
-	
+
 	private final PlanningPokerModel model;
 	private final CreateGameInfoPanel view;
 	private Game updatedGame;
 	private final boolean startingGame;
+	private boolean disregardingNewReq = true;
 
-	 
+
 	/**
 	 * Construct an UpdateGameController for the given model, view pair
 	 * @param updatedGame the updated game
@@ -64,26 +67,41 @@ public class UpdateGameController implements ActionListener {
 		// Get the text that was entered
 		if (view.checkFields())
 		{
-			view.disableOrEnableButtonsOnParent(false);
-			view.initDefaults();
-			final Game currentGame = view.getGameObject();
-
-			if(startingGame){
-				currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+			if(view.getReqPanel().isCreatingNewReq()){
+				final Object options[] = {
+						"Yes", "No"
+				};
+				final int i = JOptionPane.showOptionDialog(view.getParent().getParent(), 
+						"Your new requirement will not be saved, would you like to exit anyways?",
+						"Exit?",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null, options, options[1]);
+				disregardingNewReq = (i == 0);
 			}
-			else{
-				currentGame.setStatus(Game.GameStatus.DRAFT);
-			}
+			if(disregardingNewReq){
+				view.disableOrEnableButtonsOnParent(false);
+				view.initDefaults();
+				final Game currentGame = view.getGameObject();
 
-			// Send a request to the core to save this game
-			final Request request = Network.getInstance().makeRequest
-					("planningpoker/game", HttpMethod.POST);
-			// put the updated game in the body of the request
-			request.setBody(currentGame.toJSON());
-			// add an observer to process the response
-			request.addObserver(new UpdateGameRequestObserver(this));
-			request.send(); // send the request
-			OverviewPanelController.getInstance().refreshListGames();
+				if(startingGame){
+					currentGame.setStatus(Game.GameStatus.IN_PROGRESS);
+				}
+				else{
+					currentGame.setStatus(Game.GameStatus.DRAFT);
+				}
+
+				// Send a request to the core to save this game
+				final Request request = Network.getInstance().makeRequest
+						("planningpoker/game", HttpMethod.POST);
+				// put the updated game in the body of the request
+				request.setBody(currentGame.toJSON());
+				// add an observer to process the response
+				request.addObserver(new UpdateGameRequestObserver(this));
+				request.send(); // send the request
+				OverviewPanelController.getInstance().refreshListGames();
+			}
+			disregardingNewReq = true;
 		}
 	}
 
@@ -113,7 +131,7 @@ public class UpdateGameController implements ActionListener {
 		OverviewPanelController.getInstance().updateGameSummary(returnGame);
 		view.closeNewGameTab();
 	}
-	
+
 	/**
 	 * Getter for the updatedGame
 	 */

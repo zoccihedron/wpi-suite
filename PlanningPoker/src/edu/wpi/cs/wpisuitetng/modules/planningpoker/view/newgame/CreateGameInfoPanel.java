@@ -783,4 +783,8 @@ public class CreateGameInfoPanel extends JPanel {
 		final int minuteInt = Integer.parseInt(minuteString);
 		return minuteInt;
 	}
+	
+	public SelectRequirementsPanel getReqPanel(){
+		return parentPanel.getSelectRequirementsPanel();
+	}
 }

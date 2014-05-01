@@ -348,6 +348,8 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	private void generateNewRequirementPanel(){
 		
+		creatingNewReq = true;
+		
 		existingRequirementsTablePanel.setVisible(false);
 		existingRequirementsTablePanel.setEnabled(false);
 		buttonsPanel.setVisible(false);
