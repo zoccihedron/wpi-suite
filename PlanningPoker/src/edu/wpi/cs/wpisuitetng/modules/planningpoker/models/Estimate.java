@@ -42,6 +42,7 @@ public class Estimate {
 	private int finalEstimate = 0;
 	private String note = "";
 	private Map<String, List<Boolean>> userCardSelection;
+	private boolean isFinalEstimationSet = false;
 	
 	/**
 	 * Constructor for an estimate object
@@ -264,6 +265,7 @@ public class Estimate {
 	 */
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
+		copyEst.gameModifiedVersion = gameModifiedVersion;
 		if (userWithEstimate != null)
 		{
 			copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
@@ -275,6 +277,7 @@ public class Estimate {
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
+		copyEst.isFinalEstimationSet = isFinalEstimationSet;
 		copyEst.sentBefore = sentBefore;
 		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
 		copyEst.note = note;
@@ -329,7 +332,7 @@ public class Estimate {
 	 * @return true if it's been set
 	 */
 	public boolean isFinalEstimateSet() {
-		return (finalEstimate != 0);
+		return isFinalEstimationSet;
 	}
 
 	/**
@@ -344,8 +347,16 @@ public class Estimate {
 	 */
 	public void setFinalEstimate(int finalEstimate) {
 		this.finalEstimate = finalEstimate;
+		isFinalEstimationSet = true;
 	}
 
+	/**
+	 * Unselect this estimate so that it could show up in
+	 * "unselected" category in result panel
+	 */
+	public void unSelectFinalEstimate(){
+		isFinalEstimationSet = false;
+	}
 
 	/**
 	 * Get state of every card (whether each card is selected or not)

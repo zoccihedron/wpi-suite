@@ -12,6 +12,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,9 +34,15 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ResultsDisplayController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.UnselectEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * Panel for displaying detailed results, the right subpanel in ResultsPanel
@@ -49,6 +57,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final JTextField finalEstimate;
 	private final JTextArea noteArea;
 	private final JButton saveFinalEstimateBtn;
+	private final JButton unselectEstimateBtn;
 	private final Game game;
 	private int reqid;
 	private final JLabel message;
@@ -88,6 +97,12 @@ public class ResultsDisplayPanel extends JPanel {
 		finalEstimate.setEditable(false);
 		saveFinalEstimateBtn.setEnabled(false);
 		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
+		
+		
+		unselectEstimateBtn = new JButton("Unselect this estimate");
+		unselectEstimateBtn.setVisible(false);
+		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
+		
 		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
@@ -177,6 +192,7 @@ public class ResultsDisplayPanel extends JPanel {
 			System.err.println(e.getMessage());
 		}
 
+		
 		constraints.gridx = 0;
 		constraints.gridy = 5;
 		constraints.gridwidth = 2;
@@ -191,6 +207,18 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		constraints.gridwidth = 2;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.insets = new Insets(5, 0, 5, 0);
+		rightPanel.add(unselectEstimateBtn, constraints);
+		unselectEstimateBtn.addActionListener(new UnselectEstimateController(game, this));
+
+		
 
 
 		constraints.gridx = 1;
@@ -276,6 +304,8 @@ public class ResultsDisplayPanel extends JPanel {
 	public void updateData(int reqid) {
 		this.reqid = reqid;
 		final Estimate estimate = game.findEstimate(reqid);
+		
+
 		if (!ConfigManager.getInstance().getConfig().getUserName()
 				.equals(game.getGameCreator())) {
 			saveFinalEstimateBtn.setVisible(false);
@@ -336,6 +366,18 @@ public class ResultsDisplayPanel extends JPanel {
 			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
 		}
+		
+		if(estimate.isFinalEstimateSet() && 
+			!estimate.estimationHasBeenSent() && 
+			ConfigManager.getInstance().getConfig()
+				.getUserName().equals(game.getGameCreator())){
+			unselectEstimateBtn.setVisible(true);
+			unselectEstimateBtn.setEnabled(true);
+
+		} else {
+			unselectEstimateBtn.setVisible(false);
+
+		}
 	}
 
 	/**
@@ -354,7 +396,9 @@ public class ResultsDisplayPanel extends JPanel {
 				try {
 					reportError("<html></html>");
 					estimate = Integer.parseInt(finalEstimate.getText());
-					if (estimate == estimateObject.getFinalEstimate()){
+					
+					if (estimate == estimateObject.getFinalEstimate() 
+							&& estimateObject.isFinalEstimateSet()){
 						reportError("");
 						result &= false;
 					}
@@ -365,7 +409,8 @@ public class ResultsDisplayPanel extends JPanel {
 					}
 
 					if (result && estimateObject.isSentBefore()){
-						if(noteArea.getText().trim().isEmpty() && estimate != estimateObject.getFinalEstimate()){
+						if(noteArea.getText().trim().isEmpty() 
+								&& estimate != estimateObject.getFinalEstimate()){
 							reportError("<html>A note must be included when modifying"
 									+ " a sent final estimate.</html>");
 							result &= false;

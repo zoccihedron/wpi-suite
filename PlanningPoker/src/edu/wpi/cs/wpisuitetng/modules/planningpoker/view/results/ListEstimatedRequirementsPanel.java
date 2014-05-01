@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DropMode;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -26,7 +25,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
@@ -47,9 +45,7 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private final Game game;
-	private PlayGameController playGameController;
 	private final ViewResultsController controller;
-	private JButton sendSelectedRequirement;
 
 	/**
 	 * Constructs the panel
@@ -141,12 +137,11 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 			if (game.getRequirements().contains(req.getId())) {
 				for (Estimate e : game.getEstimates()) {
 					if (e.getReqID() == req.getId()) {
-						if (!e.estimationHasBeenSent()
-								&& e.getFinalEstimate() == 0) {
+						if (!e.isFinalEstimateSet()) {
 							reqNode = new DefaultMutableTreeNode(req);
 							notSelectedCategory.add(reqNode);
 						} else if (!e.estimationHasBeenSent()
-								&& e.getFinalEstimate() != 0) {
+								&& e.isFinalEstimateSet()) {
 							reqNode = new DefaultMutableTreeNode(req);
 							selectedCategory.add(reqNode);
 						} else { // estimation is sent
@@ -193,7 +188,7 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 	public List<Estimate> getSelectedEstimates() {
 		final List<Estimate> estimates = new ArrayList<Estimate>();
 		for (Estimate e : game.getEstimates()) {
-			if (!e.estimationHasBeenSent() && e.getFinalEstimate() != 0) {
+			if (!e.estimationHasBeenSent() && e.isFinalEstimateSet()) {
 				estimates.add(e);
 
 			}
