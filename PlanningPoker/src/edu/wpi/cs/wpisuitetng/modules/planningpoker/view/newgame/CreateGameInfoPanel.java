@@ -111,7 +111,6 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 
 		lblTitle = new JLabel("Game Information");
-
 		lblName = new JLabel("Name:       ");
 
 		lblDeadline = new JLabel("Deadline:");
@@ -560,7 +559,7 @@ public class CreateGameInfoPanel extends JPanel {
 		parentPanel.displayErrorBorders(false);
 		parentPanel.toolTipChanger("Click here to start the game.", "Click here to save the game.");
 		if (parentPanel.getGameRequirements().size() == 0 && result) {
-			reportError("<html>*Pick at least one requirement.</html>");
+			reportError("<html>*Add at least one requirement.</html>");
 			result = false;
 			parentPanel.displayErrorBorders(true);
 			parentPanel.toolTipChanger("Please add at least one requirement.", "Please add at least one requirement.");
