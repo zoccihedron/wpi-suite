@@ -504,7 +504,6 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return the string corresponding to the minuteSelector object
 	 */
 	private static String getMinuteStringFromCalendar(int minute) {
-		System.out.println("Minute:" + minute);
 		String result = "00";
 		if (minute < 15) {
 			result = "00";
@@ -526,9 +525,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return the string corresponding to the hourSelector object
 	 */
 	private static String getHourStringFromCalendar(int hour) {
-		System.out.println("Hour:" + hour);
 		hour %= 12;
-		System.out.println("Hour % 12:" + hour);
 		String result = "";
 		if (hour < 10) {
 			result = "0" + String.valueOf(hour);
