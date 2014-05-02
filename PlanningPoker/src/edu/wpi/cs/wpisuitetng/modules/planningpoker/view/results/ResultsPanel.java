@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -35,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @author Code On Bleu
  * @version 1.00
  */
+@SuppressWarnings("serial")
 public class ResultsPanel extends JPanel{
 
 	private final Game game;
@@ -43,7 +45,7 @@ public class ResultsPanel extends JPanel{
 	private final JLabel nameLabel;
 	private final JLabel descriptionLabel;
 	private final JScrollPane descriptionScroll;
-	private final JTextArea requirementName;
+	private final JTextField requirementName;
 	private final JTextArea descriptionText;
 	private ResultsDisplayPanel resultsDisplayPanel;
 	private int reqid;
@@ -68,9 +70,12 @@ public class ResultsPanel extends JPanel{
 		final Border jtextFieldBorder = new JTextField().getBorder();
 
 		// Adds the fields and button to the main panel.
-		requirementName = new JTextArea();
+		requirementName = new JTextField();
+		requirementName.setAlignmentY(CENTER_ALIGNMENT);
 		requirementName.setEditable(false);
 		requirementName.setEnabled(true);
+		requirementName.setBackground(Color.WHITE);
+		requirementName.setMargin(new Insets(3, 3, 3, 3));
 		requirementName.setBorder(jtextFieldBorder);
 
 		descriptionText = new JTextArea();
@@ -163,7 +168,7 @@ public class ResultsPanel extends JPanel{
 		constraints.insets = new Insets(0, 20, 10, 20);
 		add(scrollPane, constraints);
 
-		// DISPLAY PANEL 
+		// DISPLAY PANEL
 		resultsDisplayPanel = new ResultsDisplayPanel(game, estimateTreePanel);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
@@ -185,6 +190,7 @@ public class ResultsPanel extends JPanel{
 			req = getRequirementFromId();
 			requirementName.setText(req.getName());
 			descriptionText.setText(req.getDescription());
+			descriptionText.setCaretPosition(0);
 			resultsDisplayPanel.updateData(reqid);
 		}
 		catch(NotFoundException exception){
@@ -197,7 +203,6 @@ public class ResultsPanel extends JPanel{
 	/**
 	 * Refreshes the panel with information from the Estimate in a game that 
 	 * corresponds to the previously selected requirement
-	 * @param reqid is the id of the requirement in req manager
 	 */
 	public void refreshDisplay() {
 		try{
@@ -214,7 +219,8 @@ public class ResultsPanel extends JPanel{
 	}
 
 	private Requirement getRequirementFromId() throws NotFoundException{
-		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final List<Requirement> reqs =
+				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement req: reqs){
 			if(req.getId() == reqid){
 				return req;

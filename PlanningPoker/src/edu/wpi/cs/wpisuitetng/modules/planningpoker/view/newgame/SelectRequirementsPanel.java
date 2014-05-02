@@ -35,6 +35,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -77,6 +78,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JTextArea fldDescription;
 	private boolean newReqNameValid = false;
 	private boolean newReqDescValid = false;
+	private boolean creatingNewReq = false;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
@@ -347,6 +349,8 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	private void generateNewRequirementPanel(){
 		
+		creatingNewReq = true;
+		
 		existingRequirementsTablePanel.setVisible(false);
 		existingRequirementsTablePanel.setEnabled(false);
 		buttonsPanel.setVisible(false);
@@ -373,6 +377,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
+		lblName.setBorder(new EmptyBorder(0, 0, 0, 5));
 		newReqPanel.add(lblName, constraints);
 		
 		constraints.gridx = 1;
@@ -382,29 +387,31 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		newReqPanel.add(fldName, constraints);
+	
 		
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.fill = GridBagConstraints.NONE;
 		newReqPanel.add(lblDescription, constraints);
 		
-
+		JScrollPane scrollDescription = new JScrollPane(fldDescription);
+		fldDescription.setCaretPosition(0);
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.gridwidth = 2;
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
-		newReqPanel.add(fldDescription, constraints);
+		newReqPanel.add(scrollDescription, constraints);
 		
 		// Put in scroll pane for overflow
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridwidth = 4;
 		constraints.weightx = 1;
-		constraints.weighty = 0.5;
+		constraints.weighty = 0.42;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.add(newReqPanel, constraints);
@@ -529,17 +536,19 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 		});
 		
-		btnCancelNewReq.addMouseListener(new MouseAdapter() {
+		btnCancelNewReq.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				cancelNewReq();
+				
 			}
-
 		});
 		
-		btnCreateAndAdd.addMouseListener(new MouseAdapter() {
+		btnCreateAndAdd.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				final Requirement req = new Requirement(10, fldName.getText(), 
 						fldDescription.getText());
 				final RequirementManagerFacade RMF = RequirementManagerFacade.getInstance();
@@ -547,8 +556,8 @@ public class SelectRequirementsPanel extends JPanel {
 				addNewRequirementToTable(req);
 				fillTable();
 				cancelNewReq();
+				
 			}
-
 		});
 		
 		this.revalidate();
@@ -572,6 +581,7 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqButtonsPanel.setEnabled(true);
 		newReqPanel.setVisible(true);
 		newReqPanel.setEnabled(true);
+		creatingNewReq = true;
 	}
 	
 	/**
@@ -595,6 +605,8 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqPanel.setVisible(false);
 		newReqPanel.setEnabled(false);
 		
+		creatingNewReq = false;
+		
 		// empty the newReqPanel
 		fldDescription.setText("");
 		fldName.setText("");
@@ -612,7 +624,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.repaint();
 		
 	}
-	
+
 	/**
 	 * Fills the table with a list of requirements
 	 */
@@ -744,5 +756,14 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public List<Integer> getSelectedRequirementIds() {
 		return getRequirementIdsFromTable(requirementsToAddTable);
+	}
+	
+	/**
+	 * Checks if the panel is currently creating a new requirement.
+	 *
+	 * @return if the user is creating a new requirement.
+	 */
+	public boolean isCreatingNewReq() {
+		return creatingNewReq;
 	}
 }
