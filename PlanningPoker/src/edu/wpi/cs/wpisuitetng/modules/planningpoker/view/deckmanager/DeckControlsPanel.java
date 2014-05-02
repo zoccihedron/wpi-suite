@@ -484,6 +484,8 @@ public class DeckControlsPanel extends JPanel {
 	 * 
 	 */
 	public void disableControls() {
+		helpText.setVisible(false);
+		helpTitle.setVisible(false);
 		btnAddCard.setVisible(false);
 		btnRemoveCard.setVisible(false);
 		btnRemoveDeck.setVisible(false);

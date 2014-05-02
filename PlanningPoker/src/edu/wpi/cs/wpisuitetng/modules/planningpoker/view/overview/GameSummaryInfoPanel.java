@@ -196,6 +196,7 @@ public class GameSummaryInfoPanel extends JPanel {
 	public void updateInfoSummary(Game game){
 		gameNameText.setText(game.getName());
 		description.setText(game.getDescription());
+		description.setCaretPosition(0);
 		if(game.isHasDeadline()){
 			deadline.setText(game.getEnd().toString());
 		}
