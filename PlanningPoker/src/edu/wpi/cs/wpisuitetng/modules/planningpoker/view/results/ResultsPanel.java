@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -43,7 +44,7 @@ public class ResultsPanel extends JPanel{
 	private final JLabel nameLabel;
 	private final JLabel descriptionLabel;
 	private final JScrollPane descriptionScroll;
-	private final JTextArea requirementName;
+	private final JTextField requirementName;
 	private final JTextArea descriptionText;
 	private ResultsDisplayPanel resultsDisplayPanel;
 	private int reqid;
@@ -68,9 +69,12 @@ public class ResultsPanel extends JPanel{
 		final Border jtextFieldBorder = new JTextField().getBorder();
 
 		// Adds the fields and button to the main panel.
-		requirementName = new JTextArea();
+		requirementName = new JTextField();
+		requirementName.setAlignmentY(CENTER_ALIGNMENT);
 		requirementName.setEditable(false);
 		requirementName.setEnabled(true);
+		requirementName.setBackground(Color.WHITE);
+		requirementName.setMargin(new Insets(3,3,3,3));
 		requirementName.setBorder(jtextFieldBorder);
 
 		descriptionText = new JTextArea();
@@ -185,6 +189,7 @@ public class ResultsPanel extends JPanel{
 			req = getRequirementFromId();
 			requirementName.setText(req.getName());
 			descriptionText.setText(req.getDescription());
+			descriptionText.setCaretPosition(0);
 			resultsDisplayPanel.updateData(reqid);
 		}
 		catch(NotFoundException exception){

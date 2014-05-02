@@ -11,6 +11,14 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,14 +30,6 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFac
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * The panel which holds listEstimateRequirementsPanel
@@ -70,7 +70,7 @@ public class EstimateTreePanel extends JPanel{
 		
 		//button
 		sendEstimateToReqButton = new JButton();
-		sendEstimateToReqButton.setText("Send Selected Estimates");
+		sendEstimateToReqButton.setText("Update Requirement Manager");
 		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));

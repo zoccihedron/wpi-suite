@@ -96,7 +96,7 @@ public class GameSummaryPanel extends JPanel {
 		helpTitle.setText("Games Overview");
 		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
 		
-		helpText.setText("To begin, please select a game from the tree on the left.");
+		helpText.setText("To begin, please select a game from the panel on the left.");
 		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		constraints.gridx = 0;
@@ -396,6 +396,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 4;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
 		add(reportMessage, constraints);
 		
 		final JPanel extraPanel2 = new JPanel();
