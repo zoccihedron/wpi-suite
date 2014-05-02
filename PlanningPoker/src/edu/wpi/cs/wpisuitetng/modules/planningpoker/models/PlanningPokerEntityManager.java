@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import javax.swing.Timer;
 
@@ -80,7 +79,7 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 									temp_db.retrieveAll(new User("", "", "", 0)),
 									Notification.ENDED, p);
 							ExecutorService thread = Executors.newSingleThreadExecutor();
-							Future<Boolean> future = thread.submit(mailer);
+							thread.submit(mailer);
 							temp_db.save(g);
 						}
 					}
@@ -241,7 +240,8 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			throw new WPISuiteException("Save was not successful");
 		}
 
-		if (existingGame.getStatus().equals(GameStatus.IN_PROGRESS)) {
+		if (existingGame.getStatus().equals(GameStatus.IN_PROGRESS) &&
+				!((Game)oldGames.get(0)).getStatus().equals(GameStatus.IN_PROGRESS)) {
 			final Mailer mailer = new Mailer(existingGame,
 					db.retrieveAll(new User("", "", "", 0)),
 					Notification.STARTED, s.getProject());

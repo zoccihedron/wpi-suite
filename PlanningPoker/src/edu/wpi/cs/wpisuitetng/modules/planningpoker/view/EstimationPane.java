@@ -334,6 +334,7 @@ public class EstimationPane extends JPanel {
 			fldReqName.setText(req.getName());
 			
 			fldReqDescription.setText(req.getDescription());
+			fldReqDescription.setCaretPosition(0);
 			
 			deckPanel.clearCardsSelected();
 			deckPanel.displayOldEstimate(game, reqid);

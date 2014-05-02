@@ -189,6 +189,7 @@ public class ResultsPanel extends JPanel{
 			req = getRequirementFromId();
 			requirementName.setText(req.getName());
 			descriptionText.setText(req.getDescription());
+			descriptionText.setCaretPosition(0);
 			resultsDisplayPanel.updateData(reqid);
 		}
 		catch(NotFoundException exception){
