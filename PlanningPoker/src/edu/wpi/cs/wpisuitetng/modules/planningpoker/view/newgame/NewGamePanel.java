@@ -259,6 +259,14 @@ public class NewGamePanel extends JSplitPane {
 	public void displayErrorBorders(boolean check) {
 		selectRequirementsPanel.displayErrorBorders(check);
 	}
+	
+	/**
+	 * When tab is pressed in the game description, it switches 
+	 * focus to the requirements table
+	 */
+	public void switchFocusToTable() {
+		selectRequirementsPanel.switchFocusToTable();
+	}
 
 	
 	/**
