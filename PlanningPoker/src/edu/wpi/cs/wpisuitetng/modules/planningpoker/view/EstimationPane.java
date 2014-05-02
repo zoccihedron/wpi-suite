@@ -265,6 +265,24 @@ public class EstimationPane extends JPanel {
 		}
 		else {
 			lblDeckSelection.setVisible(false);
+			
+			deckPanel.getEstimateFieldComponent()
+			.getDocument().addDocumentListener(new DocumentListener(){
+
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					checkField();
+				}
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					checkField();
+				}
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					checkField();	
+				}
+			});
+			
 		}
 		
 		// VOTE BUTTON
@@ -293,22 +311,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridwidth = 3;
 		add(message, constraints);
 		
-		deckPanel.getEstimateFieldComponent()
-			.getDocument().addDocumentListener(new DocumentListener(){
 
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					checkField();
-				}
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					checkField();
-				}
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					checkField();	
-				}
-		});
 		
 		
 		this.setBorder(new EmptyBorder(10, 10, 10, 10));
