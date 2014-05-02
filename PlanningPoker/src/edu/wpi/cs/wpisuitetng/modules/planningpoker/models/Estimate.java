@@ -18,8 +18,6 @@ import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
 
 /**
  * This class acts as a record of each requirement. 

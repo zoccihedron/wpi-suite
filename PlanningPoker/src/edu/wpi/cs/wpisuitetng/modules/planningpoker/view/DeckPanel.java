@@ -215,7 +215,7 @@ public class DeckPanel extends JScrollPane {
 			final JToggleButton cardToAdd = new JToggleButton(Integer.toString(cards
 					.get(i)), img);
 			
-			final Border unselectedBorder = BorderFactory.createLineBorder(Color.WHITE, 3);
+			final Border unselectedBorder = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1), BorderFactory.createLineBorder(Color.WHITE, 2));
 			final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN, 3);
 			
 			cardToAdd.setHorizontalTextPosition(SwingConstants.CENTER);
