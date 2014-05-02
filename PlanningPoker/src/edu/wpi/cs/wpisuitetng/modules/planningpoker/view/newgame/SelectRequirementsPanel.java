@@ -78,6 +78,7 @@ public class SelectRequirementsPanel extends JPanel {
 	private JTextArea fldDescription;
 	private boolean newReqNameValid = false;
 	private boolean newReqDescValid = false;
+	private boolean creatingNewReq = false;
 
 	private final GridBagConstraints constraints = new GridBagConstraints();
 	
@@ -348,6 +349,8 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	private void generateNewRequirementPanel(){
 		
+		creatingNewReq = true;
+		
 		existingRequirementsTablePanel.setVisible(false);
 		existingRequirementsTablePanel.setEnabled(false);
 		buttonsPanel.setVisible(false);
@@ -533,17 +536,19 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 		});
 		
-		btnCancelNewReq.addMouseListener(new MouseAdapter() {
+		btnCancelNewReq.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				cancelNewReq();
+				
 			}
-
 		});
 		
-		btnCreateAndAdd.addMouseListener(new MouseAdapter() {
+		btnCreateAndAdd.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				final Requirement req = new Requirement(10, fldName.getText(), 
 						fldDescription.getText());
 				final RequirementManagerFacade RMF = RequirementManagerFacade.getInstance();
@@ -551,8 +556,8 @@ public class SelectRequirementsPanel extends JPanel {
 				addNewRequirementToTable(req);
 				fillTable();
 				cancelNewReq();
+				
 			}
-
 		});
 		
 		this.revalidate();
@@ -576,6 +581,7 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqButtonsPanel.setEnabled(true);
 		newReqPanel.setVisible(true);
 		newReqPanel.setEnabled(true);
+		creatingNewReq = true;
 	}
 	
 	/**
@@ -599,6 +605,8 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqPanel.setVisible(false);
 		newReqPanel.setEnabled(false);
 		
+		creatingNewReq = false;
+		
 		// empty the newReqPanel
 		fldDescription.setText("");
 		fldName.setText("");
@@ -616,7 +624,7 @@ public class SelectRequirementsPanel extends JPanel {
 		this.repaint();
 		
 	}
-	
+
 	/**
 	 * Fills the table with a list of requirements
 	 */
@@ -748,5 +756,14 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public List<Integer> getSelectedRequirementIds() {
 		return getRequirementIdsFromTable(requirementsToAddTable);
+	}
+	
+	/**
+	 * Checks if the panel is currently creating a new requirement.
+	 *
+	 * @return if the user is creating a new requirement.
+	 */
+	public boolean isCreatingNewReq() {
+		return creatingNewReq;
 	}
 }
