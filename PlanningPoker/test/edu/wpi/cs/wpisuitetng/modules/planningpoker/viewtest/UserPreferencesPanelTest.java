@@ -1,11 +1,8 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.viewtest;
 
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.MockNetwork;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
 import edu.wpi.cs.wpisuitetng.network.Network;
