@@ -456,9 +456,6 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 2;
 		this.add(newReqButtonsPanel, constraints);
 		
-		fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-		fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-		
 		btnCreateAndAdd.setEnabled(false);
 		
 		fldName.getDocument().addDocumentListener(new DocumentListener() {
@@ -466,7 +463,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if(fldName.getText().trim().equals("")){
-					fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqNameValid = false;
 				}
 				else {
@@ -480,7 +476,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if(fldName.getText().trim().equals("")){
-					fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqNameValid = false;
 				}
 				else {
@@ -503,7 +498,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if(fldDescription.getText().trim().equals("")){
-					fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqDescValid = false;
 				}
 				else {
@@ -518,7 +512,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if(fldDescription.getText().trim().equals("")){
-					fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqDescValid = false;
 				}
 				else {
@@ -724,7 +717,6 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public void displayErrorBorders(boolean check) {
 		if(check){
-			requirementsToAddTablePanel.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 		}
 		else{
 			requirementsToAddTablePanel.setBorder(existingRequirementsTablePanel.getBorder());
