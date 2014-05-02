@@ -13,6 +13,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
@@ -137,25 +138,16 @@ public class MainViewTabController {
 	 * there are no other help tabs open.
 	 */
 	public void helpTab() {
-		/*for(int i = 0; i < mainView.getTabCount(); i++){
-			if(mainView.getComponentAt(i).getClass() == HelpPanel.class){
-				mainView.setSelectedComponent(mainView.getComponentAt(i));
-				return;
-			}
-		}
-		final HelpPanel helpPanel = new HelpPanel();
-		mainView.insertTab("Help", helpPanel, mainView.getTabCount());
-		mainView.invalidate();
-		mainView.repaint();
-		mainView.setSelectedComponent(helpPanel);
-		*/
 		if(helpWindow == null){
 			helpWindow = new JFrame("Planning Poker Help");
 			helpWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			helpWindow.setContentPane(new HelpPanel());
+			HelpPanel helpPanel = new HelpPanel();
+			helpPanel.setMinimumSize(new Dimension(800, 500));
+			helpWindow.setContentPane(helpPanel);
 			helpWindow.pack();   
 			helpWindow.setLocationByPlatform(true);
 			helpWindow.setVisible(true);
+			helpWindow.setMinimumSize(new Dimension(800, 500));
 		}
 		else{
 			helpWindow.setExtendedState(JFrame.NORMAL);
