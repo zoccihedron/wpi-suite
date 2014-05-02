@@ -70,5 +70,12 @@ public class ViewResultsPanel extends JPanel{
 	public boolean isReadyToClose() {
 		return true;
 	}
+	/**
+	 * get Game
+	 * @return the game for this tab
+	 */
+	public Game getGame() {
+		return game;
+	}
 	
 }
