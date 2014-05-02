@@ -167,7 +167,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.add(existingRequirementsTablePanel, constraints);
-					
+		
 		/*---------------------------------------------------------------------
 		 *                       - BUTTONS PANEL -
 		 * --------------------------------------------------------------------
@@ -320,7 +320,6 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 4;
 		this.add(requirementsToAddTablePanel, constraints);
 
-		
 		/*---------------------------------------------------------------------
 		 *                   	      ICONS
 		 * --------------------------------------------------------------------

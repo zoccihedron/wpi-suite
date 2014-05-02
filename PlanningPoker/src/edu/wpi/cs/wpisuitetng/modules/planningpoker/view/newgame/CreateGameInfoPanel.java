@@ -557,17 +557,6 @@ public class CreateGameInfoPanel extends JPanel {
 			}
 		});
 		
-		((JButton) datePicker.getComponent(1)).addKeyListener(new java.awt.event.KeyAdapter() {
-			@Override
-			public void keyTyped(final KeyEvent e) {
-				super.keyTyped(e);
-
-				// Check if the user pressed Enter
-				if (e.getKeyChar() == '\n') {
-					((JButton) datePicker.getComponent(1)).doClick();
-				}
-			}
-		});
 	}
 
 	/**
