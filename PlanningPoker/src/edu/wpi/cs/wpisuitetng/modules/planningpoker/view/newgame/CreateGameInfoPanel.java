@@ -30,6 +30,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -186,30 +187,6 @@ public class CreateGameInfoPanel extends JPanel {
 
 		// adds constraints
 		panelSetup();
-		
-		gameNameText.addKeyListener(new java.awt.event.KeyAdapter() {
-			@Override
-			public void keyTyped(final KeyEvent e) {
-				super.keyTyped(e);
-
-				// Check if the user pressed Enter
-				if (e.getKeyChar() == '\n') {
-					description.requestFocus();
-				}
-			}
-		});
-		
-		description.addKeyListener(new java.awt.event.KeyAdapter() {
-			@Override
-			public void keyTyped(final KeyEvent e) {
-				super.keyTyped(e);
-
-				// Check if the user pressed Enter
-				if (e.getKeyChar() == '\t') {
-					parentPanel.switchFocusToTable();
-				}
-			}
-		});
 	}
 
 	/**
@@ -516,6 +493,81 @@ public class CreateGameInfoPanel extends JPanel {
 		verificationChecker.start();
 		initDefaults();
 		checkFields();
+		
+		gameNameText.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					description.requestFocus();
+				}
+			}
+		});
+		
+		description.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\t' && !e.isShiftDown()) {
+					parentPanel.switchFocusToTable();
+				}
+				else if (e.getKeyChar() == '\t' && e.isShiftDown()) {
+					deckBox.requestFocus();
+				}
+			}
+		});
+		
+		chckbxDeadline.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					chckbxDeadline.doClick();
+				}
+			}
+		});
+		
+		rdbtnAm.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					rdbtnAm.doClick();
+				}
+			}
+		});
+		
+		rdbtnPm.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					rdbtnPm.doClick();
+				}
+			}
+		});
+		
+		((JButton) datePicker.getComponent(1)).addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					((JButton) datePicker.getComponent(1)).doClick();
+				}
+			}
+		});
 	}
 
 	/**

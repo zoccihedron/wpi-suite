@@ -520,13 +520,7 @@ public class DeckControlsPanel extends JPanel {
 	 */
 	public void clearCardValue() {
 		fieldAddCard.setText("");
-		// remove focus from textfield
-		try {
-			fieldAddCard.grabFocus();
-		} finally {
-			fieldDeckName.grabFocus();
-		}
-
+		fieldAddCard.grabFocus();
 	}
 
 	/**
