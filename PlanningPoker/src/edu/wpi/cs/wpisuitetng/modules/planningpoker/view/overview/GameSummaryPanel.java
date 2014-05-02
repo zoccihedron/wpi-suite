@@ -393,6 +393,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridx = 1;
 		constraints.gridy = 4;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
 		add(reportMessage, constraints);
 		
 		final JPanel extraPanel2 = new JPanel();
