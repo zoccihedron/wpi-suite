@@ -70,7 +70,7 @@ public class EstimateTreePanel extends JPanel{
 		
 		//button
 		sendEstimateToReqButton = new JButton();
-		sendEstimateToReqButton.setText("Send Selected Estimates");
+		sendEstimateToReqButton.setText("Update Requirement Manager");
 		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));
