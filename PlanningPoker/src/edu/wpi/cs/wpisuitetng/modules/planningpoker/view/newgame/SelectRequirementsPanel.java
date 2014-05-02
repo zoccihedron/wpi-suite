@@ -13,6 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -612,6 +613,17 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 		});
 		
+		EventQueue.invokeLater(new Runnable() {
+
+			   @Override
+			     public void run() {
+			         fldName.grabFocus();
+			         fldName.requestFocusInWindow();//or inWindow
+			         fldName.setSelectionStart(0);
+			         fldName.setSelectionEnd(fldName.getText().length());
+			     }
+			});
+		
 	}
 	
 	/**
@@ -631,6 +643,17 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqPanel.setVisible(true);
 		newReqPanel.setEnabled(true);
 		creatingNewReq = true;
+		
+		EventQueue.invokeLater(new Runnable() {
+
+			   @Override
+			     public void run() {
+			         fldName.grabFocus();
+			         fldName.requestFocusInWindow();//or inWindow
+			         fldName.setSelectionStart(0);
+			         fldName.setSelectionEnd(fldName.getText().length());
+			     }
+			});
 	}
 	
 	/**
