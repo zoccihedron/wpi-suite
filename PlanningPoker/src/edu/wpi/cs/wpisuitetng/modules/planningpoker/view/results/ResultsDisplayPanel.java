@@ -57,7 +57,6 @@ public class ResultsDisplayPanel extends JPanel {
 	private final JTextField finalEstimate;
 	private final JTextArea noteArea;
 	private final JButton saveFinalEstimateBtn;
-	private final JButton unselectEstimateBtn;
 	private final Game game;
 	private int reqid;
 	private final JLabel message;
@@ -99,9 +98,6 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
 		
 		
-		unselectEstimateBtn = new JButton("Unselect this estimate");
-		unselectEstimateBtn.setVisible(false);
-		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
 		
 		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
@@ -208,15 +204,15 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
 		
-		constraints.gridx = 0;
-		constraints.gridy = 6;
-		constraints.gridwidth = 2;
-		constraints.weightx = 0;
-		constraints.weighty = 0;
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.insets = new Insets(5, 0, 5, 0);
-		rightPanel.add(unselectEstimateBtn, constraints);
-		unselectEstimateBtn.addActionListener(new UnselectEstimateController(game, this));
+//		constraints.gridx = 0;
+//		constraints.gridy = 6;
+//		constraints.gridwidth = 2;
+//		constraints.weightx = 0;
+//		constraints.weighty = 0;
+//		constraints.fill = GridBagConstraints.BOTH;
+//		constraints.insets = new Insets(5, 0, 5, 0);
+//		rightPanel.add(unselectEstimateBtn, constraints);
+//		unselectEstimateBtn.addActionListener(new UnselectEstimateController(game, this));
 
 		
 
@@ -367,17 +363,17 @@ public class ResultsDisplayPanel extends JPanel {
 			finalEstimate.setEditable(false);
 		}
 		
-		if(estimate.isFinalEstimateSet() && 
-			!estimate.estimationHasBeenSent() && 
-			ConfigManager.getInstance().getConfig()
-				.getUserName().equals(game.getGameCreator())){
-			unselectEstimateBtn.setVisible(true);
-			unselectEstimateBtn.setEnabled(true);
-
-		} else {
-			unselectEstimateBtn.setVisible(false);
-
-		}
+//		if(estimate.isFinalEstimateSet() && 
+//			!estimate.estimationHasBeenSent() && 
+//			ConfigManager.getInstance().getConfig()
+//				.getUserName().equals(game.getGameCreator())){
+//			unselectEstimateBtn.setVisible(true);
+//			unselectEstimateBtn.setEnabled(true);
+//
+//		} else {
+//			unselectEstimateBtn.setVisible(false);
+//
+//		}
 	}
 
 	/**

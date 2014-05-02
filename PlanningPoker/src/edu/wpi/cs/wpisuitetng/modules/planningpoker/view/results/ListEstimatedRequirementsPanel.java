@@ -89,6 +89,44 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		});
 	}
 
+	
+	/**
+	 * Get the object that is currently selected by user
+	 * @return the object selected
+	 */
+	public DefaultMutableTreeNode getSelectedNode(){
+		return (DefaultMutableTreeNode) tree
+				.getLastSelectedPathComponent();
+	}
+	
+	
+	/**
+	 * Check if the node currently selected by the user is in
+	 * the category of "selected"
+	 * @return true if the current node is in "selected" category
+	 */
+	public boolean isASelectedRequirement(){
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
+				.getLastSelectedPathComponent();
+		boolean returnValue = false;
+		
+		if(node != null && node.isLeaf()){
+			final Object nodeInfo = node.getUserObject();
+
+			if (nodeInfo instanceof Requirement) {
+				Estimate currentSelectedEstimate = game.findEstimate(((Requirement)nodeInfo).getId());
+				if(!currentSelectedEstimate.estimationHasBeenSent() 
+						&& currentSelectedEstimate.isFinalEstimateSet()){
+					returnValue = true;
+				}
+			}
+		}
+		return returnValue;
+			
+		
+	}
+	
+	
 	/** Required by TreeSelectionListener interface. */
 	public void valueChanged(TreeSelectionEvent e) {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
@@ -105,9 +143,22 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		if (node.isLeaf()) {
 			if (nodeInfo instanceof Requirement) {
 				final Requirement req = (Requirement) nodeInfo;
-				controller.updateResultsInfo(req.getId());
+				int reqID = req.getId();
+				controller.updateResultsInfo(reqID);
+				Estimate currentSelectedEstimate = game.findEstimate(reqID);
+				currentSelectedEstimate.setGameID(game.getId());
+				controller.updateEstimate(currentSelectedEstimate);
+				
+				if(!currentSelectedEstimate.estimationHasBeenSent() 
+					&& currentSelectedEstimate.isFinalEstimateSet()){
+					controller.setUnselectButtonEnabled(true);
+				} else {
+					controller.setUnselectButtonEnabled(false);
+
+				}
 			}
 		}
+		
 	}
 
 	/**

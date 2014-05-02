@@ -13,9 +13,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.EstimateTreePanel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ListEstimatedRequirementsPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsDisplayPanel;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -24,14 +29,14 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 public class UnselectEstimateController implements ActionListener {
 	Game game;
-	ResultsDisplayPanel view;
+	ListEstimatedRequirementsPanel view;
 	
 	/**
 	 * The controller for marking an estimate as unselected
 	 * @param game the game currently under playing
 	 * @param view the view that contains this controller
 	 */
-	public UnselectEstimateController(Game game, ResultsDisplayPanel view){
+	public UnselectEstimateController(Game game, ListEstimatedRequirementsPanel view){
 		this.game = game;
 		this.view = view;
 		
@@ -39,7 +44,18 @@ public class UnselectEstimateController implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		final int reqid = view.getReqid();
+		DefaultMutableTreeNode node = view.getSelectedNode();
+		
+		if(node == null || node.isRoot()){
+			return;
+		}
+		
+		final Object nodeInfo = node.getUserObject();
+		if(nodeInfo instanceof Requirement) {
+			return;
+		}
+		
+		final int reqid = ((Requirement)nodeInfo).getId();
 		
 		final Estimate estimate = game.findEstimate(reqid);
 

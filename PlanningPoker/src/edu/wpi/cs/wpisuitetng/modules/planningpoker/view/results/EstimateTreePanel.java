@@ -18,11 +18,13 @@ import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.UnselectEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
+import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -47,6 +49,7 @@ import java.util.List;
 public class EstimateTreePanel extends JPanel{
 	private final ListEstimatedRequirementsPanel listEstimateReqPanel;
 	private final JButton sendEstimateToReqButton;
+	private final JButton unselectEstimateBtn;
 	private final EstimateTreePanel estimateTreePane;
 	private final int gameId;
 	
@@ -74,7 +77,7 @@ public class EstimateTreePanel extends JPanel{
 		add(listEstimateReqPanel, constraints);
 		
 		
-		//button
+		//buttons
 		sendEstimateToReqButton = new JButton();
 		sendEstimateToReqButton.setText("Send Selected Estimates");
 		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
@@ -89,6 +92,25 @@ public class EstimateTreePanel extends JPanel{
 		add(sendEstimateToReqButton, constraints);
 		sendEstimateButtonToolTip();
 		
+		
+		unselectEstimateBtn = new JButton("Unselect this estimate");
+		unselectEstimateBtn.setVisible(ConfigManager.getInstance().getConfig().getUserName().
+				equals(game.getGameCreator())
+				&& !game.getStatus().equals(GameStatus.CLOSED));
+		unselectEstimateBtn.setEnabled(false);
+		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
+		
+		constraints.anchor = GridBagConstraints.SOUTHWEST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		add(unselectEstimateBtn, constraints);
+		unselectEstimateBtn.addActionListener(controller);
+
+
+		
+		
+		//add pictures
 		try {
 			final Image img = ImageIO.read(getClass().getResource("sendMail.png"));
 			sendEstimateToReqButton.setIcon(new ImageIcon(img));
@@ -187,6 +209,17 @@ public class EstimateTreePanel extends JPanel{
 		else {
 			sendEstimateToReqButton.setToolTipText("Please set an estimate in order to select a requirement to send.");
 		}
+	}
+
+	
+	/**
+	 * Reset the unselect estimate button to be enabled or not
+	 * based on the given boolean
+	 * @param valid if the button is valid
+	 */
+	public void setUnselectButtonEnabled(boolean valid) {
+		unselectEstimateBtn.setEnabled(valid);
+
 	}
 	
 }
