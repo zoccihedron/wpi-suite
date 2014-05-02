@@ -17,19 +17,23 @@ import java.awt.event.ComponentListener;
 import java.util.List;
 
 import javax.swing.DropMode;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
+import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTreeCellRenderer;
 import edu.wpi.cs.wpisuitetng.network.Network;
 
 /**
@@ -45,7 +49,11 @@ implements TreeSelectionListener {
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private List<Game> games;
-	
+	private boolean hasRefreshed = false;
+	private Object selectedObject;
+	private boolean fakeSelected = false;
+
+
 	/**
 	 * Constructs the panel
 	 * @param draftGame Taken in to get all requirements for the game
@@ -53,7 +61,7 @@ implements TreeSelectionListener {
 	public ListGamePanel() {
 
 		this.setViewportView(tree);
-		
+
 
 		//Create the nodes.
 		this.addComponentListener(new ComponentListener()
@@ -74,7 +82,7 @@ implements TreeSelectionListener {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				refresh();
-				
+
 			}
 
 			@Override
@@ -90,16 +98,17 @@ implements TreeSelectionListener {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode)
 				tree.getLastSelectedPathComponent();
 
-		if(!node.isLeaf() || node.isRoot()){
+		if(node.isRoot()){
 			refresh();
 		}
-		if(node.isLeaf() && !node.isRoot()){
+		if(node.isLeaf() && !node.isRoot()  && !fakeSelected){
 			final Object nodeInfo = node.getUserObject();
 			if(nodeInfo instanceof Game) {
 				final Game gme = (Game) nodeInfo;
 				OverviewPanelController.getInstance().updateGameSummary(gme);
 			}
 		}
+		fakeSelected = false;
 	}
 
 
@@ -107,8 +116,7 @@ implements TreeSelectionListener {
 	 * This method is used to refresh the requirements tree
 	 */
 	public void refresh(){
-		System.out.println("Refreshing Game Tree...");
-		
+
 
 		try{
 			if(Network.getInstance().getDefaultNetworkConfiguration() != null){
@@ -121,14 +129,25 @@ implements TreeSelectionListener {
 		catch(RuntimeException exception){
 			exception.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/**
 	 * This function updates the listGame tree
 	 */
 	public void updateTree(){
 		//makes a starting node
+		DefaultMutableTreeNode node = null;
+		if(hasRefreshed){
+			try{
+			node = (DefaultMutableTreeNode)
+					tree.getLastSelectedPathComponent();
+			selectedObject = node.getUserObject();
+			}
+			catch(NullPointerException e){
+				//Intentionally Left Blank
+			}
+		}
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 
 		games = PlanningPokerModel.getInstance().getAllGames();
 		DefaultMutableTreeNode gameNode = null;
@@ -138,32 +157,57 @@ implements TreeSelectionListener {
 		final DefaultMutableTreeNode gameEndedCategory = new DefaultMutableTreeNode("Ended");
 		final DefaultMutableTreeNode gameDraftCategory = new DefaultMutableTreeNode("Draft");
 		final DefaultMutableTreeNode gameClosedCategory = new DefaultMutableTreeNode("Archive");
-		
+
 		for(Game game: games){
 
+			String user = ConfigManager.getConfig().getUserName();
+			game.setMyGame(game.isCreator(user));
+			
 			// add new node to requirement tree
 			gameNode = new DefaultMutableTreeNode(game);
-			switch (game.getStatus()){
-				case IN_PROGRESS: 
-					gameInProgressCategory.add(gameNode);
-					break;
-				case DRAFT: 
-					gameDraftCategory.add(gameNode);
-					break;
-				case ENDED: 
-					gameEndedCategory.add(gameNode);
-					break;
-				case CLOSED:
-					gameClosedCategory.add(gameNode);
-					break;
+			if(selectedObject != null) {
+				if(selectedObject instanceof Game){
+					if(((Game) selectedObject).getId() == game.getId()){
+						node = gameNode;
+					}
+				}
 			}
-
+			switch (game.getStatus()){
+			case IN_PROGRESS: 
+				gameInProgressCategory.add(gameNode);
+				break;
+			case DRAFT: 
+				gameDraftCategory.add(gameNode);
+				break;
+			case ENDED: 
+				gameEndedCategory.add(gameNode);
+				break;
+			case CLOSED:
+				gameClosedCategory.add(gameNode);
+				break;
+			}
+			if(selectedObject != null) {
+				if(selectedObject instanceof String){
+					if(((String) selectedObject).equals("Ended")){
+						node = gameEndedCategory;
+					}
+					else if(((String) selectedObject).equals("Draft")){
+						node = gameDraftCategory;
+					}
+					else if(((String) selectedObject).equals("Archive")){
+						node = gameClosedCategory;
+					}
+					else if(((String) selectedObject).equals("In Progress")){
+						node = gameInProgressCategory;
+					}
+				}
+			}
 			top.add(gameDraftCategory);
 			top.add(gameInProgressCategory);
 			top.add(gameEndedCategory);
 			top.add(gameClosedCategory);
 		}
-		
+
 		//create the tree with the top node as the top
 		tree = new JTree(top); 
 		//have all of the nodes expand automatically after refreshing, except for the
@@ -176,15 +220,29 @@ implements TreeSelectionListener {
 		tree.setToggleClickCount(0);
 
 		//set to custom cell renderer so that icons make sense
-		tree.setCellRenderer(new CustomTreeCellRenderer());
+		tree.setCellRenderer(new GameTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
 
 		tree.setDragEnabled(true);
 		tree.setDropMode(DropMode.ON);
 
-		this.setViewportView(tree); //make panel display the tree
+		if(node != null){
+			final TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(node);
+			final TreePath tpath = new TreePath(nodes);
+			fakeSelected = true;
+			tree.setSelectionPath(tpath);
+		}
 
-		System.out.println("# of Games:" + games.size());
-		System.out.println("finished refreshing the tree");
+		this.setViewportView(tree); //make panel display the tree
+		
+		hasRefreshed = true;
+	}
+
+	public List<Game> getGames() {
+		return games;
+	}
+
+	public void setGames(List<Game> games) {
+		this.games = games;
 	}
 }

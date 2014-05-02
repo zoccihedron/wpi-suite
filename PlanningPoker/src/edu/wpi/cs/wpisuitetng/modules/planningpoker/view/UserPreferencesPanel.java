@@ -56,14 +56,15 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
  * @author Code on Bleu
  * @version Apr 10, 2014
  */
+@SuppressWarnings("serial")
 public class UserPreferencesPanel extends JPanel {
 
 	private final JPanel preferencesPanel;
 	private final JPanel titlePanel;
+	private final JPanel emailPanel;
 	private final JTextField emailField;
 	private final JLabel lblTitle;
 	private final JLabel lblAllow;
-	private final JLabel lblUserInfo;
 	private final JLabel lblEmailCheck;
 	private final JLabel lblPrefstatus;
 	private final JLabel lblEmail;
@@ -73,7 +74,7 @@ public class UserPreferencesPanel extends JPanel {
 	private Pattern pattern;
 	private Matcher matcher;
 	private final String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+			+ "[A-Za-z0-9-]+([_A-Za-z0-9-])*+(\\.[_A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private boolean emailVerified = true;
 	private final UserPreferencesPanel userPreferencesPane = this;
 	private String initEmail = "";
@@ -90,7 +91,7 @@ public class UserPreferencesPanel extends JPanel {
 		add(preferencesPanel, BorderLayout.CENTER);
 		final GridBagLayout gbl_panel = new GridBagLayout();
 
-		gbl_panel.columnWidths = new int[]{21, 31, 86, 40, 86, 0, 0, 0, 0};
+		gbl_panel.columnWidths = new int[]{15, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{39, 21, 33, 21, 23, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]
 				{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -100,42 +101,40 @@ public class UserPreferencesPanel extends JPanel {
 
 		titlePanel = new JPanel();
 		final GridBagConstraints gbc_titlePanel = new GridBagConstraints();
-		gbc_titlePanel.insets = new Insets(0, 0, 5, 5);
-		gbc_titlePanel.gridwidth = 3;
+		gbc_titlePanel.insets = new Insets(0, 33, 5, 0);
+		gbc_titlePanel.gridwidth = 4;
 		gbc_titlePanel.gridx = 1;
 		gbc_titlePanel.gridy = 0;
 		preferencesPanel.add(titlePanel, gbc_titlePanel);
 		lblTitle = new JLabel("User Preferences");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titlePanel.add(lblTitle);
-
-		lblUserInfo = new JLabel("User name: " + 
-				ConfigManager.getInstance().getConfig().getUserName());
-		lblUserInfo.setVerticalAlignment(SwingConstants.BOTTOM);
-		final GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
-		gbc_lblUserInfo.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUserInfo.gridwidth = 3;
-		gbc_lblUserInfo.gridx = 1;
-		gbc_lblUserInfo.gridy = 0;
-		preferencesPanel.add(lblUserInfo, gbc_lblUserInfo);
-
-
-		lblAllow = new JLabel("Allow:");
+		
+		lblAllow = new JLabel("Receive Notifications Via:");
 		lblAllow.setVerticalAlignment(SwingConstants.BOTTOM);
 		final GridBagConstraints gbc_lblAllow = new GridBagConstraints();
 		gbc_lblAllow.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAllow.gridx = 1;
 		gbc_lblAllow.gridy = 1;
 		preferencesPanel.add(lblAllow, gbc_lblAllow);
-
+		
+		emailPanel = new JPanel();
+		final GridBagConstraints gbc_emailPanel = new GridBagConstraints();
+		gbc_emailPanel.gridy = 2;
+		gbc_emailPanel.gridx = 1;
+		gbc_emailPanel.gridwidth = 5;
+		gbc_emailPanel.fill = GridBagConstraints.CENTER;
+		gbc_emailPanel.anchor = GridBagConstraints.WEST;
+		preferencesPanel.add(emailPanel, gbc_emailPanel);
+		
 		checkBoxEmail = new JCheckBox("");
 		final GridBagConstraints gbc_checkBox = new GridBagConstraints();
 		gbc_checkBox.fill = GridBagConstraints.CENTER;
 		gbc_checkBox.anchor = GridBagConstraints.WEST;
 		gbc_checkBox.insets = new Insets(0, 0, 5, 5);
 		gbc_checkBox.gridx = 1;
-		gbc_checkBox.gridy = 2;
-		preferencesPanel.add(checkBoxEmail, gbc_checkBox);
+		gbc_checkBox.gridy = 1;
+		emailPanel.add(checkBoxEmail, gbc_checkBox);
 
 		lblEmail = new JLabel("Email: ");
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
@@ -144,17 +143,18 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblEmail.anchor = GridBagConstraints.WEST;
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.gridx = 2;
-		gbc_lblEmail.gridy = 2;
-		preferencesPanel.add(lblEmail, gbc_lblEmail);
+		gbc_lblEmail.gridy = 1;
+		emailPanel.add(lblEmail, gbc_lblEmail);
 
 		emailField = new JTextField();
 		final GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.CENTER;
+		gbc_textField.anchor = GridBagConstraints.WEST;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 2;
-		preferencesPanel.add(emailField, gbc_textField);
-		emailField.setColumns(10);
+		gbc_textField.gridy = 1;
+		emailPanel.add(emailField, gbc_textField);
+		emailField.setColumns(18);
 		emailField.setEnabled(false);
 
 		lblEmailCheck = new JLabel("Error*");
@@ -162,9 +162,9 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblEmailCheck.anchor = GridBagConstraints.WEST;
 		gbc_lblEmailCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmailCheck.gridx = 4;
-		gbc_lblEmailCheck.gridy = 2;
+		gbc_lblEmailCheck.gridy = 1;
 		lblEmailCheck.setVisible(false);
-		preferencesPanel.add(lblEmailCheck, gbc_lblEmailCheck);
+		emailPanel.add(lblEmailCheck, gbc_lblEmailCheck);
 
 		btnSubmit = new JButton("Submit");
 		final GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
@@ -195,8 +195,9 @@ public class UserPreferencesPanel extends JPanel {
 		preferencesPanel.add(lblPrefstatus, gbc_lblPrefstatus);
 
 
+		ConfigManager.getInstance();
 		final Request request = Network.getInstance().makeRequest("core/user/" + 
-				ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+				ConfigManager.getConfig().getUserName(), HttpMethod.GET);
 		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 		request.send();
 
@@ -277,7 +278,6 @@ public class UserPreferencesPanel extends JPanel {
 
 					@Override
 					public void responseSuccess(IRequest iReq) {
-						System.out.println("submit button clicked");
 					}
 
 					@Override
@@ -295,8 +295,9 @@ public class UserPreferencesPanel extends JPanel {
 				userPreferencesPane.setCurrentEmail(
 						emailField.getText(),
 						checkBoxEmail.isSelected());
-				lblPrefstatus.setText("Success! Your notification preferences have been updated.");
-				lblPrefstatus.setBackground(Color.BLUE);
+				final MainViewTabController mainViewTabController =
+						MainViewTabController.getInstance();
+				mainViewTabController.closeTab(userPreferencesPane);
 
 			}
 

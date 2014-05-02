@@ -18,8 +18,6 @@ import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
-
 
 /**
  * This class acts as a record of each requirement. 
@@ -42,6 +40,7 @@ public class Estimate {
 	private int finalEstimate = 0;
 	private String note = "";
 	private Map<String, List<Boolean>> userCardSelection;
+	private boolean isFinalEstimationSet = false;
 	
 	/**
 	 * Constructor for an estimate object
@@ -62,14 +61,6 @@ public class Estimate {
 	 */
 	public int getReqID() {
 		return reqID;
-	}
-
-	/**
-	 * update new requirement
-	 * @param requirement the given requirement
-	 */
-	public void setRequirement(Requirement requirement) {
-		reqID = requirement.getId();
 	}
 	
 	/**
@@ -293,10 +284,13 @@ public class Estimate {
 			return median;
 		}
 		if(length % 2 == 0){
-			median = ((double) estimates.get(halfLength) + (double)estimates.get(halfLength - 1)) / 2;
+			int mid1 = estimates.get(length / 2);
+			int mid2 = estimates.get((length / 2) - 1);
+			median = (mid1 + mid2) / 2.0;
 		}
 		else {
-			median = (double)estimates.get(halfLength);
+			int mid = estimates.get(length / 2);
+			median = (double)mid;
 		}
 		return median;
 	}
@@ -331,10 +325,19 @@ public class Estimate {
 	 */
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
-		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		copyEst.gameModifiedVersion = gameModifiedVersion;
+		if (userWithEstimate != null)
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		}
+		else
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>();
+		}
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
+		copyEst.isFinalEstimationSet = isFinalEstimationSet;
 		copyEst.sentBefore = sentBefore;
 		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
 		copyEst.note = note;
@@ -389,7 +392,7 @@ public class Estimate {
 	 * @return true if it's been set
 	 */
 	public boolean isFinalEstimateSet() {
-		return (finalEstimate != 0);
+		return isFinalEstimationSet;
 	}
 
 	/**
@@ -404,8 +407,16 @@ public class Estimate {
 	 */
 	public void setFinalEstimate(int finalEstimate) {
 		this.finalEstimate = finalEstimate;
+		isFinalEstimationSet = true;
 	}
 
+	/**
+	 * Unselect this estimate so that it could show up in
+	 * "unselected" category in result panel
+	 */
+	public void unSelectFinalEstimate(){
+		isFinalEstimationSet = false;
+	}
 
 	/**
 	 * Get state of every card (whether each card is selected or not)
@@ -479,5 +490,27 @@ public class Estimate {
 	 */
 	public void setSentBefore(boolean sentBefore) {
 		this.sentBefore = sentBefore;
+	}
+	
+	/**
+	 * Returns the number of estimates voted for this requirement
+	 * @return number of estimates
+	 */
+	public int getMaxVoteCount(){
+		return userWithEstimate.entrySet().size();
+	}
+	
+	/**
+	 * Returns the number of estimates voted for this requirement
+	 * @return number of estimates
+	 */
+	public int getVoteCount(){
+		int count = 0;
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			if(temp.getValue() >= 0){
+				count++;
+			}
+		}
+		return count;
 	}
 }

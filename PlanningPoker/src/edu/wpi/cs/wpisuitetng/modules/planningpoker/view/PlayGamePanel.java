@@ -38,7 +38,7 @@ public class PlayGamePanel extends JPanel{
 	private final ListRequirementsPanel listRequirementsPanel;
 	private final EstimationPane estimationPane;
 	private final JSplitPane splitPane;
-
+	private final Game game;
 	/**
 	 * Constructs the PlayGamePanel with the given game
 	 *
@@ -46,6 +46,7 @@ public class PlayGamePanel extends JPanel{
 	 */
 	public PlayGamePanel(Game game)
 	{
+		this.game = game;
 		setLayout(new BorderLayout());
 
 		final PlayGameController playGameController = new PlayGameController();
@@ -60,6 +61,13 @@ public class PlayGamePanel extends JPanel{
 
 		add(splitPane, BorderLayout.CENTER);
 
+	}
+	/**
+	 * getter for game
+	 * @return game used for game
+	 */
+	public Game getGame(){
+		return game;
 	}
 
 	/**
@@ -85,7 +93,7 @@ public class PlayGamePanel extends JPanel{
 						JOptionPane.QUESTION_MESSAGE,
 						null, options, options[1]);
 
-				return i == 0; 
+				return (i == 0);
 			}
 		}
 		else return true;

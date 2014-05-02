@@ -9,20 +9,20 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.modeltest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import edu.wpi.cs.wpisuitetng.modules.core.models.User;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
@@ -46,22 +46,24 @@ public class GameTest {
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(start.getYear(), 1,1);
 		Date end = endTime.getTime();
-		game1 = new Game(game1name,start,end, "default");
+		game1 = new Game(game1name,start,end, -2);
+		
 		
 		String game2name = "Game2";
-		game2 = new Game(game2name,start,end, "default");
+		game2 = new Game(game2name,start,end, -2);
 
 		dummyUser = new User("Bob", "bob", "abc123", 1);
 
 		dummyUser2 = new User("Bill", "bill", "abc123", 1);
 		
+		game1.setGameCreator(dummyUser2.getUsername());
 		
 		Estimate est1 = new Estimate(1, game1.getId());		
 		game1.addEstimate(est1);
-		
+		game1.addUser(dummyUser.getUsername());
+		game1.addUser(dummyUser2.getUsername());
 		est1.addUser(dummyUser.getUsername());
 		est1.addUser(dummyUser2.getUsername());
-		
 	}
 
 	@Test
@@ -70,15 +72,15 @@ public class GameTest {
 		
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
-		endTime.set(start.getYear(), 1,1);
+		endTime.set(start.getYear() + 1, 1,1);
 		Date end = endTime.getTime();
 		
-		Game testGameConstructor = new Game("test",start,end, "default");
+		Game testGameConstructor = new Game("test",start,end, -2);
 		
 		assertEquals("test", testGameConstructor.getName());
 		assertEquals(start, testGameConstructor.getStart());
 		assertEquals(end, testGameConstructor.getEnd());
-		assertEquals("default", testGameConstructor.getDeck());
+		assertEquals(-2, testGameConstructor.getDeck());
 		
 		assertEquals(0, testGameEmptyConstructor.getId());
 		
@@ -164,19 +166,127 @@ public class GameTest {
 	
 	
 	@Test
-	public void testJSON(){
+	public void JSONtest(){
 		Date start = new Date();
 		Calendar endTime = new GregorianCalendar();
 		endTime.set(start.getYear(), 1,1);
 		Date end = endTime.getTime();
 		
-		Game testGameConstructor = new Game("test",start,end, "default");
+		Game testGameConstructor = new Game("test",start,end, -2);
 		String jsonMessage = testGameConstructor.toJSON();
 		Game fromMessage = Game.fromJson(jsonMessage);
 		
 		assertEquals(testGameConstructor.getName(), fromMessage.getName());
-		assertEquals(testGameConstructor.getStart(), fromMessage.getStart());
-		assertEquals(testGameConstructor.getEnd(), fromMessage.getEnd());
 		assertEquals(testGameConstructor.getDeck(), fromMessage.getDeck());
 	}
+	
+	@Test 
+	public void identityTest(){
+		assertTrue(game1.identify(0));
+		assertFalse(game1.identify(11));
+		assertTrue(game1.identify("0"));
+		assertFalse(game1.identify("11"));
+		assertTrue(game1.identify(game1));
+	}
+	
+	@Test
+	public void copyTest(){
+		Game copy = new Game();
+		copy.copyFrom(game1);
+		
+		assertEquals(copy.getName(), game1.getName());
+		assertEquals(copy.getParticipants(), game1.getParticipants());
+		assertEquals(copy.getGameCreator(), game1.getGameCreator());
+		assertEquals(copy.getDescription(), game1.getDescription());
+		assertEquals(copy.getRequirements(), game1.getRequirements());
+		assertEquals(copy.getStart(), game1.getStart());
+		assertEquals(copy.getEnd(), game1.getEnd());
+		assertEquals(copy.getStatus(), game1.getStatus());
+		assertEquals(copy.isHasDeadline(), game1.isHasDeadline());
+	}
+	
+	@Test
+	public void changeCreatorTest(){
+		game1.changeCreator("Testing123");
+		assertEquals("Testing123", game1.getGameCreator());
+		
+		//Incorrect change, is already creator
+		game1.changeCreator("Testing123");
+		assertEquals("Testing123", game1.getGameCreator());
+		
+		//Participant becomes creator
+		game1.changeCreator(dummyUser.getUsername());
+		assertEquals(dummyUser.getUsername(), game1.getGameCreator());
+	}
+	
+	@Test
+	public void isParticipantTest(){
+		assertTrue(game1.isParticipant(dummyUser.getUsername()));
+		assertFalse(game1.isParticipant("Nope"));
+		
+		//There is a empty list of participants in game2
+		assertFalse(game2.isParticipant("Nope"));
+	}
+	
+	@Test
+	public void hasUserTest(){
+		assertTrue(game1.hasUser(dummyUser.getUsername()));
+		assertFalse(game1.hasUser("Nope"));
+	}
+	
+	@Test
+	public void addUserTest(){
+		
+		assertFalse(game1.hasUser("test"));
+		game1.addUser("test");
+		assertTrue(game1.hasUser("test"));
+		
+		//Throws false if adding a user already in game
+		assertFalse(game1.addUser(dummyUser2.getUsername()));
+
+	}
+	
+	@Test
+	public void addEstimateTest(){
+		assertNull(game1.findEstimate(2));
+		Estimate est2 = new Estimate(2, game1.getId());		
+		game1.addEstimate(est2);
+		assertNotNull(game1.findEstimate(2));
+	}
+	
+	@Test
+	public void updateStatusToClosedAfterDeadlineTest(){
+		Calendar endTime = new GregorianCalendar();
+		endTime.set(1970, 1,1);
+		Date end = endTime.getTime();
+		
+		
+		game1.setEnd(end);
+		game1.updateStatus();
+		assertEquals(GameStatus.DRAFT, game1.getStatus());
+		
+		game1.setHasDeadline(true);
+		game1.updateStatus();
+		assertEquals(GameStatus.ENDED,game1.getStatus());
+	}
+	
+	@Test
+	public void voteTest(){
+		
+		//The number of users in a game
+		assertEquals(2, game1.getMaxVotes());
+		
+		//Number of estimates in game
+		assertEquals(1, game1.getUserMaxVotes());
+		
+		//Votes in the game
+		assertEquals(0, game1.getVoteCount());
+		assertEquals(0, game1.getUserVoteCount(dummyUser.getUsername()));
+		
+		//Make an estimate as a user
+		game1.getEstimates().get(0).makeEstimate(dummyUser.getUsername(), 2);
+		assertEquals(1, game1.getVoteCount());
+		assertEquals(1, game1.getUserVoteCount(dummyUser.getUsername()));
+	}
 }
+

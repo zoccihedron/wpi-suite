@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
  * @author Codon Bleu
  * @version 1.00
  */
+@SuppressWarnings("serial")
 public class ResultsDisplayPanel extends JPanel {
 	private final JLabel mean;
 	private final JLabel meanNumber;
@@ -92,6 +93,7 @@ public class ResultsDisplayPanel extends JPanel {
 		maxNumber = new JLabel();
 		zeroEstimates = new JLabel();
 		zeroEstimatesNumber = new JLabel();
+
 		lblFinalEstimate = new JLabel();
 		notes = new JLabel();
 		emptyLabel = new JLabel();
@@ -105,10 +107,16 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
-		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
+		ConfigManager.getInstance();
+		saveFinalEstimateBtn.setVisible(ConfigManager.getConfig()
 				.getUserName().equals(game.getGameCreator()));
 		finalEstimate.setEditable(false);
-
+		saveFinalEstimateBtn.setEnabled(false);
+		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
+		
+		
+		
+		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
 			public boolean isCellEditable(int row, int column) {
@@ -306,13 +314,14 @@ public class ResultsDisplayPanel extends JPanel {
 			System.err.println(e.getMessage());
 		}
 
+		
 		constraints.gridx = 0;
 		constraints.gridy = 8;
 		constraints.gridwidth = 4;
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(message, constraints);
-
+		
 		constraints.gridx = 0;
 		constraints.gridy = 8;
 		constraints.gridwidth = 4;
@@ -320,7 +329,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
-
+		
 
 		constraints.gridx = 1;
 		constraints.gridy = 0;
@@ -341,6 +350,7 @@ public class ResultsDisplayPanel extends JPanel {
 				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
+				finalEstimateBtnToolTip();
 			}
 
 			@Override
@@ -351,6 +361,7 @@ public class ResultsDisplayPanel extends JPanel {
 				}
 				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
 						&& !game.getStatus().equals(GameStatus.CLOSED));
+				finalEstimateBtnToolTip();
 			}
 
 			@Override
@@ -377,8 +388,13 @@ public class ResultsDisplayPanel extends JPanel {
 				{
 					saveFinalEstimateBtn.setVisible(false);
 				}
-				saveFinalEstimateBtn.setEnabled(canMakeEstimate()
-						&& !game.getStatus().equals(GameStatus.CLOSED));
+				if(canMakeEstimate() && !game.getStatus().equals(GameStatus.CLOSED)) {
+					saveFinalEstimateBtn.setEnabled(true);
+				}
+				else {
+					saveFinalEstimateBtn.setEnabled(false);
+					saveFinalEstimateBtn.setToolTipText("The estimate has been set.");
+				}
 			}
 
 			@Override
@@ -395,10 +411,12 @@ public class ResultsDisplayPanel extends JPanel {
 	 * @param reqid
 	 *            is the id of the requirement in req manager
 	 */
+	@SuppressWarnings({ "rawtypes" })
 	public void updateData(int reqid) {
 		this.reqid = reqid;
 		final Estimate estimate = game.findEstimate(reqid);
-		if (!ConfigManager.getInstance().getConfig().getUserName()
+		ConfigManager.getInstance();
+		if (!ConfigManager.getConfig().getUserName()
 				.equals(game.getGameCreator())) {
 			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
@@ -461,6 +479,8 @@ public class ResultsDisplayPanel extends JPanel {
 			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
 		}
+		
+
 	}
 
 	/**
@@ -475,22 +495,27 @@ public class ResultsDisplayPanel extends JPanel {
 		boolean result = true;
 		if(!game.getStatus().equals(GameStatus.CLOSED))
 		{
-			if(ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator())){
+			ConfigManager.getInstance();
+			if(ConfigManager.getConfig().getUserName().equals(game.getGameCreator())){
 				try {
-					reportError("<html></html>");
+					reportError("<html> </html>");
 					estimate = Integer.parseInt(finalEstimate.getText());
-					if (estimate == estimateObject.getFinalEstimate()){
+					
+					if (estimate == estimateObject.getFinalEstimate() 
+							&& estimateObject.isFinalEstimateSet()){
 						reportError("");
 						result &= false;
 					}
 
 					if (result && estimate <= 0) {
-						reportError("<html>Final estimate must be an integer greater than 0.</html>");
+						reportError(
+								"<html>Final estimate must be an integer greater than 0.</html>");
 						result &= false;
 					}
 
 					if (result && estimateObject.isSentBefore()){
-						if(noteArea.getText().trim().isEmpty() && estimate != estimateObject.getFinalEstimate()){
+						if(noteArea.getText().trim().isEmpty() 
+								&& estimate != estimateObject.getFinalEstimate()){
 							reportError("<html>A note must be included when modifying"
 									+ " a sent final estimate.</html>");
 							result &= false;
@@ -500,6 +525,7 @@ public class ResultsDisplayPanel extends JPanel {
 				} catch (NumberFormatException e) {
 					reportError("<html>Final estimate must be a positive integer.</html>");
 					result = false;
+					System.err.println(e.getMessage());
 				}
 			}
 		}
@@ -563,5 +589,17 @@ public class ResultsDisplayPanel extends JPanel {
 	public void setNote(String note){
 		noteArea.setText(note);
 	}
-
+	
+	/**
+	 * Sets the tool tip on the final estimate button
+	 * based on whether or not the button is enabled.
+	 */
+	public void finalEstimateBtnToolTip() {
+		if(saveFinalEstimateBtn.isEnabled()) {
+			saveFinalEstimateBtn.setToolTipText("Click here to change the estimate.");
+		}
+		else {
+			saveFinalEstimateBtn.setToolTipText("Please enter an integer greater than 0.");
+		}
+	}
 }

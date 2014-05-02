@@ -11,6 +11,14 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,15 +30,12 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFac
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.List;
-
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.RequestObserver;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
+import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+import java.awt.Insets;
 /**
  * The panel which holds listEstimateRequirementsPanel
  * and the button for sending requirements to requirement
@@ -41,6 +46,7 @@ import java.util.List;
 public class EstimateTreePanel extends JPanel{
 	private final ListEstimatedRequirementsPanel listEstimateReqPanel;
 	private final JButton sendEstimateToReqButton;
+	private final JButton unselectEstimateBtn;
 	private final EstimateTreePanel estimateTreePane;
 	private final int gameId;
 	
@@ -68,20 +74,43 @@ public class EstimateTreePanel extends JPanel{
 		add(listEstimateReqPanel, constraints);
 		
 		
-		//button
-		sendEstimateToReqButton = new JButton();
-		sendEstimateToReqButton.setText("Send Selected Estimates");
-		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
+		//buttons
+		
+		
+		
+		unselectEstimateBtn = new JButton("Unselect Requirement");
+		unselectEstimateBtn.setVisible(ConfigManager.getInstance().getConfig().getUserName().
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));
-		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
-	
+		unselectEstimateBtn.setEnabled(false);
+		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		add(sendEstimateToReqButton, constraints);
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		add(unselectEstimateBtn, constraints);
+		unselectEstimateBtn.addActionListener(controller);
+
 		
+		sendEstimateToReqButton = new JButton();
+		sendEstimateToReqButton.setText("Update Requirement Manager");
+		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
+				equals(game.getGameCreator())
+				&& !game.getStatus().equals(GameStatus.CLOSED));
+		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
+		constraints.anchor = GridBagConstraints.SOUTHWEST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.insets = new Insets(3, 0, 0, 0);
+		add(sendEstimateToReqButton, constraints);
+		sendEstimateButtonToolTip();
+
+		
+		//add pictures
 		try {
 			final Image img = ImageIO.read(getClass().getResource("sendMail.png"));
 			sendEstimateToReqButton.setIcon(new ImageIcon(img));
@@ -90,6 +119,9 @@ public class EstimateTreePanel extends JPanel{
 			System.err.println(e.getMessage());
 		}
 		
+		unselectEstimateBtn.setSize(sendEstimateToReqButton.getWidth(), 
+				sendEstimateToReqButton.getHeight());
+	
 		
 		sendEstimateToReqButton.addActionListener(new ActionListener(){
 			@Override
@@ -101,11 +133,38 @@ public class EstimateTreePanel extends JPanel{
 					e.setGameID(gameId);
 					e.estimationSent(true);
 					e.setSentBefore(true);
+					
+					//in addition to sending this estimate to requirement manager,
+					//update information related to this estimate
+					final Request request = Network.getInstance().makeRequest(
+							"Advanced/planningpoker/game/sendToReq", 
+							HttpMethod.POST); // POST is update
+					request.setBody(e.toJSON()); 
+					request.addObserver(new RequestObserver(){
+						@Override
+						public void responseSuccess(IRequest iReq) {
+						}
+
+						@Override
+						public void responseError(IRequest iReq) {
+						}
+
+						@Override
+						public void fail(IRequest iReq, Exception exception) {
+						}
+						
+					}); 
+					request.send();
+
 				}
 				final RequirementManagerFacade facade = RequirementManagerFacade.getInstance();
 				facade.sendEstimates(estimates, estimateTreePane);
+				
+
+				
 				listEstimateReqPanel.refresh();
 				sendEstimateToReqButton.setEnabled(false);
+				sendEstimateToReqButton.setToolTipText("The selected requirements were sent to the requirement manager.");
 				controller.refreshResultsInfo();
 			}
 			
@@ -138,10 +197,32 @@ public class EstimateTreePanel extends JPanel{
 			}
 			else{
 				sendEstimateToReqButton.setEnabled(false);
-			}	
+			}
+			sendEstimateButtonToolTip();
 		}		
 	}
 	
+	/**
+	 * 
+	 */
+	public void sendEstimateButtonToolTip() {
+		if(sendEstimateToReqButton.isEnabled()) {
+			sendEstimateToReqButton.setToolTipText("Click here to send the selected requirements to the requirement manager.");
+		}
+		else {
+			sendEstimateToReqButton.setToolTipText("Please set an estimate in order to select a requirement to send.");
+		}
+	}
 
+	
+	/**
+	 * Reset the unselect estimate button to be enabled or not
+	 * based on the given boolean
+	 * @param valid if the button is valid
+	 */
+	public void setUnselectButtonEnabled(boolean valid) {
+		unselectEstimateBtn.setEnabled(valid);
+
+	}
 	
 }

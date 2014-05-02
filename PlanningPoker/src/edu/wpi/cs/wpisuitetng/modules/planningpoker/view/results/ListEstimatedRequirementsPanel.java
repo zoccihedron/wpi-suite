@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DropMode;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
@@ -26,7 +25,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.PlayGameController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
@@ -47,9 +45,7 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private final Game game;
-	private PlayGameController playGameController;
 	private final ViewResultsController controller;
-	private JButton sendSelectedRequirement;
 
 	/**
 	 * Constructs the panel
@@ -93,6 +89,44 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		});
 	}
 
+	
+	/**
+	 * Get the object that is currently selected by user
+	 * @return the object selected
+	 */
+	public DefaultMutableTreeNode getSelectedNode(){
+		return (DefaultMutableTreeNode) tree
+				.getLastSelectedPathComponent();
+	}
+	
+	
+	/**
+	 * Check if the node currently selected by the user is in
+	 * the category of "selected"
+	 * @return true if the current node is in "selected" category
+	 */
+	public boolean isASelectedRequirement(){
+		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
+				.getLastSelectedPathComponent();
+		boolean returnValue = false;
+		
+		if(node != null && node.isLeaf()){
+			final Object nodeInfo = node.getUserObject();
+
+			if (nodeInfo instanceof Requirement) {
+				Estimate currentSelectedEstimate = game.findEstimate(((Requirement)nodeInfo).getId());
+				if(!currentSelectedEstimate.estimationHasBeenSent() 
+						&& currentSelectedEstimate.isFinalEstimateSet()){
+					returnValue = true;
+				}
+			}
+		}
+		return returnValue;
+			
+		
+	}
+	
+	
 	/** Required by TreeSelectionListener interface. */
 	public void valueChanged(TreeSelectionEvent e) {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
@@ -109,9 +143,22 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		if (node.isLeaf()) {
 			if (nodeInfo instanceof Requirement) {
 				final Requirement req = (Requirement) nodeInfo;
-				controller.updateResultsInfo(req.getId());
+				int reqID = req.getId();
+				controller.updateResultsInfo(reqID);
+				Estimate currentSelectedEstimate = game.findEstimate(reqID);
+				currentSelectedEstimate.setGameID(game.getId());
+				controller.updateEstimate(currentSelectedEstimate);
+				
+				if(!currentSelectedEstimate.estimationHasBeenSent() 
+					&& currentSelectedEstimate.isFinalEstimateSet()){
+					controller.setUnselectButtonEnabled(true);
+				} else {
+					controller.setUnselectButtonEnabled(false);
+
+				}
 			}
 		}
+		
 	}
 
 	/**
@@ -130,9 +177,9 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		DefaultMutableTreeNode sentCategory = null;
 
 		notSelectedCategory = new DefaultMutableTreeNode(
-				"Estimate not selected");
-		selectedCategory = new DefaultMutableTreeNode("Estimate selected");
-		sentCategory = new DefaultMutableTreeNode("Estimate sent");
+				"Final estimate not set");
+		selectedCategory = new DefaultMutableTreeNode("Final estimate set");
+		sentCategory = new DefaultMutableTreeNode("Final estimate sent");
 
 		final String user = ConfigManager.getInstance().getConfig().getUserName();
 		for (Requirement req : requirements) {
@@ -141,21 +188,16 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 			if (game.getRequirements().contains(req.getId())) {
 				for (Estimate e : game.getEstimates()) {
 					if (e.getReqID() == req.getId()) {
-						if (!e.estimationHasBeenSent()
-								&& e.getFinalEstimate() == 0) {
+						if (!e.isFinalEstimateSet()) {
 							reqNode = new DefaultMutableTreeNode(req);
 							notSelectedCategory.add(reqNode);
 						} else if (!e.estimationHasBeenSent()
-								&& e.getFinalEstimate() != 0) {
-							System.out
-									.println("---------add element to selected");
+								&& e.isFinalEstimateSet()) {
 							reqNode = new DefaultMutableTreeNode(req);
 							selectedCategory.add(reqNode);
 						} else { // estimation is sent
 							reqNode = new DefaultMutableTreeNode(req);
 							sentCategory.add(reqNode);
-							System.out
-									.println("-----------add element to sent");
 						}
 					}
 				}
@@ -188,8 +230,6 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); // make panel display the tree
-
-		System.out.println("finished refreshing the tree");
 	}
 
 	/**
@@ -199,7 +239,7 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 	public List<Estimate> getSelectedEstimates() {
 		final List<Estimate> estimates = new ArrayList<Estimate>();
 		for (Estimate e : game.getEstimates()) {
-			if (!e.estimationHasBeenSent() && e.getFinalEstimate() != 0) {
+			if (!e.estimationHasBeenSent() && e.isFinalEstimateSet()) {
 				estimates.add(e);
 
 			}

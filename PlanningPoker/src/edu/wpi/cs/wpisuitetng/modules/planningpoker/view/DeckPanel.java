@@ -15,6 +15,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -30,11 +32,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame.ViewSumController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
@@ -54,7 +58,9 @@ public class DeckPanel extends JScrollPane {
 	private String currentEstimate;
 	private final List<JToggleButton> listOfButtons = new ArrayList<JToggleButton>();
 	private boolean isDeckView;
+	private boolean isMultipleSelection = true;
 	private final ViewSumController controller;
+	private Timer getDeckTimer = null;
 	
 	/**
 	 * Constructs the DeckPanel
@@ -63,9 +69,11 @@ public class DeckPanel extends JScrollPane {
 	 * @param controller the view sum controller
 	 * @param deck name of the deck
 	 */
-	public DeckPanel(String deck, ViewSumController controller) {
+
+	public DeckPanel(final int deck, ViewSumController controller) {
 		this.controller = controller;
-		if(deck.equals("default")){
+		if(deck == -2){
+
 
 			final ArrayList<Integer>defaultDeckCards = new ArrayList<Integer>();
 			defaultDeckCards.add(0);
@@ -80,12 +88,48 @@ public class DeckPanel extends JScrollPane {
 			final Deck defaultDeck = new Deck("default", true, defaultDeckCards);
 			this.setViewportView(deckVersion(defaultDeck));
 		}
-		else {
+		else if(deck == -1){
 			this.setViewportView(textVersion());
+		}
+		else
+		{
+			Deck tempDeck;
+			tempDeck = ManageDeckController.getInstance().getDeckWithId(deck);
+			if(tempDeck == null){
+				getDeckTimer = new Timer(1000, new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+					Deck tempDeck;
+					tempDeck = ManageDeckController.getInstance().getDeckWithId(deck);
+						if(tempDeck != null)
+						{
+							stopTimer();
+							setViewportView(deckVersion(tempDeck));
+							isMultipleSelection = tempDeck.canSelectMultipleCards();
+						}
+						
+					}
+				});
+				getDeckTimer.start();
+			}
+			else{
+			this.setViewportView(deckVersion(tempDeck));
+			isMultipleSelection = tempDeck.canSelectMultipleCards();
+			}
+			
 		}
 		disableVoting();
 	}
-
+	
+	/**
+	 * stop timer that checks for deck
+	 * @param editable
+	 */
+	private void stopTimer(){
+		getDeckTimer.stop();
+	}
+	
 	public String getEstimateField() {
 		return estimateField.getText();
 	}
@@ -171,7 +215,7 @@ public class DeckPanel extends JScrollPane {
 			final JToggleButton cardToAdd = new JToggleButton(Integer.toString(cards
 					.get(i)), img);
 			
-			final Border unselectedBorder = BorderFactory.createLineBorder(Color.WHITE, 3);
+			final Border unselectedBorder = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1), BorderFactory.createLineBorder(Color.WHITE, 2));
 			final Border selectedBorder = BorderFactory.createLineBorder(Color.GREEN, 3);
 			
 			cardToAdd.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -248,6 +292,13 @@ public class DeckPanel extends JScrollPane {
 		controller.updateSum(result);
 	}
 	
+	/**
+	 * @return the listOfButtons
+	 */
+	public List<JToggleButton> getListOfButtons() {
+		return listOfButtons;
+	}
+
 	/**
 	 * Displays the old estimate made by the user in the voting text field.
 	 * 
@@ -341,6 +392,10 @@ public class DeckPanel extends JScrollPane {
 		if(isDeckView){
 			this.getViewport().setVisible(true);
 		}
+	}
+	
+	public boolean isMultipleSelection() {
+		return isMultipleSelection;
 	}
 
 }

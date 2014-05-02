@@ -1,0 +1,15 @@
+   To create a new game, click on the "New Game" button on the toolbar at the top of the screen. A new game with an automatically-generated name and deadline will be created but not saved, giving you the opportunity to customise the game.
+   
+   The "Title" field will be automatically populated with the current time; however, you can edit this field to name your game whatever you would like. Don't forget to add a description as well! A description is not required, but it may be useful to both users and you later.
+   
+   Next, select your deadline. Choose a date from the date picker and a time from the drop-down menus. Make sure that you have selected AM or PM for your deadline time. If you don't want the game to end on a deadline, simply un-check the box labeled "Deadline".
+   
+   You can also choose which deck of cards you want your users to play with in this game. The default options include the "default" deck (which includes the first few terms of the Fibonacci sequence) and the "Text Entry" deck, which allows users to type in their own estimates. You can create your own decks as well. For more information on this, see "Deck Manager".
+   
+   Finally, select which requirements you want users to vote on. All requirements that are in the backlog of your requirements manager will be display on the right-hand side of the window. To add a requirement to the game, click on it, and then click "Add". If you wish to remove an added requirement, select that requirement and then click "Remove". You can select multiple requirements to add or remove at once.
+   
+   You can create a new requirement straight from the New Game tab by clicking on "New Requirement". When you are finishing editing your requirement, click "Save and Add". The requirement will be saved in the backlog of your Requirement Manager as well as added to the game.
+   
+   When you have finished editing your game, you can either save the game as a draft or start it right away. If the game is saved as a draft, no other users will be able to see it--it will only appear in your games. A game can be edited once it is started until a user submits an estimate, at which point the game is locked from editing.
+   
+   For more information on playing a game, see "Playing a Game" under "User Help".

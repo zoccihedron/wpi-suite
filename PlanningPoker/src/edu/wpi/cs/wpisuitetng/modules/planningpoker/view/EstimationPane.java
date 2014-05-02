@@ -13,11 +13,16 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -55,6 +61,7 @@ public class EstimationPane extends JPanel {
 	private JLabel lblReqName;
 	private JTextField fldReqName;
 	private JLabel lblReqDescription;
+	private JLabel lblDeckSelection;
 	private JTextArea fldReqDescription;
 	private JScrollPane scrollDescription;
 	private DeckPanel deckPanel;
@@ -96,6 +103,7 @@ public class EstimationPane extends JPanel {
 		lblReqName = new JLabel();
 		fldReqName = new JTextField();
 		lblReqDescription = new JLabel();
+		lblDeckSelection = new JLabel();
 		fldReqDescription = new JTextArea();
 		scrollDescription = new JScrollPane(fldReqDescription);
 		message = new JLabel();
@@ -107,6 +115,8 @@ public class EstimationPane extends JPanel {
 		
 		fldReqName.setEditable(false);
 		fldReqName.setBackground(Color.WHITE);
+		fldReqName.setMargin(new Insets(3, 3, 3, 3));
+		
 		fldReqDescription.setBorder(new JTextField().getBorder());
 		fldReqDescription.setEditable(false);
 		fldReqDescription.setLineWrap(true);
@@ -132,7 +142,7 @@ public class EstimationPane extends JPanel {
 		helpTitle.setText("Play Game");
 		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
 		
-		helpText.setText("To begin, please select a requirement from the tree on the left.");
+		helpText.setText("To begin, please select a requirement from the panel on the left.");
 		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		constraints.gridx = 0;
@@ -166,6 +176,7 @@ public class EstimationPane extends JPanel {
 
 		// NAME LABEL
 		lblReqName.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 5));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 1;
 		constraints.weightx = 0.0;
@@ -173,7 +184,6 @@ public class EstimationPane extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		add(lblReqName, constraints);
-		lblReqName.setBorder(new EmptyBorder(5, 0, 5, 10));
 
 		// NAME FIELD
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -220,7 +230,7 @@ public class EstimationPane extends JPanel {
 		currentVote = new JLabel();
 		currentVote.setText("Current Vote: " + 0);
 		add(currentVote, constraints);
-		if(game.getDeck().equals("text entry")){
+		if(game.getDeck() == -1){
 			currentVote.setVisible(false);
 		}
 		
@@ -233,15 +243,37 @@ public class EstimationPane extends JPanel {
 		constraints.gridy = 5;
 		add(deckPanel, constraints);
 		
+		// DECK SELECTION LABEL
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		constraints.weightx = 0;
+		constraints.weighty = 0;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.insets = new Insets(5, 0, 5, 0);
+		add(lblDeckSelection, constraints);
+		
+		if(deckPanel.isDeckView()){
+			if(deckPanel.isMultipleSelection()){
+				lblDeckSelection.setText("Deck Settings: Multiple Selection");
+			}
+			else{
+				lblDeckSelection.setText("Deck Settings: Single Selection");
+			}
+		}
+		else {
+			lblDeckSelection.setVisible(false);
+		}
+		
 		// VOTE BUTTON
 		constraints.fill = GridBagConstraints.NONE;
 		voteButton.setAlignmentX(LEFT_ALIGNMENT);
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.gridwidth = 1;
+		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 0;
-		constraints.gridy = 6;
+		constraints.gridy = 7;
 		constraints.ipadx = 40;
 		add(voteButton, constraints);
 		
@@ -254,36 +286,22 @@ public class EstimationPane extends JPanel {
 		message.setMaximumSize(new Dimension(200, 25));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridx = 2;
-		constraints.gridy = 6;
+		constraints.gridy = 7;
 		constraints.weightx = 0.0;
 		constraints.gridwidth = 3;
 		add(message, constraints);
 		
 		this.setBorder(new EmptyBorder(10, 10, 10, 10));
-	
 		
-		// adds listener for live validation of the Estimate Field
-		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(
-				new DocumentListener() {
+		for(JToggleButton j : deckPanel.getListOfButtons()){
+			j.addMouseListener(new MouseAdapter(){
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				checkField();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				checkField();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				checkField(); 
-			}
-			
-		});
-
-		
+				public void mouseClicked(MouseEvent arg0) {
+					checkField();
+				}
+				
+			});
+		}
 
 		try {
 		    final Image img = ImageIO.read(getClass().getResource("vote.png"));
@@ -308,6 +326,7 @@ public class EstimationPane extends JPanel {
 		voteButton.addActionListener(new VoteActionController(this, game));
 		
 		voteButton.setEnabled(true);
+		voteButton.setToolTipText("Click here to vote!");
 
 		this.reqid = reqid;
 		try{
@@ -315,6 +334,7 @@ public class EstimationPane extends JPanel {
 			fldReqName.setText(req.getName());
 			
 			fldReqDescription.setText(req.getDescription());
+			fldReqDescription.setCaretPosition(0);
 			
 			deckPanel.clearCardsSelected();
 			deckPanel.displayOldEstimate(game, reqid);
@@ -323,6 +343,7 @@ public class EstimationPane extends JPanel {
 		}
 		catch(NotFoundException exception){
 			message.setText("Exception: Requirement Not Found");
+			System.err.println(exception.getMessage());
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
@@ -354,6 +375,7 @@ public class EstimationPane extends JPanel {
 		if(!deckPanel.hasDeckSelected()) {
 			reportError("<html>Error: Select a card.</html>");
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("Please select a card");
 			return false;
 		}
 		
@@ -364,28 +386,34 @@ public class EstimationPane extends JPanel {
 
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
+			System.err.println(e.getMessage());
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("Please enter an integer");
 			return false;
 		}
 
 		if(estimate < 0) {
 			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("Please enter an integer greater than 0");
 			return false;
 		}
 		
 		if(estimate == 0){
 			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
 			voteButton.setEnabled(true);
+			voteButton.setToolTipText("Click here to vote!");
 			return true;
 		}
 		
 		if(game.getStatus() == GameStatus.ENDED){
 			reportError("<html>Error: Game has ended</html>");
 			voteButton.setEnabled(false);
+			voteButton.setToolTipText("You cannot vote on an ended game.");
 			return false;
 		}
 		voteButton.setEnabled(true);
+		voteButton.setToolTipText("Click here to vote!");
 		return true;
 	}
 
@@ -413,7 +441,7 @@ public class EstimationPane extends JPanel {
 
 		} catch (NumberFormatException e){
 			reportError("<html>Error: Estimate must be an integer.</html>");
-
+			System.err.println(e.getMessage());
 		}
 		return 0;
 
@@ -437,7 +465,7 @@ public class EstimationPane extends JPanel {
 	 * @param value is the numerical value of the vote
 	 */
 	public void reportSuccess(int value) {
-		message.setText("<html>Success: Vote Updated! You voted " + value + "</html>");
+		message.setText("<html>Vote Updated! You voted " + value + "</html>");
 		message.setForeground(Color.BLUE);
 
 	}
