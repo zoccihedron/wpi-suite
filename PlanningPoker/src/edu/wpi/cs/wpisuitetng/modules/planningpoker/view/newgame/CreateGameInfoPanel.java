@@ -585,7 +585,7 @@ public class CreateGameInfoPanel extends JPanel {
 			gameNameText.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 			result = false;
 		} else {
-			gameNameText.setBorder(null);
+			gameNameText.setBorder(description.getBorder());
 			
 		}
 
