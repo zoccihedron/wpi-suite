@@ -177,9 +177,9 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		DefaultMutableTreeNode sentCategory = null;
 
 		notSelectedCategory = new DefaultMutableTreeNode(
-				"Estimate not selected");
-		selectedCategory = new DefaultMutableTreeNode("Estimate selected");
-		sentCategory = new DefaultMutableTreeNode("Estimate sent");
+				"Final estimate not set");
+		selectedCategory = new DefaultMutableTreeNode("Final estimate set");
+		sentCategory = new DefaultMutableTreeNode("Final estimate sent");
 
 		final String user = ConfigManager.getInstance().getConfig().getUserName();
 		for (Requirement req : requirements) {

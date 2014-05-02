@@ -41,7 +41,7 @@ public class CloseNewGameTabController implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		view.closeNewGameTab();
+		view.closeNewGameTab(true);
 	}
 
 
