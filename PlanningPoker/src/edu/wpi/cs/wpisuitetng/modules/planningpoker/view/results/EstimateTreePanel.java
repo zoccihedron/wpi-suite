@@ -62,7 +62,7 @@ public class EstimateTreePanel extends JPanel{
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = 1.0;
-		constraints.weighty = 1.0;
+		constraints.weighty = .8;
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		add(listEstimateReqPanel, constraints);
@@ -76,10 +76,10 @@ public class EstimateTreePanel extends JPanel{
 				&& !game.getStatus().equals(GameStatus.CLOSED));
 		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
 		
-		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.fill = GridBagConstraints.NONE;
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
+		constraints.weighty = .2;
 		add(sendEstimateToReqButton, constraints);
 		sendEstimateButtonToolTip();
 		
