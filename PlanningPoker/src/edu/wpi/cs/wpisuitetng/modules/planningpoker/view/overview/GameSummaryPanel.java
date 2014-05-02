@@ -162,7 +162,7 @@ public class GameSummaryPanel extends JPanel {
 		
 		
 		// Button to edit game
-		editGameButton = new JButton("Edit");
+		editGameButton = new JButton("Edit Game");
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
