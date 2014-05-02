@@ -20,6 +20,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -263,6 +265,24 @@ public class EstimationPane extends JPanel {
 		}
 		else {
 			lblDeckSelection.setVisible(false);
+			
+			deckPanel.getEstimateFieldComponent()
+			.getDocument().addDocumentListener(new DocumentListener(){
+
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					checkField();
+				}
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					checkField();
+				}
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					checkField();	
+				}
+			});
+			
 		}
 		
 		// VOTE BUTTON
@@ -290,6 +310,9 @@ public class EstimationPane extends JPanel {
 		constraints.weightx = 0.0;
 		constraints.gridwidth = 3;
 		add(message, constraints);
+		
+
+		
 		
 		this.setBorder(new EmptyBorder(10, 10, 10, 10));
 		

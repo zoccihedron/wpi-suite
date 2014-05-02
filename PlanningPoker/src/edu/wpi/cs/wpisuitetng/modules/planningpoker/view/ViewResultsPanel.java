@@ -58,6 +58,7 @@ public class ViewResultsPanel extends JPanel{
 		resultsPanel = new ResultsPanel(estimateTreePanel, game);
 		splitPane.setRightComponent(resultsPanel);
 		controller.setResultsPanel(resultsPanel);
+		controller.setEstimateTreePanel(estimateTreePanel);
 		
 		add(splitPane, BorderLayout.CENTER);
 
