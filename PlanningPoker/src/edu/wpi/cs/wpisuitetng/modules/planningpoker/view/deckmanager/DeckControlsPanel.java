@@ -162,7 +162,7 @@ public class DeckControlsPanel extends JPanel {
 		btnRemoveDeck.setToolTipText("Click here to permanently remove the deck.");
 
 		// REMOVE CARD BUTTON
-		btnRemoveCard = new JButton("Remove Card");
+		btnRemoveCard = new JButton("Remove Card(s)");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 2;
 		constraints.gridy = 2;
@@ -307,7 +307,7 @@ public class DeckControlsPanel extends JPanel {
 		deck = null;
 
 		btnAddCard.setEnabled(false);
-		
+			
 		final ActionListener renameDeckListener = new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -321,7 +321,7 @@ public class DeckControlsPanel extends JPanel {
 		
 		final Timer renameDeckTimer = new Timer(250, renameDeckListener);
 		renameDeckTimer.start();
-
+		
 		final ActionListener removeCardListener = new ActionListener() {
 
 			@Override
