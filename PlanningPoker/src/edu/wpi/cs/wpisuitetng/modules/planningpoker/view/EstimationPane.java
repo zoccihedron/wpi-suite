@@ -13,12 +13,16 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -287,30 +292,16 @@ public class EstimationPane extends JPanel {
 		add(message, constraints);
 		
 		this.setBorder(new EmptyBorder(10, 10, 10, 10));
-	
 		
-		// adds listener for live validation of the Estimate Field
-		deckPanel.getEstimateFieldComponent().getDocument().addDocumentListener(
-				new DocumentListener() {
+		for(JToggleButton j : deckPanel.getListOfButtons()){
+			j.addMouseListener(new MouseAdapter(){
 
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				checkField();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				checkField();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				checkField(); 
-			}
-			
-		});
-
-		
+				public void mouseClicked(MouseEvent arg0) {
+					checkField();
+				}
+				
+			});
+		}
 
 		try {
 		    final Image img = ImageIO.read(getClass().getResource("vote.png"));
