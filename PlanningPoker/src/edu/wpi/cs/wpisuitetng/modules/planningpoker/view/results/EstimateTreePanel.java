@@ -17,14 +17,11 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.UnselectEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ViewResultsController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.facade.RequirementManagerFacade;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -34,6 +31,7 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -89,6 +87,9 @@ public class EstimateTreePanel extends JPanel{
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
 		add(sendEstimateToReqButton, constraints);
 		sendEstimateButtonToolTip();
 		
@@ -104,11 +105,11 @@ public class EstimateTreePanel extends JPanel{
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
+		constraints.insets = new Insets(3, 0, 0, 0);
+		
 		add(unselectEstimateBtn, constraints);
 		unselectEstimateBtn.addActionListener(controller);
 
-
-		
 		
 		//add pictures
 		try {
@@ -119,6 +120,9 @@ public class EstimateTreePanel extends JPanel{
 			System.err.println(e.getMessage());
 		}
 		
+		unselectEstimateBtn.setSize(sendEstimateToReqButton.getWidth(), 
+				sendEstimateToReqButton.getHeight());
+	
 		
 		sendEstimateToReqButton.addActionListener(new ActionListener(){
 			@Override

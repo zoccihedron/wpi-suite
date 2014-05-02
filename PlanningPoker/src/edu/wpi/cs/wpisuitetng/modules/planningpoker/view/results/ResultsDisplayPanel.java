@@ -12,8 +12,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -34,15 +32,9 @@ import javax.swing.table.DefaultTableModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.ResultsDisplayController;
-import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results.UnselectEstimateController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
-import edu.wpi.cs.wpisuitetng.network.Network;
-import edu.wpi.cs.wpisuitetng.network.Request;
-import edu.wpi.cs.wpisuitetng.network.RequestObserver;
-import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
-import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * Panel for displaying detailed results, the right subpanel in ResultsPanel
@@ -80,7 +72,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 		mean = new JLabel();
 		median = new JLabel();
-		message = new JLabel();
+		message = new JLabel("  ");
 		lblFinalEstimate = new JLabel();
 		finalEstimate = new JTextField();
 		noteArea = new JTextArea();
@@ -204,18 +196,6 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
 		
-//		constraints.gridx = 0;
-//		constraints.gridy = 6;
-//		constraints.gridwidth = 2;
-//		constraints.weightx = 0;
-//		constraints.weighty = 0;
-//		constraints.fill = GridBagConstraints.BOTH;
-//		constraints.insets = new Insets(5, 0, 5, 0);
-//		rightPanel.add(unselectEstimateBtn, constraints);
-//		unselectEstimateBtn.addActionListener(new UnselectEstimateController(game, this));
-
-		
-
 
 		constraints.gridx = 1;
 		constraints.gridy = 0;
@@ -363,17 +343,7 @@ public class ResultsDisplayPanel extends JPanel {
 			finalEstimate.setEditable(false);
 		}
 		
-//		if(estimate.isFinalEstimateSet() && 
-//			!estimate.estimationHasBeenSent() && 
-//			ConfigManager.getInstance().getConfig()
-//				.getUserName().equals(game.getGameCreator())){
-//			unselectEstimateBtn.setVisible(true);
-//			unselectEstimateBtn.setEnabled(true);
-//
-//		} else {
-//			unselectEstimateBtn.setVisible(false);
-//
-//		}
+
 	}
 
 	/**

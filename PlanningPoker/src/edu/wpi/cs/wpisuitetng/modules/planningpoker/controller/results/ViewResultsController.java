@@ -14,12 +14,9 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.results;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Estimate;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.EstimateTreePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results.ResultsPanel;
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -73,14 +70,18 @@ public class ViewResultsController implements ActionListener {
 	
 	}
 	
+	/**
+	 * Update estimate value stored in this class
+	 * @param estimate the estimate passed in
+	 */
 	public void updateEstimate(Estimate estimate){
-		this.currentSelectedEstimate = estimate;
+		currentSelectedEstimate = estimate;
 	}
 	
 
 	
 	/**
-	 * Thie sets the resultsPanel the controller will update
+	 * The sets the resultsPanel the controller will update
 	 * @param resultsPanel The view
 	 */
 	public void setResultsPanel(ResultsPanel resultsPanel){
@@ -105,13 +106,16 @@ public class ViewResultsController implements ActionListener {
 	
 	/**
 	 * Updates the GUI to display the results of the req last selected
-	 * @param reqid The req to display
 	 */
 	public void refreshResultsInfo(){
 		resultsPanel.refreshDisplay();
 	}
 	
-	
+	/**
+	 * Reset the unselect estimate button in estimate tree 
+	 * panel to be enabled or not based on the given boolean
+	 * @param valid if the button is valid
+	 */
 	public void setUnselectButtonEnabled(boolean valid){
 		estimateTreePanel.setUnselectButtonEnabled(valid);
 	}
