@@ -79,6 +79,7 @@ public class OverviewPanelController {
 	 */
 	public void startGame(Game game){
 		game.setStatus(GameStatus.IN_PROGRESS);
+		game.setModifiedVersion(game.getModifiedVersion() + 1);
 		// Send a request to the core to save this game
 		final Request request = Network.getInstance().makeRequest
 				("planningpoker/game", HttpMethod.POST);
@@ -86,6 +87,7 @@ public class OverviewPanelController {
 		request.setBody(game.toJSON());
 		request.send(); // send the request
 		updateGameSummary(game);
+		gameSummaryPanel.reportSuccess("<html>Game Started.</html>");
 		refreshListGames();
 	}
 

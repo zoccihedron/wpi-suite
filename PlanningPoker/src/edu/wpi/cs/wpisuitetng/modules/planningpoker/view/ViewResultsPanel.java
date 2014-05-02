@@ -58,6 +58,7 @@ public class ViewResultsPanel extends JPanel{
 		resultsPanel = new ResultsPanel(estimateTreePanel, game);
 		splitPane.setRightComponent(resultsPanel);
 		controller.setResultsPanel(resultsPanel);
+		controller.setEstimateTreePanel(estimateTreePanel);
 		
 		add(splitPane, BorderLayout.CENTER);
 
@@ -68,6 +69,13 @@ public class ViewResultsPanel extends JPanel{
 	 */
 	public boolean isReadyToClose() {
 		return true;
+	}
+	/**
+	 * get Game
+	 * @return the game for this tab
+	 */
+	public Game getGame() {
+		return game;
 	}
 	
 }
