@@ -293,6 +293,13 @@ public class DeckPanel extends JScrollPane {
 	}
 	
 	/**
+	 * @return the listOfButtons
+	 */
+	public List<JToggleButton> getListOfButtons() {
+		return listOfButtons;
+	}
+
+	/**
 	 * Displays the old estimate made by the user in the voting text field.
 	 * 
 	 * @param game
