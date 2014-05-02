@@ -12,7 +12,10 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.help;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.DropMode;
 import javax.swing.JPanel;
@@ -34,11 +37,13 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.view.overview.CustomTre
 @SuppressWarnings("serial")
 public class HelpPanel extends JPanel
 implements TreeSelectionListener {
-	private final HelpTopic helpInfoPane;
+	private HelpTopic helpInfoPane;
 	private final JTree tree;
+	private HelpTopicObject hto = null;
 
 	public HelpPanel() {
-		super(new GridLayout(1, 0));
+		this.setLayout(new GridBagLayout());
+		final GridBagConstraints constraints = new GridBagConstraints();
 		
 		//Create the nodes.
 		final DefaultMutableTreeNode top =
@@ -60,23 +65,60 @@ implements TreeSelectionListener {
 		final JScrollPane treeView = new JScrollPane(tree);
 
 		helpInfoPane = new HelpTopic();
-		final JScrollPane helpInfoView = new JScrollPane(helpInfoPane);
+		final JScrollPane helpInfoView = new JScrollPane();
+		helpInfoView.setViewportView(helpInfoPane);
+		helpInfoView.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		//Add the scroll panes to a split pane.
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPane.setLeftComponent(treeView);
 		splitPane.setRightComponent(helpInfoView);
 
-		final Dimension minimumSize = new Dimension(300, 500);
+		final Dimension minimumSize = new Dimension(300, 300);
 		helpInfoView.setMinimumSize(minimumSize);
 		treeView.setMinimumSize(minimumSize);
 		splitPane.setDividerLocation(300);
-		add(splitPane);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1.0;
+		constraints.weighty = 1.0;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		add(splitPane, constraints);
 		
 		for(int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
 		
+		this.addComponentListener(new ComponentListener() {
+			
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				// Do nothing
+				
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent arg0) {
+				helpInfoPane = new HelpTopic();
+				if(hto != null){
+					helpInfoPane.pullHelpInfo(hto);
+				}
+				helpInfoView.setViewportView(helpInfoPane);
+			}
+			
+			@Override
+			public void componentMoved(ComponentEvent arg0) {
+				// Do nothing
+				
+			}
+			
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
+				// Do nothing
+				
+			}
+		});
 	}
 
 	/** Required by TreeSelectionListener interface. */
@@ -88,7 +130,7 @@ implements TreeSelectionListener {
 
 		final Object nodeInfo = node.getUserObject();
 		if (node.isLeaf()) {
-			final HelpTopicObject hto = (HelpTopicObject)nodeInfo;
+			hto = (HelpTopicObject)nodeInfo;
 			helpInfoPane.pullHelpInfo(hto);
 		}
 	}
@@ -116,7 +158,7 @@ implements TreeSelectionListener {
 		category.add(topic);
 		
 		topic = new DefaultMutableTreeNode(new HelpTopicObject
-				("Choosing and Submitting Final Estimates",
+				("Submitting Final Estimates",
 						"finalEstimatesHelp.txt"));
 		category.add(topic);
 		
