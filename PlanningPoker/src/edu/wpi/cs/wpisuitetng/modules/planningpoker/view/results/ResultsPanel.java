@@ -36,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
  * @author Code On Bleu
  * @version 1.00
  */
+@SuppressWarnings("serial")
 public class ResultsPanel extends JPanel{
 
 	private final Game game;
@@ -167,7 +168,7 @@ public class ResultsPanel extends JPanel{
 		constraints.insets = new Insets(0, 20, 10, 20);
 		add(scrollPane, constraints);
 
-		// DISPLAY PANEL 
+		// DISPLAY PANEL
 		resultsDisplayPanel = new ResultsDisplayPanel(game, estimateTreePanel);
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
