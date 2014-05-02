@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -556,7 +557,17 @@ public class CreateGameInfoPanel extends JPanel {
 				}
 			}
 		});
-		
+
+		EventQueue.invokeLater(new Runnable() {
+
+		   @Override
+		     public void run() {
+		         gameNameText.grabFocus();
+		         gameNameText.requestFocusInWindow();//or inWindow
+		         gameNameText.setSelectionStart(0);
+		         gameNameText.setSelectionEnd(gameNameText.getText().length());
+		     }
+		});
 	}
 
 	/**
