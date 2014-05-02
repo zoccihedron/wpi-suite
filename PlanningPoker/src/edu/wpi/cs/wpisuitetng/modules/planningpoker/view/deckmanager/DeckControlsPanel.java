@@ -162,7 +162,7 @@ public class DeckControlsPanel extends JPanel {
 		btnRemoveDeck.setToolTipText("Click here to permanently remove the deck.");
 
 		// REMOVE CARD BUTTON
-		btnRemoveCard = new JButton("Remove Card");
+		btnRemoveCard = new JButton("Remove Card(s)");
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 2;
 		constraints.gridy = 2;
