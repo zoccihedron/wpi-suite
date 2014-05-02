@@ -57,7 +57,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
  * @author Code On Bleu
  * @version 1.0
  */
-@SuppressWarnings({ "serial" })
+@SuppressWarnings({ "serial", "rawtypes", "unchecked"})
 public class CreateGameInfoPanel extends JPanel {
 	private final MainViewTabController mainViewTabController;
 	private final NewGamePanel parentPanel;
@@ -80,7 +80,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
 	private Timer verificationChecker;
-	private List<Deck> decks;
+	private final List<Deck> decks;
 	
 	//Saved fields for checking page editing
 	private String defaultName;
@@ -156,7 +156,7 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 
 		// creates deck selector and sets it to default deck
-		List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
+		final List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
@@ -219,12 +219,12 @@ public class CreateGameInfoPanel extends JPanel {
 		
 	
 		// creates deck selector and sets it to default deck
-		List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
+		final List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
 		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
 		textEntry.setId(-1);
 		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
 		defaultDeck.setId(-2);
-		decks = new ArrayList<Deck>();		
+		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
 		for(Deck d:allDecks){
 			if(d.isUsable()){
@@ -563,7 +563,8 @@ public class CreateGameInfoPanel extends JPanel {
 			reportError("<html>*Pick at least one requirement.</html>");
 			result = false;
 			parentPanel.displayErrorBorders(true);
-			parentPanel.toolTipChanger("Please add at least one requirement.", "Please add at least one requirement.");
+			parentPanel.toolTipChanger("Please add at least one requirement.",
+					"Please add at least one requirement.");
 		}
 		
 		datePicker.setBorder(null);
@@ -578,8 +579,7 @@ public class CreateGameInfoPanel extends JPanel {
 				result = false;
 			}
 		}
-		
-		gameNameText.setBorder(null);
+
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*A name is required.</html>");
 			gameNameText.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
