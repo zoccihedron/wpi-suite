@@ -75,7 +75,7 @@ public class ResultsPanel extends JPanel{
 		requirementName.setEditable(false);
 		requirementName.setEnabled(true);
 		requirementName.setBackground(Color.WHITE);
-		requirementName.setMargin(new Insets(3,3,3,3));
+		requirementName.setMargin(new Insets(3, 3, 3, 3));
 		requirementName.setBorder(jtextFieldBorder);
 
 		descriptionText = new JTextArea();
@@ -202,7 +202,6 @@ public class ResultsPanel extends JPanel{
 	/**
 	 * Refreshes the panel with information from the Estimate in a game that 
 	 * corresponds to the previously selected requirement
-	 * @param reqid is the id of the requirement in req manager
 	 */
 	public void refreshDisplay() {
 		try{
@@ -219,7 +218,8 @@ public class ResultsPanel extends JPanel{
 	}
 
 	private Requirement getRequirementFromId() throws NotFoundException{
-		final List<Requirement> reqs = RequirementManagerFacade.getInstance().getPreStoredRequirements();
+		final List<Requirement> reqs =
+				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		for(Requirement req: reqs){
 			if(req.getId() == reqid){
 				return req;

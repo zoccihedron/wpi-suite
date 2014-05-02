@@ -365,12 +365,14 @@ public class ResultsDisplayPanel extends JPanel {
 					}
 
 					if (result && estimate <= 0) {
-						reportError("<html>Final estimate must be an integer greater than 0.</html>");
+						reportError(
+								"<html>Final estimate must be an integer greater than 0.</html>");
 						result &= false;
 					}
 
 					if (result && estimateObject.isSentBefore()){
-						if(noteArea.getText().trim().isEmpty() && estimate != estimateObject.getFinalEstimate()){
+						if(noteArea.getText().trim().isEmpty()
+								&& estimate != estimateObject.getFinalEstimate()){
 							reportError("<html>A note must be included when modifying"
 									+ " a sent final estimate.</html>");
 							result &= false;
