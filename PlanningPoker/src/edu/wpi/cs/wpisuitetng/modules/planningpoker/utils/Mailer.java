@@ -165,7 +165,7 @@ public class Mailer implements Callable<Boolean> {
 	 */
 	public void notifyTest() throws AddressException, MessagingException {
 		final String messageText = "Hello, this is a test email to verify that" + 
-				"the credentials provided are functional.";
+				" the credentials provided are functional for your WPISuite project.";
 
 		final MimeMessage message = new MimeMessage(session);
 		message.setFrom(new InternetAddress(from));
