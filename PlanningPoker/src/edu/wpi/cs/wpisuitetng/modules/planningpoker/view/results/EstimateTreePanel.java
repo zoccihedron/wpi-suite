@@ -75,13 +75,15 @@ public class EstimateTreePanel extends JPanel{
 		
 		
 		//buttons
-		sendEstimateToReqButton = new JButton();
-		sendEstimateToReqButton.setText("Update Requirement Manager");
-		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
+		
+		
+		
+		unselectEstimateBtn = new JButton("Unselect Requirement");
+		unselectEstimateBtn.setVisible(ConfigManager.getInstance().getConfig().getUserName().
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));
-		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
-		
+		unselectEstimateBtn.setEnabled(false);
+		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
@@ -89,25 +91,23 @@ public class EstimateTreePanel extends JPanel{
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
-		add(sendEstimateToReqButton, constraints);
-		sendEstimateButtonToolTip();
+		add(unselectEstimateBtn, constraints);
+		unselectEstimateBtn.addActionListener(controller);
+
 		
-		
-		unselectEstimateBtn = new JButton("Unselect this estimate");
-		unselectEstimateBtn.setVisible(ConfigManager.getInstance().getConfig().getUserName().
+		sendEstimateToReqButton = new JButton();
+		sendEstimateToReqButton.setText("Update Requirement Manager");
+		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));
-		unselectEstimateBtn.setEnabled(false);
-		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
-		
+		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.insets = new Insets(3, 0, 0, 0);
-		
-		add(unselectEstimateBtn, constraints);
-		unselectEstimateBtn.addActionListener(controller);
+		add(sendEstimateToReqButton, constraints);
+		sendEstimateButtonToolTip();
 
 		
 		//add pictures

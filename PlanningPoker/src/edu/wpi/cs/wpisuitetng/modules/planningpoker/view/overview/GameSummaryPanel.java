@@ -270,7 +270,7 @@ public class GameSummaryPanel extends JPanel {
 		
 		
 		// Button to play game
-		playGameButton = new JButton("Play");
+		playGameButton = new JButton("Play Game");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
