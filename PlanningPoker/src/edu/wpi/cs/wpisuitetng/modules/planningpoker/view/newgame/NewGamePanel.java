@@ -223,7 +223,8 @@ public class NewGamePanel extends JSplitPane {
 	
 	/**
 	 * Changes the tooltips on buttons.
-	 * @param check
+	 * @param startToolTip tool tip for the start button
+	 * @param saveToolTip tool tip for the save button
 	 */
 	public void toolTipChanger(String startToolTip, String saveToolTip) {
 		btnStart.setToolTipText(startToolTip);
@@ -306,11 +307,21 @@ public class NewGamePanel extends JSplitPane {
 		}
 		return result;
 	}
+	
 	/**
 	 *getter for game
 	 * @return game with the tab
 	 */
 	public Game getGame(){
 		return game;
+	}
+	
+	/**
+	 * Returns the SelectRequirementsPanel linked to the NewGamePanel
+	 *
+	 * @return the SelectRequirementsPanel
+	 */
+	public SelectRequirementsPanel getSelectRequirementsPanel(){
+		return selectRequirementsPanel;
 	}
 }

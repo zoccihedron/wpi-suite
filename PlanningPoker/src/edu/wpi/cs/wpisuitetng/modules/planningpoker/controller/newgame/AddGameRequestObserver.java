@@ -46,8 +46,8 @@ public class AddGameRequestObserver implements RequestObserver {
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// Pass the messages back to the controller
-		ResponseModel response = iReq.getResponse();
-		Game game = Game.fromJson(response.getBody());
+		final ResponseModel response = iReq.getResponse();
+		final Game game = Game.fromJson(response.getBody());
 		
 		controller.addGameToView(game);
 		
