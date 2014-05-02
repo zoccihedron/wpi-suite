@@ -533,17 +533,19 @@ public class SelectRequirementsPanel extends JPanel {
 			}
 		});
 		
-		btnCancelNewReq.addMouseListener(new MouseAdapter() {
+		btnCancelNewReq.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				cancelNewReq();
+				
 			}
-
 		});
 		
-		btnCreateAndAdd.addMouseListener(new MouseAdapter() {
+		btnCreateAndAdd.addActionListener(new ActionListener() {
+			
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				final Requirement req = new Requirement(10, fldName.getText(), 
 						fldDescription.getText());
 				final RequirementManagerFacade RMF = RequirementManagerFacade.getInstance();
@@ -551,8 +553,8 @@ public class SelectRequirementsPanel extends JPanel {
 				addNewRequirementToTable(req);
 				fillTable();
 				cancelNewReq();
+				
 			}
-
 		});
 		
 		this.revalidate();
