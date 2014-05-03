@@ -84,17 +84,18 @@ public class EstimateTreePanel extends JPanel{
 				&& !game.getStatus().equals(GameStatus.CLOSED));
 		unselectEstimateBtn.setEnabled(false);
 		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
+
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
+		constraints.weighty = .1;
+		constraints.insets = new Insets(2, 2, 1, 2);
 		add(unselectEstimateBtn, constraints);
 		unselectEstimateBtn.addActionListener(controller);
-
-		
+				
 		sendEstimateToReqButton = new JButton();
 		sendEstimateToReqButton.setText("Update Requirement Manager");
 		sendEstimateToReqButton.setVisible(ConfigManager.getInstance().getConfig().getUserName().
@@ -106,7 +107,13 @@ public class EstimateTreePanel extends JPanel{
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		constraints.insets = new Insets(3, 0, 0, 0);
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.gridwidth = 1;
+		constraints.weighty = .1;
+		constraints.weightx = 1.0;
+		constraints.insets = new Insets(1, 2, 2, 2);
 
 		add(sendEstimateToReqButton, constraints);
 		sendEstimateButtonToolTip();
