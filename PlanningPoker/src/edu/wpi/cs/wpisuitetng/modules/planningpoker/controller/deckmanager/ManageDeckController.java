@@ -24,6 +24,7 @@ import javax.swing.Timer;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
 import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
@@ -118,6 +119,8 @@ public class ManageDeckController {
 				PlanningPokerModel.getInstance().getAllGames();
 		final List<Integer> deckIds = new ArrayList<Integer>();
 		for(Game g: games){
+			if(!g.getStatus().equals(GameStatus.ENDED) &&
+					!g.getStatus().equals(GameStatus.CLOSED))
 			deckIds.add(g.getDeck());
 		}
 		
