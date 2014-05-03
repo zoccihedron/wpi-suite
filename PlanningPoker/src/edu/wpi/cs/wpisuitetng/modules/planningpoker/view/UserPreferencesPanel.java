@@ -20,6 +20,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
@@ -327,6 +329,22 @@ public class UserPreferencesPanel extends JPanel {
 		catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
+		
+		
+		emailField.addFocusListener(new FocusListener(){
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+				lblEmailCheck.setVisible(false);
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				lblEmailCheck.setVisible(true);
+
+			}
+			
+		});
 
 	}
 
