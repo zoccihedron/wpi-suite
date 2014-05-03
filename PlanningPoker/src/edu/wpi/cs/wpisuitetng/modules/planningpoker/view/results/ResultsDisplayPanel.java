@@ -42,6 +42,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
  * @author Codon Bleu
  * @version 1.00
  */
+@SuppressWarnings("serial")
 public class ResultsDisplayPanel extends JPanel {
 	private final JLabel mean;
 	private final JLabel median;
@@ -72,7 +73,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 		mean = new JLabel();
 		median = new JLabel();
-		message = new JLabel();
+		message = new JLabel("  ");
 		lblFinalEstimate = new JLabel();
 		finalEstimate = new JTextField();
 		noteArea = new JTextArea();
@@ -83,11 +84,15 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn = new JButton("Set the final estimate");
 		saveFinalEstimateBtn.addActionListener(new ResultsDisplayController(
 				this, game));
-		saveFinalEstimateBtn.setVisible(ConfigManager.getInstance().getConfig()
+		ConfigManager.getInstance();
+		saveFinalEstimateBtn.setVisible(ConfigManager.getConfig()
 				.getUserName().equals(game.getGameCreator()));
 		finalEstimate.setEditable(false);
 		saveFinalEstimateBtn.setEnabled(false);
 		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
+		
+		
+		
 		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
@@ -177,13 +182,14 @@ public class ResultsDisplayPanel extends JPanel {
 			System.err.println(e.getMessage());
 		}
 
+		
 		constraints.gridx = 0;
 		constraints.gridy = 5;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(message, constraints);
-
+		
 		constraints.gridx = 0;
 		constraints.gridy = 3;
 		constraints.gridwidth = 2;
@@ -191,7 +197,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
-
+		
 
 		constraints.gridx = 1;
 		constraints.gridy = 0;
@@ -273,10 +279,12 @@ public class ResultsDisplayPanel extends JPanel {
 	 * @param reqid
 	 *            is the id of the requirement in req manager
 	 */
+	@SuppressWarnings({ "rawtypes" })
 	public void updateData(int reqid) {
 		this.reqid = reqid;
 		final Estimate estimate = game.findEstimate(reqid);
-		if (!ConfigManager.getInstance().getConfig().getUserName()
+		ConfigManager.getInstance();
+		if (!ConfigManager.getConfig().getUserName()
 				.equals(game.getGameCreator())) {
 			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
@@ -336,6 +344,8 @@ public class ResultsDisplayPanel extends JPanel {
 			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
 		}
+		
+
 	}
 
 	/**
@@ -350,22 +360,27 @@ public class ResultsDisplayPanel extends JPanel {
 		boolean result = true;
 		if(!game.getStatus().equals(GameStatus.CLOSED))
 		{
-			if(ConfigManager.getInstance().getConfig().getUserName().equals(game.getGameCreator())){
+			ConfigManager.getInstance();
+			if(ConfigManager.getConfig().getUserName().equals(game.getGameCreator())){
 				try {
-					reportError("<html></html>");
+					reportError("<html> </html>");
 					estimate = Integer.parseInt(finalEstimate.getText());
-					if (estimate == estimateObject.getFinalEstimate()){
+					
+					if (estimate == estimateObject.getFinalEstimate() 
+							&& estimateObject.isFinalEstimateSet()){
 						reportError("");
 						result &= false;
 					}
 
 					if (result && estimate <= 0) {
-						reportError("<html>Final estimate must be an integer greater than 0.</html>");
+						reportError(
+								"<html>Final estimate must be an integer greater than 0.</html>");
 						result &= false;
 					}
 
 					if (result && estimateObject.isSentBefore()){
-						if(noteArea.getText().trim().isEmpty() && estimate != estimateObject.getFinalEstimate()){
+						if(noteArea.getText().trim().isEmpty() 
+								&& estimate != estimateObject.getFinalEstimate()){
 							reportError("<html>A note must be included when modifying"
 									+ " a sent final estimate.</html>");
 							result &= false;

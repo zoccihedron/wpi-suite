@@ -3,7 +3,6 @@
  */
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.help;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -29,8 +28,6 @@ public class HelpTopic extends JPanel {
 	public JTextArea textHere;
 	
 	public HelpTopic() {
-		final Dimension minimumSize = new Dimension(250, 300);
-		this.setMinimumSize(minimumSize);
 		textHere = null;
 		
 		setUpHelpTopic();
@@ -91,7 +88,7 @@ public class HelpTopic extends JPanel {
 		constraints.weighty = 1.0;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.insets = new Insets(10, 10, 10, 10);
+		constraints.insets = new Insets(10, 20, 10, 20);
 		add(textHere, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 	}
@@ -105,5 +102,4 @@ public class HelpTopic extends JPanel {
 		textHere.setText(hto.getFileText());
 		textHere.setCaretPosition(0);
 	}
-
 }
