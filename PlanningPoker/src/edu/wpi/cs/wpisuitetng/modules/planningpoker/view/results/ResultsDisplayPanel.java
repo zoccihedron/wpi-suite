@@ -368,7 +368,7 @@ public class ResultsDisplayPanel extends JPanel {
 					
 					if (estimate == estimateObject.getFinalEstimate() 
 							&& estimateObject.isFinalEstimateSet()){
-						reportError("");
+						reportError(" ");
 						result &= false;
 					}
 
