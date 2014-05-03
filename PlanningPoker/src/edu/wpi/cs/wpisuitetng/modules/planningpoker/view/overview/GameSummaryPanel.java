@@ -234,7 +234,10 @@ public class GameSummaryPanel extends JPanel {
 		startGameButton.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OverviewPanelController.getInstance().startGame(game);
+				if(MainViewTabController.getInstance().closeEditTabs(game))
+				{
+					OverviewPanelController.getInstance().startGame(game);
+				}
 			}
 		});
 		
