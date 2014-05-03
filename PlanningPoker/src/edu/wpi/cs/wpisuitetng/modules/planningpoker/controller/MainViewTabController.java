@@ -13,10 +13,14 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller;
 
 import java.awt.Component;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.help.HelpPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewResultsPanel;
@@ -35,7 +39,9 @@ public class MainViewTabController {
 
 
 	private static MainViewTabController instance = null;
+	private static OverviewPanel overviewPanel;
 	private MainView mainView = null;
+	private JFrame helpWindow = null;
 
 
 	private MainViewTabController() {
@@ -79,11 +85,35 @@ public class MainViewTabController {
 	 * @param isInProgress check if game has been started
 	 */
 	public void createGameTab(Game game, boolean isInProgress) {
-		final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
-		mainView.insertTab(game.getName(), newGamePanel, mainView.getTabCount());
-		mainView.invalidate();
-		mainView.repaint();
-		mainView.setSelectedComponent(newGamePanel);
+		boolean makePanel = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = false;
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			
+		}
+		if(makePanel){
+			final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
+			mainView.insertTab(game.getName(), newGamePanel, mainView.getTabCount());
+			mainView.invalidate();
+			mainView.repaint();
+			mainView.setSelectedComponent(newGamePanel);
+		}
 	}
 
 	/**
@@ -92,11 +122,35 @@ public class MainViewTabController {
 	 */
 	public void playGameTab(Game game)
 	{
-		final PlayGamePanel playGamePanel = new PlayGamePanel(game);
-		mainView.insertTab(game.getName(), playGamePanel, mainView.getTabCount());
-		mainView.invalidate();
-		mainView.repaint();
-		mainView.setSelectedComponent(playGamePanel);
+		boolean makePanel = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = false;
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			
+		}
+		if(makePanel){
+			final PlayGamePanel playGamePanel = new PlayGamePanel(game);
+			mainView.insertTab(game.getName(), playGamePanel, mainView.getTabCount());
+			mainView.invalidate();
+			mainView.repaint();
+			mainView.setSelectedComponent(playGamePanel);
+		}
 	}
 
 	/**
@@ -122,11 +176,35 @@ public class MainViewTabController {
 	 * @param game the game to be viewed
 	 */
 	public void viewResultsTab(Game game) {
-		final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
-		mainView.insertTab(game.getName(), resultsPanel, mainView.getTabCount());
-		mainView.invalidate();
-		mainView.repaint();
-		mainView.setSelectedComponent(resultsPanel);
+		boolean makePanel = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+			else if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					makePanel = false;
+				}
+			}
+			
+		}
+		if(makePanel){
+			final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
+			mainView.insertTab(game.getName(), resultsPanel, mainView.getTabCount());
+			mainView.invalidate();
+			mainView.repaint();
+			mainView.setSelectedComponent(resultsPanel);
+		}
 	}
 
 	/**
@@ -134,17 +212,21 @@ public class MainViewTabController {
 	 * there are no other help tabs open.
 	 */
 	public void helpTab() {
-		for(int i = 0; i < mainView.getTabCount(); i++){
-			if(mainView.getComponentAt(i).getClass() == HelpPanel.class){
-				mainView.setSelectedComponent(mainView.getComponentAt(i));
-				return;
-			}
+		if(helpWindow == null){
+			helpWindow = new JFrame("Planning Poker Help");
+			helpWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			HelpPanel helpPanel = new HelpPanel();
+			helpPanel.setMinimumSize(new Dimension(800, 500));
+			helpWindow.setContentPane(helpPanel);
+			helpWindow.pack();   
+			helpWindow.setLocationByPlatform(true);
+			helpWindow.setVisible(true);
+			helpWindow.setMinimumSize(new Dimension(800, 500));
 		}
-		final HelpPanel helpPanel = new HelpPanel();
-		mainView.insertTab("Help", helpPanel, mainView.getTabCount());
-		mainView.invalidate();
-		mainView.repaint();
-		mainView.setSelectedComponent(helpPanel);
+		else{
+			helpWindow.setExtendedState(JFrame.NORMAL);
+			helpWindow.setVisible(true);
+		}
 	}
 
 	/**
@@ -169,32 +251,51 @@ public class MainViewTabController {
 	/**
 	 * Closes a given tab
 	 * @param tabToClose the tab to close
+	 * @return Boolean if the tab was closed
 	 */
-	public void closeTab(Component tabToClose) {
+	public Boolean closeTab(Component tabToClose) {
+		Boolean tabClosed = false;
 		if(tabToClose instanceof NewGamePanel) {
 			if(((NewGamePanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
+				tabClosed = true;
 			}
 		} else if(tabToClose instanceof PlayGamePanel) {
 			if(((PlayGamePanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
+				tabClosed = true;
 			}
 		} else if(tabToClose instanceof UserPreferencesPanel) {
 			if(((UserPreferencesPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
+				tabClosed = true;
 			}
 		} else if(tabToClose instanceof ViewResultsPanel){
 			if(((ViewResultsPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
+				tabClosed = true;
 			}
 		} else if (tabToClose instanceof DeckManagerPanel) {
 			if(((DeckManagerPanel) tabToClose).isReadyToClose()){
 				mainView.remove(tabToClose);
+				tabClosed = true;
 			}
 		} else if(tabToClose instanceof HelpPanel){
 			if(((HelpPanel)tabToClose).isReadyToClose()) {
 				mainView.remove(tabToClose);
+				tabClosed = true;
 			}
 		}
+		mainView.setSelectedComponent(overviewPanel);
+		return tabClosed;
+
+	}
+
+
+	/**
+	 * @param overview the overview panel in mainview
+	 */
+	public static void setOverviewPanel(OverviewPanel overview) {
+		overviewPanel = overview;
 	}
 }

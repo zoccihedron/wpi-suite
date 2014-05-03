@@ -162,16 +162,16 @@ public class GameSummaryPanel extends JPanel {
 		
 		
 		// Button to edit game
-		editGameButton = new JButton("Edit");
-		constraints.anchor = GridBagConstraints.EAST;
+		editGameButton = new JButton("Edit Game");
+		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 1;
-		constraints.gridy = 0;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 0, 5, 0);
-		buttonsPanel.add(editGameButton, constraints);
+		constraints.insets = new Insets(0, 5, 5, 0);
+		add(editGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		editGameButton.setEnabled(false);
 		editGameButton.addActionListener(new ActionListener () {
@@ -225,11 +225,11 @@ public class GameSummaryPanel extends JPanel {
 		startGameButton = new JButton("Start Game");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 2;
-		constraints.gridy = 0;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 5, 0);
-		buttonsPanel.add(startGameButton, constraints);
+		constraints.insets = new Insets(0, 20, 5, 0);
+		add(startGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		startGameButton.addActionListener(new ActionListener (){
 			@Override
@@ -238,8 +238,8 @@ public class GameSummaryPanel extends JPanel {
 			}
 		});
 		
-		// Button to play game
-		playGameButton = new JButton("Play");
+		// Button to end game manually
+		endGameButton = new JButton("End Game");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
@@ -248,7 +248,36 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 10, 5, 0);
-		buttonsPanel.add(playGameButton, constraints);
+		buttonsPanel.add(endGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
+		closeGameButton = new JButton("Close Game");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 5, 0);
+		buttonsPanel.add(closeGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+
+		
+		
+		// Button to play game
+		playGameButton = new JButton("Play Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 5, 0);
+		add(playGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		playGameButton.setEnabled(false);
 		playGameButton.addActionListener(new ActionListener () {
@@ -261,15 +290,13 @@ public class GameSummaryPanel extends JPanel {
 		
 		// Button to view results
 		viewResultsButton = new JButton("View Results");
-		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 3;
-		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 5, 0);
-		buttonsPanel.add(viewResultsButton, constraints);
+		constraints.insets = new Insets(0, 20, 5, 0);
+		add(viewResultsButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		viewResultsButton.addActionListener(new ActionListener () {
 			@Override
@@ -278,33 +305,6 @@ public class GameSummaryPanel extends JPanel {
  				mvt.viewResultsTab(game);
 			}
  		});
-		
-		
-		
-		// Button to end game manually
-		endGameButton = new JButton("End Game");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 5, 0);
-		add(endGameButton, constraints);
-		constraints.insets = new Insets(0, 0, 0, 0);
-		endGameButton.setVisible(false);
-		endGameButton.setEnabled(false);
-		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
-		
-		closeGameButton = new JButton("Close Game");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 4;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 5, 0);
-		add(closeGameButton, constraints);
-		constraints.insets = new Insets(0, 0, 0, 0);
-		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
 		
 		overallProgressBar = new JProgressBar();
 		overallProgressBar.setString("Team's Completion");
@@ -390,9 +390,10 @@ public class GameSummaryPanel extends JPanel {
 		reportMessage.setVisible(true);
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 1;
+		constraints.gridx = 2;
 		constraints.gridy = 4;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
 		add(reportMessage, constraints);
 		
 		final JPanel extraPanel2 = new JPanel();
