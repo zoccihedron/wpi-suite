@@ -549,12 +549,12 @@ public class EstimationPane extends JPanel {
 	/**
 	 * Will refresh the PlayGamePanel with either the next unvoted requirement
 	 * or the current one if there are no unvoted ones.
-	 * @return
+	 * @return true if the requirement is different
 	 */
-	public boolean refreshAndMove() {
+	public boolean hasRefreshAndMoved() {
 		boolean result = false;
 		refresh();
-		int newReq = listReqPanel.MoveToNextFree(reqid);
+		final int newReq = listReqPanel.MoveToNextFree(reqid);
 		
 		if(newReq != reqid){
 			result = true;

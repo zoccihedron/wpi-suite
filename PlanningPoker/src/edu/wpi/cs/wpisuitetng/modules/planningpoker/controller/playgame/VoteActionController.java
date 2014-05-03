@@ -35,7 +35,7 @@ public class VoteActionController implements ActionListener {
 	
 	private final EstimationPane view;
 	private final Game game;
-	private int estimateValue;	
+	private int estimateValue;
 	
 	/**
 	 * Constructs the VoteActionController
@@ -83,7 +83,7 @@ public class VoteActionController implements ActionListener {
 	 * success message if the estimation was made
 	 */
 	public void reportSuccess() {
-		boolean moved = view.refreshAndMove();
+		final boolean moved = view.hasRefreshAndMoved();
 		OverviewPanelController.getInstance().refreshListGames();
 		OverviewPanelController.getInstance().updateGameSummary(game);
 		view.reportSuccess(estimateValue, moved);

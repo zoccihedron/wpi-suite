@@ -174,6 +174,13 @@ implements TreeSelectionListener {
 		this.setViewportView(tree); //make panel display the tree
 	}
 
+	/**
+	 * Will move to the next unvoted requirement .
+	 * If there is no unvoted requirement, 
+	 * it returns the previous requirement
+	 * @param previousReqId - the id to check against
+	 * @return the id of the req moved to
+	 */
 	public int MoveToNextFree(int previousReqId) {
 		int returnReq;
 		if(firstUnvotedReq == null){
@@ -185,11 +192,15 @@ implements TreeSelectionListener {
 		return returnReq;
 	}
 	
+	/**
+	 * Will highlight in the tree the node with the given reqid
+	 * @param reqidToSelect the id of the req to highlight
+	 */
 	public void highlightRequirement(int reqidToSelect){
 		DefaultMutableTreeNode theNode = null;
-		for (Enumeration<DefaultMutableTreeNode> e = top.depthFirstEnumeration(); 
+		for (final Enumeration<DefaultMutableTreeNode> e = top.depthFirstEnumeration(); 
 				e.hasMoreElements() && theNode == null;) {
-		    DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.nextElement();
+		    DefaultMutableTreeNode node = e.nextElement();
 		    if (node.getUserObject() instanceof Requirement) {
 		    	Requirement req = (Requirement) node.getUserObject();
 		    	if(req.getId() == reqidToSelect){
