@@ -64,6 +64,7 @@ public class UserPreferencesPanel extends JPanel {
 	private final JPanel preferencesPanel;
 	private final JPanel titlePanel;
 	private final JPanel emailPanel;
+	private final JPanel buttonPanel;
 	private final JTextField emailField;
 	private final JLabel lblTitle;
 	private final JLabel lblAllow;
@@ -115,7 +116,7 @@ public class UserPreferencesPanel extends JPanel {
 		lblAllow = new JLabel("Receive Notifications Via:");
 		lblAllow.setVerticalAlignment(SwingConstants.BOTTOM);
 		final GridBagConstraints gbc_lblAllow = new GridBagConstraints();
-		gbc_lblAllow.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAllow.insets = new Insets(0, 5, 5, 5);
 		gbc_lblAllow.gridx = 1;
 		gbc_lblAllow.gridy = 1;
 		preferencesPanel.add(lblAllow, gbc_lblAllow);
@@ -167,32 +168,42 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblEmailCheck.gridy = 1;
 		lblEmailCheck.setVisible(false);
 		emailPanel.add(lblEmailCheck, gbc_lblEmailCheck);
-
+		
+		buttonPanel = new JPanel();
+		final GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
+		gbc_buttonPanel.gridx = 1;
+		gbc_buttonPanel.gridy = 3;
+		gbc_buttonPanel.gridwidth = 5;
+		gbc_buttonPanel.anchor = GridBagConstraints.WEST;
+		gbc_buttonPanel.insets = new Insets(10, 0, 10, 0);
+		
 		btnSubmit = new JButton("Submit");
 		final GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
-		gbc_btnSubmit.anchor = GridBagConstraints.NORTH;
+		gbc_btnSubmit.anchor = GridBagConstraints.WEST;
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnSubmit.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSubmit.gridx = 2;
-		gbc_btnSubmit.gridy = 5;
+		gbc_btnSubmit.insets = new Insets(0, 0, 0, 0);
+		gbc_btnSubmit.gridx = 0;
+		gbc_btnSubmit.gridy = 0;
 		btnSubmit.setEnabled(false);
-		preferencesPanel.add(btnSubmit, gbc_btnSubmit);
+		buttonPanel.add(btnSubmit, gbc_btnSubmit);
 
 		btnCancel = new JButton("Cancel");
 		final GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCancel.anchor = GridBagConstraints.NORTH;
+		gbc_btnCancel.anchor = GridBagConstraints.WEST;
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnCancel.gridx = 3;
-		gbc_btnCancel.gridy = 5;
-		preferencesPanel.add(btnCancel, gbc_btnCancel);
+		gbc_btnCancel.gridx = 1;
+		gbc_btnCancel.gridy = 0;
+		buttonPanel.add(btnCancel, gbc_btnCancel);
+		
+		preferencesPanel.add(buttonPanel, gbc_buttonPanel);
 
 		lblPrefstatus = new JLabel("");
 		final GridBagConstraints gbc_lblPrefstatus = new GridBagConstraints();
 		gbc_lblPrefstatus.gridwidth = 4;
 		gbc_lblPrefstatus.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPrefstatus.gridx = 1;
-		gbc_lblPrefstatus.gridy = 6;
+		gbc_lblPrefstatus.gridy = 4;
 		gbc_lblPrefstatus.anchor = GridBagConstraints.WEST;
 		preferencesPanel.add(lblPrefstatus, gbc_lblPrefstatus);
 
