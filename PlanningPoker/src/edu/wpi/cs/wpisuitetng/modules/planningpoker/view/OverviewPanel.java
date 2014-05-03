@@ -125,7 +125,7 @@ public class OverviewPanel extends JSplitPane {
 
 				}
 				catch(NullPointerException exception){
-				
+					System.err.println(exception.getMessage());
 				}
 
 			}
