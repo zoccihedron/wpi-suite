@@ -1,0 +1,9 @@
+   Use these Help Topics for assistance with playing Planning Poker games.
+   
+   User Help Topics include:
+   
+     Playing a Game
+       - How to play a game of Planning Poker
+     
+     User Preferences
+       - How to set and change notification preferences
