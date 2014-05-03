@@ -110,6 +110,7 @@ public class EstimateTreePanel extends JPanel{
 		constraints.weighty = .1;
 		constraints.weightx = 1.0;
 		constraints.insets = new Insets(1, 2, 2, 2);
+
 		add(sendEstimateToReqButton, constraints);
 		sendEstimateButtonToolTip();
 
