@@ -483,7 +483,7 @@ public class EstimationPane extends JPanel {
 	/**
 	 * This function updates the display to report a success message.
 	 * @param value is the numerical value of the vote
-	 * @param moved 
+	 * @param moved is whether the panel updated to a new requirement
 	 */
 	public void reportSuccess(int value, boolean moved) {
 		if(moved){
@@ -546,6 +546,11 @@ public class EstimationPane extends JPanel {
 		this.nothingHappened = nothingHappened;
 	}
 
+	/**
+	 * Will refresh the PlayGamePanel with either the next unvoted requirement
+	 * or the current one if there are no unvoted ones.
+	 * @return
+	 */
 	public boolean refreshAndMove() {
 		boolean result = false;
 		refresh();
