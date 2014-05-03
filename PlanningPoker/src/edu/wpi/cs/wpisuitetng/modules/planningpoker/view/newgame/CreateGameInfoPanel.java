@@ -35,6 +35,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -298,27 +299,8 @@ public class CreateGameInfoPanel extends JPanel {
 	public void panelSetup() {
 		// DEFINE CONSTRAINTS
 		final GridBagConstraints constraints = new GridBagConstraints();
-
-		final JPanel fakePanel1 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(fakePanel1, constraints);
-		final JPanel fakePanel2 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 4;
-		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(fakePanel2, constraints);
+		
+		this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		// GAME INFORMATION LABEL
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -363,14 +345,20 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblDescription, constraints);
 
 		// DESCRIPTION
+		final JScrollPane descriptionScrollPane = new JScrollPane(description); 
+		description.setEditable(true);
 		description.setLineWrap(true);
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridwidth = 3;
-		constraints.weightx = 0.90;
+
+		// DESCRIPTION SCROLL
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 4;
+		constraints.weightx = 1.00;
 		constraints.weighty = 0.90;
 		constraints.gridx = 1;
 		constraints.gridy = 11;
-		add(description, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		add(descriptionScrollPane, constraints);
 
 		// DECK LABEL
 		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -397,7 +385,7 @@ public class CreateGameInfoPanel extends JPanel {
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 5;
 		chckbxDeadline.setBorder(new EmptyBorder(0, 10, 0, 0));
 		add(chckbxDeadline, constraints);
@@ -563,6 +551,7 @@ public class CreateGameInfoPanel extends JPanel {
 			reportError("<html>*Add at least one requirement.</html>");
 			result = false;
 			parentPanel.displayErrorBorders(true);
+
 			parentPanel.toolTipChanger("Please add at least one requirement.",
 					"Please add at least one requirement.");
 		}
