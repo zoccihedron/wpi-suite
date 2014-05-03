@@ -225,6 +225,7 @@ public class DeckPanel extends JScrollPane {
 			constraints.gridy = 2;
 			constraints.gridwidth = 1;
 			constraints.insets = new Insets(0, 3, 0, 3);
+			constraints.weighty = 1.0;
 			
 			cardToAdd.addChangeListener(new ChangeListener() {
 				@Override
