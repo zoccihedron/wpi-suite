@@ -357,10 +357,18 @@ public class DeckPanel extends JScrollPane {
 		
 	}
 	
+	/**
+	 * Get estimate input text field
+	 * @return estimate field
+	 */
 	public JTextField getEstimateFieldComponent() {
 		return estimateField;
 	}
 
+	/**
+	 * Check if this game uses deck or not 
+	 * @return true if this game uses deck
+	 */
 	public boolean isDeckView() {
 		return isDeckView;
 	}
@@ -395,6 +403,10 @@ public class DeckPanel extends JScrollPane {
 		}
 	}
 	
+	/**
+	 * Check if this game allows multiple selection
+	 * @return true if this game allows multiple selection
+	 */
 	public boolean isMultipleSelection() {
 		return isMultipleSelection;
 	}
