@@ -281,6 +281,7 @@ public class MainViewTabController {
 		}
 		return closeTab;
 	}
+	
 	/**
 	 * Closes view results tabs that have the inputed game
 	 * @return Boolean if the tab was closed
