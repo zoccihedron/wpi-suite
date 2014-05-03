@@ -120,6 +120,8 @@ public class EstimationPane extends JPanel {
 		fldReqDescription.setLineWrap(true);
 		
 		deckPanel = new DeckPanel(game.getDeck(), new ViewSumController(this));
+
+		voteButton.addActionListener(new VoteActionController(this, game));
 		
 		infoPanelSetup();
 	}
@@ -150,6 +152,7 @@ public class EstimationPane extends JPanel {
 		constraints.gridy = 1;
 		constraints.gridx = 0;
 		this.add(helpText, constraints);
+		
 	}
 	
 	/**
@@ -342,8 +345,6 @@ public class EstimationPane extends JPanel {
 	public void setGameAndRequirement(int reqid, Game game){
 		this.game = game;
 		
-		voteButton.addActionListener(new VoteActionController(this, game));
-		
 		voteButton.setEnabled(true);
 		voteButton.setToolTipText("Click here to vote!");
 
@@ -482,9 +483,17 @@ public class EstimationPane extends JPanel {
 	/**
 	 * This function updates the display to report a success message.
 	 * @param value is the numerical value of the vote
+	 * @param moved 
 	 */
-	public void reportSuccess(int value) {
-		message.setText("<html>Vote Updated! You voted " + value + "</html>");
+	public void reportSuccess(int value, boolean moved) {
+		if(moved){
+			message.setText("<html>You voted " + value + "! "
+					+ "Switched to the next requirement.</html>");
+		}
+		else{
+			message.setText("<html>You voted " + value + "!</html>");
+		}
+		
 		message.setForeground(Color.BLUE);
 
 	}
@@ -535,6 +544,21 @@ public class EstimationPane extends JPanel {
 	 */
 	public void setNothingHappened(boolean nothingHappened) {
 		this.nothingHappened = nothingHappened;
+	}
+
+	public boolean refreshAndMove() {
+		boolean result = false;
+		refresh();
+		int newReq = listReqPanel.MoveToNextFree(reqid);
+		
+		if(newReq != reqid){
+			result = true;
+		}
+		reqid = newReq;
+		setGameAndRequirement(reqid, game);
+
+		listReqPanel.highlightRequirement(reqid);
+		return result;
 	}
 
 }
