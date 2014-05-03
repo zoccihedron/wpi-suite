@@ -1,0 +1,1 @@
+   Planning Poker is a way of collaboratively deciding how much work each required task will take your team to complete. Use this help file to learn how to effectively navigate the Planning Poker module of WPI Suite.

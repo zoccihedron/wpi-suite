@@ -67,7 +67,8 @@ implements TreeSelectionListener {
 		helpInfoPane = new HelpTopic();
 		final JScrollPane helpInfoView = new JScrollPane();
 		helpInfoView.setViewportView(helpInfoPane);
-		helpInfoView.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		helpInfoView.setHorizontalScrollBarPolicy(
+				javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		//Add the scroll panes to a split pane.
 		final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -89,6 +90,8 @@ implements TreeSelectionListener {
 		for(int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
 		}
+		
+		hto = new HelpTopicObject("What is Planning Poker?", "defaultText.txt");
 		
 		this.addComponentListener(new ComponentListener() {
 			
@@ -129,7 +132,7 @@ implements TreeSelectionListener {
 		if (node == null) return;
 
 		final Object nodeInfo = node.getUserObject();
-		if (node.isLeaf()) {
+		if (!node.isRoot()) {
 			hto = (HelpTopicObject)nodeInfo;
 			helpInfoPane.pullHelpInfo(hto);
 		}
@@ -138,8 +141,13 @@ implements TreeSelectionListener {
 	private static void createNodes(DefaultMutableTreeNode top) {
 		DefaultMutableTreeNode category = null;
 		DefaultMutableTreeNode topic = null;
+		
+		category = new DefaultMutableTreeNode(new HelpTopicObject
+				("What is Planning Poker?", "defaultText.txt"));
+		top.add(category);
 
-		category = new DefaultMutableTreeNode("Administrator Help");
+		category = new DefaultMutableTreeNode(new HelpTopicObject
+				("Administrator Help", "adminHelpText.txt"));
 		top.add(category);
 		
 		topic = new DefaultMutableTreeNode(new HelpTopicObject
@@ -167,7 +175,8 @@ implements TreeSelectionListener {
 						"closingGameHelp.txt"));
 		category.add(topic);
 		
-		category = new DefaultMutableTreeNode("User Help");
+		category = new DefaultMutableTreeNode(new HelpTopicObject
+				("User Help", "userHelpText.txt"));
 		top.add(category);
 		
 		topic = new DefaultMutableTreeNode(new HelpTopicObject

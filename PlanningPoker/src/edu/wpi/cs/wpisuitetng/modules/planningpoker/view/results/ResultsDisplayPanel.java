@@ -295,6 +295,7 @@ public class ResultsDisplayPanel extends JPanel {
 		
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
+
 		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		rightPanel.add(notes, constraints);
@@ -304,6 +305,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 9;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
+
 		rightPanel.add(saveFinalEstimateBtn, constraints);
 		constraints.fill = GridBagConstraints.NONE;
 
@@ -318,6 +320,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 8;
 		constraints.gridwidth = 4;
+
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		rightPanel.add(message, constraints);
