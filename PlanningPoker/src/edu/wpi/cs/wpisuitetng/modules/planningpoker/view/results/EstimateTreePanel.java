@@ -85,7 +85,7 @@ public class EstimateTreePanel extends JPanel{
 		unselectEstimateBtn.setEnabled(false);
 		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.fill = GridBagConstraints.NONE;
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
@@ -101,30 +101,24 @@ public class EstimateTreePanel extends JPanel{
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));
 		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
-/*
-		<<<<<<< HEAD
-		
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 1;
-		constraints.weighty = .2;
-======= */
+
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
-		constraints.fill = GridBagConstraints.NONE;
+		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		constraints.insets = new Insets(3, 0, 0, 0);
-/*
-		>>>>>>> dev-codonbleu
-	*/	
+
 		add(sendEstimateToReqButton, constraints);
 		sendEstimateButtonToolTip();
 
 		
 		//add pictures
 		try {
-			final Image img = ImageIO.read(getClass().getResource("sendMail.png"));
+			Image img = ImageIO.read(getClass().getResource("sendMail.png"));
 			sendEstimateToReqButton.setIcon(new ImageIcon(img));
+			
+			img = ImageIO.read(getClass().getResource("unPen.png"));
+			unselectEstimateBtn.setIcon(new ImageIcon(img));
 		}
 		catch (IOException e) {
 			System.err.println(e.getMessage());
