@@ -1,3 +1,4 @@
+// $codepro.audit.disable accessorMethodNamingConvention
 /**
  * 
  */
@@ -20,12 +21,11 @@ import javax.swing.SwingConstants;
  */
 @SuppressWarnings("serial")
 public class HelpTopic extends JPanel {
-	public String topicTitle;
-	public String showThisText;
+	private String topicTitle;
+	private String showThisText;
 	
-	public JPanel helpInfo;
-	public JLabel titleText;
-	public JTextArea textHere;
+	private JLabel titleText;
+	private JTextArea textHere;
 	
 	public HelpTopic() {
 		textHere = null;

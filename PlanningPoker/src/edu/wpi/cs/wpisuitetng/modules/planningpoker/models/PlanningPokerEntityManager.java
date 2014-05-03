@@ -501,7 +501,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 				returnString = "*This game has been recently voted on. Editing is no longer available";
 			}
 		} else if (string.equals("unselectEstimate")) {
-			System.out.println("unselectEstiamtereached");
 			final Estimate oldEst = Estimate.fromJson(content);
 			final Game game = getEntity(s, Integer.toString(oldEst.getGameID()))[0];
 			final Estimate newEst = game.findEstimate(oldEst.getReqID());
@@ -521,8 +520,6 @@ public class PlanningPokerEntityManager implements EntityManager<Game> {
 			if (!db.save(game, s.getProject())) {
 				throw new WPISuiteException("Save was not successful");
 			}
-			System.out.println("modified estimate: ");
-			System.out.println(newEst.toJSON());
 
 			returnString = "true";
 			

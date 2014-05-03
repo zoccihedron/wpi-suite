@@ -172,7 +172,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		rightPanel.add(saveFinalEstimateBtn, constraints);
 
 		try {
@@ -184,7 +184,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 		
 		constraints.gridx = 0;
-		constraints.gridy = 5;
+		constraints.gridy = 4;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
