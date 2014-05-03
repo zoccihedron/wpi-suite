@@ -1,0 +1,18 @@
+   Use these Help Topics for assistance with creating and managing games.
+   
+   Administrator Help Topics include:
+   
+     Deck Manager
+       - How to create and edit new decks
+     
+     Creating a New Game
+       - Navigating the Create Game tab effectively
+     
+     Ending a Game
+       - The end game process
+     
+     Submitting Final Estimates
+       - How to send your estimates to the Requirement Manager
+       
+     Closing a Game
+       - How to send a game to the archives

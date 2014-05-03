@@ -427,6 +427,35 @@ public class PlanningPokerEntityManagerTest {
 		assertEquals(endedGame.getStatus(),GameStatus.ENDED);
 
 	}
+	
+	@Test
+	public void advancedPostUnselectEstimateTest() throws WPISuiteException{
+		Estimate newEstimate = new Estimate(0, inProgressGame.getId());
+		newEstimate.setFinalEstimate(5);
+		inProgressGame.addEstimate(newEstimate);
+		assertTrue(newEstimate.isFinalEstimateSet());
+		String unselectEstimate = manager.advancedPost(s1, "unselectEstimate", newEstimate.toJSON());
+		assertEquals(unselectEstimate, "true");
+		Game retrievedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		Estimate returnedEstimate = retrievedGame.findEstimate(newEstimate.getReqID());
+		assertFalse(returnedEstimate.isFinalEstimateSet());
+		
+	}
+	
+	@Test
+	public void advancedPostSendToReqTest() throws WPISuiteException{
+		Estimate newEstimate = new Estimate(0, inProgressGame.getId());
+		inProgressGame.addEstimate(newEstimate);
+		assertFalse(newEstimate.isSentBefore());
+		assertFalse(newEstimate.estimationHasBeenSent());
+		String unselectEstimate = manager.advancedPost(s1, "sendToReq", newEstimate.toJSON());
+		assertEquals(unselectEstimate, "true");
+		Game retrievedGame = (Game) db.retrieve(Game.class, "id", inProgressGame.getId()).get(0);
+		Estimate returnedEstimate = retrievedGame.findEstimate(newEstimate.getReqID());
+		assertTrue(returnedEstimate.isSentBefore());
+		assertTrue(returnedEstimate.estimationHasBeenSent());
+
+	}
 
 	
 	@Test

@@ -73,7 +73,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 		mean = new JLabel();
 		median = new JLabel();
-		message = new JLabel(" ");
+		message = new JLabel("  ");
 		lblFinalEstimate = new JLabel();
 		finalEstimate = new JTextField();
 		noteArea = new JTextArea();
@@ -90,6 +90,9 @@ public class ResultsDisplayPanel extends JPanel {
 		finalEstimate.setEditable(false);
 		saveFinalEstimateBtn.setEnabled(false);
 		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
+		
+		
+		
 		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
 				columnNames) {
@@ -169,7 +172,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		rightPanel.add(saveFinalEstimateBtn, constraints);
 
 		try {
@@ -179,8 +182,9 @@ public class ResultsDisplayPanel extends JPanel {
 			System.err.println(e.getMessage());
 		}
 
+		
 		constraints.gridx = 0;
-		constraints.gridy = 5;
+		constraints.gridy = 4;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -193,7 +197,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 0);
 		rightPanel.add(scrollNoteArea, constraints);
-
+		
 
 		constraints.gridx = 1;
 		constraints.gridy = 0;
@@ -340,6 +344,8 @@ public class ResultsDisplayPanel extends JPanel {
 			saveFinalEstimateBtn.setVisible(false);
 			finalEstimate.setEditable(false);
 		}
+		
+
 	}
 
 	/**
@@ -359,8 +365,10 @@ public class ResultsDisplayPanel extends JPanel {
 				try {
 					reportError("<html> </html>");
 					estimate = Integer.parseInt(finalEstimate.getText());
-					if (estimate == estimateObject.getFinalEstimate()){
-						reportError(" ");
+					
+					if (estimate == estimateObject.getFinalEstimate() 
+							&& estimateObject.isFinalEstimateSet()){
+						reportError("");
 						result &= false;
 					}
 
@@ -371,7 +379,7 @@ public class ResultsDisplayPanel extends JPanel {
 					}
 
 					if (result && estimateObject.isSentBefore()){
-						if(noteArea.getText().trim().isEmpty()
+						if(noteArea.getText().trim().isEmpty() 
 								&& estimate != estimateObject.getFinalEstimate()){
 							reportError("<html>A note must be included when modifying"
 									+ " a sent final estimate.</html>");
