@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.help.HelpPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewResultsPanel;
@@ -38,6 +39,7 @@ public class MainViewTabController {
 
 
 	private static MainViewTabController instance = null;
+	private static OverviewPanel overviewPanel;
 	private MainView mainView = null;
 	private JFrame helpWindow = null;
 
@@ -284,6 +286,16 @@ public class MainViewTabController {
 				tabClosed = true;
 			}
 		}
+		mainView.setSelectedComponent(overviewPanel);
 		return tabClosed;
+
+	}
+
+
+	/**
+	 * @param overview the overview panel in mainview
+	 */
+	public static void setOverviewPanel(OverviewPanel overview) {
+		overviewPanel = overview;
 	}
 }
