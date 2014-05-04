@@ -12,6 +12,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -60,6 +64,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final Object[][] data = new Object[][] {};
 	private final JScrollPane scrollUsersAndEstimates;
 	private final JScrollPane scrollNoteArea;
+	private Timer timer;
 
 	/**
 	 * Initialize the labels for displaying information about the game
@@ -91,7 +96,32 @@ public class ResultsDisplayPanel extends JPanel {
 		saveFinalEstimateBtn.setEnabled(false);
 		saveFinalEstimateBtn.setToolTipText("Please select a requirement to finalize an estimate.");
 		
+		finalEstimate.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n' && canMakeEstimate()) {
+					saveFinalEstimateBtn.doClick(1);
+				}
+				else if (e.getKeyChar() == '\n') {
+					noteArea.requestFocus();
+				}
+			}
+		});
 		
+		noteArea.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					saveFinalEstimateBtn.doClick(1);
+				}
+			}
+		});
 		
 		
 		tableUsersAndEstimates = new JTable(new DefaultTableModel(data,
@@ -345,7 +375,15 @@ public class ResultsDisplayPanel extends JPanel {
 			finalEstimate.setEditable(false);
 		}
 		
-
+		timer = new Timer(100, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				finalEstimate.requestFocus();
+				timer.stop();
+			}
+		});
+		timer.start();
 	}
 
 	/**
@@ -467,4 +505,5 @@ public class ResultsDisplayPanel extends JPanel {
 			saveFinalEstimateBtn.setToolTipText("Please enter an integer greater than 0.");
 		}
 	}
+	
 }
