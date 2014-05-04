@@ -318,7 +318,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 		
 		constraints.gridx = 0;
-		constraints.gridy = 8;
+		constraints.gridy = 10;
 		constraints.gridwidth = 4;
 
 		constraints.weightx = 0.75;
