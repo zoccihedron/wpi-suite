@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.help.HelpPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.MainView;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.OverviewPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.PlayGamePanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.UserPreferencesPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.ViewResultsPanel;
@@ -38,6 +39,7 @@ public class MainViewTabController {
 
 
 	private static MainViewTabController instance = null;
+	private static OverviewPanel overviewPanel;
 	private MainView mainView = null;
 	private JFrame helpWindow = null;
 
@@ -245,6 +247,57 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(deckManagerPanel);
 	}
+	
+	/**
+	 * Closes new game tabs that have the inputed game
+	 * @return Boolean if the tab was closed
+	 */
+	public boolean closeEditTabs(Game game) {
+		Boolean closeTab = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					closeTab = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+		}
+		return closeTab;
+	}
+	
+	/**
+	 * Closes play game tabs that have the inputed game
+	 * @return Boolean if the tab was closed
+	 */
+	public boolean closePlayTabs(Game game) {
+		Boolean closeTab = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					closeTab = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+		}
+		return closeTab;
+	}
+	
+	/**
+	 * Closes view results tabs that have the inputed game
+	 * @return Boolean if the tab was closed
+	 */
+	public boolean closeResultTabs(Game game) {
+		Boolean closeTab = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					closeTab = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+		}
+		return closeTab;
+	}
 
 	/**
 	 * Closes a given tab
@@ -284,6 +337,19 @@ public class MainViewTabController {
 				tabClosed = true;
 			}
 		}
+		mainView.setSelectedComponent(overviewPanel);
 		return tabClosed;
+
 	}
+
+
+	/**
+	 * @param overview the overview panel in mainview
+	 */
+	public static void setOverviewPanel(OverviewPanel overview) {
+		overviewPanel = overview;
+	}
+
+
+	
 }

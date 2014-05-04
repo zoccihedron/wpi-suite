@@ -145,7 +145,7 @@ implements TreeSelectionListener {
 			selectedObject = node.getUserObject();
 			}
 			catch(NullPointerException e){
-				//Intentionally Left Blank
+				System.err.println(e.getMessage());
 			}
 		}
 		final DefaultMutableTreeNode top = new DefaultMutableTreeNode("Games"); 

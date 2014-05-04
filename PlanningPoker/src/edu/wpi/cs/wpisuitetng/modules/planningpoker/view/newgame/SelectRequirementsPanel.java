@@ -11,7 +11,6 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -27,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -141,12 +139,14 @@ public class SelectRequirementsPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(existingRequirementsTable.getSelectedRow() == - 1){
 					btnAddSelectedReq.setEnabled(DISABLED);
-					btnAddSelectedReq.setToolTipText("Please select at least one of the above requirements to be added.");
+					btnAddSelectedReq.setToolTipText(
+							"Please select at least one of the above requirements to be added.");
 				}
 				else {
 					requirementsToAddTable.clearSelection();
 					btnAddSelectedReq.setEnabled(ENABLED);
-					btnAddSelectedReq.setToolTipText("Click here to add the selected requirement(s).");
+					btnAddSelectedReq.setToolTipText(
+							"Click here to add the selected requirement(s).");
 				}
 			}
 
@@ -186,7 +186,8 @@ public class SelectRequirementsPanel extends JPanel {
 		// Add requirement button
 		btnAddSelectedReq = new JButton("Add");
 		btnAddSelectedReq.setEnabled(DISABLED);
-		btnAddSelectedReq.setToolTipText("Please select at least one of the above requirements to be added.");
+		btnAddSelectedReq.setToolTipText(
+				"Please select at least one of the above requirements to be added.");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -208,7 +209,8 @@ public class SelectRequirementsPanel extends JPanel {
 		// Remove requirement button
 		final JButton btnRemoveSelectedReq = new JButton("Remove");
 		btnRemoveSelectedReq.setEnabled(DISABLED);
-		btnRemoveSelectedReq.setToolTipText("Please select at least one of the below requirements to be removed.");
+		btnRemoveSelectedReq.setToolTipText(
+				"Please select at least one of the below requirements to be removed.");
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
@@ -222,7 +224,8 @@ public class SelectRequirementsPanel extends JPanel {
 				moveRequirementsBetweenTables(existingRequirementsTable,
 						requirementsToAddTable);
 				btnAddSelectedReq.setEnabled(DISABLED);
-				btnAddSelectedReq.setToolTipText("Please select at least one of the above requirements to be added.");
+				btnAddSelectedReq.setToolTipText(
+						"Please select at least one of the above requirements to be added.");
 			}
 		});
 		
@@ -247,7 +250,8 @@ public class SelectRequirementsPanel extends JPanel {
 				moveRequirementsBetweenTables(requirementsToAddTable,
 						existingRequirementsTable);
 				btnRemoveSelectedReq.setEnabled(DISABLED);
-				btnRemoveSelectedReq.setToolTipText("Please select at least one of the below requirements to be removed.");
+				btnRemoveSelectedReq.setToolTipText(
+						"Please select at least one of the below requirements to be removed.");
 			}
 
 		});
@@ -296,12 +300,14 @@ public class SelectRequirementsPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent arg0) {
 				if(requirementsToAddTable.getSelectedRow() == - 1){
 					btnRemoveSelectedReq.setEnabled(DISABLED);
-					btnRemoveSelectedReq.setToolTipText("Please select at least one of the below requirements to be removed.");
+					btnRemoveSelectedReq.setToolTipText(
+							"Please select at least one of the below requirements to be removed.");
 				}
 				else {
 					existingRequirementsTable.clearSelection();
 					btnRemoveSelectedReq.setEnabled(ENABLED);
-					btnRemoveSelectedReq.setToolTipText("Click here to remove the selected requirement(s).");
+					btnRemoveSelectedReq.setToolTipText(
+							"Click here to remove the selected requirement(s).");
 				}
 			}
 
@@ -367,7 +373,10 @@ public class SelectRequirementsPanel extends JPanel {
 		fldName = new JTextField();
 		final JLabel lblDescription = new JLabel("Description: *");
 		fldDescription = new JTextArea();
+		
+		final JScrollPane descriptionScrollPane = new JScrollPane(fldDescription);
 		fldDescription.setLineWrap(true);
+		fldDescription.setEditable(true);
 		
 		newReqPanel.setLayout(new GridBagLayout());
 		
@@ -406,6 +415,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
+
 		newReqPanel.add(scrollDescription, constraints);
 		
 		// Put in scroll pane for overflow
@@ -457,9 +467,6 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 2;
 		this.add(newReqButtonsPanel, constraints);
 		
-		fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-		fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-		
 		btnCreateAndAdd.setEnabled(false);
 		
 		fldName.getDocument().addDocumentListener(new DocumentListener() {
@@ -467,7 +474,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if(fldName.getText().trim().equals("")){
-					fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqNameValid = false;
 				}
 				else {
@@ -481,7 +487,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if(fldName.getText().trim().equals("")){
-					fldName.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqNameValid = false;
 				}
 				else {
@@ -504,7 +509,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				if(fldDescription.getText().trim().equals("")){
-					fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqDescValid = false;
 				}
 				else {
@@ -519,7 +523,6 @@ public class SelectRequirementsPanel extends JPanel {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				if(fldDescription.getText().trim().equals("")){
-					fldDescription.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
 					newReqDescValid = false;
 				}
 				else {
@@ -795,7 +798,6 @@ public class SelectRequirementsPanel extends JPanel {
 	 */
 	public void displayErrorBorders(boolean check) {
 		if(check){
-			requirementsToAddTablePanel.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 		}
 		else{
 			requirementsToAddTablePanel.setBorder(existingRequirementsTablePanel.getBorder());
