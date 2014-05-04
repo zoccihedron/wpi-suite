@@ -15,12 +15,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -43,6 +45,7 @@ public class CreateDeckPanel extends JPanel{
 	private final Deck deck;
 	private final ListDecksPanel listDecksPanel;
 	private final String PLACEHOLDER_TEXT = "Enter Deck Name Here";
+	private Timer addDefaultsTimer;
 
 	/**
 	 * Constructor for the create deck panel that initializes the positions
@@ -120,6 +123,18 @@ public class CreateDeckPanel extends JPanel{
 			public void changedUpdate(DocumentEvent e) {
 				//Intentionally Left Blank
 				
+			}
+		});
+		
+		deckName.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					btnSubmit.doClick(1);
+				}
 			}
 		});
 	}

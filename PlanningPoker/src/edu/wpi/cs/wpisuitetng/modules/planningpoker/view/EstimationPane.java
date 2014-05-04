@@ -528,8 +528,15 @@ public class EstimationPane extends JPanel {
 	 */
 	public void updateSum(int sum){
 		currentVote.setText("Current Vote: " + sum);
-
-		
+	}
+	
+	/**
+	 * Will mock a user pressing the vote button,
+	 * so that the system can do it for the user
+	 * e.g. the text entry field 
+	 */
+	public void pressVoteButton(){
+		voteButton.doClick(1);
 	}
 
 	/**
