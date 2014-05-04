@@ -202,6 +202,68 @@ public class Estimate {
 	}
 	
 	/**
+	 * Generates the max of the estimates for a requirement
+	 *
+	 * @return the max of the estimate.
+	 */
+	public int getMax()
+	{
+		int max = 0;
+		final List<Integer> estimates = new ArrayList<Integer>();
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			estimates.add(temp.getValue());
+		}
+		Collections.sort(estimates);
+		int length = estimates.size();
+		if (length == 0)
+			return max;
+		else
+			return max = estimates.get(estimates.size() - 1);
+	}
+	
+	/**
+	 * Generates the min of the estimates for a requirement, and
+	 * ignores any invalid estimates (0).
+	 *
+	 * @return the min of the estimate.
+	 */
+	public int getMin()
+	{
+		int min = 0;
+		final List<Integer> estimates = new ArrayList<Integer>();
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			if(temp.getValue() > 0) {
+				estimates.add(temp.getValue());
+			}
+		}
+		Collections.sort(estimates);
+		int length = estimates.size();
+		if (length == 0)
+			return min;
+		else
+		{
+			return min = estimates.get(0);
+		}
+	}
+	
+	/**
+	 * Generates the number of estimates for a requirement that are 0
+	 *
+	 * @return the number of (0) estimates.
+	 */
+	public int getzeroEstimates()
+	{
+		int count = 0;
+		final List<Integer> estimates = new ArrayList<Integer>();
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			if(temp.getValue() == 0) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	/**
 	 * Generates the median of the estimates for a requirement, and
 	 * ignores any invalid estimates (0).
 	 *
