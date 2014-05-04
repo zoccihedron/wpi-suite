@@ -345,6 +345,7 @@ public class ResultsDisplayPanel extends JPanel {
 			finalEstimate.setEditable(false);
 		}
 		
+		message.setText(" ");
 
 	}
 
