@@ -523,8 +523,10 @@ public class EstimationPane extends JPanel {
 	 */
 	public void updateSum(int sum){
 		currentVote.setText("Current Vote: " + sum);
-
-		
+	}
+	
+	public void pressVoteButton(){
+		voteButton.doClick(1);
 	}
 
 	/**

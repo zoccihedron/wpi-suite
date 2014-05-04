@@ -42,5 +42,8 @@ public class ViewSumController {
 		
 	}
 	
+	public void passTextToVoteButton(){
+		estimationPane.pressVoteButton();
+	}
 
 }

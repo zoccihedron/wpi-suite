@@ -17,6 +17,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -61,6 +62,7 @@ public class DeckPanel extends JScrollPane {
 	private boolean isMultipleSelection = true;
 	private final ViewSumController controller;
 	private Timer getDeckTimer = null;
+	private Timer timer;
 	
 	/**
 	 * Constructs the DeckPanel
@@ -184,7 +186,18 @@ public class DeckPanel extends JScrollPane {
 		estimateField.setColumns(10);
 		textPanel.add(estimateField, constraints);
 		estimateField.setEditable(false);
+		
+		estimateField.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
 
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					controller.passTextToVoteButton();
+				}
+			}
+		});
 		return textPanel;
 	}
 
@@ -332,6 +345,15 @@ public class DeckPanel extends JScrollPane {
 			currentEstimate = "";
 		}
 
+		timer = new Timer(100, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				estimateField.requestFocus();
+				timer.stop();
+			}
+		});
+		timer.start();
 	}
 	
 	public boolean isOldEstimate(){
