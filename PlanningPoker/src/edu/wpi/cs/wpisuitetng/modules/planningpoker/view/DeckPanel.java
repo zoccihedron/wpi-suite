@@ -337,7 +337,7 @@ public class DeckPanel extends JScrollPane {
 					}
 				}
 				
-			}	
+			}
 			estimateField.setText(Integer.toString(oldEstimate));
 			currentEstimate = Integer.toString(oldEstimate);
 
