@@ -375,6 +375,7 @@ public class ResultsDisplayPanel extends JPanel {
 			finalEstimate.setEditable(false);
 		}
 		
+		message.setText(" ");
 		timer = new Timer(100, new ActionListener() {
 			
 			@Override
@@ -384,6 +385,7 @@ public class ResultsDisplayPanel extends JPanel {
 			}
 		});
 		timer.start();
+		
 	}
 
 	/**
