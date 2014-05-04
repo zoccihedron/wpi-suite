@@ -52,6 +52,7 @@ public class ResultsDisplayPanel extends JPanel {
 	private final JLabel median;
 	private final JLabel lblFinalEstimate;
 	private final JTextField finalEstimate;
+	private final JLabel notesLabel;
 	private final JTextArea noteArea;
 	private final JButton saveFinalEstimateBtn;
 	private final Game game;
@@ -81,6 +82,7 @@ public class ResultsDisplayPanel extends JPanel {
 		message = new JLabel("  ");
 		lblFinalEstimate = new JLabel();
 		finalEstimate = new JTextField();
+		notesLabel = new JLabel();
 		noteArea = new JTextArea();
 		noteArea.setBorder(finalEstimate.getBorder());
 		noteArea.setLineWrap(true);
@@ -149,11 +151,14 @@ public class ResultsDisplayPanel extends JPanel {
 	private void populatePanel() {
 
 		lblFinalEstimate.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblFinalEstimate.setText("Final Estimate: ");
+
 		mean.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		mean.setText("Mean: ");
 		median.setText("Median: ");
 		median.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblFinalEstimate.setText("Final Estimate: ");
+		notesLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		notesLabel.setText("Notes: ");
 
 		mean.setBorder(new EmptyBorder(0, 0, 5, 0));
 		median.setBorder(new EmptyBorder(5, 0, 5, 0));
@@ -195,6 +200,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 		constraints.gridx = 1;
 		constraints.gridy = 2;
+		constraints.weightx = (double)Integer.MAX_VALUE;
 		constraints.gridwidth = 1;
 		finalEstimate.setSize(50, finalEstimate.getHeight());
 		rightPanel.add(finalEstimate, constraints);
@@ -202,7 +208,7 @@ public class ResultsDisplayPanel extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridx = 0;
-		constraints.gridy = 5;
+		constraints.gridy = 6;
 		rightPanel.add(saveFinalEstimateBtn, constraints);
 
 		try {
@@ -214,7 +220,7 @@ public class ResultsDisplayPanel extends JPanel {
 
 		
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 5;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.75;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -222,6 +228,13 @@ public class ResultsDisplayPanel extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 3;
+		constraints.gridwidth = 1;
+		constraints.weightx = 1;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		rightPanel.add(notesLabel, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 4;
 		constraints.gridwidth = 2;
 		constraints.weighty = 1;
 		constraints.fill = GridBagConstraints.BOTH;

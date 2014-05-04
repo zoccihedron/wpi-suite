@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -326,6 +327,8 @@ public class GameSummaryPanel extends JPanel {
  				mvt.viewResultsTab(game);
 			}
  		});
+		UIManager.put("ProgressBar.selectionBackground", Color.black);
+		UIManager.put("ProgressBar.selectionForeground", Color.black);
 		
 		overallProgressBar = new JProgressBar();
 		overallProgressBar.setString("Team's Completion");
