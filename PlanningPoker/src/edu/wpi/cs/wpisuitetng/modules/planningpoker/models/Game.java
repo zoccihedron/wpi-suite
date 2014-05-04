@@ -707,6 +707,9 @@ public class Game extends AbstractModel {
 	@Override
 	public String toString() {
 		String returnString = name;
+		if(returnString.length()>30){
+			returnString = returnString.substring(0, 30)+"...";
+		}
 		if (myGame){
 			returnString = returnString + " (Owner)";
 		}

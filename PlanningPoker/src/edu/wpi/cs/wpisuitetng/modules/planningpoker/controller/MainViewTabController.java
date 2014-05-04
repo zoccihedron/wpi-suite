@@ -110,6 +110,9 @@ public class MainViewTabController {
 		if(makePanel){
 			final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
 			String tabName = "Editing "+game.getName();
+			if(tabName.length()>30){
+				tabName = tabName.substring(0, 30)+"...";
+			}
 			mainView.insertTab(tabName, newGamePanel, mainView.getTabCount());
 			mainView.invalidate();
 			mainView.repaint();
@@ -148,6 +151,9 @@ public class MainViewTabController {
 		if(makePanel){
 			final PlayGamePanel playGamePanel = new PlayGamePanel(game);
 			String tabName = "Playing "+game.getName();
+			if(tabName.length()>30){
+				tabName = tabName.substring(0, 30)+"...";
+			}
 			mainView.insertTab(tabName, playGamePanel, mainView.getTabCount());
 			mainView.invalidate();
 			mainView.repaint();
@@ -203,6 +209,9 @@ public class MainViewTabController {
 		if(makePanel){
 			final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
 			String tabName = "Results of "+game.getName();
+			if(tabName.length()>30){
+				tabName = tabName.substring(0, 30)+"...";
+			}
 			mainView.insertTab(tabName, resultsPanel, mainView.getTabCount());
 			mainView.invalidate();
 			mainView.repaint();
