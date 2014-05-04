@@ -19,6 +19,8 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
@@ -207,7 +209,23 @@ public class DeckControlsPanel extends JPanel {
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-
+		
+		fieldAddCard.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				invalidCardValueMessage.setVisible(btnAddCard.isVisible() && !btnAddCard.isEnabled());
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(fieldAddCard.getText().trim().equals("")){
+					invalidCardValueMessage.setVisible(false);
+				}
+				
+			}
+		});
 		fieldAddCard.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
