@@ -109,7 +109,8 @@ public class MainViewTabController {
 		}
 		if(makePanel){
 			final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
-			mainView.insertTab(game.getName(), newGamePanel, mainView.getTabCount());
+			String tabName = "Editing "+game.getName();
+			mainView.insertTab(tabName, newGamePanel, mainView.getTabCount());
 			mainView.invalidate();
 			mainView.repaint();
 			mainView.setSelectedComponent(newGamePanel);
@@ -146,7 +147,8 @@ public class MainViewTabController {
 		}
 		if(makePanel){
 			final PlayGamePanel playGamePanel = new PlayGamePanel(game);
-			mainView.insertTab(game.getName(), playGamePanel, mainView.getTabCount());
+			String tabName = "Playing "+game.getName();
+			mainView.insertTab(tabName, playGamePanel, mainView.getTabCount());
 			mainView.invalidate();
 			mainView.repaint();
 			mainView.setSelectedComponent(playGamePanel);
@@ -200,7 +202,8 @@ public class MainViewTabController {
 		}
 		if(makePanel){
 			final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
-			mainView.insertTab(game.getName(), resultsPanel, mainView.getTabCount());
+			String tabName = "Results of "+game.getName();
+			mainView.insertTab(tabName, resultsPanel, mainView.getTabCount());
 			mainView.invalidate();
 			mainView.repaint();
 			mainView.setSelectedComponent(resultsPanel);
