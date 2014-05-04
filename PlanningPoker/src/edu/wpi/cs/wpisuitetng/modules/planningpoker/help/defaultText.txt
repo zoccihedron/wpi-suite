@@ -1,1 +1,5 @@
-   Planning Poker is a way of collaboratively deciding how much work each required task will take your team to complete. Use this help file to learn how to effectively navigate the Planning Poker module of WPI Suite.
+   Planning Poker is a way of collaboratively deciding how much work each required task will take your team to complete.
+   
+   Each game gives a chance for every member of the team to vote on the amount of work a task will take; the manager then has the ability to set and send final estimates in the Requirement Manager. This allows a team to easily rank and distribute their requirements appropriately.
+   
+   Use this help file to learn how to effectively navigate the Planning Poker module of WPI Suite.
