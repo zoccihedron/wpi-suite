@@ -125,7 +125,7 @@ public class DeckPanel extends JScrollPane {
 	}
 	
 	/**
-	 * stop timer that checks for deck
+	 * stop timer that checksthreadLockCheck for deck
 	 * @param editable
 	 */
 	private void stopTimer(){
@@ -338,6 +338,7 @@ public class DeckPanel extends JScrollPane {
 				}
 				
 			}
+			
 			estimateField.setText(Integer.toString(oldEstimate));
 			currentEstimate = Integer.toString(oldEstimate);
 
