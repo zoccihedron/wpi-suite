@@ -508,4 +508,24 @@ public class ResultsDisplayPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Will refresh the PlayGamePanel with either the next unset requirement
+	 * or the current one if there are no unset ones.
+	 * @return true if the requirement is different
+	 */
+	public boolean hasRefreshAndMoved() {
+		boolean result = false;
+		refresh();
+		final int newReq = treePanel.getTreePanel().MoveToNextFree(reqid);
+		
+		if(newReq != reqid){
+			result = true;
+		}
+		reqid = newReq;
+		updateData(reqid);
+
+		treePanel.getTreePanel().highlightRequirement(reqid);
+		return result;
+	}
+	
 }
