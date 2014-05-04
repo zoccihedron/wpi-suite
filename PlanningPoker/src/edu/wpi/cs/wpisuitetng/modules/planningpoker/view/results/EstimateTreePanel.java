@@ -11,6 +11,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -35,6 +36,7 @@ import edu.wpi.cs.wpisuitetng.network.Request;
 import edu.wpi.cs.wpisuitetng.network.RequestObserver;
 import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 import edu.wpi.cs.wpisuitetng.network.models.IRequest;
+
 import java.awt.Insets;
 /**
  * The panel which holds listEstimateRequirementsPanel
@@ -84,14 +86,16 @@ public class EstimateTreePanel extends JPanel{
 				&& !game.getStatus().equals(GameStatus.CLOSED));
 		unselectEstimateBtn.setEnabled(false);
 		unselectEstimateBtn.setToolTipText("Unselect this requirement so that it will not be sent to the requirement manager.");
-
+		Dimension size = new Dimension(this.getWidth(), 30);
+		unselectEstimateBtn.setPreferredSize(size);
+		
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1.0;
-		constraints.weighty = .1;
+		constraints.weighty = 0;
 		constraints.insets = new Insets(2, 2, 1, 2);
 		add(unselectEstimateBtn, constraints);
 		unselectEstimateBtn.addActionListener(controller);
@@ -102,16 +106,14 @@ public class EstimateTreePanel extends JPanel{
 				equals(game.getGameCreator())
 				&& !game.getStatus().equals(GameStatus.CLOSED));
 		sendEstimateToReqButton.setEnabled(!game.getStatus().equals(GameStatus.CLOSED)&&(!(listEstimateReqPanel.getSelectedEstimates().isEmpty())));
+		sendEstimateToReqButton.setPreferredSize(size);
 
 		constraints.anchor = GridBagConstraints.SOUTHWEST;
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
 		constraints.gridwidth = 1;
-		constraints.weighty = .1;
+		constraints.weighty = 0;
 		constraints.weightx = 1.0;
 		constraints.insets = new Insets(1, 2, 2, 2);
 
