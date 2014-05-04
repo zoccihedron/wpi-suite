@@ -109,6 +109,7 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_titlePanel.gridwidth = 4;
 		gbc_titlePanel.gridx = 1;
 		gbc_titlePanel.gridy = 0;
+		gbc_titlePanel.anchor = GridBagConstraints.WEST;
 		preferencesPanel.add(titlePanel, gbc_titlePanel);
 		lblTitle = new JLabel("User Preferences");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
