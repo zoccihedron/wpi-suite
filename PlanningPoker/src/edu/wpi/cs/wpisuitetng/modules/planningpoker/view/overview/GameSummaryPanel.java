@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -326,11 +327,14 @@ public class GameSummaryPanel extends JPanel {
  				mvt.viewResultsTab(game);
 			}
  		});
+		UIManager.put("ProgressBar.selectionBackground", Color.black);
+		UIManager.put("ProgressBar.selectionForeground", Color.black);
 		
 		overallProgressBar = new JProgressBar();
 		overallProgressBar.setString("Team's Completion");
 		overallProgressBar.setStringPainted(true);
 		overallProgressBar.setVisible(false);
+		UIManager.put(overallProgressBar.getForeground(), Color.orange);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
