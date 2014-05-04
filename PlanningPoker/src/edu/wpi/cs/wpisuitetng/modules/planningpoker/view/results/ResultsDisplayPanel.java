@@ -137,7 +137,7 @@ public class ResultsDisplayPanel extends JPanel {
 		populatePanel();
 		if(game.getStatus().equals(GameStatus.CLOSED))
 		{
-			scrollNoteArea.setVisible(false);
+			noteArea.setEditable(false);
 			saveFinalEstimateBtn.setVisible(false);
 		}
 
