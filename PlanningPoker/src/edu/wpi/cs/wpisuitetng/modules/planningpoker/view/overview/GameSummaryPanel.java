@@ -96,7 +96,11 @@ public class GameSummaryPanel extends JPanel {
 		helpTitle.setText("Games Overview");
 		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
 		
-		helpText.setText("To begin, please select a game from the panel on the left.");
+		helpText.setText("<html><p align='center'>To begin, please select "
+				+ "a game from the panel on the left or start a new game.</p> "
+				+ "<p align='center'>If you want to know more about planning "
+				+ "poker or how to use this application, press the 'Help' "
+				+ "button in the toolbar.</p></html>");
 		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		constraints.gridx = 0;
@@ -105,6 +109,9 @@ public class GameSummaryPanel extends JPanel {
 		
 		constraints.gridy = 1;
 		constraints.gridx = 0;
+		constraints.weightx = 0.75;
+		constraints.insets = new Insets(0, 40, 0, 40);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
 		this.add(helpText, constraints);
 		
 		gameUpdateTimer = new Timer(5000, new ActionListener() {
