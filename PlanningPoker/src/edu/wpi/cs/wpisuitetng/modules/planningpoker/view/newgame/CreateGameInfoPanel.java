@@ -14,12 +14,14 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -479,6 +481,80 @@ public class CreateGameInfoPanel extends JPanel {
 		verificationChecker.start();
 		initDefaults();
 		checkFields();
+		
+		gameNameText.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					description.requestFocus();
+				}
+			}
+		});
+		
+		description.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\t' && !e.isShiftDown()) {
+					parentPanel.switchFocusToTable();
+				}
+				else if (e.getKeyChar() == '\t' && e.isShiftDown()) {
+					deckBox.requestFocus();
+				}
+			}
+		});
+		
+		chckbxDeadline.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					chckbxDeadline.doClick();
+				}
+			}
+		});
+		
+		rdbtnAm.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					rdbtnAm.doClick();
+				}
+			}
+		});
+		
+		rdbtnPm.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					rdbtnPm.doClick();
+				}
+			}
+		});
+
+		EventQueue.invokeLater(new Runnable() {
+
+		   @Override
+		     public void run() {
+		         gameNameText.grabFocus();
+		         gameNameText.requestFocusInWindow();//or inWindow
+		         gameNameText.setSelectionStart(0);
+		         gameNameText.setSelectionEnd(gameNameText.getText().length());
+		     }
+		});
 	}
 
 	/**

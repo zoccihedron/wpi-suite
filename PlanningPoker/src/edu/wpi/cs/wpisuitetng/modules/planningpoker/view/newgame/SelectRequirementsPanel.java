@@ -12,11 +12,13 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -166,7 +168,7 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		this.add(existingRequirementsTablePanel, constraints);
-					
+		
 		/*---------------------------------------------------------------------
 		 *                       - BUTTONS PANEL -
 		 * --------------------------------------------------------------------
@@ -325,7 +327,6 @@ public class SelectRequirementsPanel extends JPanel {
 		constraints.gridy = 4;
 		this.add(requirementsToAddTablePanel, constraints);
 
-		
 		/*---------------------------------------------------------------------
 		 *                   	      ICONS
 		 * --------------------------------------------------------------------
@@ -566,6 +567,65 @@ public class SelectRequirementsPanel extends JPanel {
 		this.revalidate();
 		this.repaint();
 		
+		fldName.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					fldDescription.requestFocus();
+				}
+			}
+		});
+		
+		fldDescription.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed tab
+				if (e.getKeyChar() == '\t') {
+					btnCreateAndAdd.requestFocus();
+				}
+			}
+		});
+		
+		btnCreateAndAdd.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed tab
+				if (e.getKeyChar() == '\n') {
+					btnCreateAndAdd.doClick();
+				}
+			}
+		});
+		
+		btnCancelNewReq.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed tab
+				if (e.getKeyChar() == '\n') {
+					btnCancelNewReq.doClick();
+				}
+			}
+		});
+		
+		EventQueue.invokeLater(new Runnable() {
+
+			   @Override
+			     public void run() {
+			         fldName.grabFocus();
+			         fldName.requestFocusInWindow();//or inWindow
+			         fldName.setSelectionStart(0);
+			         fldName.setSelectionEnd(fldName.getText().length());
+			     }
+			});
+		
 	}
 	
 	/**
@@ -585,6 +645,17 @@ public class SelectRequirementsPanel extends JPanel {
 		newReqPanel.setVisible(true);
 		newReqPanel.setEnabled(true);
 		creatingNewReq = true;
+		
+		EventQueue.invokeLater(new Runnable() {
+
+			   @Override
+			     public void run() {
+			         fldName.grabFocus();
+			         fldName.requestFocusInWindow();//or inWindow
+			         fldName.setSelectionStart(0);
+			         fldName.setSelectionEnd(fldName.getText().length());
+			     }
+			});
 	}
 	
 	/**
@@ -731,6 +802,14 @@ public class SelectRequirementsPanel extends JPanel {
 		else{
 			requirementsToAddTablePanel.setBorder(existingRequirementsTablePanel.getBorder());
 		}
+	}
+	
+	/**
+	 * When tab is pressed in the game description, it switches 
+	 * focus to the requirements table
+	 */
+	public void switchFocusToTable() {
+		existingRequirementsTable.requestFocus();
 	}
 
 	/**

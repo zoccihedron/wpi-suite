@@ -65,7 +65,8 @@ public class GameSummaryPanel extends JPanel {
 	private JButton viewResultsButton;
 	private JButton closeGameButton;
 	private JLabel helpTitle;
-	private JLabel helpText;
+	private JLabel helpText1;
+	private JLabel helpText2;
 	private JLabel reportMessage;
 	private final GameSummaryPanel  summaryPanel = this;
 	JPanel buttonsPanel;
@@ -91,13 +92,20 @@ public class GameSummaryPanel extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 				
 		helpTitle = new JLabel();
-		helpText = new JLabel();
+		helpText1 = new JLabel();
+		helpText2 = new JLabel();
 		
 		helpTitle.setText("Games Overview");
 		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
 		
-		helpText.setText("To begin, please select a game from the panel on the left.");
-		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		helpText1.setText("To begin, please select "
+				+ "a game from the panel on the left or create a new game.");
+		helpText1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		helpText2.setText("If you want to know more about planning "
+				+ "poker or how to use this application, press the 'Help' "
+				+ "button in the toolbar.");
+		helpText2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -105,7 +113,17 @@ public class GameSummaryPanel extends JPanel {
 		
 		constraints.gridy = 1;
 		constraints.gridx = 0;
-		this.add(helpText, constraints);
+		constraints.weightx = 0.75;
+		constraints.insets = new Insets(0, 40, 0, 40);
+		constraints.anchor = GridBagConstraints.CENTER;
+		this.add(helpText1, constraints);
+		
+		constraints.gridy = 2;
+		constraints.gridx = 0;
+		constraints.weightx = 0.75;
+		constraints.insets = new Insets(0, 40, 0, 40);
+		constraints.anchor = GridBagConstraints.CENTER;
+		this.add(helpText2, constraints);
 		
 		gameUpdateTimer = new Timer(5000, new ActionListener() {
 			
@@ -234,7 +252,10 @@ public class GameSummaryPanel extends JPanel {
 		startGameButton.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OverviewPanelController.getInstance().startGame(game);
+				if(MainViewTabController.getInstance().closeEditTabs(game))
+				{
+					OverviewPanelController.getInstance().startGame(game);
+				}
 			}
 		});
 		

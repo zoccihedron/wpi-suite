@@ -42,5 +42,13 @@ public class ViewSumController {
 		
 	}
 	
+	/**
+	 * Pressed the button on the estimation pane,
+	 * so that other features can activate the voting 
+	 * feature
+	 */
+	public void passTextToVoteButton(){
+		estimationPane.pressVoteButton();
+	}
 
 }
