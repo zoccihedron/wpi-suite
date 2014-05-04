@@ -334,7 +334,6 @@ public class GameSummaryPanel extends JPanel {
 		overallProgressBar.setString("Team's Completion");
 		overallProgressBar.setStringPainted(true);
 		overallProgressBar.setVisible(false);
-		UIManager.put(overallProgressBar.getForeground(), Color.orange);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
