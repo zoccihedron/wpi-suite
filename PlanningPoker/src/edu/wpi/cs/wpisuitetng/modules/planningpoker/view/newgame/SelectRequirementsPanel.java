@@ -598,7 +598,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 				// Check if the user pressed tab
 				if (e.getKeyChar() == '\n') {
-					btnCreateAndAdd.doClick();;
+					btnCreateAndAdd.doClick();
 				}
 			}
 		});
@@ -610,7 +610,7 @@ public class SelectRequirementsPanel extends JPanel {
 
 				// Check if the user pressed tab
 				if (e.getKeyChar() == '\n') {
-					btnCancelNewReq.doClick();;
+					btnCancelNewReq.doClick();
 				}
 			}
 		});
