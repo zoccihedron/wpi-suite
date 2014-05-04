@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.playgame;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.DropMode;
@@ -22,6 +23,9 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -45,6 +49,8 @@ implements TreeSelectionListener {
 	private JTree tree;
 	private final Game game;
 	private final PlayGameController playGameController;
+	private Requirement firstUnvotedReq;
+	private DefaultMutableTreeNode top;
 	/**
 	 * Constructs the panel
 	 * @param game Taken in to get all requirements for the game
@@ -111,8 +117,7 @@ implements TreeSelectionListener {
   */
 	public void refresh(){
 
-		final DefaultMutableTreeNode top =
-				new DefaultMutableTreeNode("Requirements"); //makes a starting node
+		top = new DefaultMutableTreeNode("Requirements"); 
 		final List<Requirement> requirements =
 				RequirementManagerFacade.getInstance().getPreStoredRequirements();
 		DefaultMutableTreeNode reqNode = null;
@@ -122,6 +127,8 @@ implements TreeSelectionListener {
 		notVotedCategory = new DefaultMutableTreeNode("Not Voted On");
 		votedCategory = new DefaultMutableTreeNode("Voted On");
 		final String user = ConfigManager.getInstance().getConfig().getUserName();
+		int count = 0;
+		firstUnvotedReq = null;
 		for(Requirement req: requirements){
 
 			// add new node to requirement tree
@@ -132,6 +139,10 @@ implements TreeSelectionListener {
 						if(!e.hasMadeAnEstimation(user)){
 							reqNode = new DefaultMutableTreeNode(req);
 							notVotedCategory.add(reqNode);
+							if(count == 0){
+								firstUnvotedReq = req;
+							}
+							count++;
 						}
 						else{
 							reqNode = new DefaultMutableTreeNode(req);
@@ -161,6 +172,48 @@ implements TreeSelectionListener {
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); //make panel display the tree
+	}
+
+	/**
+	 * Will move to the next unvoted requirement .
+	 * If there is no unvoted requirement, 
+	 * it returns the previous requirement
+	 * @param previousReqId - the id to check against
+	 * @return the id of the req moved to
+	 */
+	public int MoveToNextFree(int previousReqId) {
+		int returnReq;
+		if(firstUnvotedReq == null){
+			returnReq = previousReqId;
+		}
+		else{
+			returnReq = firstUnvotedReq.getId();
+		}
+		return returnReq;
+	}
+	
+	/**
+	 * Will highlight in the tree the node with the given reqid
+	 * @param reqidToSelect the id of the req to highlight
+	 */
+	public void highlightRequirement(int reqidToSelect){
+		DefaultMutableTreeNode theNode = null;
+		for (final Enumeration<DefaultMutableTreeNode> e = top.depthFirstEnumeration(); 
+				e.hasMoreElements() && theNode == null;) {
+		    DefaultMutableTreeNode node = e.nextElement();
+		    if (node.getUserObject() instanceof Requirement) {
+		    	Requirement req = (Requirement) node.getUserObject();
+		    	if(req.getId() == reqidToSelect){
+		    		theNode = node;
+		    	}
+		    }
+		}
+		
+		if(theNode != null){
+			final TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(theNode);
+			final TreePath tpath = new TreePath(nodes);
+			tree.setSelectionPath(tpath);
+		}
 	}
 	
 	

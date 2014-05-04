@@ -37,8 +37,6 @@ public class VoteActionController implements ActionListener {
 	private final Game game;
 	private int estimateValue;
 	
-	
-	
 	/**
 	 * Constructs the VoteActionController
 	 *
@@ -54,13 +52,12 @@ public class VoteActionController implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		
 		if(view.checkField()) {
-				
-			
-			final String name = ConfigManager.getInstance().getConfig().getUserName();
+
+			final String name = ConfigManager.getConfig().getUserName();
 			estimateValue = view.getEstimate();
 			final List<Boolean> selection = view.getCardSelection();
 			view.getDeckPanel().setCurrentEstimate(Integer.toString(estimateValue));
-			
+
 			final Estimate oldEstimate = game.findEstimate(view.getReqID());
 			oldEstimate.makeEstimate(name, estimateValue);
 			oldEstimate.setUserCardSelection(name, selection);
@@ -86,12 +83,10 @@ public class VoteActionController implements ActionListener {
 	 * success message if the estimation was made
 	 */
 	public void reportSuccess() {
-		view.refresh();
+		final boolean moved = view.hasRefreshAndMoved();
 		OverviewPanelController.getInstance().refreshListGames();
 		OverviewPanelController.getInstance().updateGameSummary(game);
-		view.reportSuccess(estimateValue);
-		// TODO Auto-generated method stub
-		
+		view.reportSuccess(estimateValue, moved);
 	}
 	
 	/**
