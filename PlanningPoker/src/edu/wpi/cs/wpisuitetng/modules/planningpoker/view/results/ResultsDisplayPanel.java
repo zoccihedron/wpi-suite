@@ -7,6 +7,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -389,15 +390,13 @@ public class ResultsDisplayPanel extends JPanel {
 		}
 		
 		message.setText(" ");
-		timer = new Timer(100, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				finalEstimate.requestFocus();
-				timer.stop();
-			}
-		});
-		timer.start();
+		EventQueue.invokeLater(new Runnable() {
+
+			   @Override
+			     public void run() {
+			         finalEstimate.requestFocusInWindow();
+			     }
+			});
 		
 	}
 
