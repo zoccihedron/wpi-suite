@@ -19,6 +19,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.List;
 
@@ -75,6 +76,7 @@ public class DeckControlsPanel extends JPanel {
 	private final ButtonGroup cardSelectGroup;
 	private final JRadioButton singleSelectBtn;
 	private final JRadioButton multiSelectBtn;
+	private Timer addDefaultsTimer;
 
 	/**
 	 * Construct all the buttons and their action listeners.
@@ -351,6 +353,29 @@ public class DeckControlsPanel extends JPanel {
 		btnUpdateDeckName.setVisible(false);
 		deckManager.setSaveVisible(false);
 
+		fieldAddCard.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					btnAddCard.doClick(1);
+				}
+			}
+		});
+		
+		fieldDeckName.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					btnUpdateDeckName.doClick(1);
+				}
+			}
+		});
 	}
 
 	/**
@@ -497,13 +522,7 @@ public class DeckControlsPanel extends JPanel {
 	 */
 	public void clearCardValue() {
 		fieldAddCard.setText("");
-		// remove focus from textfield
-		try {
-			fieldAddCard.grabFocus();
-		} finally {
-			fieldDeckName.grabFocus();
-		}
-
+		fieldAddCard.grabFocus();
 	}
 
 	/**

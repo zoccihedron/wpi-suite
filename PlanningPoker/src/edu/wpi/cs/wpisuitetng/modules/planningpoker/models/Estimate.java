@@ -211,7 +211,9 @@ public class Estimate {
 		int max = 0;
 		final List<Integer> estimates = new ArrayList<Integer>();
 		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
-			estimates.add(temp.getValue());
+			if(temp.getValue() > 0) {
+				estimates.add(temp.getValue());
+			}
 		}
 		Collections.sort(estimates);
 		int length = estimates.size();

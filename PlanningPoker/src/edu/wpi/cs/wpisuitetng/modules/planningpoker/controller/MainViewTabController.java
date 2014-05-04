@@ -247,6 +247,57 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(deckManagerPanel);
 	}
+	
+	/**
+	 * Closes new game tabs that have the inputed game
+	 * @return Boolean if the tab was closed
+	 */
+	public boolean closeEditTabs(Game game) {
+		Boolean closeTab = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					closeTab = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+		}
+		return closeTab;
+	}
+	
+	/**
+	 * Closes play game tabs that have the inputed game
+	 * @return Boolean if the tab was closed
+	 */
+	public boolean closePlayTabs(Game game) {
+		Boolean closeTab = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
+				if(((PlayGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					closeTab = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+		}
+		return closeTab;
+	}
+	
+	/**
+	 * Closes view results tabs that have the inputed game
+	 * @return Boolean if the tab was closed
+	 */
+	public boolean closeResultTabs(Game game) {
+		Boolean closeTab = true;
+		for(int i = 0; i < mainView.getTabCount(); i++){
+			if(mainView.getComponentAt(i).getClass() == ViewResultsPanel.class){
+				if(((ViewResultsPanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+					mainView.setSelectedComponent(mainView.getComponentAt(i));
+					closeTab = instance.closeTab(mainView.getComponentAt(i));
+				}
+			}
+		}
+		return closeTab;
+	}
 
 	/**
 	 * Closes a given tab
@@ -298,4 +349,7 @@ public class MainViewTabController {
 	public static void setOverviewPanel(OverviewPanel overview) {
 		overviewPanel = overview;
 	}
+
+
+	
 }
