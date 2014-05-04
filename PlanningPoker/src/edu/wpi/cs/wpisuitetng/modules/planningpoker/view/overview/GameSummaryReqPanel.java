@@ -149,9 +149,9 @@ public class GameSummaryReqPanel extends JPanel {
 		final List<Integer> reqIDs = game.getRequirements();
 		for(Requirement req : RequirementManagerFacade.getInstance().getPreStoredRequirements()){
 			if(reqIDs.contains(req.getId())){
-				int meanEstimate = 0;
+				double meanEstimate = 0;
 				try{
-					meanEstimate = (int)game.findEstimate(req.getId()).getMean();
+					meanEstimate = game.findEstimate(req.getId()).getMean();
 				}
 				catch(NullPointerException e){
 					System.err.println(e.getMessage());
@@ -161,7 +161,7 @@ public class GameSummaryReqPanel extends JPanel {
 						Integer.toString(req.getId()), 
 						req.getName(),
 						req.getDescription(),
-						meanEstimate,
+						(double)meanEstimate,
 						game.findEstimate(req.getId()).getFinalEstimate(),
 						game.findEstimate(req.getId()).getEstimate(currentUser) >= 0 ? 
 								game.findEstimate(req.getId()).getEstimate(currentUser) 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -197,7 +198,7 @@ public class Estimate {
 		} else {
 			mean = 0;
 		}
-		return mean;
+		return Math.round(mean * 100.0) / 100.0;
 		
 	}
 	
