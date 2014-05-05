@@ -79,6 +79,7 @@ public class ResultsDisplayController implements ActionListener{
 			}); 
 			request.send();
 			view.refresh();
+			final boolean moved = view.hasRefreshAndMoved();
 			
 		}
 	}

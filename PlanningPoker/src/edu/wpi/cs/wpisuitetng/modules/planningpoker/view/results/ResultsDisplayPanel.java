@@ -7,6 +7,7 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -389,15 +390,13 @@ public class ResultsDisplayPanel extends JPanel {
 		}
 		
 		message.setText(" ");
-		timer = new Timer(100, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				finalEstimate.requestFocus();
-				timer.stop();
-			}
-		});
-		timer.start();
+		EventQueue.invokeLater(new Runnable() {
+
+			   @Override
+			     public void run() {
+			         finalEstimate.requestFocusInWindow();
+			     }
+			});
 		
 	}
 
@@ -519,6 +518,26 @@ public class ResultsDisplayPanel extends JPanel {
 		else {
 			saveFinalEstimateBtn.setToolTipText("Please enter an integer greater than 0.");
 		}
+	}
+	
+	/**
+	 * Will refresh the PlayGamePanel with either the next unset requirement
+	 * or the current one if there are no unset ones.
+	 * @return true if the requirement is different
+	 */
+	public boolean hasRefreshAndMoved() {
+		boolean result = false;
+		refresh();
+		final int newReq = treePanel.getTreePanel().MoveToNextFree(reqid);
+		
+		if(newReq != reqid){
+			result = true;
+		}
+		reqid = newReq;
+		updateData(reqid);
+
+		treePanel.getTreePanel().highlightRequirement(reqid);
+		return result;
 	}
 	
 }
