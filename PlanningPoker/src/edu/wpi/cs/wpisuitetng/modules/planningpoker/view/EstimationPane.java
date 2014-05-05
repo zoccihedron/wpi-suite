@@ -74,6 +74,7 @@ public class EstimationPane extends JPanel {
 	//this variable allows the panel to close before an estimation is selected
 	private boolean nothingHappened;
 	private JLabel currentVote;
+	private boolean threadLockCheck = true;
 	
 /**
  * Constructor for panel
@@ -345,6 +346,8 @@ public class EstimationPane extends JPanel {
 	public void setGameAndRequirement(int reqid, Game game){
 		this.game = game;
 		
+		threadLockCheck = false;
+		
 		voteButton.setEnabled(true);
 		voteButton.setToolTipText("Click here to vote!");
 
@@ -367,6 +370,8 @@ public class EstimationPane extends JPanel {
 		}
 		
 		deckPanel.setEstimateFieldEditable(true);
+		
+		threadLockCheck = true;
 		
 		checkField();
 		message.setText("<html></html>");
@@ -398,32 +403,33 @@ public class EstimationPane extends JPanel {
 			voteButton.setToolTipText("Please select a card");
 			return false;
 		}
-		
-		final int estimate;
-		try{
-			reportError("<html></html>");
-			estimate = Integer.parseInt(deckPanel.getEstimateField());
-
-		} catch (NumberFormatException e){
-			reportError("<html>Error: Estimate must be an integer.</html>");
-			System.err.println(e.getMessage());
-			voteButton.setEnabled(false);
-			voteButton.setToolTipText("Please enter an integer");
-			return false;
-		}
-
-		if(estimate < 0) {
-			reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
-			voteButton.setEnabled(false);
-			voteButton.setToolTipText("Please enter an integer greater than 0");
-			return false;
-		}
-		
-		if(estimate == 0){
-			reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
-			voteButton.setEnabled(true);
-			voteButton.setToolTipText("Click here to vote!");
-			return true;
+		if (threadLockCheck) {
+			final int estimate;
+			try{
+				reportError("<html></html>");
+				estimate = Integer.parseInt(deckPanel.getEstimateField());
+	
+			} catch (NumberFormatException e){
+				reportError("<html>Error: Estimate must be an integer.</html>");
+				System.err.println(e.getMessage());
+				voteButton.setEnabled(false);
+				voteButton.setToolTipText("Please enter an integer");
+				return false;
+			}
+	
+			if(estimate < 0) {
+				reportError("<html>Error: Estimate must be an integer greater than 0.</html>");
+				voteButton.setEnabled(false);
+				voteButton.setToolTipText("Please enter an integer greater than 0");
+				return false;
+			}
+			
+			if(estimate == 0){
+				reportInfo("<html>0 indicates that you are unable to estimate this requirement. </html>");
+				voteButton.setEnabled(true);
+				voteButton.setToolTipText("Click here to vote!");
+				return true;
+			}
 		}
 		
 		if(game.getStatus() == GameStatus.ENDED){
