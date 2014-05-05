@@ -88,9 +88,11 @@ public class MainViewTabController {
 		boolean makePanel = true;
 		for(int i = 0; i < mainView.getTabCount(); i++){
 			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
-				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
-					mainView.setSelectedComponent(mainView.getComponentAt(i));
-					makePanel = false;
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame() != null){
+					if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+						mainView.setSelectedComponent(mainView.getComponentAt(i));
+						makePanel = false;
+					}
 				}
 			}
 			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
@@ -105,7 +107,7 @@ public class MainViewTabController {
 					makePanel = instance.closeTab(mainView.getComponentAt(i));
 				}
 			}
-			
+
 		}
 		if(makePanel){
 			final NewGamePanel newGamePanel = new NewGamePanel(game, isInProgress);
@@ -129,9 +131,11 @@ public class MainViewTabController {
 		boolean makePanel = true;
 		for(int i = 0; i < mainView.getTabCount(); i++){
 			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
-				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
-					mainView.setSelectedComponent(mainView.getComponentAt(i));
-					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame() != null){
+					if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+						mainView.setSelectedComponent(mainView.getComponentAt(i));
+						makePanel = instance.closeTab(mainView.getComponentAt(i));
+					}
 				}
 			}
 			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
@@ -146,7 +150,7 @@ public class MainViewTabController {
 					makePanel = instance.closeTab(mainView.getComponentAt(i));
 				}
 			}
-			
+
 		}
 		if(makePanel){
 			final PlayGamePanel playGamePanel = new PlayGamePanel(game);
@@ -187,9 +191,11 @@ public class MainViewTabController {
 		boolean makePanel = true;
 		for(int i = 0; i < mainView.getTabCount(); i++){
 			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
-				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
-					mainView.setSelectedComponent(mainView.getComponentAt(i));
-					makePanel = instance.closeTab(mainView.getComponentAt(i));
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame() != null){
+					if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+						mainView.setSelectedComponent(mainView.getComponentAt(i));
+						makePanel = instance.closeTab(mainView.getComponentAt(i));
+					}
 				}
 			}
 			else if(mainView.getComponentAt(i).getClass() == PlayGamePanel.class){
@@ -204,7 +210,7 @@ public class MainViewTabController {
 					makePanel = false;
 				}
 			}
-			
+
 		}
 		if(makePanel){
 			final ViewResultsPanel resultsPanel = new ViewResultsPanel(game);
@@ -259,7 +265,7 @@ public class MainViewTabController {
 		mainView.repaint();
 		mainView.setSelectedComponent(deckManagerPanel);
 	}
-	
+
 	/**
 	 * Closes new game tabs that have the inputed game
 	 * @return Boolean if the tab was closed
@@ -268,15 +274,17 @@ public class MainViewTabController {
 		Boolean closeTab = true;
 		for(int i = 0; i < mainView.getTabCount(); i++){
 			if(mainView.getComponentAt(i).getClass() == NewGamePanel.class){
-				if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
-					mainView.setSelectedComponent(mainView.getComponentAt(i));
-					closeTab = instance.closeTab(mainView.getComponentAt(i));
+				if(((NewGamePanel)mainView.getComponentAt(i)).getGame() != null){
+					if(((NewGamePanel)mainView.getComponentAt(i)).getGame().getId()== game.getId()){
+						mainView.setSelectedComponent(mainView.getComponentAt(i));
+						closeTab = instance.closeTab(mainView.getComponentAt(i));
+					}
 				}
 			}
 		}
 		return closeTab;
 	}
-	
+
 	/**
 	 * Closes play game tabs that have the inputed game
 	 * @return Boolean if the tab was closed
@@ -293,7 +301,7 @@ public class MainViewTabController {
 		}
 		return closeTab;
 	}
-	
+
 	/**
 	 * Closes view results tabs that have the inputed game
 	 * @return Boolean if the tab was closed
@@ -366,5 +374,5 @@ public class MainViewTabController {
 	}
 
 
-	
+
 }
