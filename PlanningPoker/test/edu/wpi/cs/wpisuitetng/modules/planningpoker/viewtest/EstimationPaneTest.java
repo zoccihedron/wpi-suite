@@ -82,6 +82,7 @@ public class EstimationPaneTest {
 	
 	@Test
 	public void constructorTest(){
+		System.setProperty("java.awt.headless", "false");
 		assertNotNull(textPanel);
 		assertNotNull(cardPanel);
 	}
