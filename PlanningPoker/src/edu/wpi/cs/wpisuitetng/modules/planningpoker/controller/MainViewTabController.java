@@ -357,9 +357,12 @@ public class MainViewTabController {
 				tabClosed = true;
 			}
 		}
-		mainView.setSelectedComponent(overviewPanel);
+		
+		if(tabClosed) {
+			mainView.setSelectedComponent(overviewPanel);
+		}
+		
 		return tabClosed;
-
 	}
 
 

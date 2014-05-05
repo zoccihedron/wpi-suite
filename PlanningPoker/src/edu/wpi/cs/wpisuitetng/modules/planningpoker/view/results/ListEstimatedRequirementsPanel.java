@@ -14,6 +14,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.results;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.DropMode;
@@ -22,6 +23,9 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
@@ -46,6 +50,8 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 	private JTree tree;
 	private final Game game;
 	private final ViewResultsController controller;
+	private Requirement firstUnsetReq;
+	private DefaultMutableTreeNode top;
 
 	/**
 	 * Constructs the panel
@@ -160,13 +166,24 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		}
 		
 	}
+	
+	public int MoveToNextFree(int previousReqId) {
+		int returnReq;
+		if(firstUnsetReq == null){
+			returnReq = previousReqId;
+		}
+		else{
+			returnReq = firstUnsetReq.getId();
+		}
+		return returnReq;
+	}
 
 	/**
 	 * This method is used to refresh the requirements tree
 	 */
 	public void refresh() {
 
-		final DefaultMutableTreeNode top = new DefaultMutableTreeNode(
+		top = new DefaultMutableTreeNode(
 				"Requirements"); // makes a starting node
 		final List<Requirement> requirements = RequirementManagerFacade
 				.getInstance().getPreStoredRequirements();
@@ -180,8 +197,9 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 				"Final estimate not set");
 		selectedCategory = new DefaultMutableTreeNode("Final estimate set");
 		sentCategory = new DefaultMutableTreeNode("Final estimate sent");
-
 		final String user = ConfigManager.getInstance().getConfig().getUserName();
+		int count = 0;
+		firstUnsetReq = null;
 		for (Requirement req : requirements) {
 
 			// add new node to requirement tree
@@ -191,7 +209,12 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 						if (!e.isFinalEstimateSet()) {
 							reqNode = new DefaultMutableTreeNode(req);
 							notSelectedCategory.add(reqNode);
-						} else if (!e.estimationHasBeenSent()
+							if(count == 0){
+								firstUnsetReq = req;
+							}
+							count ++;
+						} 
+						else if (!e.estimationHasBeenSent()
 								&& e.isFinalEstimateSet()) {
 							reqNode = new DefaultMutableTreeNode(req);
 							selectedCategory.add(reqNode);
@@ -230,6 +253,30 @@ public class ListEstimatedRequirementsPanel extends JScrollPane implements
 		tree.setDropMode(DropMode.ON);
 
 		this.setViewportView(tree); // make panel display the tree
+	}
+	
+	/**
+	 * Will highlight in the tree the node with the given reqid
+	 * @param reqidToSelect the id of the req to highlight
+	 */
+	public void highlightRequirement(int reqidToSelect){
+		DefaultMutableTreeNode theNode = null;
+		for (final Enumeration<DefaultMutableTreeNode> e = top.depthFirstEnumeration(); 
+				e.hasMoreElements() && theNode == null;) {
+		    DefaultMutableTreeNode node = e.nextElement();
+		    if (node.getUserObject() instanceof Requirement) {
+		    	Requirement req = (Requirement) node.getUserObject();
+		    	if(req.getId() == reqidToSelect){
+		    		theNode = node;
+		    	}
+		    }
+		}
+		
+		if(theNode != null){
+			final TreeNode[] nodes = ((DefaultTreeModel) tree.getModel()).getPathToRoot(theNode);
+			final TreePath tpath = new TreePath(nodes);
+			tree.setSelectionPath(tpath);
+		}
 	}
 
 	/**
