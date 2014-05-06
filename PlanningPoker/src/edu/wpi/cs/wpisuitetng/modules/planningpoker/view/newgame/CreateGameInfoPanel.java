@@ -14,13 +14,16 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view.newgame;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -31,8 +34,10 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -44,7 +49,9 @@ import net.sourceforge.jdatepicker.impl.JDatePanelImpl;
 import net.sourceforge.jdatepicker.impl.JDatePickerImpl;
 import net.sourceforge.jdatepicker.impl.UtilDateModel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.deckmanager.ManageDeckController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.ChangeDeadlineVisibilityController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Deck;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 
 /**
@@ -54,7 +61,7 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
  * @author Code On Bleu
  * @version 1.0
  */
-@SuppressWarnings({ "serial" })
+@SuppressWarnings({ "serial", "rawtypes", "unchecked"})
 public class CreateGameInfoPanel extends JPanel {
 	private final MainViewTabController mainViewTabController;
 	private final NewGamePanel parentPanel;
@@ -71,12 +78,13 @@ public class CreateGameInfoPanel extends JPanel {
 	private final JRadioButton rdbtnPm;
 	private final ButtonGroup AMPMSelection;
 	private final JLabel lblDeck;
-	private final JComboBox deck;
+	private final JComboBox deckBox;
 	private final JCheckBox chckbxDeadline;
 	private Game editingGame;
 	private final JLabel lblTitle;
 	private final JLabel lblDescription;
 	private Timer verificationChecker;
+	private final List<Deck> decks;
 	
 	//Saved fields for checking page editing
 	private String defaultName;
@@ -84,7 +92,7 @@ public class CreateGameInfoPanel extends JPanel {
 	private Date defaultDate;
 	private boolean defaultDeadlineCheck;
 	private List<Integer> defaultReqs;
-	private String defaultDeck;
+	private Deck defaultDeckObject;
 
 	/**
 	 * This constructor is to be used when starting from a new game
@@ -107,14 +115,13 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setBorder(jtextFieldBorder);
 
 		lblTitle = new JLabel("Game Information");
-
 		lblName = new JLabel("Name:       ");
 
 		lblDeadline = new JLabel("Deadline:");
 
 		// creates a date picker and sets its position
 		final UtilDateModel model = new UtilDateModel();
-		
+
 		final Calendar tempCalendar = new GregorianCalendar();
 		tempCalendar.setTime(now);
 		model.setDate(tempCalendar.get(Calendar.YEAR),
@@ -152,18 +159,33 @@ public class CreateGameInfoPanel extends JPanel {
 		}
 
 		// creates deck selector and sets it to default deck
+		final List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
+		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		textEntry.setId(-1);
+		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
+		defaultDeck.setId(-2);
+		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
 
-		final String[] decks = { "default", "text entry"};
-		deck = new JComboBox(decks);
+		for(Deck d:allDecks){
+			if(d.isUsable()){
+				decks.add(d);
+			}
+		}
+		decks.add(textEntry);
+		decks.add(defaultDeck);
+		deckBox = new JComboBox(decks.toArray());
+		deckBox.setSelectedItem(defaultDeck);
+
+		deckBox.setToolTipText("Please select a deck to be used in the game.");
 
 		// creates deadline checkbox
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
-			new ChangeDeadlineVisibilityController(this));
+				new ChangeDeadlineVisibilityController(this));
 		chckbxDeadline.setSelected(true);
 		lblDescription = new JLabel("Description:");
-		
+
 		// adds constraints
 		panelSetup();
 	}
@@ -198,14 +220,33 @@ public class CreateGameInfoPanel extends JPanel {
 		description.setText(editingGame.getDescription());
 		description.setBorder(jtextFieldBorder);
 
+
+		// creates deck selector and sets it to default deck
+		final List<Deck> allDecks = ManageDeckController.getInstance().getDecks();
+		final Deck textEntry = new Deck("Text Entry", true, new ArrayList<Integer>());
+		textEntry.setId(-1);
+		final Deck defaultDeck = new Deck("default", true, new ArrayList<Integer>());
+		defaultDeck.setId(-2);
+		decks = new ArrayList<Deck>();
 		lblDeck = new JLabel("Deck:");
-		final String[] decks = { "default", "text entry"};
-		deck = new JComboBox(decks);
-		deck.setSelectedItem(editingGame.getDeck());
+		for(Deck d:allDecks){
+			if(d.isUsable()){
+				decks.add(d);
+			}
+		}
+		decks.add(textEntry);
+		decks.add(defaultDeck);
+		deckBox = new JComboBox(decks.toArray());
+		for(Deck d: decks){
+			if(passedInGame.getDeck() == d.getId())
+			{
+				deckBox.setSelectedItem(d);
+			}
+		}
 
 		chckbxDeadline = new JCheckBox("Deadline?");
 		chckbxDeadline.addActionListener(
-			new ChangeDeadlineVisibilityController(this));
+				new ChangeDeadlineVisibilityController(this));
 		lblDeadline = new JLabel("Deadline:");
 
 		// creates a date picker and sets its position
@@ -215,7 +256,7 @@ public class CreateGameInfoPanel extends JPanel {
 		model.setDate(tempCalendar.get(Calendar.YEAR),
 				tempCalendar.get(Calendar.MONTH),
 				tempCalendar.get(Calendar.DATE));
-		
+
 		model.setSelected(true);
 		final JDatePanelImpl datePanel = new JDatePanelImpl(model);
 		datePicker = new JDatePickerImpl(datePanel);
@@ -250,7 +291,7 @@ public class CreateGameInfoPanel extends JPanel {
 		ForceEnableOrDisableDeadline(editingGame.isHasDeadline());
 
 		chckbxDeadline.addActionListener(
-			new ChangeDeadlineVisibilityController(this));
+				new ChangeDeadlineVisibilityController(this));
 		panelSetup();
 	}
 
@@ -260,27 +301,8 @@ public class CreateGameInfoPanel extends JPanel {
 	public void panelSetup() {
 		// DEFINE CONSTRAINTS
 		final GridBagConstraints constraints = new GridBagConstraints();
-
-		final JPanel fakePanel1 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 0;
-		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(fakePanel1, constraints);
-		final JPanel fakePanel2 = new JPanel();
-		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridwidth = 1;
-		constraints.weightx = 1.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 4;
-		constraints.gridy = 0;
-		constraints.ipadx = 10;
-		constraints.ipady = 10;
-		add(fakePanel2, constraints);
+		
+		this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		// GAME INFORMATION LABEL
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -325,14 +347,20 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblDescription, constraints);
 
 		// DESCRIPTION
+		final JScrollPane descriptionScrollPane = new JScrollPane(description); 
+		description.setEditable(true);
 		description.setLineWrap(true);
 		constraints.fill = GridBagConstraints.BOTH;
-		constraints.gridwidth = 3;
-		constraints.weightx = 0.90;
+
+		// DESCRIPTION SCROLL
+		constraints.fill = GridBagConstraints.BOTH;
+		constraints.gridwidth = 4;
+		constraints.weightx = 1.00;
 		constraints.weighty = 0.90;
 		constraints.gridx = 1;
 		constraints.gridy = 11;
-		add(description, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		add(descriptionScrollPane, constraints);
 
 		// DECK LABEL
 		lblDeck.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -345,21 +373,21 @@ public class CreateGameInfoPanel extends JPanel {
 		add(lblDeck, constraints);
 
 		// DECK SELECTOR
-		deck.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deckBox.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 2;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 2;
 		constraints.gridy = 9;
-		add(deck, constraints);
+		add(deckBox, constraints);
 
 		// DEADLINE CHECKBOX
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.gridwidth = 3;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
-		constraints.gridx = 0;
+		constraints.gridx = 1;
 		constraints.gridy = 5;
 		chckbxDeadline.setBorder(new EmptyBorder(0, 10, 0, 0));
 		add(chckbxDeadline, constraints);
@@ -453,8 +481,82 @@ public class CreateGameInfoPanel extends JPanel {
 		verificationChecker.start();
 		initDefaults();
 		checkFields();
+		
+		gameNameText.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					description.requestFocus();
+				}
+			}
+		});
+		
+		description.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\t' && !e.isShiftDown()) {
+					parentPanel.switchFocusToTable();
+				}
+				else if (e.getKeyChar() == '\t' && e.isShiftDown()) {
+					deckBox.requestFocus();
+				}
+			}
+		});
+		
+		chckbxDeadline.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					chckbxDeadline.doClick();
+				}
+			}
+		});
+		
+		rdbtnAm.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					rdbtnAm.doClick();
+				}
+			}
+		});
+		
+		rdbtnPm.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					rdbtnPm.doClick();
+				}
+			}
+		});
+
+		EventQueue.invokeLater(new Runnable() {
+
+		   @Override
+		     public void run() {
+		         gameNameText.grabFocus();
+		         gameNameText.requestFocusInWindow();//or inWindow
+		         gameNameText.setSelectionStart(0);
+		         gameNameText.setSelectionEnd(gameNameText.getText().length());
+		     }
+		});
 	}
-	
+
 	/**
 	 * Calls the function for changing the buttons' enabled status on the parent.
 	 * Also stops if false and starts if true the timer from changing the status of the buttons.
@@ -478,7 +580,6 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return the string corresponding to the minuteSelector object
 	 */
 	private static String getMinuteStringFromCalendar(int minute) {
-		System.out.println("Minute:" + minute);
 		String result = "00";
 		if (minute < 15) {
 			result = "00";
@@ -500,9 +601,7 @@ public class CreateGameInfoPanel extends JPanel {
 	 * @return the string corresponding to the hourSelector object
 	 */
 	private static String getHourStringFromCalendar(int hour) {
-		System.out.println("Hour:" + hour);
 		hour %= 12;
-		System.out.println("Hour % 12:" + hour);
 		String result = "";
 		if (hour < 10) {
 			result = "0" + String.valueOf(hour);
@@ -523,35 +622,41 @@ public class CreateGameInfoPanel extends JPanel {
 		reportError(" ");
 		boolean result = true;
 		parentPanel.displayErrorBorders(false);
+		parentPanel.toolTipChanger("Click here to start the game.", "Click here to save the game.");
 		if (parentPanel.getGameRequirements().size() == 0 && result) {
-			reportError("<html>*Pick at least one requirement.</html>");
+			reportError("<html>*Add at least one requirement.</html>");
 			result = false;
 			parentPanel.displayErrorBorders(true);
+
+			parentPanel.toolTipChanger("Please add at least one requirement.",
+					"Please add at least one requirement.");
 		}
-		
+
 		datePicker.setBorder(null);
 		if (chckbxDeadline.isSelected()) {
 			if (datePicker.getModel().getValue() == null) {
-				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 				reportError("<html>*Please choose a date or turn off the deadline.</html>");
 				result = false;
 			} else if (getDeadline().compareTo(new Date()) <= 0) {
-				datePicker.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+				datePicker.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 				reportError("<html>*The deadline must not be in the past.</html>");
 				result = false;
 			}
 		}
-		
-		gameNameText.setBorder(null);
+
 		if (gameNameText.getText().trim().isEmpty()) {
 			reportError("<html>*A name is required.</html>");
-			gameNameText.setBorder(BorderFactory.createLineBorder(Color.PINK, 3));
+			gameNameText.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 			result = false;
+		} else {
+			gameNameText.setBorder(description.getBorder());
+			
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Sets the defaults for the fields at game start up.
 	 */
@@ -570,9 +675,9 @@ public class CreateGameInfoPanel extends JPanel {
 			defaultDate = null;
 		}
 		defaultReqs = parentPanel.getGameRequirements();
-		defaultDeck = (String) deck.getSelectedItem();
+		defaultDeckObject = (Deck) deckBox.getSelectedItem();
 	}
-	
+
 	/**
 	 * Checks to see if the page has changed
 	 * @return true if the page has changed
@@ -586,13 +691,13 @@ public class CreateGameInfoPanel extends JPanel {
 			if(!(datePicker.getModel().getValue() == null)){
 				tempDate = getDeadline();
 			}
-			
+
 			if (defaultDate != null){
 				result &= defaultDate.equals(tempDate);
 			}
 		}
 
-		result &= defaultDeck.equals(deck.getSelectedItem());
+		result &= defaultDeckObject.equals(deckBox.getSelectedItem());
 		result &= defaultReqs.equals(parentPanel.getGameRequirements());
 		return !result;
 	}
@@ -664,9 +769,26 @@ public class CreateGameInfoPanel extends JPanel {
 
 	/**
 	 * Sends the signal to Mainview to close the NewgameTab
+	 * 
+	 * @param checkForNewReq whether or not to check if a new req is being made
 	 */
-	public void closeNewGameTab() {
-		mainViewTabController.closeTab(parentPanel);
+	public void closeNewGameTab(boolean checkForNewReq) {
+		boolean readyToClose = true;
+		if(!isPageEdited() && checkForNewReq) {
+			if(getReqPanel().isCreatingNewReq()){
+				final Object options[] = {
+						"Yes", "No"
+				};
+				final int i = JOptionPane.showOptionDialog(getParent().getParent(), 
+						"Your new requirement will not be saved, would you like to exit anyways?",
+						"Exit?",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null, options, options[1]);
+				readyToClose = (i == 0);
+			}
+		}
+		if(readyToClose) mainViewTabController.closeTab(parentPanel);
 	}
 
 	/**
@@ -680,12 +802,11 @@ public class CreateGameInfoPanel extends JPanel {
 			id = editingGame.getId();
 		}
 
-		final Game newGame = new Game(getGameName(), new Date(), new Date(), "default");
+		final Game newGame = new Game(getGameName(), new Date(), new Date(), -2);
 		newGame.setRequirements(parentPanel.getGameRequirements());
 		newGame.setDescription(description.getText());
 		newGame.setId(id);
-		newGame.setDeck((String) deck.getSelectedItem());
-
+		newGame.setDeck(((Deck)deckBox.getSelectedItem()).getId());
 		if (chckbxDeadline.isSelected()) {
 			newGame.setHasDeadline(true);
 			newGame.setEnd(getDeadline());
@@ -746,5 +867,14 @@ public class CreateGameInfoPanel extends JPanel {
 		final String minuteString = (String) minuteSelector.getSelectedItem();
 		final int minuteInt = Integer.parseInt(minuteString);
 		return minuteInt;
+	}
+
+	/**
+	 * Returns the SelectRequirementsPanel associated with the NewGamePanel
+	 *
+	 * @return the associated SelectRequirementsPanel
+	 */
+	public SelectRequirementsPanel getReqPanel(){
+		return parentPanel.getSelectRequirementsPanel();
 	}
 }

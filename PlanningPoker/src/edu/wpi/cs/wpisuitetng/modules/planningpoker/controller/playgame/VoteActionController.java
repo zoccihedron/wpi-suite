@@ -13,7 +13,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.playgame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
@@ -37,8 +37,6 @@ public class VoteActionController implements ActionListener {
 	private final Game game;
 	private int estimateValue;
 	
-	
-	
 	/**
 	 * Constructs the VoteActionController
 	 *
@@ -54,13 +52,12 @@ public class VoteActionController implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		
 		if(view.checkField()) {
-				
-			
-			final String name = ConfigManager.getInstance().getConfig().getUserName();
+
+			final String name = ConfigManager.getConfig().getUserName();
 			estimateValue = view.getEstimate();
-			ArrayList<Boolean> selection = view.getCardSelection();
+			final List<Boolean> selection = view.getCardSelection();
 			view.getDeckPanel().setCurrentEstimate(Integer.toString(estimateValue));
-			
+
 			final Estimate oldEstimate = game.findEstimate(view.getReqID());
 			oldEstimate.makeEstimate(name, estimateValue);
 			oldEstimate.setUserCardSelection(name, selection);
@@ -86,11 +83,10 @@ public class VoteActionController implements ActionListener {
 	 * success message if the estimation was made
 	 */
 	public void reportSuccess() {
-		view.refresh();
+		final boolean moved = view.hasRefreshAndMoved();
 		OverviewPanelController.getInstance().refreshListGames();
-		view.reportSuccess(estimateValue);
-		// TODO Auto-generated method stub
-		
+		OverviewPanelController.getInstance().updateGameSummary(game);
+		view.reportSuccess(estimateValue, moved);
 	}
 	
 	/**

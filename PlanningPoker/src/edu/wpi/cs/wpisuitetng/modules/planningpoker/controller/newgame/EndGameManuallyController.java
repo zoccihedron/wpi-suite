@@ -6,6 +6,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.PlanningPokerModel;
@@ -51,6 +52,8 @@ public class EndGameManuallyController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		final Game currentGame = view.getGameObject();
 		if(currentGame.getStatus().equals(Game.GameStatus.ENDED)) {
+			if(MainViewTabController.getInstance().closeResultTabs(endedGame)){
+			
 			currentGame.setStatus(Game.GameStatus.CLOSED);
 
 			// Send a request to the core to save this game
@@ -61,22 +64,26 @@ public class EndGameManuallyController implements ActionListener {
 			// add an observer to process the response
 			request.addObserver(new EndGameManuallyRequestObserver(this));
 			request.send(); // send the request
+			}
 		}
 		else {
-			if(endingGame) {
-				currentGame.setStatus(Game.GameStatus.ENDED);
+			if(MainViewTabController.getInstance().closePlayTabs(endedGame) 
+					&& MainViewTabController.getInstance().closeEditTabs(endedGame)){
+				if(endingGame) {
+					currentGame.setStatus(Game.GameStatus.ENDED);
+				}
+				else{
+					currentGame.setStatus(Game.GameStatus.DRAFT);
+				}
+				// Send a request to the core to save this game
+				final Request request = Network.getInstance().makeRequest
+						("Advanced/planningpoker/game/end", HttpMethod.POST);
+				// put the updated game in the body of the request
+				request.setBody(currentGame.toJSON());
+				// add an observer to process the response
+				request.addObserver(new EndGameManuallyRequestObserver(this));
+				request.send(); // send the request
 			}
-			else{
-				currentGame.setStatus(Game.GameStatus.DRAFT);
-			}
-			// Send a request to the core to save this game
-			final Request request = Network.getInstance().makeRequest
-					("Advanced/planningpoker/game/end", HttpMethod.POST);
-			// put the updated game in the body of the request
-			request.setBody(currentGame.toJSON());
-			// add an observer to process the response
-			request.addObserver(new EndGameManuallyRequestObserver(this));
-			request.send(); // send the request
 		}
 
 	}
@@ -90,10 +97,10 @@ public class EndGameManuallyController implements ActionListener {
 		OverviewPanelController.getInstance().refreshListGames();
 		OverviewPanelController.getInstance().updateGameSummary(endedGame);
 		if(endedGame.getStatus().equals(Game.GameStatus.ENDED)){
-			view.reportSuccess("Game ended successfully!");
+			view.reportSuccess("Game ended.");
 		}
 		else{
-			view.reportSuccess("Game closed successfully!");
+			view.reportSuccess("Game closed.");
 		}
 	}
 

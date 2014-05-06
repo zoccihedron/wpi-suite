@@ -12,6 +12,7 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -40,7 +41,9 @@ public class Game extends AbstractModel {
 	private List<Estimate> estimates = new ArrayList<Estimate>();
 	private List<Integer> requirements = new ArrayList<Integer>();
 	private boolean hasBeenEstimated = false;
-	private String deck = "";
+	private int deck;
+	private boolean myGame = false;
+
 	public enum GameStatus {
 		DRAFT("Draft"), IN_PROGRESS("In Progress"), ENDED("Ended"), CLOSED("Closed");
 
@@ -76,13 +79,13 @@ public class Game extends AbstractModel {
 	 * 			  name of the deck
 	 * 
 	 */
-	public Game(String name, Date startTime, Date endTime, String deckName) {
+	public Game(String name, Date startTime, Date endTime, int deckId) {
 		// TODO: whether a session could be add to the parameter of game's
 		// constructor
 		this.name = name;
 		start = startTime;
 		end = endTime;
-		this.setDeck(deckName);
+		this.setDeck(deckId);
 	}
 
 	/**
@@ -125,7 +128,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class Game extends AbstractModel {
 	 */
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
+		// Left empty on purpose
 	}
 
 	/**
@@ -187,6 +190,8 @@ public class Game extends AbstractModel {
 		end = updatedGame.getEnd();
 		status = updatedGame.getStatus();
 		hasDeadline = updatedGame.isHasDeadline();
+		deck = updatedGame.getDeck();
+		myGame = false;
 	}
 
 	/**
@@ -209,12 +214,17 @@ public class Game extends AbstractModel {
 		} else {
 
 			if (isParticipant(user)) {
-				for (String u : participants) {
+				
+				Iterator<String> iterator = participants.iterator();
+				
+				while(iterator.hasNext()) {
+					String u = iterator.next();
 					if (u.equals(user)) {
 						newCreator = u;
-						participants.remove(u);
+						iterator.remove();
 					}
 				}
+				
 			} else {
 				newCreator = user;
 			}
@@ -249,7 +259,7 @@ public class Game extends AbstractModel {
 	public boolean isParticipant(String user) {
 		boolean result = false;
 
-		if (participants == null) {
+		if (participants.size() == 0) {
 			result = false;
 		} else {
 			for (String temp : participants) {
@@ -368,6 +378,113 @@ public class Game extends AbstractModel {
 				status = GameStatus.ENDED;
 			}
 		}
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getMaxVotes(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getMaxVoteCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the user to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getUserMaxVotes(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count ++;
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @return the number of total votes needed
+	 */
+	public int getVoteCount(){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.getVoteCount();
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the game to be done.
+	 * @param user - the user to check for
+	 * @return the number of total votes needed
+	 */
+	public int getUserVoteCount(String user){
+		int count  = 0;
+		for(Estimate e: estimates){
+			count += e.hasMadeAnEstimation(user) ? 1 : 0;
+		}
+		return count;
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
+	 * @return the number of total votes needed
+	 */
+	public int getReqVoteCount(int reqid){
+		return findEstimate(reqid).getVoteCount();
+	}
+	
+	/**
+	 * Returns the number of total votes needed for the req to be done.
+	 * @param reqid - the id of the requirement searching through
+	 * @return the number of total votes needed
+	 */
+	public int getReqMaxVotes(int reqid){
+		return findEstimate(reqid).getMaxVoteCount();
+	}
+	
+	/**
+	 * Checks to see if the game has been changed
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if the game has been changed
+	 */
+	public boolean isChanged(Game returnedGame, String user) {
+		boolean result = false;
+		result |= !(equalUserVotes(returnedGame, user));
+		result |= (getVoteCount() != returnedGame.getVoteCount());
+		result |= !(equalFinalEstimates(returnedGame));
+		return result;
+	}
+
+	private boolean equalFinalEstimates(Game returnedGame) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getFinalEstimate() == 
+					returnedGame.findEstimate(reqid).getFinalEstimate();
+		}
+		return result;
+	}
+
+	/**
+	 * Checks to see if all the users votes are the same
+	 * @param returnedGame the game to compare against
+	 * @param user the current user
+	 * @return true if all the votes are the same
+	 */
+	private boolean equalUserVotes(Game returnedGame, String user) {
+		boolean result = true;
+		for(Estimate e: estimates){
+			int reqid = e.getReqID();
+			result &= e.getEstimate(user) == 
+					returnedGame.findEstimate(reqid).getEstimate(user);
+		}
+		return result;
 	}
 	
 	/**
@@ -584,10 +701,19 @@ public class Game extends AbstractModel {
 
 	/**
 	 * returns the name of the game
+	 * With an owner tag if the current user (client side) 
+	 * is the owner
 	 */
 	@Override
 	public String toString() {
-		return name;
+		String returnString = name;
+		if(returnString.length()>30){
+			returnString = returnString.substring(0, 30)+"...";
+		}
+		if (myGame){
+			returnString = returnString + " (Owner)";
+		}
+		return returnString;
 	}
 
 	/**
@@ -628,14 +754,14 @@ public class Game extends AbstractModel {
 	/**
 	 * @return the deck
 	 */
-	public String getDeck() {
+	public int getDeck() {
 		return deck;
 	}
 
 	/**
 	 * @param deck the deck to set
 	 */
-	public void setDeck(String deck) {
+	public void setDeck(int deck) {
 		this.deck = deck;
 	}
 
@@ -666,6 +792,24 @@ public class Game extends AbstractModel {
 	 */
 	public void setModifiedVersion(int modifiedVersion) {
 		this.modifiedVersion = modifiedVersion;
+	}
+
+	/**
+	 * @return myGame - A boolean that returns 
+	 * if the game is the owner's 
+	 * (Does not automatically update. Must be set 
+	 * by the setMyGame function.
+	 * Default: false)
+	 */
+	public boolean isMyGame() {
+		return myGame;
+	}
+
+	/**
+	 * @param myGame - set the game to be the current users or not.
+	 */
+	public void setMyGame(boolean myGame) {
+		this.myGame = myGame;
 	}
 
 }

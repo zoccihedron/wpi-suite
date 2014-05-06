@@ -20,8 +20,11 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,41 +54,35 @@ import edu.wpi.cs.wpisuitetng.network.models.IRequest;
 
 /**
  * Creates the user preference panel, which allows the users to denote whether or not
- * they want to be notified by email or IM and, if they do, input their email and IM.
+ * they want to be notified by email and, if they do, input their email.
  *
  * @author Code on Bleu
  * @version Apr 10, 2014
  */
+@SuppressWarnings("serial")
 public class UserPreferencesPanel extends JPanel {
 
 	private final JPanel preferencesPanel;
 	private final JPanel titlePanel;
+	private final JPanel emailPanel;
+	private final JPanel buttonPanel;
 	private final JTextField emailField;
-	private final JTextField imField;
 	private final JLabel lblTitle;
 	private final JLabel lblAllow;
-	private final JLabel lblUserInfo;
 	private final JLabel lblEmailCheck;
-	private final JLabel lblIMCheck;
 	private final JLabel lblPrefstatus;
 	private final JLabel lblEmail;
-	private final JLabel lblIM;
 	private final JCheckBox checkBoxEmail;
-	private final JCheckBox checkBoxIM;
 	private final JButton btnSubmit;
 	private final JButton btnCancel;
 	private Pattern pattern;
 	private Matcher matcher;
 	private final String emailPattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	private final String imPattern = "^[A-Za-z0-9]*$";
+			+ "[A-Za-z0-9-]+([_A-Za-z0-9-])*+(\\.[_A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private boolean emailVerified = true;
-	private boolean imVerified = true;
 	private final UserPreferencesPanel userPreferencesPane = this;
 	private String initEmail = "";
-	private String initIM = "";
 	private boolean initAllowEmail;
-	private boolean initAllowIM;
 
 	/**
 	 * Create the panel.
@@ -98,7 +95,7 @@ public class UserPreferencesPanel extends JPanel {
 		add(preferencesPanel, BorderLayout.CENTER);
 		final GridBagLayout gbl_panel = new GridBagLayout();
 
-		gbl_panel.columnWidths = new int[]{21, 31, 86, 40, 86, 0, 0, 0, 0};
+		gbl_panel.columnWidths = new int[]{15, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.rowHeights = new int[]{39, 21, 33, 21, 23, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]
 				{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -108,42 +105,41 @@ public class UserPreferencesPanel extends JPanel {
 
 		titlePanel = new JPanel();
 		final GridBagConstraints gbc_titlePanel = new GridBagConstraints();
-		gbc_titlePanel.insets = new Insets(0, 0, 5, 5);
-		gbc_titlePanel.gridwidth = 3;
+		gbc_titlePanel.insets = new Insets(0, 33, 5, 0);
+		gbc_titlePanel.gridwidth = 4;
 		gbc_titlePanel.gridx = 1;
 		gbc_titlePanel.gridy = 0;
+		gbc_titlePanel.anchor = GridBagConstraints.WEST;
 		preferencesPanel.add(titlePanel, gbc_titlePanel);
 		lblTitle = new JLabel("User Preferences");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		titlePanel.add(lblTitle);
-
-		lblUserInfo = new JLabel("User name: " + 
-				ConfigManager.getInstance().getConfig().getUserName());
-		lblUserInfo.setVerticalAlignment(SwingConstants.BOTTOM);
-		final GridBagConstraints gbc_lblUserInfo = new GridBagConstraints();
-		gbc_lblUserInfo.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUserInfo.gridwidth = 3;
-		gbc_lblUserInfo.gridx = 1;
-		gbc_lblUserInfo.gridy = 0;
-		preferencesPanel.add(lblUserInfo, gbc_lblUserInfo);
-
-
-		lblAllow = new JLabel("Allow:");
+		
+		lblAllow = new JLabel("Receive Notifications Via:");
 		lblAllow.setVerticalAlignment(SwingConstants.BOTTOM);
 		final GridBagConstraints gbc_lblAllow = new GridBagConstraints();
-		gbc_lblAllow.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAllow.insets = new Insets(0, 5, 5, 5);
 		gbc_lblAllow.gridx = 1;
 		gbc_lblAllow.gridy = 1;
 		preferencesPanel.add(lblAllow, gbc_lblAllow);
-
+		
+		emailPanel = new JPanel();
+		final GridBagConstraints gbc_emailPanel = new GridBagConstraints();
+		gbc_emailPanel.gridy = 2;
+		gbc_emailPanel.gridx = 1;
+		gbc_emailPanel.gridwidth = 5;
+		gbc_emailPanel.fill = GridBagConstraints.CENTER;
+		gbc_emailPanel.anchor = GridBagConstraints.WEST;
+		preferencesPanel.add(emailPanel, gbc_emailPanel);
+		
 		checkBoxEmail = new JCheckBox("");
 		final GridBagConstraints gbc_checkBox = new GridBagConstraints();
 		gbc_checkBox.fill = GridBagConstraints.CENTER;
 		gbc_checkBox.anchor = GridBagConstraints.WEST;
 		gbc_checkBox.insets = new Insets(0, 0, 5, 5);
 		gbc_checkBox.gridx = 1;
-		gbc_checkBox.gridy = 2;
-		preferencesPanel.add(checkBoxEmail, gbc_checkBox);
+		gbc_checkBox.gridy = 1;
+		emailPanel.add(checkBoxEmail, gbc_checkBox);
 
 		lblEmail = new JLabel("Email: ");
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
@@ -152,17 +148,18 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblEmail.anchor = GridBagConstraints.WEST;
 		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmail.gridx = 2;
-		gbc_lblEmail.gridy = 2;
-		preferencesPanel.add(lblEmail, gbc_lblEmail);
+		gbc_lblEmail.gridy = 1;
+		emailPanel.add(lblEmail, gbc_lblEmail);
 
 		emailField = new JTextField();
 		final GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.CENTER;
+		gbc_textField.anchor = GridBagConstraints.WEST;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 2;
-		preferencesPanel.add(emailField, gbc_textField);
-		emailField.setColumns(10);
+		gbc_textField.gridy = 1;
+		emailPanel.add(emailField, gbc_textField);
+		emailField.setColumns(18);
 		emailField.setEnabled(false);
 
 		lblEmailCheck = new JLabel("Error*");
@@ -170,76 +167,52 @@ public class UserPreferencesPanel extends JPanel {
 		gbc_lblEmailCheck.anchor = GridBagConstraints.WEST;
 		gbc_lblEmailCheck.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEmailCheck.gridx = 4;
-		gbc_lblEmailCheck.gridy = 2;
+		gbc_lblEmailCheck.gridy = 1;
 		lblEmailCheck.setVisible(false);
-		preferencesPanel.add(lblEmailCheck, gbc_lblEmailCheck);
-
-		checkBoxIM = new JCheckBox("");
-		final GridBagConstraints gbc_checkBox_1 = new GridBagConstraints();
-		gbc_checkBox_1.anchor = GridBagConstraints.WEST;
-		gbc_checkBox_1.insets = new Insets(0, 0, 5, 5);
-		gbc_checkBox_1.gridx = 1;
-		gbc_checkBox_1.gridy = 3;
-		preferencesPanel.add(checkBoxIM, gbc_checkBox_1);
-
-		lblIM = new JLabel("IM: ");
-		final GridBagConstraints gbc_IM = new GridBagConstraints();
-		gbc_IM.anchor = GridBagConstraints.WEST;
-		gbc_IM.insets = new Insets(0, 0, 5, 5);
-		gbc_IM.gridx = 2;
-		gbc_IM.gridy = 3;
-		preferencesPanel.add(lblIM, gbc_IM);
-
-		imField = new JTextField();
-		imField.setToolTipText("");
-		final GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.gridx = 3;
-		gbc_textField_1.gridy = 3;
-		preferencesPanel.add(imField, gbc_textField_1);
-		imField.setColumns(10);
-		imField.setEnabled(false);
-
-		lblIMCheck = new JLabel("Error*");
-		final GridBagConstraints gbc_lblIMCheck = new GridBagConstraints();
-		gbc_lblIMCheck.anchor = GridBagConstraints.WEST;
-		gbc_lblIMCheck.insets = new Insets(0, 0, 5, 5);
-		gbc_lblIMCheck.gridx = 4;
-		gbc_lblIMCheck.gridy = 3;
-		lblIMCheck.setVisible(false);
-		preferencesPanel.add(lblIMCheck, gbc_lblIMCheck);
-
+		emailPanel.add(lblEmailCheck, gbc_lblEmailCheck);
+		
+		buttonPanel = new JPanel();
+		final GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
+		gbc_buttonPanel.gridx = 1;
+		gbc_buttonPanel.gridy = 3;
+		gbc_buttonPanel.gridwidth = 5;
+		gbc_buttonPanel.anchor = GridBagConstraints.WEST;
+		gbc_buttonPanel.insets = new Insets(10, 0, 10, 0);
+		
 		btnSubmit = new JButton("Submit");
 		final GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
-		gbc_btnSubmit.anchor = GridBagConstraints.NORTH;
+		gbc_btnSubmit.anchor = GridBagConstraints.WEST;
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnSubmit.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSubmit.gridx = 2;
-		gbc_btnSubmit.gridy = 5;
+		gbc_btnSubmit.insets = new Insets(0, 0, 0, 0);
+		gbc_btnSubmit.gridx = 0;
+		gbc_btnSubmit.gridy = 0;
 		btnSubmit.setEnabled(false);
-		preferencesPanel.add(btnSubmit, gbc_btnSubmit);
+		buttonPanel.add(btnSubmit, gbc_btnSubmit);
 
 		btnCancel = new JButton("Cancel");
 		final GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCancel.anchor = GridBagConstraints.NORTH;
+		gbc_btnCancel.anchor = GridBagConstraints.WEST;
 		gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnCancel.gridx = 3;
-		gbc_btnCancel.gridy = 5;
-		preferencesPanel.add(btnCancel, gbc_btnCancel);
+		gbc_btnCancel.gridx = 1;
+		gbc_btnCancel.gridy = 0;
+		buttonPanel.add(btnCancel, gbc_btnCancel);
+		
+		preferencesPanel.add(buttonPanel, gbc_buttonPanel);
 
 		lblPrefstatus = new JLabel("");
 		final GridBagConstraints gbc_lblPrefstatus = new GridBagConstraints();
 		gbc_lblPrefstatus.gridwidth = 4;
 		gbc_lblPrefstatus.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPrefstatus.gridx = 1;
-		gbc_lblPrefstatus.gridy = 6;
+		gbc_lblPrefstatus.gridy = 4;
 		gbc_lblPrefstatus.anchor = GridBagConstraints.WEST;
 		preferencesPanel.add(lblPrefstatus, gbc_lblPrefstatus);
 
 
+		ConfigManager.getInstance();
 		final Request request = Network.getInstance().makeRequest("core/user/" + 
-				ConfigManager.getInstance().getConfig().getUserName(), HttpMethod.GET);
+				ConfigManager.getConfig().getUserName(), HttpMethod.GET);
 		request.addObserver(new UpdateUserPreferenceObserver(userPreferencesPane));
 		request.send();
 
@@ -264,52 +237,9 @@ public class UserPreferencesPanel extends JPanel {
 			}
 		});
 
-		imField.getDocument().addDocumentListener(new DocumentListener() {
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				reportIMValidation(imField.getText());
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				reportIMValidation(imField.getText());
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				reportIMValidation(imField.getText());
-			}
-		});
-
-
-		/*
-		 * Set up an action listern for IM checkbox that will
-		 * enable and disable IM text field depending on if it is selected.
-		 * Use ItemListener so that when the mouse hovers over the checkbox,
-		 * it would not be called.
-		 */
-		checkBoxIM.addItemListener(new ItemListener(){
-
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if(checkBoxIM.isSelected()){
-					imField.setEnabled(true);
-					reportIMValidation(imField.getText());
-				}
-				else{
-					imField.setEnabled(false);
-					lblIMCheck.setVisible(false);
-					imVerified = true;
-					configSubmitButton();
-				}
-			}
-
-		});
-
 		/*
 		 * Set up an action listener for the Email checkbox that will
-		 * enable and disable the email textfeld depending on if it is selected.
+		 * enable and disable the email text field depending on if it is selected.
 		 * Use ItemListener so that when the mouse hovers over the checkbox,
 		 * it would not be called.
 		 */
@@ -347,7 +277,6 @@ public class UserPreferencesPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				final User dummyUser = new User();
 
 				dummyUser.setIdNum(0);
@@ -355,9 +284,7 @@ public class UserPreferencesPanel extends JPanel {
 				dummyUser.setName("Name");
 				dummyUser.setRole(Role.USER);
 				dummyUser.setEmail(emailField.getText());
-				dummyUser.setIM(imField.getText());
 				dummyUser.setAllowEmail(checkBoxEmail.isSelected());
-				dummyUser.setAllowIM(checkBoxIM.isSelected());
 				final Request request =
 						Network.getInstance().makeRequest("Advanced/core/user/changeInPreference",
 								HttpMethod.POST);
@@ -366,7 +293,6 @@ public class UserPreferencesPanel extends JPanel {
 
 					@Override
 					public void responseSuccess(IRequest iReq) {
-						System.out.println("submit button clicked");
 					}
 
 					@Override
@@ -381,13 +307,12 @@ public class UserPreferencesPanel extends JPanel {
 
 				});
 				request.send();
-				userPreferencesPane.setCurrentEmailAndIM(
-						emailField.getText(), 
-						imField.getText(), 
-						checkBoxEmail.isSelected(), 
-						checkBoxIM.isSelected());
-				lblPrefstatus.setText("Success! Your notification preferences have been updated.");
-				lblPrefstatus.setBackground(Color.BLUE);
+				userPreferencesPane.setCurrentEmail(
+						emailField.getText(),
+						checkBoxEmail.isSelected());
+				final MainViewTabController mainViewTabController =
+						MainViewTabController.getInstance();
+				mainViewTabController.closeTab(userPreferencesPane);
 
 			}
 
@@ -407,6 +332,32 @@ public class UserPreferencesPanel extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 
+		emailField.addKeyListener(new java.awt.event.KeyAdapter() {
+			@Override
+			public void keyTyped(final KeyEvent e) {
+				super.keyTyped(e);
+
+				// Check if the user pressed Enter
+				if (e.getKeyChar() == '\n') {
+					btnSubmit.doClick(1);
+				}
+			}
+		});
+		
+		emailField.addFocusListener(new FocusListener(){
+
+			@Override
+			public void focusGained(FocusEvent e) {	
+				lblEmailCheck.setVisible(false);
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				lblEmailCheck.setVisible(true);
+			}
+
+		});
+
 	}
 
 	/**
@@ -419,18 +370,6 @@ public class UserPreferencesPanel extends JPanel {
 	private boolean isCorrectEmailFormat(String email){
 		pattern = Pattern.compile(emailPattern);
 		matcher = pattern.matcher(email);
-		return matcher.matches();
-	}
-
-	/**
-	 * Determines if an IM is properly formatted (containing no spaces)
-	 *
-	 * @param IM the IM string
-	 * @return true if the IM contains no spaces, false otherwise
-	 */
-	private boolean isCorrectIMFormat(String IM){
-		pattern = Pattern.compile(imPattern);
-		matcher = pattern.matcher(IM);
 		return matcher.matches();
 	}
 
@@ -466,37 +405,6 @@ public class UserPreferencesPanel extends JPanel {
 	}
 
 	/**
-	 * Configures the submit button depending on the validity of the IM, and
-	 * if not valid will not allow the user to submit their preferences.
-	 *
-	 * @param IM the IM to be validated
-	 */
-	private void reportIMValidation(String IM){
-		if(IM.equals("")){
-			lblIMCheck.setText("<html>Please enter an IM.<html>");
-			lblIMCheck.setVisible(true);
-			imVerified = false;
-			configSubmitButton();
-			printStatus();
-			return;
-		}
-		if(!isCorrectIMFormat(IM)){
-			lblIMCheck.setText("<html>*Error: IM contain spaces.<html>");
-			lblIMCheck.setVisible(true);
-			imVerified = false;
-			configSubmitButton();
-			printStatus();
-		}
-		else{
-			lblIMCheck.setText("");
-			lblIMCheck.setVisible(false);
-			imVerified = true;
-			configSubmitButton();
-			printStatus();
-		}
-	}
-
-	/**
 	 * Enables or disables the submit button depending on whether notifications are selected, and
 	 * the validity of the selected notification systems.
 	 *
@@ -505,7 +413,7 @@ public class UserPreferencesPanel extends JPanel {
 		if(!changeHasBeenMade()){
 			btnSubmit.setEnabled(false);
 		} else {
-			if(emailVerified && imVerified){
+			if(emailVerified){
 				btnSubmit.setEnabled(true);
 			}
 			else btnSubmit.setEnabled(false);
@@ -514,27 +422,17 @@ public class UserPreferencesPanel extends JPanel {
 	}
 
 	/**
-	 * Sets the current Email and IM for the user, and displays the current values in the 
-	 * textfields and the checkboxes.
+	 * Sets the current Email for the user, and displays the current values in the 
+	 * textfield and the checkbox.
 	 *
 	 * @param currentEmail the user's current stored email
-	 * @param currentIM the user's current stored IM
 	 * @param allowEmail the user's current stored email preference
-	 * @param allowIM the user's current stored IM preferences
 	 */
-	public void setCurrentEmailAndIM(String currentEmail, 
-			String currentIM, 
-			boolean allowEmail, 
-			boolean allowIM){
-
+	public void setCurrentEmail(String currentEmail, boolean allowEmail){
 		initEmail = currentEmail;
 		emailField.setText(currentEmail);
-		initIM = currentIM;
-		imField.setText(currentIM);
 		checkBoxEmail.setSelected(allowEmail);
 		initAllowEmail = allowEmail;
-		checkBoxIM.setSelected(allowIM);
-		initAllowIM = allowIM;
 	}
 
 	/**
@@ -544,6 +442,7 @@ public class UserPreferencesPanel extends JPanel {
 	 * @return whether the tab is ready to close or not.
 	 */
 	public boolean isReadyToClose() {
+		boolean result = true;
 		if(changeHasBeenMade()){
 			final Object[] options = {"Yes", "No"};
 			final int i = JOptionPane.showOptionDialog(this, 
@@ -553,12 +452,9 @@ public class UserPreferencesPanel extends JPanel {
 					JOptionPane.QUESTION_MESSAGE,
 					null, options, options[1]);
 
-			return i == 0;
+			result = (i == 0);
 		}
-		else{
-			return true;
-
-		}
+		return result;
 	}
 
 	/**
@@ -569,13 +465,6 @@ public class UserPreferencesPanel extends JPanel {
 	}
 
 	/**
-	 * @param initIM the initIM to set
-	 */
-	public void setInitIM(String initIM) {
-		this.initIM = initIM;
-	}
-
-	/**
 	 * @param initAllowEmail the initAllowEmail to set
 	 */
 	public void setInitAllowEmail(boolean initAllowEmail) {
@@ -583,22 +472,13 @@ public class UserPreferencesPanel extends JPanel {
 	}
 
 	/**
-	 * @param initAllowIM the initAllowIM to set
-	 */
-	public void setInitAllowIM(boolean initAllowIM) {
-		this.initAllowIM = initAllowIM;
-	}
-
-	/**
 	 * 
 	 * @return true if any change has been made
 	 */
 	public boolean changeHasBeenMade(){
-		return (!(initEmail != null && initIM != null 
+		return (!(initEmail != null
 				&& initEmail.equals(emailField.getText()) 
-				&& initIM.equals(imField.getText())
-				&& initAllowEmail == checkBoxEmail.isSelected()
-				&& initAllowIM == checkBoxIM.isSelected()));
+				&& initAllowEmail == checkBoxEmail.isSelected()));
 	}
 	
 	/**
@@ -615,7 +495,7 @@ public class UserPreferencesPanel extends JPanel {
 	 */
 	public void printStatus(){
 		if(changeHasBeenMade()){
-			if(emailVerified && imVerified){
+			if(emailVerified){
 				lblPrefstatus.setText("");
 			}
 			else {

@@ -1,0 +1,9 @@
+   Once a game has been ended, a "View Results" button should appear in the bottom right-hand corner of the Game Information panel. Clicking this button brings you to the Ended Game Information view.
+   
+   In this view, the requirements are divided into three categories: "Estimate not selected", "Estimate Selected", and "Estimate Sent". Click on a requirement to see the results of the voting.
+   
+   The mean, median, and individual votes of the players are displayed for each requirement. The "Final Estimate" field is automatically populated with the average score; you can keep this by clicking "Set the final estimate" without changing anything. If you wish to alter the estimate, simply type your new estimate into the box to the right of the "Final Estimate" label. The box below can be used to add a note about your selection. Click "Set the final estimate" when you are done.
+   
+   The requirement should now be moved into the "Estimate selected" category. If you are ready to finalize the estimate, click the "Send Selected Estimates" button on the lower left-hand corner of the window. This will send all estimates for the requirements in the "Estimate selected" category to the Requirement Manager.
+   
+   If you wish to modify the final estimate after it is sent, click on the requirement under "Estimate sent". You can modify the final estimate value just as you did the first time; this time, however, a note is required to explain why you are changing the estimate. Type out your note in the large box provided and then click "Set the final estimate".

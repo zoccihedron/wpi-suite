@@ -35,51 +35,59 @@ import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabContro
  */
 @SuppressWarnings("serial")
 public class CreateButtonsPanel extends ToolbarGroupView{
-	
+
 	private final JButton crtGameBtn = new JButton("<html>Create<BR />Game</html>");
 	private final JButton crtDeckBtn = new JButton("<html>Manage<BR />Decks</html>");
-	private final JButton userPrefBtn = new JButton("<html>User<BR />Preferences<html>");
+	private final JButton userPrefBtn = new JButton("<html>User<BR />Preferences</html>");
+	private final JButton helpBtn = new JButton("<html>Help</html>");
 	private final JPanel buttonPanel = new JPanel();
-	
+
 	/**
 	 * Constructor for the CreateButtonsPanel
 	 */
 	public CreateButtonsPanel()
 	{
 		super("");
-		
+
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		this.setPreferredWidth(700);
-		
+
+		buttonPanel.add(Box.createHorizontalStrut(15));
 		buttonPanel.add(crtGameBtn);
+		buttonPanel.add(Box.createHorizontalStrut(25));
 		buttonPanel.add(crtDeckBtn);
-		crtDeckBtn.setVisible(false);
+		buttonPanel.add(Box.createHorizontalStrut(25));
 		buttonPanel.add(userPrefBtn);
-		buttonPanel.add(Box.createHorizontalStrut(50));
-		
+		buttonPanel.add(Box.createHorizontalStrut(25));
+		buttonPanel.add(helpBtn);
+		buttonPanel.add(Box.createHorizontalStrut(15));
+
 		buttonPanel.setOpaque(false);
-		
+
 		this.add(buttonPanel);
-		
+
 
 		try {
-		    Image img = ImageIO.read(getClass().getResource("card.png"));
-		    crtGameBtn.setIcon(new ImageIcon(img));
-		    
-		    img = ImageIO.read(getClass().getResource("deck.png"));
-		    crtDeckBtn.setIcon(new ImageIcon(img));
-		    
-		    img = ImageIO.read(getClass().getResource("gear.png"));
-		    userPrefBtn.setIcon(new ImageIcon(img));
+			Image img = ImageIO.read(getClass().getResource("card.png"));
+			crtGameBtn.setIcon(new ImageIcon(img));
 
-		    
+			img = ImageIO.read(getClass().getResource("deck.png"));
+			crtDeckBtn.setIcon(new ImageIcon(img));
+
+			img = ImageIO.read(getClass().getResource("gear.png"));
+			userPrefBtn.setIcon(new ImageIcon(img));
+
+			img = ImageIO.read(getClass().getResource("questionMark.png"));
+			helpBtn.setIcon(new ImageIcon(img));
+
+
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
-		
+
 		this.setupListeners();
 	}
-	
+
 	/**
 	 * sets up the listeners for the panel
 	 */
@@ -91,11 +99,25 @@ public class CreateButtonsPanel extends ToolbarGroupView{
 				MainViewTabController.getInstance().createGameTab();
 			}
 		});
-		
+
 		userPrefBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				MainViewTabController.getInstance().userPreferencesTab();
+			}
+		});
+
+		helpBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainViewTabController.getInstance().helpTab();
+			}
+		});
+
+		crtDeckBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainViewTabController.getInstance().DeckManagerTab();
 			}
 		});
 	}

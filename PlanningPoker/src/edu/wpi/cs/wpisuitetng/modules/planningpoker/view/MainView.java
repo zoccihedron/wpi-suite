@@ -13,8 +13,6 @@ package edu.wpi.cs.wpisuitetng.modules.planningpoker.view;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.JTabbedPane;
 
@@ -49,6 +47,8 @@ public class MainView extends JTabbedPane {
 		overviewPanel = new OverviewPanel();
 		overviewPanel.setBounds(0, 0, 500, 500);
 		this.addTab("Overview", overviewPanel);
+		
+		MainViewTabController.setOverviewPanel(overviewPanel);
 	}
 
 	/**

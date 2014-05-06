@@ -38,7 +38,7 @@ public class PlayGamePanel extends JPanel{
 	private final ListRequirementsPanel listRequirementsPanel;
 	private final EstimationPane estimationPane;
 	private final JSplitPane splitPane;
-
+	private final Game game;
 	/**
 	 * Constructs the PlayGamePanel with the given game
 	 *
@@ -46,11 +46,12 @@ public class PlayGamePanel extends JPanel{
 	 */
 	public PlayGamePanel(Game game)
 	{
+		this.game = game;
 		setLayout(new BorderLayout());
 
-		PlayGameController playGameController = new PlayGameController();
+		final PlayGameController playGameController = new PlayGameController();
 		listRequirementsPanel = new ListRequirementsPanel(game, playGameController);
-		Dimension minimumSize = new Dimension(250, 300);
+		final Dimension minimumSize = new Dimension(250, 300);
 		listRequirementsPanel.setMinimumSize(minimumSize);
 		splitPane = new JSplitPane();
 		splitPane.setLeftComponent(listRequirementsPanel);
@@ -61,24 +62,38 @@ public class PlayGamePanel extends JPanel{
 		add(splitPane, BorderLayout.CENTER);
 
 	}
+	/**
+	 * getter for game
+	 * @return game used for game
+	 */
+	public Game getGame(){
+		return game;
+	}
 
+	/**
+	 * determines if the estimation pane is ready 
+	 * to close and throws a notification if it may not be
+	 * @return A true if it is ready to close and there are no changes
+	 */
 	public boolean isReadyToClose() {
-		if(estimationPane.getDeckPanel().getCurrentEstimate() != null){
+		if(estimationPane.isNothingHappened()) {
+			return true;
+		} else if(estimationPane.getDeckPanel().getCurrentEstimate() != null) {
 			if(estimationPane.getDeckPanel().isOldEstimate()){
 				return true;
 			}
 			else{
-				Object options[] = {
+				final Object options[] = {
 						"Yes", "No"
 						};
-				int i = JOptionPane.showOptionDialog(this, 
+				final int i = JOptionPane.showOptionDialog(this, 
 						"Any unsaved changes will be lost, would you like to exit anyways?",
 						"Exit?",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE,
 						null, options, options[1]);
 
-				return i == 0; 
+				return (i == 0);
 			}
 		}
 		else return true;

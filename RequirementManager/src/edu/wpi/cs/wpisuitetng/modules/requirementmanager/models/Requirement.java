@@ -803,6 +803,9 @@ public class Requirement extends AbstractModel {
 	 */
 	@Override
 	public String toString() {
+		if(this.getName().length()>40){
+			return this.getName().substring(0, 40)+"...";
+		}
 		return this.getName();
 	}
 

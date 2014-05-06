@@ -39,9 +39,8 @@ public class VoteActionObserver implements RequestObserver{
 	@Override
 	public void responseSuccess(IRequest iReq) {
 		// TODO Auto-generated method stub
-		ResponseModel response = iReq.getResponse();
-		String message = response.getBody();
-		System.out.println("Message:" + message + "<<<");
+		final ResponseModel response = iReq.getResponse();
+		final String message = response.getBody();
 		if(message.trim().equals("true"))
 		{
 			controller.reportSuccess();

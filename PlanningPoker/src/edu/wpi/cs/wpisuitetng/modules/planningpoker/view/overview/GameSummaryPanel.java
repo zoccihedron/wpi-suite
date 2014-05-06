@@ -21,6 +21,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -28,11 +29,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import edu.wpi.cs.wpisuitetng.janeway.config.ConfigManager;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.MainViewTabController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.newgame.EndGameManuallyController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.GetGamesController;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview.OverviewPanelController;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.network.Network;
@@ -56,15 +62,20 @@ public class GameSummaryPanel extends JPanel {
 	private JButton editGameButton;
 	private JButton playGameButton;
 	private JButton endGameButton;
+	private JButton startGameButton;
 	private JButton viewResultsButton;
 	private JButton closeGameButton;
 	private JLabel helpTitle;
-	private JLabel helpText;
+	private JLabel helpText1;
+	private JLabel helpText2;
 	private JLabel reportMessage;
 	private final GameSummaryPanel  summaryPanel = this;
 	JPanel buttonsPanel;
-	Game game;
-
+	Game game = null;
+	private JProgressBar overallProgressBar;
+	private JProgressBar userProgressBar;
+	private Timer gameUpdateTimer;
+	
 	/**
 	 * 
 	 */
@@ -82,13 +93,20 @@ public class GameSummaryPanel extends JPanel {
 		final GridBagConstraints constraints = new GridBagConstraints();
 				
 		helpTitle = new JLabel();
-		helpText = new JLabel();
+		helpText1 = new JLabel();
+		helpText2 = new JLabel();
 		
 		helpTitle.setText("Games Overview");
 		helpTitle.setFont(new Font("Tahoma", Font.BOLD, 17));
 		
-		helpText.setText("To begin, please select a game from the tree on the left.");
-		helpText.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		helpText1.setText("To begin, please select "
+				+ "a game from the panel on the left or create a new game.");
+		helpText1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		
+		helpText2.setText("If you want to know more about planning "
+				+ "poker or how to use this application, press the 'Help' "
+				+ "button in the toolbar.");
+		helpText2.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -96,7 +114,56 @@ public class GameSummaryPanel extends JPanel {
 		
 		constraints.gridy = 1;
 		constraints.gridx = 0;
-		this.add(helpText, constraints);
+		constraints.weightx = 0.75;
+		constraints.insets = new Insets(0, 40, 0, 40);
+		constraints.anchor = GridBagConstraints.CENTER;
+		this.add(helpText1, constraints);
+		
+		constraints.gridy = 2;
+		constraints.gridx = 0;
+		constraints.weightx = 0.75;
+		constraints.insets = new Insets(0, 40, 0, 40);
+		constraints.anchor = GridBagConstraints.CENTER;
+		this.add(helpText2, constraints);
+		
+		gameUpdateTimer = new Timer(5000, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(game != null && 
+						Network.getInstance().getDefaultNetworkConfiguration() 
+							!= null){
+					// Send a request to the core to save this game
+					final Request request = Network.getInstance().makeRequest
+							("planningpoker/game/" + game.getId(), HttpMethod.GET);
+					// add an observer to process the response
+					request.addObserver(new RequestObserver() {
+						
+						@Override
+						public void responseSuccess(IRequest iReq) {
+							final ResponseModel response = iReq.getResponse();
+							final Game returnedGame = Game.fromJsonArray(response.getBody())[0];
+							updateIfChanged(returnedGame);
+						}
+						
+						@Override
+						public void responseError(IRequest iReq) {
+							System.err.println("The request to get a game failed.");
+						}
+						
+						@Override
+						public void fail(IRequest iReq, Exception exception) {
+							System.err.println("The request to get a game failed.");
+						}
+					});
+					request.send(); // send the request
+					
+				}
+				
+			}
+		});
+		gameUpdateTimer.start();
+		
 	}
 	
 	/**
@@ -114,16 +181,16 @@ public class GameSummaryPanel extends JPanel {
 		
 		
 		// Button to edit game
-		editGameButton = new JButton("Edit");
-		constraints.anchor = GridBagConstraints.EAST;
+		editGameButton = new JButton("Edit Game");
+		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 1;
-		constraints.gridy = 0;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 0, 5, 0);
-		buttonsPanel.add(editGameButton, constraints);
+		constraints.insets = new Insets(0, 5, 5, 0);
+		add(editGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		editGameButton.setEnabled(false);
 		editGameButton.addActionListener(new ActionListener () {
@@ -173,8 +240,28 @@ public class GameSummaryPanel extends JPanel {
  			
  		});
 		
-		// Button to play game
-		playGameButton = new JButton("Play");
+		// Button to start game
+		startGameButton = new JButton("Start Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 5, 0);
+		add(startGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		startGameButton.addActionListener(new ActionListener (){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(MainViewTabController.getInstance().closeEditTabs(game))
+				{
+					OverviewPanelController.getInstance().startGame(game);
+				}
+			}
+		});
+		
+		// Button to end game manually
+		endGameButton = new JButton("End Game");
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
 		constraints.weightx = 0.0;
@@ -183,7 +270,36 @@ public class GameSummaryPanel extends JPanel {
 		constraints.gridy = 0;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 10, 5, 0);
-		buttonsPanel.add(playGameButton, constraints);
+		buttonsPanel.add(endGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		endGameButton.setVisible(false);
+		endGameButton.setEnabled(false);
+		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+		
+		closeGameButton = new JButton("Close Game");
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.weightx = 0.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 10, 5, 0);
+		buttonsPanel.add(closeGameButton, constraints);
+		constraints.insets = new Insets(0, 0, 0, 0);
+		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
+
+		
+		
+		// Button to play game
+		playGameButton = new JButton("Play Game");
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
+		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 5, 0);
+		add(playGameButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		playGameButton.setEnabled(false);
 		playGameButton.addActionListener(new ActionListener () {
@@ -193,16 +309,16 @@ public class GameSummaryPanel extends JPanel {
  				mvt.playGameTab(game);
 			}
  		});
+		
+		// Button to view results
 		viewResultsButton = new JButton("View Results");
-		constraints.anchor = GridBagConstraints.EAST;
 		constraints.fill = GridBagConstraints.NONE;
-		constraints.weightx = 0.0;
-		constraints.weighty = 0.0;
-		constraints.gridx = 3;
-		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 0;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 10, 5, 0);
-		buttonsPanel.add(viewResultsButton, constraints);
+		constraints.insets = new Insets(0, 20, 5, 0);
+		add(viewResultsButton, constraints);
 		constraints.insets = new Insets(0, 0, 0, 0);
 		viewResultsButton.addActionListener(new ActionListener () {
 			@Override
@@ -211,34 +327,34 @@ public class GameSummaryPanel extends JPanel {
  				mvt.viewResultsTab(game);
 			}
  		});
+		UIManager.put("ProgressBar.selectionBackground", Color.black);
+		UIManager.put("ProgressBar.selectionForeground", Color.black);
 		
+		overallProgressBar = new JProgressBar();
+		overallProgressBar.setString("Team's Completion");
+		overallProgressBar.setStringPainted(true);
+		overallProgressBar.setVisible(false);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.gridwidth = 4;
+		constraints.insets = new Insets(0, 20, 0, 20);
+		add(overallProgressBar, constraints);
 		
-		
-		// Button to end game manually
-		endGameButton = new JButton("End Game");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
+		userProgressBar = new JProgressBar();
+		userProgressBar.setString("Your Completion");
+		userProgressBar.setStringPainted(true);
+		userProgressBar.setVisible(false);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = 1.0;
+		constraints.weighty = 0.0;
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 5, 0);
-		add(endGameButton, constraints);
-		constraints.insets = new Insets(0, 0, 0, 0);
-		endGameButton.setVisible(false);
-		endGameButton.setEnabled(false);
-		endGameButton.addActionListener(new EndGameManuallyController(this, game, true));
-		
-		closeGameButton = new JButton("Close Game");
-		constraints.fill = GridBagConstraints.NONE;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.gridx = 0;
-		constraints.gridy = 2;
-		constraints.gridwidth = 1;
-		constraints.insets = new Insets(0, 20, 5, 0);
-		add(closeGameButton, constraints);
-		constraints.insets = new Insets(0, 0, 0, 0);
-		closeGameButton.addActionListener(new EndGameManuallyController(this, game, true));
-		
+		constraints.gridwidth = 4;
+		constraints.insets = new Insets(10, 20, 0, 20);
+		add(userProgressBar, constraints);
 		
 		final JPanel extraPanel1 = new JPanel();
 		constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -273,7 +389,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.5;
 		constraints.gridx = 0;
-		constraints.gridy = 1;
+		constraints.gridy = 3;
 		constraints.ipadx = 20;
 		constraints.ipady = 20;
 		add(reqPanel, constraints);
@@ -284,7 +400,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 3;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.ipadx = 0;
 		constraints.ipady = 0;
 		constraints.insets = new Insets(0, 0, 0, 20);
@@ -298,9 +414,10 @@ public class GameSummaryPanel extends JPanel {
 		reportMessage.setVisible(true);
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.gridx = 1;
-		constraints.gridy = 2;
+		constraints.gridx = 2;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
+		constraints.insets = new Insets(0, 20, 0, 0);
 		add(reportMessage, constraints);
 		
 		final JPanel extraPanel2 = new JPanel();
@@ -308,7 +425,7 @@ public class GameSummaryPanel extends JPanel {
 		constraints.weightx = 1.0;
 		constraints.weighty = 0.0;
 		constraints.gridx = 2;
-		constraints.gridy = 2;
+		constraints.gridy = 4;
 		constraints.gridwidth = 1;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		add(extraPanel2, constraints);
@@ -322,6 +439,7 @@ public class GameSummaryPanel extends JPanel {
 		    
 		    img = ImageIO.read(getClass().getResource("playIcon.png"));
 		    playGameButton.setIcon(new ImageIcon(img));
+		    startGameButton.setIcon(new ImageIcon(img));
 		    
 		    img = ImageIO.read(getClass().getResource("checkmark.png"));
 		    viewResultsButton.setIcon(new ImageIcon(img));   
@@ -333,6 +451,7 @@ public class GameSummaryPanel extends JPanel {
 			System.err.println(ex.getMessage());
 		}
 	}
+
 	
 	/**
 	 * fills empty fields with values specific to game
@@ -349,6 +468,7 @@ public class GameSummaryPanel extends JPanel {
 			editGameButton.setEnabled(true);
 			endGameButton.setEnabled(true);
 			closeGameButton.setEnabled(true);
+			startGameButton.setEnabled(true);
 			
 			// If the game is a draft.
 			if(game.getStatus().equals(GameStatus.DRAFT)) {
@@ -366,6 +486,7 @@ public class GameSummaryPanel extends JPanel {
 				endGameButton.setVisible(true);
 				closeGameButton.setVisible(false);
 				viewResultsButton.setVisible(false);
+				startGameButton.setVisible(false);
 			}
 			// If the game is ended.
 			else if(game.getStatus().equals(GameStatus.ENDED)){
@@ -373,6 +494,7 @@ public class GameSummaryPanel extends JPanel {
 				editGameButton.setVisible(false);
 				endGameButton.setVisible(false);
 				closeGameButton.setVisible(true);
+				startGameButton.setVisible(false);
 			}
 			// If the game is closed.
 			else {
@@ -381,6 +503,7 @@ public class GameSummaryPanel extends JPanel {
 				endGameButton.setVisible(false);
 				closeGameButton.setVisible(false);
 				viewResultsButton.setVisible(true);
+				startGameButton.setVisible(false);
 			}
 		}
 		// If the user is not the game creator.
@@ -388,6 +511,7 @@ public class GameSummaryPanel extends JPanel {
 			editGameButton.setVisible(false);
 			endGameButton.setVisible(false);
 			closeGameButton.setVisible(false);
+			startGameButton.setVisible(false);
 		
 			// Users cannot see the drafts of other users.
 			// If the game is in progress.
@@ -402,6 +526,8 @@ public class GameSummaryPanel extends JPanel {
 				viewResultsButton.setVisible(true);
 			}
 		}
+		
+		updateBars();
 		
 		infoPanel.updateInfoSummary(game);
 		reqPanel.updateReqSummary(game);
@@ -429,6 +555,7 @@ public class GameSummaryPanel extends JPanel {
 	public void reportError(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.RED);
+		overallProgressBar.setVisible(false);
 	}
 	
 	/**
@@ -438,6 +565,72 @@ public class GameSummaryPanel extends JPanel {
 	public void reportSuccess(String string) {
 		reportMessage.setText(string);
 		reportMessage.setForeground(Color.BLUE);
+	}
+	
+	/**
+	 * Update the progress bars
+	 */
+	public void updateBars(){
+		overallProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
+		overallProgressBar.setMinimum(0);
+		overallProgressBar.setMaximum(game.getMaxVotes());
+		overallProgressBar.setValue(game.getVoteCount());
+		overallProgressBar.setString("Overall Game Progress: " + 
+				Double.parseDouble(new DecimalFormat("#.##").format(
+						overallProgressBar.getPercentComplete() * 100)) + "%");
+		
+		userProgressBar.setVisible(game.getStatus().equals(GameStatus.IN_PROGRESS));
+		userProgressBar.setMinimum(0);
+		userProgressBar.setMaximum(game.getUserMaxVotes());
+		userProgressBar.setValue(game.getUserVoteCount(
+				ConfigManager.getInstance().getConfig().getUserName()));
+		userProgressBar.setString("Your Progress: " + 
+				Double.parseDouble(new DecimalFormat("#.##").format(
+						userProgressBar.getPercentComplete() * 100)) + "%");
+	}
+	
+	/**
+	 * Updates the panel if there have been changes to the current game
+	 * @param returnedGame
+	 */
+	public void updateIfChanged(Game returnedGame){
+		final boolean updated = !game.isSameModifiedVersion(
+				returnedGame.getModifiedVersion());
+		final boolean statusChanged = !game.getStatus().equals(
+				returnedGame.getStatus());
+		if(game.identify(returnedGame) && updated){
+			updateSummary(returnedGame);
+			new GetGamesController().initializeTable();
+			reportSuccess("<html> The game has been updated recently. </html>");
+		}
+		else if(game.identify(returnedGame) && statusChanged){
+			updateSummary(returnedGame);
+			new GetGamesController().initializeTable();
+			switch(returnedGame.getStatus()){
+				case CLOSED:
+					reportSuccess("<html> The game has been closed.</html>");
+					break;
+				case DRAFT:
+					reportSuccess("<html> The game has been created. </html>");
+					break;
+				case ENDED:
+					reportSuccess("<html> The game has ended. </html>");
+					break;
+				case IN_PROGRESS:
+					reportSuccess("<html> The game has been started. </html>");
+					break;
+				default:
+					reportSuccess("<html> The games's status has changed. </html>");
+					break;
+			}
+		}
+		else if(game.identify(returnedGame) && game.isChanged(returnedGame, 
+				ConfigManager.getInstance().getConfig().getUserName())){
+			new GetGamesController().initializeTable();
+			game = returnedGame;
+			updateBars();
+			reqPanel.updateReqSummary(game);
+		}
 	}
 	
 	/**

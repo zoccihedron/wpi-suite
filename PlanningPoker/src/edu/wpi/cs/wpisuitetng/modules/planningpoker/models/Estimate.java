@@ -9,15 +9,15 @@
  ******************************************************************************/
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.models;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gson.Gson;
-
-import edu.wpi.cs.wpisuitetng.modules.requirementmanager.models.Requirement;
 
 
 /**
@@ -37,8 +37,11 @@ public class Estimate {
 	private double mean = 0;
 	private HashMap<String,Integer> userWithEstimate;
 	private boolean isEstimationSent = false;
+	private boolean sentBefore = false;
 	private int finalEstimate = 0;
-	private HashMap<String, List<Boolean>> userCardSelection;
+	private String note = "";
+	private Map<String, List<Boolean>> userCardSelection;
+	private boolean isFinalEstimationSet = false;
 	
 	/**
 	 * Constructor for an estimate object
@@ -59,14 +62,6 @@ public class Estimate {
 	 */
 	public int getReqID() {
 		return reqID;
-	}
-
-	/**
-	 * update new requirement
-	 * @param requirement the given requirement
-	 */
-	public void setRequirement(Requirement requirement) {
-		reqID = requirement.getId();
 	}
 	
 	/**
@@ -177,7 +172,7 @@ public class Estimate {
 	 * Get estimates of all users
 	 * @return map of users and their estimates
 	 */
-	public HashMap<String,Integer> getUsersAndEstimates(){
+	public Map<String,Integer> getUsersAndEstimates(){
 		return userWithEstimate;
 	}
 	
@@ -203,7 +198,7 @@ public class Estimate {
 		} else {
 			mean = 0;
 		}
-		return mean;
+		return Math.round(mean * 100.0) / 100.0;
 		
 	}
 	
@@ -222,16 +217,19 @@ public class Estimate {
 		}
 		Collections.sort(estimates);
 		final int length = estimates.size();
+		final int halfLength = length / 2;
 		double median = 0;
 		if(length == 0){
 			return median;
 		}
 		if(length % 2 == 0){
-			median = ((double) estimates.get(length / 2) + 
-					(double)estimates.get((length / 2) - 1)) / 2.0;
+			int mid1 = estimates.get(length / 2);
+			int mid2 = estimates.get((length / 2) - 1);
+			median = (mid1 + mid2) / 2.0;
 		}
 		else {
-			median = (double)estimates.get(length / 2);
+			int mid = estimates.get(length / 2);
+			median = (double)mid;
 		}
 		return median;
 	}
@@ -266,11 +264,22 @@ public class Estimate {
 	 */
 	public Estimate getCopy(){
 		final Estimate copyEst = new Estimate(reqID, gameID);
-		copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		copyEst.gameModifiedVersion = gameModifiedVersion;
+		if (userWithEstimate != null)
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>(userWithEstimate);
+		}
+		else
+		{
+			copyEst.userWithEstimate = new HashMap<String,Integer>();
+		}
 		copyEst.isEstimationSent = isEstimationSent;
 		copyEst.mean = mean;
 		copyEst.finalEstimate = finalEstimate;
+		copyEst.isFinalEstimationSet = isFinalEstimationSet;
+		copyEst.sentBefore = sentBefore;
 		copyEst.userCardSelection = new HashMap<String, List<Boolean>>(userCardSelection);
+		copyEst.note = note;
 		return copyEst;
 	}
 	
@@ -306,7 +315,7 @@ public class Estimate {
 	 */
 	public void estimationSent(boolean send)
 	{
-		this.isEstimationSent = send;
+		isEstimationSent = send;
 	}
 	
 	/**
@@ -322,7 +331,7 @@ public class Estimate {
 	 * @return true if it's been set
 	 */
 	public boolean isFinalEstimateSet() {
-		return (finalEstimate != 0);
+		return isFinalEstimationSet;
 	}
 
 	/**
@@ -337,8 +346,16 @@ public class Estimate {
 	 */
 	public void setFinalEstimate(int finalEstimate) {
 		this.finalEstimate = finalEstimate;
+		isFinalEstimationSet = true;
 	}
 
+	/**
+	 * Unselect this estimate so that it could show up in
+	 * "unselected" category in result panel
+	 */
+	public void unSelectFinalEstimate(){
+		isFinalEstimationSet = false;
+	}
 
 	/**
 	 * Get state of every card (whether each card is selected or not)
@@ -372,5 +389,67 @@ public class Estimate {
 	 */
 	public void setGameModifiedVersion(int gameModifiedVersion) {
 		this.gameModifiedVersion = gameModifiedVersion;
+	}
+	
+	/**
+	 * Gets the note for the current estimate
+	 *
+	 * @return the note for the estimate
+	 */
+	public String getNote() {
+		return note;
+	}
+
+
+	/**
+	 * Sets the note for the current estimate
+	 *
+	 * @param note the note for the estimate
+	 */
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	/**
+	 * Returns whether the estimate has ever been sent to the 
+	 * requirement manager
+	 *
+	 * @return status of the estimate ever being sent
+	 */
+	public boolean isSentBefore() {
+		return sentBefore;
+	}
+
+
+	/**
+	 * sets whether the estimate has ever been sent to the 
+	 * requirement manager previously
+	 *
+	 * @param hasSentBefore whether the estimate has been sent before or not
+	 */
+	public void setSentBefore(boolean sentBefore) {
+		this.sentBefore = sentBefore;
+	}
+	
+	/**
+	 * Returns the number of estimates voted for this requirement
+	 * @return number of estimates
+	 */
+	public int getMaxVoteCount(){
+		return userWithEstimate.entrySet().size();
+	}
+	
+	/**
+	 * Returns the number of estimates voted for this requirement
+	 * @return number of estimates
+	 */
+	public int getVoteCount(){
+		int count = 0;
+		for(Entry<String,Integer> temp: userWithEstimate.entrySet()){
+			if(temp.getValue() >= 0){
+				count++;
+			}
+		}
+		return count;
 	}
 }

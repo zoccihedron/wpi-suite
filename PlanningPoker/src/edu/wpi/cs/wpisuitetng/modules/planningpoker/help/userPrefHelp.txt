@@ -1,0 +1,5 @@
+   The User Preferences panel can be used to set the user's preferred e-mail address. E-mails will be sent to this address whenever a game is created that you need to play or a game that you have played in is closed.
+   
+   Only a valid e-mail address (name@domain.com, .edu, et cetera) can be submitted in the e-mail field on the User Preferences panel. If you wish to stop receiving e-mails from Planning Poker, simply un-check the box next to "E-mail" on the User Preferences Panel.  
+
+   To access the User Preferences panel, click the button on the toolbar at the top of the window.

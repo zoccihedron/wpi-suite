@@ -108,6 +108,7 @@ public class RequirementManagerFacade {
 	public void setRequirements(Requirement[] requirements) {
 		this.requirements = new ArrayList<Requirement>(Arrays.asList(requirements));
 	}
+	
 
 	/**
 	 * Sends average of estimations to requirement manager 
@@ -118,9 +119,7 @@ public class RequirementManagerFacade {
 	public void sendEstimates(List<Estimate> estimates, final EstimateTreePanel view){
 
 		for(Estimate estimate : estimates){
-			Requirement req = requirements.get(estimate.getReqID());
-
-			
+			Requirement req = getRequirementFromID(requirements, estimate.getReqID());
 						
 			final Estimate newEstimate = new Estimate(estimate.getReqID(), estimate.getGameID());
 			newEstimate.estimationSent(true);
@@ -133,7 +132,6 @@ public class RequirementManagerFacade {
 			request.addObserver(new RequestObserver(){
 				@Override
 				public void responseSuccess(IRequest iReq) {
-					System.out.println("Mark this estimate as sent-----------");
 				}
 
 				@Override
@@ -157,7 +155,6 @@ public class RequirementManagerFacade {
 					@Override
 					public void responseSuccess(IRequest iReq) {
 						GetRequirementsController.getInstance().retrieveRequirements();
-						System.out.println("Selected estimates sent!");
 					}
 
 				@Override
@@ -181,6 +178,8 @@ public class RequirementManagerFacade {
 	}
 	
 	
+
+
 	/**
 	 * Send the final estimate value of a single requirement to 
 	 * the requirement panel
@@ -192,6 +191,53 @@ public class RequirementManagerFacade {
 		req.setEstimate(estimate.getFinalEstimate());
 
 		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.POST); 
+		request.setBody(req.toJSON()); 
+		request.addObserver(new RequestObserver(){
+
+			@Override
+			public void responseSuccess(IRequest iReq) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void responseError(IRequest iReq) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void fail(IRequest iReq, Exception exception) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
+		request.send(); 
+
+		
+	}
+	
+	/**
+	 * takes a requirement, increments the id and send to req manager
+	 * @param req to send to requirement manager
+	 */
+	public void createNewRequirement(Requirement req){
+		
+		updateRequirements();
+		List<Requirement> allReqs = getPreStoredRequirements();
+		
+		int maxID = 0;
+		
+		for(Requirement requirement : allReqs){
+			if(requirement.getId()>maxID){
+				maxID = requirement.getId();
+			}
+		}
+		
+		req.setId(maxID+1);
+		
+		final Request request = Network.getInstance().makeRequest("requirementmanager/requirement", HttpMethod.PUT); 
 		request.setBody(req.toJSON()); 
 		request.addObserver(new RequestObserver(){
 
@@ -214,8 +260,16 @@ public class RequirementManagerFacade {
 
 		});
 		request.send(); 
-
-		
+	}
+	
+	
+	
+	private Requirement getRequirementFromID(List<Requirement> requirements, int id) {
+		for(Requirement r: requirements){
+			if(r.getId() == id)
+				return r;
+		}
+		return null;
 	}
 
 }

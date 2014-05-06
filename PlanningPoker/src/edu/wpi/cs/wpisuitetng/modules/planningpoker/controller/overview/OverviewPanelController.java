@@ -12,8 +12,12 @@
 package edu.wpi.cs.wpisuitetng.modules.planningpoker.controller.overview;
 
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game;
+import edu.wpi.cs.wpisuitetng.modules.planningpoker.models.Game.GameStatus;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.GameSummaryPanel;
 import edu.wpi.cs.wpisuitetng.modules.planningpoker.view.overview.ListGamePanel;
+import edu.wpi.cs.wpisuitetng.network.Network;
+import edu.wpi.cs.wpisuitetng.network.Request;
+import edu.wpi.cs.wpisuitetng.network.models.HttpMethod;
 
 /**
  * This panel controls setting and updating the game summary
@@ -69,5 +73,22 @@ public class OverviewPanelController {
 		listGamePanel.updateTree();
 	}
 	
+	/**
+	 * Start game
+	 * @param game to start
+	 */
+	public void startGame(Game game){
+		game.setStatus(GameStatus.IN_PROGRESS);
+		game.setModifiedVersion(game.getModifiedVersion() + 1);
+		// Send a request to the core to save this game
+		final Request request = Network.getInstance().makeRequest
+				("planningpoker/game", HttpMethod.POST);
+		// put the updated game in the body of the request
+		request.setBody(game.toJSON());
+		request.send(); // send the request
+		updateGameSummary(game);
+		gameSummaryPanel.reportSuccess("<html>Game Started.</html>");
+		refreshListGames();
+	}
 
 }
